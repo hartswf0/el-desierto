@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Prism | Media Triage & Manifest Builder</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            900: '#134e4a',
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            border: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow: hidden;
+            /* Prevent native scrolling, handle via flex */
+        }
+
+        /* Hide scrollbar for clean UI but keep functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Triage Card Animations */
+        .card-stack {
+            perspective: 1000px;
+        }
+
+        .triage-card {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+            transform-origin: center bottom;
+        }
+
+        .triage-card.swiped-right {
+            transform: translateX(120%) rotate(15deg);
+            opacity: 0;
+        }
+
+        .triage-card.swiped-left {
+            transform: translateX(-120%) rotate(-15deg);
+            opacity: 0;
+        }
+
+        /* D3 Tooltip */
+        #d3-tooltip {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 50;
+        }
+
+        /* Code Diff Highlighting */
+        .yaml-key {
+            color: #5eead4;
+        }
+
+        .yaml-val {
+            color: #fde047;
+        }
+
+        .diff-added {
+            background-color: rgba(20, 184, 166, 0.2);
+        }
+
+        .diff-removed {
+            background-color: rgba(244, 63, 94, 0.2);
+        }
+
+        /* Simulated Video Gradients */
+        .vid-gradient-1 {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+        }
+
+        .vid-gradient-2 {
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+        }
+
+        .vid-gradient-3 {
+            background: linear-gradient(45deg, #f59e0b, #ef4444);
+        }
+
+        /* Toast */
+        .toast-enter {
+            animation: slideUp 0.3s forwards;
+        }
+
+        .toast-leave {
+            animation: slideDown 0.3s forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen flex flex-col text-sm sm:text-base">
+
+    <header
+        class="glass z-20 px-4 py-3 flex justify-between items-center shadow-md border-b border-dark-border shrink-0">
+        <div class="flex items-center gap-2">
+            <div
+                class="w-8 h-8 rounded bg-gradient-to-br from-brand-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-lg">
+                <i class="fa-solid fa-layer-group text-xs"></i>
+            </div>
+            <h1 class="font-bold text-lg tracking-tight">Prism</h1>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <div
+                class="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-dark-bg px-3 py-1.5 rounded-full border border-dark-border">
+                <span id="header-unclassified-count">487</span> <span class="text-slate-500">Unclassified</span>
+            </div>
+            <!-- Active Project Selector -->
+            <select id="active-project-select"
+                class="bg-dark-card border border-dark-border text-white text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block p-2 outline-none cursor-pointer">
+                <option value="BEES_ON_A_TRAIN">🐝 Bees on a Train</option>
+                <option value="TRAINS_TROLLEYS">🚂 Trains & Trolleys</option>
+                <option value="TROUT_TOWN">🐟 Trout Town</option>
+            </select>
+        </div>
+    </header>
+
+    <main id="main-container" class="flex-1 relative overflow-hidden bg-dark-bg">
+        <!-- Views will be injected here dynamically -->
+    </main>
+
+    <nav class="glass z-20 shrink-0 border-t border-dark-border pb-safe">
+        <div class="flex justify-around items-center px-2 py-3">
+            <button class="nav-btn flex flex-col items-center gap-1 w-16 text-brand-500 transition-colors"
+                data-view="triage">
+                <i class="fa-solid fa-layer-group text-lg"></i>
+                <span class="text-[10px] font-medium tracking-wide uppercase">Triage</span>
+            </button>
+            <button
+                class="nav-btn flex flex-col items-center gap-1 w-16 text-slate-400 hover:text-slate-200 transition-colors"
+                data-view="grid">
+                <i class="fa-solid fa-border-all text-lg"></i>
+                <span class="text-[10px] font-medium tracking-wide uppercase">Manifest</span>
+            </button>
+            <button
+                class="nav-btn flex flex-col items-center gap-1 w-16 text-slate-400 hover:text-slate-200 transition-colors"
+                data-view="code">
+                <i class="fa-solid fa-code-compare text-lg"></i>
+                <span class="text-[10px] font-medium tracking-wide uppercase">Diff</span>
+            </button>
+            <button
+                class="nav-btn flex flex-col items-center gap-1 w-16 text-slate-400 hover:text-slate-200 transition-colors"
+                data-view="explore">
+                <i class="fa-solid fa-project-diagram text-lg"></i>
+                <span class="text-[10px] font-medium tracking-wide uppercase">Explore</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="toast-container"
+        class="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <div id="d3-tooltip"
+        class="glass text-white p-3 rounded-lg shadow-xl border border-slate-600 text-sm max-w-[200px]">
+        <div class="font-bold text-brand-500 mb-1" id="tt-id"></div>
+        <div class="text-xs text-slate-300 mb-1" id="tt-format"></div>
+        <div class="text-xs font-mono bg-slate-800 inline-block px-1 rounded" id="tt-count"></div> clips
+    </div>
+
+    <script>
+        // --- State Management ---
+        const state = {
+            currentView: 'triage',
+            activeProject: 'BEES_ON_A_TRAIN',
+            manifests: {
+                'BEES_ON_A_TRAIN': [],
+                'TRAINS_TROLLEYS': [],
+                'TROUT_TOWN': []
+            },
+            unclassifiedQueue: [],
+            allClips: [], // For diffing
+            selectedForDiff: [null, null],
+            clusterData: [],
+            d3ShowUnclassified: true
+        };
+
+        // --- Real Data Bootstrap from SORA_CAPTURES ---
+        async function bootstrapPrism() {
+            try {
+                const resp = await fetch('sora_full_index.json');
+                if (!resp.ok) return fallbackMock();
+                const index = await resp.json();
+
+                // Build cluster data from real index
+                state.clusterData = Object.entries(index.clusters)
+                    .map(([id, info]) => ({ id, count: info.count, format: `${info.count} clips` }))
+                    .sort((a, b) => b.count - a.count);
+
+                // Build clips from REAL data — full prompts, real video paths
+                const clips = index.clips.map((entry, i) => ({
+                    id: entry.id,
+                    theme: (entry.cluster || 'UNCLASSIFIED').toLowerCase().replace(/_/g, ' '),
+                    prompt: entry.prompt || '',
+                    format: entry.prompt.startsWith('{') ? 'JSON' : (entry.prompt.includes('title:') ? 'YAML' : 'PROSE'),
+                    video: entry.video ? `captures/${entry.video}` : null,
+                    bgClass: `vid-gradient-${(i % 3) + 1}`
+                }));
+
+                const unclassified = clips.filter(c => c.theme === 'unclassified');
+                state.unclassifiedQueue = unclassified;
+                state.allClips = clips;
+
+                // Pre-populate manifests from real clusters
+                state.manifests = {};
+                for (const [project, info] of Object.entries(index.clusters)) {
+                    if (project !== 'UNCLASSIFIED') {
+                        state.manifests[project] = info.ids.slice(0, 8).map(id => {
+                            const entry = index.clips.find(c => c.id === id);
+                            return {
+                                id,
+                                theme: project.toLowerCase().replace(/_/g, ' '),
+                                prompt: entry?.prompt || '',
+                                format: 'PROSE',
+                                video: entry?.video ? `captures/${entry.video}` : null,
+                                bgClass: `vid-gradient-${(Math.random() * 3 | 0) + 1}`
+                            };
+                        });
+                    }
+                }
+                state.activeProject = Object.keys(state.manifests)[0] || 'BEES_ON_A_TRAIN';
+
+                switchView(state.currentView);
+                updateGlobalCounters();
+            } catch (e) { console.warn('Index load failed:', e); fallbackMock(); }
+        }
+
+        function fallbackMock() {
+            state.clusterData = [{ id: "UNCLASSIFIED", count: 0, format: "No data" }];
+            state.unclassifiedQueue = [];
+            state.allClips = [];
+        }
+
+        // --- Utility Functions ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const icon = type === 'success' ? '<i class="fa-solid fa-check-circle text-brand-500"></i>' : '<i class="fa-solid fa-info-circle text-blue-400"></i>';
+            toast.className = `glass text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-sm font-medium toast-enter pointer-events-auto`;
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.replace('toast-enter', 'toast-leave');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        function updateGlobalCounters() {
+            const countEl = document.getElementById('header-unclassified-count');
+            if (countEl) countEl.innerText = state.unclassifiedQueue.length;
+        }
+
+        // Basic YAML/JSON syntax highlighter for Diff view
+        function highlightCode(text) {
+            if (text.startsWith('{')) {
+                // simple JSON highlight
+                return text.replace(/"(.*?)"/g, '<span class="yaml-val">"$1"</span>')
+                    .replace(/([a-zA-Z0-9_]+):/g, '<span class="yaml-key">$1:</span>');
+            } else {
+                // simple YAML highlight
+                return text.replace(/^([a-zA-Z0-9_]+):/gm, '<span class="yaml-key">$1:</span>')
+                    .replace(/: (.*)$/gm, ': <span class="yaml-val">$1</span>');
+            }
+        }
+
+        // --- STREAMING_CHUNK:Implementing View Routers ---
+        function switchView(viewName) {
+            state.currentView = viewName;
+
+            // Update Nav UI
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const icon = btn.querySelector('i');
+                const text = btn.querySelector('span');
+                if (btn.dataset.view === viewName) {
+                    btn.classList.add('text-brand-500');
+                    btn.classList.remove('text-slate-400');
+                    icon.classList.add('scale-110');
+                } else {
+                    btn.classList.remove('text-brand-500');
+                    btn.classList.add('text-slate-400');
+                    icon.classList.remove('scale-110');
+                }
+            });
+
+            const container = document.getElementById('main-container');
+            container.innerHTML = ''; // Clear current
+
+            switch (viewName) {
+                case 'triage': renderTriageView(container); break;
+                case 'grid': renderManifestGrid(container); break;
+                case 'code': renderDiffView(container); break;
+                case 'explore': renderExploreView(container); break;
+            }
+        }
+
+        // --- STREAMING_CHUNK:Implementing Triage View (Tinder Swipe) ---
+        function renderTriageView(container) {
+            container.innerHTML = `
+                <div class="h-full w-full flex flex-col items-center justify-center p-4">
+                    <div class="text-center mb-4">
+                        <h2 class="text-xl font-bold text-white drop-shadow">Rapid Triage</h2>
+                        <p class="text-xs text-slate-400">Swipe Right to assign to <span class="text-brand-500 font-mono">${state.activeProject}</span></p>
+                    </div>
+                    
+                    <div id="card-stack" class="relative w-full max-w-sm aspect-[4/5] card-stack">
+                        <!-- Cards injected here -->
+                    </div>
+
+                    <div class="flex gap-6 mt-8">
+                        <button id="btn-skip" class="w-14 h-14 rounded-full bg-dark-card border border-slate-600 flex items-center justify-center text-rose-500 hover:bg-slate-700 hover:scale-105 transition-all shadow-lg active:scale-95">
+                            <i class="fa-solid fa-xmark text-2xl"></i>
+                        </button>
+                        <button id="btn-quarantine" class="w-12 h-12 rounded-full bg-dark-card border border-slate-600 flex items-center justify-center text-slate-400 hover:bg-slate-700 hover:scale-105 transition-all shadow-lg mt-1 active:scale-95">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </button>
+                        <button id="btn-assign" class="w-14 h-14 rounded-full bg-brand-600 border border-brand-500 flex items-center justify-center text-white hover:bg-brand-500 hover:scale-105 transition-all shadow-lg shadow-brand-500/30 active:scale-95">
+                            <i class="fa-solid fa-check text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            renderNextCard();
+
+            // Bind Actions
+            document.getElementById('btn-skip').addEventListener('click', () => handleSwipe('left'));
+            document.getElementById('btn-assign').addEventListener('click', () => handleSwipe('right'));
+            document.getElementById('btn-quarantine').addEventListener('click', () => {
+                showToast('Quarantined for deeper analysis', 'info');
+                handleSwipe('left', true); // Treat as skip visually
+            });
+        }
+
+        function renderNextCard() {
+            const stack = document.getElementById('card-stack');
+            if (!stack) return;
+            stack.innerHTML = '';
+
+            if (state.unclassifiedQueue.length === 0) {
+                stack.innerHTML = `
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-slate-700 rounded-2xl bg-dark-card">
+                        <i class="fa-solid fa-check-double text-4xl mb-2 text-slate-600"></i>
+                        <p>Inbox Zero</p>
+                        <p class="text-xs mt-1">All clips classified.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Render top 2 cards for stack effect
+            const cardsToRender = state.unclassifiedQueue.slice(0, 2).reverse();
+
+            cardsToRender.forEach((clip, index) => {
+                const isTop = index === cardsToRender.length - 1;
+                const scale = isTop ? 1 : 0.95;
+                const translateY = isTop ? 0 : 10;
+                const opacity = isTop ? 1 : 0.6;
+
+                const card = document.createElement('div');
+                card.className = `absolute inset-0 rounded-2xl overflow-hidden shadow-2xl flex flex-col triage-card border border-slate-700 ${clip.bgClass}`;
+                card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+                card.style.opacity = opacity;
+                card.style.zIndex = isTop ? 10 : 5;
+                card.id = isTop ? 'top-card' : '';
+
+                card.innerHTML = `
+                    <!-- Simulated Video Player Area -->
+                    <div class="h-1/2 relative p-4 flex items-end justify-start pb-8">
+                        <div class="absolute top-4 right-4 bg-black/50 backdrop-blur rounded px-2 py-1 text-[10px] font-mono text-white/80 border border-white/10">
+                            <i class="fa-solid fa-video mr-1"></i>0.5s loop
+                        </div>
+                        <h3 class="text-2xl font-bold text-white drop-shadow-md leading-tight">${clip.id}</h3>
+                    </div>
+                    <!-- Prompt Text Area -->
+                    <div class="h-1/2 bg-dark-card/95 backdrop-blur border-t border-slate-600 p-4 overflow-y-auto no-scrollbar">
+                        <div class="flex justify-between items-center mb-2 text-xs text-slate-400 font-mono">
+                            <span>PROMPT_SPEC (${clip.format})</span>
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <pre class="text-sm font-mono whitespace-pre-wrap leading-relaxed text-slate-300">${highlightCode(clip.prompt)}</pre>
+                    </div>
+                `;
+
+                stack.appendChild(card);
+            });
+
+            // Basic touch handling for swiping
+            const topCard = document.getElementById('top-card');
+            if (topCard) {
+                let startX = 0;
+                let currentX = 0;
+
+                topCard.addEventListener('touchstart', e => {
+                    startX = e.touches[0].clientX;
+                    topCard.style.transition = 'none';
+                });
+
+                topCard.addEventListener('touchmove', e => {
+                    currentX = e.touches[0].clientX - startX;
+                    const rotate = currentX * 0.05;
+                    topCard.style.transform = `translateX(${currentX}px) rotate(${rotate}deg)`;
+                });
+
+                topCard.addEventListener('touchend', e => {
+                    topCard.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease';
+                    if (currentX > 100) {
+                        handleSwipe('right');
+                    } else if (currentX < -100) {
+                        handleSwipe('left');
+                    } else {
+                        // Reset
+                        topCard.style.transform = `translateX(0px) rotate(0deg)`;
+                    }
+                });
+            }
+        }
+
+        function handleSwipe(direction, skipToast = false) {
+            const card = document.getElementById('top-card');
+            if (!card || state.unclassifiedQueue.length === 0) return;
+
+            if (direction === 'right') {
+                card.classList.add('swiped-right');
+                const clip = state.unclassifiedQueue.shift();
+                state.manifests[state.activeProject].push(clip);
+                if (!skipToast) showToast(`Added to ${state.activeProject}`);
+            } else {
+                card.classList.add('swiped-left');
+                const clip = state.unclassifiedQueue.shift();
+                // Send to back of queue
+                state.unclassifiedQueue.push(clip);
+                if (!skipToast) showToast('Skipped');
+            }
+
+            updateGlobalCounters();
+
+            setTimeout(() => {
+                renderNextCard();
+            }, 300);
+        }
+
+        // --- STREAMING_CHUNK:Implementing Manifest Grid View ---
+        function renderManifestGrid(container) {
+            const clips = state.manifests[state.activeProject] || [];
+
+            let html = `
+                <div class="h-full flex flex-col bg-dark-bg relative">
+                    <!-- Top Action Bar -->
+                    <div class="p-4 border-b border-dark-border bg-slate-800/80 shrink-0 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 glass relative z-10">
+                        <div class="flex-1 w-full">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-xl font-bold flex items-center gap-2 text-white">
+                                    <i class="fa-solid fa-film text-brand-500"></i> ${state.activeProject}
+                                </h2>
+                                <span class="bg-brand-500/20 text-brand-400 text-[10px] font-bold px-2 py-0.5 rounded border border-brand-500/30">
+                                    TIER 1 ASSEMBLY
+                                </span>
+                            </div>
+                            <p class="text-xs text-slate-400 font-mono mt-1">${clips.length} clips ready for extraction pipeline</p>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <button id="btn-copy-manifest" class="flex-1 sm:flex-none bg-dark-card hover:bg-slate-700 text-slate-300 border border-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm active:scale-95">
+                                <i class="fa-regular fa-clipboard"></i> Copy Manifest
+                            </button>
+                            <button id="btn-ghost-render" class="flex-1 sm:flex-none bg-brand-600 hover:bg-brand-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20 active:scale-95">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Ghost Render
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Timeline / Grid Area -->
+                    <div class="flex-1 overflow-y-auto p-4 no-scrollbar relative">
+                        <!-- Playhead line to indicate timeline nature -->
+                        <div class="hidden sm:block absolute left-8 top-0 bottom-0 w-px bg-slate-700/50 z-0"></div>
+
+            `;
+
+            if (clips.length === 0) {
+                html += `
+                    <div class="h-full flex flex-col items-center justify-center text-slate-500 relative z-10">
+                        <i class="fa-regular fa-folder-open text-4xl mb-3"></i>
+                        <p>Manifest is empty.</p>
+                        <p class="text-xs mt-1">Go to Triage to route clips here.</p>
+                        <button onclick="switchView('triage')" class="mt-4 px-4 py-2 rounded-full border border-slate-600 text-slate-300 hover:bg-slate-800 text-sm active:scale-95 transition-transform">Start Triaging</button>
+                    </div>
+                `;
+            } else {
+                // Render as a more structured list/grid hybrid
+                html += `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-20 relative z-10">`;
+                clips.forEach((clip, idx) => {
+                    html += `
+                        <div class="group relative flex flex-col rounded-xl overflow-hidden shadow-lg border border-slate-700 bg-dark-card hover:border-brand-500 transition-colors duration-300 transform hover:-translate-y-1">
+                            
+                            <!-- Video Thumbnail Area -->
+                            <div class="relative aspect-video ${clip.bgClass} opacity-80 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <!-- Order Badge -->
+                                <div class="absolute top-2 left-2 z-10 bg-black/80 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow border border-white/10">
+                                    SEQ_${String(idx + 1).padStart(3, '0')}
+                                </div>
+                                <!-- Drag Handle -->
+                                <div class="absolute top-2 right-2 z-10 w-6 h-6 bg-black/40 hover:bg-brand-500 rounded flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-move border border-white/20">
+                                    <i class="fa-solid fa-grip-vertical text-xs text-white"></i>
+                                </div>
+                                
+                                <!-- Play Icon Overlay -->
+                                <i class="fa-solid fa-play text-white/50 text-2xl group-hover:scale-110 transition-transform group-hover:text-white drop-shadow-md cursor-pointer"></i>
+                                
+                                <div class="absolute bottom-1 right-2 text-[9px] font-mono bg-black/50 px-1 rounded text-white/80">00:00:03:12</div>
+                            </div>
+                            
+                            <!-- Clip Info Area -->
+                            <div class="p-3 bg-slate-800/90 border-t border-slate-700 flex flex-col gap-1">
+                                <div class="flex justify-between items-start">
+                                    <p class="text-xs font-mono text-brand-400 truncate pr-2 font-bold" title="${clip.id}">${clip.id}</p>
+                                    <div class="flex gap-1 shrink-0">
+                                        <button class="text-slate-400 hover:text-white transition-colors" title="Remove from Manifest" onclick="removeFromManifest('${clip.id}')">
+                                            <i class="fa-solid fa-xmark text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="text-xs font-medium text-slate-200 truncate" title="${clip.theme}">${clip.theme}</p>
+                                <div class="mt-2 text-[10px] text-slate-500 font-mono flex items-center gap-1">
+                                    <i class="fa-solid fa-file-code"></i> ${clip.format}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            html += `</div></div>`;
+            container.innerHTML = html;
+
+            // Bind Ghost Render Action
+            const ghostBtn = document.getElementById('btn-ghost-render');
+            if (ghostBtn) {
+                ghostBtn.addEventListener('click', () => {
+                    if (clips.length === 0) return showToast('Add clips first', 'info');
+
+                    const originalHtml = ghostBtn.innerHTML;
+                    ghostBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Compositing...';
+                    ghostBtn.classList.replace('bg-brand-600', 'bg-slate-600');
+                    ghostBtn.disabled = true;
+
+                    setTimeout(() => {
+                        ghostBtn.innerHTML = '<i class="fa-solid fa-check"></i> Sheet Ready';
+                        ghostBtn.classList.replace('bg-slate-600', 'bg-emerald-600');
+                        showToast(`Simulated ffmpeg vstack for ${clips.length} strips. Local proxy created.`, 'success');
+
+                        setTimeout(() => {
+                            ghostBtn.innerHTML = originalHtml;
+                            ghostBtn.classList.replace('bg-emerald-600', 'bg-brand-600');
+                            ghostBtn.disabled = false;
+                        }, 3000);
+                    }, 1500);
+                });
+            }
+
+            // Bind Copy Manifest Action
+            const copyBtn = document.getElementById('btn-copy-manifest');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', () => {
+                    if (clips.length === 0) return showToast('Manifest is empty', 'info');
+
+                    let manifestContent = `# PROJECT: ${state.activeProject}\n`;
+                    manifestContent += `# EXTRACT_DATE: ${new Date().toISOString().split('T')[0]}\n`;
+                    manifestContent += `# CLIPS: ${clips.length}\n\n`;
+
+                    clips.forEach(c => {
+                        manifestContent += `${c.id}_screen_capture.mp4\n`;
+                    });
+
+                    // Fallback clipboard method for iframe environments
+                    const textArea = document.createElement("textarea");
+                    textArea.value = manifestContent;
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast('Manifest copied to clipboard', 'success');
+                    } catch (err) {
+                        showToast('Failed to copy', 'error');
+                    }
+                    document.body.removeChild(textArea);
+                });
+            }
+        }
+
+        // Global function to remove clip from manifest
+        window.removeFromManifest = function (clipId) {
+            const projectClips = state.manifests[state.activeProject];
+            const clipIndex = projectClips.findIndex(c => c.id === clipId);
+
+            if (clipIndex > -1) {
+                const removedClip = projectClips.splice(clipIndex, 1)[0];
+                // Put it back in the unclassified queue if we want, or just let it exist in allClips
+                state.unclassifiedQueue.unshift(removedClip);
+                updateGlobalCounters();
+                showToast(`Removed from ${state.activeProject}`, 'info');
+
+                // Re-render grid
+                if (state.currentView === 'grid') {
+                    switchView('grid');
+                }
+            }
+        };
+
+        // --- STREAMING_CHUNK:Implementing Code Diff View ---
+        function renderDiffView(container) {
+            // Pick two random clips from all available if none selected
+            if (!state.selectedForDiff[0] || !state.selectedForDiff[1]) {
+                state.selectedForDiff[0] = state.allClips[0];
+                state.selectedForDiff[1] = state.allClips[1] || state.allClips[0];
+            }
+
+            const clipA = state.selectedForDiff[0];
+            const clipB = state.selectedForDiff[1];
+
+            container.innerHTML = `
+                <div class="h-full flex flex-col">
+                    <div class="p-3 border-b border-dark-border bg-slate-800/50 shrink-0 text-center">
+                        <h2 class="text-sm font-bold"><i class="fa-solid fa-code-compare text-brand-500 mr-1"></i> Forensic Prompt Diff</h2>
+                        <p class="text-[10px] text-slate-400">Isolate parameters that change motion</p>
+                    </div>
+                    
+                    <div class="flex-1 flex flex-col md:flex-row p-2 gap-2 overflow-hidden">
+                        <!-- Panel A -->
+                        <div class="flex-1 flex flex-col rounded-xl border border-slate-700 bg-dark-card overflow-hidden">
+                            <div class="p-2 border-b border-slate-700 bg-slate-800/80 flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-rose-500"></div>
+                                <span class="font-mono text-xs text-slate-300 truncate flex-1">${clipA.id}</span>
+                                <button onclick="randomizeDiff(0)" class="text-[10px] bg-slate-700 px-2 py-1 rounded hover:bg-slate-600 transition"><i class="fa-solid fa-shuffle"></i></button>
+                            </div>
+                            <div class="h-32 ${clipA.bgClass} relative">
+                                <div class="absolute bottom-2 left-2 bg-black/50 text-[10px] px-1 rounded font-mono">Render Result</div>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-3 no-scrollbar text-sm font-mono whitespace-pre-wrap leading-relaxed text-slate-300 diff-removed">
+                                ${highlightCode(clipA.prompt)}
+                            </div>
+                        </div>
+
+                        <!-- Panel B -->
+                        <div class="flex-1 flex flex-col rounded-xl border border-slate-700 bg-dark-card overflow-hidden">
+                            <div class="p-2 border-b border-slate-700 bg-slate-800/80 flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                <span class="font-mono text-xs text-slate-300 truncate flex-1">${clipB.id}</span>
+                                <button onclick="randomizeDiff(1)" class="text-[10px] bg-slate-700 px-2 py-1 rounded hover:bg-slate-600 transition"><i class="fa-solid fa-shuffle"></i></button>
+                            </div>
+                            <div class="h-32 ${clipB.bgClass} relative">
+                                <div class="absolute bottom-2 left-2 bg-black/50 text-[10px] px-1 rounded font-mono">Render Result</div>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-3 no-scrollbar text-sm font-mono whitespace-pre-wrap leading-relaxed text-slate-300 diff-added">
+                                ${highlightCode(clipB.prompt)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.randomizeDiff = function (index) {
+            const randomClip = state.allClips[Math.floor(Math.random() * state.allClips.length)];
+            state.selectedForDiff[index] = randomClip;
+            switchView('code'); // Re-render
+        }
+
+        // --- STREAMING_CHUNK:Implementing D3 Bubble Chart (Explore View) ---
+        function renderExploreView(container) {
+            container.innerHTML = `
+                <div class="h-full flex flex-col relative">
+                    <div class="absolute top-4 left-4 z-10 glass px-3 py-2 rounded-lg flex items-center gap-3">
+                        <label class="flex items-center gap-2 cursor-pointer text-sm">
+                            <input type="checkbox" id="toggle-unclassified" class="form-checkbox h-4 w-4 text-brand-500 rounded focus:ring-0 bg-slate-800 border-slate-600" ${state.d3ShowUnclassified ? 'checked' : ''}>
+                            <span class="font-medium">Show Unclassified</span>
+                        </label>
+                    </div>
+                    <div id="d3-container" class="flex-1 w-full h-full"></div>
+                </div>
+            `;
+
+            initD3();
+
+            document.getElementById('toggle-unclassified').addEventListener('change', (e) => {
+                state.d3ShowUnclassified = e.target.checked;
+                initD3(); // Re-render with new data filter
+            });
+        }
+
+        function initD3() {
+            const container = document.getElementById('d3-container');
+            if (!container) return;
+            container.innerHTML = ''; // Clear SVG
+
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            let data = [...state.clusterData];
+            if (!state.d3ShowUnclassified) {
+                data = data.filter(d => d.id !== "UNCLASSIFIED");
+            }
+
+            // Create SVG
+            const svg = d3.select("#d3-container")
+                .append("svg")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr("viewBox", [0, 0, width, height]);
+
+            // Calculate radiuses strictly based on count area: Area = pi * r^2  => r = sqrt(Area/pi)
+            // Need a scaling factor to fit screen
+            const maxCount = d3.max(data, d => d.count);
+            const sizeScale = d3.scaleSqrt()
+                .domain([0, maxCount])
+                .range([10, Math.min(width, height) / 5]); // Max radius
+
+            // Color scale
+            const colorScale = d3.scaleOrdinal()
+                .domain(data.map(d => d.id))
+                .range(d3.schemeSet2.concat(["#f43f5e", "#10b981", "#3b82f6", "#8b5cf6", "#f59e0b", "#64748b"]));
+
+            // Tooltip ref
+            const tooltip = document.getElementById('d3-tooltip');
+            const ttId = document.getElementById('tt-id');
+            const ttCount = document.getElementById('tt-count');
+            const ttFormat = document.getElementById('tt-format');
+
+            // Setup Simulation
+            const simulation = d3.forceSimulation(data)
+                .force("charge", d3.forceManyBody().strength(d => -sizeScale(d.count) * 1.5))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("collide", d3.forceCollide().radius(d => sizeScale(d.count) + 2).iterations(4));
+
+            // Draw nodes
+            const node = svg.append("g")
+                .selectAll("circle")
+                .data(data)
+                .join("circle")
+                .attr("r", d => sizeScale(d.count))
+                .attr("fill", d => d.id === 'UNCLASSIFIED' ? '#334155' : colorScale(d.id))
+                .attr("stroke", d => d.id === 'UNCLASSIFIED' ? '#475569' : d3.rgb(colorScale(d.id)).darker(1))
+                .attr("stroke-width", 2)
+                .style("cursor", "pointer")
+                .on("mouseover", function (event, d) {
+                    d3.select(this).transition().duration(200).attr("stroke", "#fff").attr("stroke-width", 3);
+                    tooltip.style.opacity = 1;
+                    ttId.textContent = d.id;
+                    ttCount.textContent = d.count;
+                    ttFormat.textContent = d.format;
+                })
+                .on("mousemove", function (event) {
+                    tooltip.style.left = (event.pageX + 15) + "px";
+                    tooltip.style.top = (event.pageY - 28) + "px";
+                })
+                .on("mouseout", function (event, d) {
+                    d3.select(this).transition().duration(200).attr("stroke", d.id === 'UNCLASSIFIED' ? '#475569' : d3.rgb(colorScale(d.id)).darker(1)).attr("stroke-width", 2);
+                    tooltip.style.opacity = 0;
+                })
+                .call(drag(simulation));
+
+            // Labels (only for larger bubbles)
+            const label = svg.append("g")
+                .selectAll("text")
+                .data(data)
+                .join("text")
+                .filter(d => sizeScale(d.count) > 25)
+                .attr("text-anchor", "middle")
+                .attr("dy", "0.3em")
+                .style("fill", "#fff")
+                .style("font-size", d => Math.min(12, sizeScale(d.count) / 3) + "px")
+                .style("font-weight", "bold")
+                .style("pointer-events", "none")
+                .style("text-shadow", "1px 1px 2px rgba(0,0,0,0.8)")
+                .text(d => {
+                    const words = d.id.split('_');
+                    return words.length > 1 ? words[0] + '...' : d.id;
+                });
+
+            // Simulation tick
+            simulation.on("tick", () => {
+                // Constrain within bounding box
+                node
+                    .attr("cx", d => d.x = Math.max(sizeScale(d.count), Math.min(width - sizeScale(d.count), d.x)))
+                    .attr("cy", d => d.y = Math.max(sizeScale(d.count), Math.min(height - sizeScale(d.count), d.y)));
+
+                label
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y);
+            });
+
+            // Drag behavior
+            function drag(simulation) {
+                function dragstarted(event) {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    event.subject.fx = event.subject.x;
+                    event.subject.fy = event.subject.y;
+                }
+                function dragged(event) {
+                    event.subject.fx = event.x;
+                    event.subject.fy = event.y;
+                }
+                function dragended(event) {
+                    if (!event.active) simulation.alphaTarget(0);
+                    event.subject.fx = null;
+                    event.subject.fy = null;
+                }
+                return d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended);
+            }
+        }
+
+        // --- STREAMING_CHUNK:Global Listeners and Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup project selector
+            const projectSelect = document.getElementById('active-project-select');
+            projectSelect.addEventListener('change', (e) => {
+                state.activeProject = e.target.value;
+                showToast(`Active context: ${e.target.value}`, 'info');
+                if (state.currentView === 'grid') switchView('grid'); // Refresh grid
+                if (state.currentView === 'triage') switchView('triage'); // Refresh triage label
+            });
+
+            // Navigation clicks
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const view = e.currentTarget.dataset.view;
+                    switchView(view);
+                });
+            });
+
+            // Initial Render
+            updateGlobalCounters();
+            switchView('triage');
+            bootstrapPrism(); // Load real data from index
+
+            // Handle resize for D3
+            window.addEventListener('resize', () => {
+                if (state.currentView === 'explore') {
+                    clearTimeout(window.resizeTimer);
+                    window.resizeTimer = setTimeout(initD3, 200);
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>

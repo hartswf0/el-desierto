@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ABC-FLIX — Operational Media Forensics Suite</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blk:#000;--wht:#fff;--mono:'Courier New',monospace}
+html{scroll-behavior:smooth}
+body{background:var(--wht);color:var(--blk);font:13px/1.7 var(--mono);-webkit-font-smoothing:antialiased}
+a{color:var(--blk);text-decoration:none;border-bottom:2px solid var(--blk)}
+a:hover{background:var(--blk);color:var(--wht)}
+
+/* NAV SPINE — left edge vertical TOC */
+.spine{position:fixed;left:0;top:0;bottom:0;width:44px;background:var(--blk);z-index:100;display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:2px;overflow-y:auto}
+.spine-dot{width:28px;height:28px;border:2px solid var(--wht);display:flex;align-items:center;justify-content:center;font:bold 10px/1 var(--mono);color:var(--wht);cursor:pointer;transition:background .12s,color .12s;flex-shrink:0}
+.spine-dot:hover,.spine-dot.on{background:var(--wht);color:var(--blk)}
+.spine-dot.on{border-width:3px}
+
+/* MAIN */
+.main{margin-left:44px;max-width:960px;padding:40px 32px 80px}
+
+/* HEADER */
+.hdr{border-bottom:4px solid var(--blk);padding-bottom:24px;margin-bottom:40px}
+.hdr h1{font-size:28px;letter-spacing:3px;line-height:1.2}
+.hdr .sub{font-size:12px;margin-top:8px;opacity:.7;letter-spacing:1px}
+
+/* SECTION */
+.sec{margin-bottom:48px;padding-top:20px}
+.sec-head{font-size:16px;font-weight:bold;border-bottom:3px solid var(--blk);padding-bottom:6px;margin-bottom:16px;letter-spacing:1.5px;display:flex;justify-content:space-between;align-items:baseline}
+.sec-head .tag{font-size:10px;border:2px solid var(--blk);padding:2px 8px}
+
+/* THEORY BLOCK */
+.theory{border:2px solid var(--blk);padding:16px 20px;margin-bottom:16px;background:var(--wht)}
+.theory h3{font-size:12px;letter-spacing:2px;border-bottom:1px solid var(--blk);padding-bottom:4px;margin-bottom:10px}
+.theory .row{display:flex;gap:4px;margin-bottom:4px;font-size:12px}
+.theory .lbl{font-weight:bold;min-width:110px;flex-shrink:0}
+.theory .val{flex:1}
+
+/* TOOL CARD */
+.tool{border:3px solid var(--blk);margin-bottom:20px;transition:border-width .1s}
+.tool:hover{border-width:4px}
+.tool-head{background:var(--blk);color:var(--wht);padding:10px 16px;font-size:14px;font-weight:bold;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center}
+.tool-head .sz{font-size:10px;opacity:.7}
+.tool-body{padding:16px;font-size:12px;line-height:1.8}
+.tool-body ul{list-style:none;padding:0}
+.tool-body li{padding:2px 0}
+.tool-body li::before{content:'→ ';font-weight:bold}
+.launch{display:inline-block;background:var(--blk);color:var(--wht);padding:6px 16px;font:bold 11px/1 var(--mono);border:none;cursor:pointer;letter-spacing:1px;margin-top:8px;border-bottom:none}
+.launch:hover{background:var(--wht);color:var(--blk);outline:2px solid var(--blk)}
+
+/* PIPELINE */
+.pipe{font-size:11px;line-height:2.2}
+.pipe .stage{border:2px solid var(--blk);padding:8px 14px;margin-bottom:-2px;display:flex;justify-content:space-between}
+.pipe .stage:nth-child(odd){background:var(--blk);color:var(--wht)}
+.pipe .arrow{text-align:center;font-size:16px;margin:4px 0;font-weight:bold}
+
+/* POML BLOCK */
+.poml{border:2px solid var(--blk);padding:16px 20px;font-size:11px;line-height:1.9;margin-bottom:16px}
+.poml code{background:var(--blk);color:var(--wht);padding:1px 6px;font-size:10px}
+
+/* NAURIAN LOOP */
+.loop-grid{display:grid;grid-template-columns:32px 1fr;gap:0;border:2px solid var(--blk)}
+.loop-n{background:var(--blk);color:var(--wht);display:flex;align-items:center;justify-content:center;font:bold 11px/1 var(--mono);border-bottom:1px solid var(--wht)}
+.loop-txt{padding:6px 12px;font-size:11px;border-bottom:1px solid var(--blk);cursor:pointer;transition:background .1s,color .1s}
+.loop-txt:hover{background:var(--blk);color:var(--wht)}
+.loop-txt.bound{background:var(--blk);color:var(--wht)}
+
+/* KEYBOARD REF */
+.kbd{display:inline-block;border:2px solid var(--blk);padding:1px 6px;font:bold 10px/1.4 var(--mono);margin:0 2px}
+
+/* COMMAND BOX */
+.cmd{border:2px solid var(--blk);padding:10px 14px;font-size:11px;word-break:break-all;margin:8px 0;background:var(--blk);color:var(--wht)}
+
+/* FOOTER */
+.foot{border-top:4px solid var(--blk);padding-top:16px;font-size:10px;opacity:.6;letter-spacing:1px;margin-top:60px}
+</style>
+</head>
+<body>
+
+<!-- SPINE NAV -->
+<nav class="spine" id="spine">
+  <div class="spine-dot on" data-s="top" onclick="go('top')" title="TOP">▲</div>
+  <div class="spine-dot" data-s="problem" onclick="go('problem')" title="THE PROBLEM">P</div>
+  <div class="spine-dot" data-s="theory" onclick="go('theory')" title="THEORY">T</div>
+  <div class="spine-dot" data-s="naurian" onclick="go('naurian')" title="NAURIAN LOOP">N</div>
+  <div class="spine-dot" data-s="t1" onclick="go('t1')" title="LOOP FINDER">1</div>
+  <div class="spine-dot" data-s="t2" onclick="go('t2')" title="CROP v1">2</div>
+  <div class="spine-dot" data-s="t3" onclick="go('t3')" title="CROP v2">3</div>
+  <div class="spine-dot" data-s="t4" onclick="go('t4')" title="PIXEL STUDIO">4</div>
+  <div class="spine-dot" data-s="pipeline" onclick="go('pipeline')" title="PIPELINE">⬇</div>
+  <div class="spine-dot" data-s="poml" onclick="go('poml')" title="POML CONSTRAINTS">◆</div>
+</nav>
+
+<div class="main">
+
+<!-- HEADER -->
+<div class="hdr" id="top">
+  <h1>ABC-FLIX</h1>
+  <div class="sub">OPERATIONAL MEDIA FORENSICS SUITE — EL DESIERTO / TROUTOWN PRODUCTION PIPELINE</div>
+  <p style="margin-top:12px;font-size:12px;line-height:1.8">
+    A zero-dependency browser instrument suite for forensic video extraction, pixel-precision cropping,
+    temporal analysis, and episodic assembly. Each tool is a single HTML file. No npm. No build step.
+    Text operates as a physical control surface. Every sentence functions like a slip of paper.
+  </p>
+</div>
+
+<!-- §1 THE PROBLEM -->
+<div class="sec" id="problem">
+  <div class="sec-head">THE PROBLEM <span class="tag">CONTEXT</span></div>
+  <div class="theory">
+    <h3>OPERATIONAL SITUATION</h3>
+    <div class="row"><span class="lbl">SOURCE:</span><span class="val">Sora generates 10–20s video loops viewed on a mobile device and screen-captured via Android.</span></div>
+    <div class="row"><span class="lbl">ARTIFACT:</span><span class="val">648×1440 MP4 files containing: status bar (top 160px), home indicator (bottom 167px), variable-length recording noise, looped generative content, and embedded audio.</span></div>
+    <div class="row"><span class="lbl">FAILURE:</span><span class="val">Frame-matching finds <b>loops</b>, not <b>heads</b>. When dialogue or ambient audio is present, the visual loop boundary ≠ the narrative start. The auto-detector lands on the tail.</span></div>
+    <div class="row"><span class="lbl">CONSTRAINT:</span><span class="val">82 clips must be trimmed to ~10s each, cropped identically, normalized to 30fps, and assembled into 8 episodes of 60s each + a 13:46 full reel.</span></div>
+  </div>
+  <div class="theory">
+    <h3>KEY INSIGHT</h3>
+    <p style="font-size:12px">The audio waveform is the reliable signal. The first energy trough after initial recording noise (typically at 4–6s) marks the true head of the Sora content. Visual similarity confirms loop period; audio confirms narrative entry. The operator must be in the loop — tactile editing over heuristic automation.</p>
+  </div>
+</div>
+
+<!-- §2 THEORY OF THE PROGRAM -->
+<div class="sec" id="theory">
+  <div class="sec-head">THEORY OF THE PROGRAM <span class="tag">NAURIAN</span></div>
+  <div class="theory">
+    <h3>ENTITIES</h3>
+    <div class="row"><span class="lbl">&lt;clip&gt;</span><span class="val">A screen-captured Sora video. Has: id, duration, fps, frame_count, thumbs[], timestamps[], matrix[][], auto{in, out, period, confidence}.</span></div>
+    <div class="row"><span class="lbl">&lt;crop&gt;</span><span class="val">Four-edge pixel inset {top, bottom, left, right}. Invariant: top+bottom &lt; height, left+right &lt; width.</span></div>
+    <div class="row"><span class="lbl">&lt;trim&gt;</span><span class="val">Temporal window {in, out} in seconds. Defines the narrative segment.</span></div>
+    <div class="row"><span class="lbl">&lt;command&gt;</span><span class="val">An ffmpeg invocation string. Derived surface — always computed from clip+crop+trim state.</span></div>
+    <div class="row"><span class="lbl">&lt;assembly&gt;</span><span class="val">An ordered list of trimmed+cropped+normalized clips concatenated into an episode.</span></div>
+  </div>
+  <div class="theory">
+    <h3>OPERATIONS</h3>
+    <div class="row"><span class="lbl">[detect]</span><span class="val">Self-similarity matrix + audio waveform → candidate IN/OUT points.</span></div>
+    <div class="row"><span class="lbl">[inspect]</span><span class="val">Operator scrubs video, reads waveform, compares frames → confirms or overrides IN/OUT.</span></div>
+    <div class="row"><span class="lbl">[crop]</span><span class="val">Edge-zoom magnification → operator sets pixel-exact boundaries → ffmpeg crop filter.</span></div>
+    <div class="row"><span class="lbl">[normalize]</span><span class="val">Re-encode all clips to fixed 30fps + AAC audio. Eliminates VFR timestamp drift.</span></div>
+    <div class="row"><span class="lbl">[assemble]</span><span class="val">Concat-demux normalized clips by episode manifest → final .mp4 files.</span></div>
+  </div>
+  <div class="theory">
+    <h3>INVARIANTS</h3>
+    <div class="row"><span class="lbl">I1:</span><span class="val">Crop values are uniform across all 82 clips (TOP=160, BOT=167, LEFT=0, RIGHT=0).</span></div>
+    <div class="row"><span class="lbl">I2:</span><span class="val">Output dimensions are always 648×1113 after crop.</span></div>
+    <div class="row"><span class="lbl">I3:</span><span class="val">All assembled clips must be 30fps before concat — no VFR sources.</span></div>
+    <div class="row"><span class="lbl">I4:</span><span class="val">The ffmpeg command displayed is always the ground truth. UI ↔ command ↔ pixel values form a bidirectional binding.</span></div>
+  </div>
+</div>
+
+<!-- §3 NAURIAN LOOP -->
+<div class="sec" id="naurian">
+  <div class="sec-head">NAURIAN LOOP — DESIGN METHODOLOGY <span class="tag">PROCESS</span></div>
+  <p style="font-size:12px;margin-bottom:12px">Each tool was built by running through this 12-step theory-first loop. Click any step to see how it maps to the suite.</p>
+  <div class="loop-grid" id="loopGrid">
+    <div class="loop-n">1</div><div class="loop-txt" data-bind="t1">[Elicit] &lt;purpose&gt; — Extract usable narrative clips from noisy screen captures</div>
+    <div class="loop-n">2</div><div class="loop-txt" data-bind="t1">[Identify] &lt;domain entities&gt; — clip, frame, waveform, similarity matrix, crop rect, trim window</div>
+    <div class="loop-n">3</div><div class="loop-txt" data-bind="t1">[Define] &lt;operations&gt; — detect loops, scrub frames, mark IN/OUT, nudge crop edges, generate ffmpeg</div>
+    <div class="loop-n">4</div><div class="loop-txt" data-bind="t3">[Specify] &lt;conditions&gt; — crop must be ≥100px tall, ≥50px wide; IN &lt; OUT; period ≥ 4s</div>
+    <div class="loop-n">5</div><div class="loop-txt" data-bind="theory">[State] &lt;invariants&gt; — uniform crop, 30fps output, bidirectional command binding</div>
+    <div class="loop-n">6</div><div class="loop-txt" data-bind="pipeline">[Map] &lt;state transitions&gt; — raw → trimmed → cropped → normalized → assembled</div>
+    <div class="loop-n">7</div><div class="loop-txt" data-bind="problem">[Expose] &lt;assumptions&gt; — head ≈ 4-6s; all clips share crop; Sora outputs ≈ 10s loops</div>
+    <div class="loop-n">8</div><div class="loop-txt" data-bind="problem">[Find] &lt;failure modes&gt; — frame match ≠ head; VFR causes concat drift; audio may be absent</div>
+    <div class="loop-n">9</div><div class="loop-txt" data-bind="t3">[Describe] &lt;change scenarios&gt; — new device = new crop; longer clips = adjust period window</div>
+    <div class="loop-n">10</div><div class="loop-txt" data-bind="t1">[Generate] &lt;program text&gt; — index.html, crop.html, crop-02.html, normalize.sh, concat_clean.sh</div>
+    <div class="loop-n">11</div><div class="loop-txt" data-bind="poml">[Explain] theory→code — POML constraints enforced: no glassmorphism, stark B&W, text as control surface</div>
+    <div class="loop-n">12</div><div class="loop-txt" data-bind="pipeline">[Test] theory survives — 82 clips processed, 8 episodes assembled, all durations verified</div>
+  </div>
+</div>
+
+<!-- §4 TOOL 1: LOOP FINDER -->
+<div class="sec" id="t1">
+  <div class="sec-head">TOOL 1: LOOP FINDER <span class="tag">TEMPORAL FORENSICS</span></div>
+  <div class="tool">
+    <div class="tool-head">index.html <span class="sz">474 lines · 19.7 KB</span></div>
+    <div class="tool-body">
+      <ul>
+        <li><b>Audio Waveform</b> — Web Audio API decodes the full audio track and renders min/max amplitude per pixel column. Click or drag to seek. Red playhead tracks position.</li>
+        <li><b>Self-Similarity Matrix</b> — Pre-computed at 4fps via batch_compute.py. Click any frame thumbnail to set it as REF; similarity bars show match strength to all other frames. Best match ≥4s away reveals loop period.</li>
+        <li><b>Hover-to-Scrub</b> — Mouse over any thumbnail to seek the video to that exact timestamp. Sub-frame precision within each 36px cell.</li>
+        <li><b>Dual Viewer</b> — Side-by-side IN/OUT frame comparison. Updates live as you adjust trim points.</li>
+        <li><b>Crop Overlay</b> — Draggable green handles on the video. Pixel values auto-update the ffmpeg command.</li>
+        <li><b>Approval Workflow</b> — <span class="kbd">Enter</span> = approve + next. Tab turns grey. Keyboard-first: <span class="kbd">Space</span> play, <span class="kbd">R</span> reset, <span class="kbd">←→</span> navigate.</li>
+      </ul>
+      <a class="launch" href="TROUT_TOWN_CONTACT_SHEETS/forensic_viewer/index.html">OPEN LOOP FINDER →</a>
+    </div>
+  </div>
+</div>
+
+<!-- §5 TOOL 2: CROP v1 -->
+<div class="sec" id="t2">
+  <div class="sec-head">TOOL 2: CROP v1 — EDGE DISCOVERY <span class="tag">SPATIAL FORENSICS</span></div>
+  <div class="tool">
+    <div class="tool-head">crop.html <span class="sz">377 lines · 13.6 KB</span></div>
+    <div class="tool-body">
+      <ul>
+        <li><b>Full-Frame Preview</b> — Left column, 300px width. Green overlay with box-shadow mask technique.</li>
+        <li><b>Four Edge Zoom Panels</b> — Magnified horizontal/vertical strips centered on crop line. Red dashed line = exact cut position.</li>
+        <li><b>±1px / ±10px Nudge</b> — Fine/coarse adjustment per edge. Click-to-set on zoom canvas.</li>
+        <li><b>Live FFmpeg Command</b> — Updates on every nudge or drag.</li>
+      </ul>
+      <p style="margin-top:8px"><b>Design role:</b> First-pass crop discovery tool. Green-on-black terminal aesthetic. Used to find the values (160/167/0/0) before committing to production.</p>
+      <a class="launch" href="TROUT_TOWN_CONTACT_SHEETS/forensic_viewer/crop.html">OPEN CROP v1 →</a>
+    </div>
+  </div>
+</div>
+
+<!-- §6 TOOL 3: CROP v2 -->
+<div class="sec" id="t3">
+  <div class="sec-head">TOOL 3: CROP v2 — PRODUCTION CROP GUI <span class="tag">OPERATIONAL PRAGMATIST</span></div>
+  <div class="tool">
+    <div class="tool-head">crop-02.html <span class="sz">1233 lines · 46.5 KB</span></div>
+    <div class="tool-body">
+      <ul>
+        <li><b>Bidirectional Command Binding</b> — Edit <code>crop=W:H:X:Y</code> in the textarea → overlay, readout, and zoom strips all update. Paste known values and see them instantly.</li>
+        <li><b>Crosshair Drag Handles</b> — CSS clip-path crosshairs at edge midpoints. Visual feedback on drag state (inverted colors).</li>
+        <li><b>Zoom Focus Mode</b> — Double-click or press <span class="kbd">1</span><span class="kbd">2</span><span class="kbd">3</span><span class="kbd">4</span> to expand any edge panel to full width, 2× height. Press <span class="kbd">0</span> to clear.</li>
+        <li><b>Scrollable Clip Index</b> — Left column shows all clips. <span class="kbd">j</span>/<span class="kbd">k</span> to navigate. Active clip highlighted.</li>
+        <li><b>Camera Anchoring</b> — Each edge zoom anchors the camera at the crop line (foot/base), not the center. TOP zoom shows strip extending upward from the cut. Gradient indicates data density.</li>
+        <li><b>POML Compliant</b> — Absolute white/black palette. No mid-tones. No glassmorphism. Gradients preserve information density.</li>
+      </ul>
+      <a class="launch" href="TROUT_TOWN_CONTACT_SHEETS/forensic_viewer/crop-02.html">OPEN CROP v2 →</a>
+    </div>
+  </div>
+</div>
+
+<!-- §7 TOOL 4: PIXEL STUDIO -->
+<div class="sec" id="t4">
+  <div class="sec-head">TOOL 4: PIXEL STUDIO — DEVICE CAPTURE <span class="tag">ACQUISITION</span></div>
+  <div class="tool">
+    <div class="tool-head">studio/app.py + start_studio.sh <span class="sz">Flask · scrcpy · adb</span></div>
+    <div class="tool-body">
+      <ul>
+        <li><b>Two-Phase Capture</b> — Preview (mirror only) → Start Capture (recording). Countdown timer, auto-stop.</li>
+        <li><b>Built-in Editor</b> — Timeline scrubber, frame-by-frame stepping, 7 preset crop ratios + custom, trim IN/OUT with keyboard (<span class="kbd">I</span>/<span class="kbd">O</span>).</li>
+        <li><b>Sortable Naming</b> — Output: <code>YYYY-MM-DD_###_FOLDER_START-END.mp4</code></li>
+      </ul>
+      <div class="cmd">./start_studio.sh → http://127.0.0.1:5050</div>
+    </div>
+  </div>
+</div>
+
+<!-- §8 PIPELINE — FULL CONCRETE WALKTHROUGH -->
+<div class="sec" id="pipeline">
+  <div class="sec-head">ASSEMBLY PIPELINE — COMPLETE WALKTHROUGH <span class="tag">STATE TRANSITIONS</span></div>
+
+  <!-- STAGE 0: SORA PROMPT -->
+  <div class="theory">
+    <h3>STAGE 0 — SORA PROMPT INGESTION</h3>
+    <div class="row"><span class="lbl">INPUT:</span><span class="val">Thick POML prompt delivered to Sora via mobile device.</span></div>
+    <div class="row"><span class="lbl">EXAMPLE:</span><span class="val">Clip 001_20260422_033154</span></div>
+    <div class="cmd" style="font-size:10px;line-height:1.6">COMMAND: GENERATE CONTINUOUS LONG-TAKE. HINGE: waste geology stands fast as the new seabed. LOCK on the goldfish threading skulls, pipes, and debris mounds at suffocated body scale. FLOW across sepia-black terrain where all former objects have fused into one graveyard habitat. TRANSLATE prior piano and wreck residue into dump mass and mechanical ruin. CARRY OVER particulate, drag, and orange chromatic persistence. BREACH artifact field into total waste environment. DEPOSIT monochrome ash at every pass. No cuts. Previous pixels become current matter. --ar 2:1</div>
+    <div class="row"><span class="lbl">OUTPUT:</span><span class="val">Sora renders a ~10s generative video loop, viewed on-device. The loop plays continuously.</span></div>
+    <div class="row"><span class="lbl">INVENTORY:</span><span class="val">1,101 files in SORA_CAPTURES/ — 550 .mp4 screen captures + 550 .txt prompt files. ~21 MB each.</span></div>
+  </div>
+
+  <!-- STAGE 1: SCREEN CAPTURE -->
+  <div class="theory">
+    <h3>STAGE 1 — SCREEN CAPTURE VIA PIXEL STUDIO</h3>
+    <div class="row"><span class="lbl">TOOL:</span><span class="val"><a href="studio/templates/index.html">Pixel Studio</a> (./start_studio.sh → scrcpy → adb)</span></div>
+    <div class="row"><span class="lbl">PROCESS:</span><span class="val">Preview → Start Capture → 20-25s recording → auto-stop. Device mirrors to Flask dashboard.</span></div>
+    <div class="row"><span class="lbl">RAW FILE:</span><span class="val">001_20260422_033154_screen_capture.mp4</span></div>
+    <div class="cmd">CODEC: h264 · 648×1440 · 120fps VFR · opus audio · 25.3s duration · 21.3 MB</div>
+    <div class="row"><span class="lbl">PROBLEM:</span><span class="val">The 648×1440 frame contains: Android status bar (top 160px), home indicator bar (bottom 167px), and the Sora content fills the middle 648×1113 region. The recording starts ~4-6s before the Sora loop begins and includes UI noise, taps, and transition audio.</span></div>
+  </div>
+
+  <!-- STAGE 2: FORENSIC ANALYSIS -->
+  <div class="theory">
+    <h3>STAGE 2 — FORENSIC ANALYSIS VIA LOOP FINDER</h3>
+    <div class="row"><span class="lbl">TOOL:</span><span class="val"><a href="TROUT_TOWN_CONTACT_SHEETS/forensic_viewer/index.html">Loop Finder</a> (index.html)</span></div>
+    <div class="row"><span class="lbl">PRE-COMPUTE:</span><span class="val">batch_compute.py extracts frames at 4fps, builds 48×96 downsampled thumbnails, computes NxN self-similarity matrix per clip → all_clips.json (6.1 MB).</span></div>
+    <div class="cmd">python3 batch_compute.py
+# Extracts thumbs/ at 4fps, builds similarity matrices, outputs all_clips.json + trim_manifest.json</div>
+    <div class="row"><span class="lbl">OPERATOR:</span><span class="val">Opens Loop Finder. Loads clip. Reads waveform — first trough at ~5.25s = narrative head. Similarity bars confirm 10.0s loop period. Sets IN=5.25, OUT=15.25. Presses Enter to approve.</span></div>
+    <div class="row"><span class="lbl">OUTPUT:</span><span class="val">trim_manifest.json — 82 entries, each with {id, src, in, out, period, confidence}.</span></div>
+    <div class="cmd">{"id": "001_20260422_033154", "in": 5.25, "out": 15.25, "period": 10.0, "confidence": 1.0}
+{"id": "002_20260422_033331", "in": 5.0, "out": 15.0, "period": 10.0, "confidence": 1.0}
+{"id": "003_20260422_033514", "in": 4.75, "out": 14.75, "period": 10.0, "confidence": 1.0}</div>
+  </div>
+
+  <!-- STAGE 3: CROP DISCOVERY -->
+  <div class="theory">
+    <h3>STAGE 3 — CROP DISCOVERY VIA CROP TOOLS</h3>
+    <div class="row"><span class="lbl">TOOL:</span><span class="val"><a href="TROUT_TOWN_CONTACT_SHEETS/forensic_viewer/crop.html">Crop v1</a> (discovery) → <a href="TROUT_TOWN_CONTACT_SHEETS/forensic_viewer/crop-02.html">Crop v2</a> (verification)</span></div>
+    <div class="row"><span class="lbl">PROCESS:</span><span class="val">Open Crop v1. Load any clip at t=5s. Drag top handle down until status bar disappears. Nudge +1px/-1px until exact. Repeat for bottom (home indicator). Verify across 10+ clips — values are uniform because all captures use the same device.</span></div>
+    <div class="cmd">CONFIRMED VALUES:  TOP=160px  BOTTOM=167px  LEFT=0px  RIGHT=0px
+OUTPUT DIMENSIONS:  648×1113  (was 648×1440)</div>
+    <div class="row"><span class="lbl">VERIFY:</span><span class="val">Open Crop v2. Navigate all 82 clips with j/k keys. Every frame shows clean content in the crop window — no status bar pixels, no home indicator.</span></div>
+  </div>
+
+  <!-- STAGE 4: BATCH TRIM+CROP -->
+  <div class="theory">
+    <h3>STAGE 4 — BATCH TRIM + CROP</h3>
+    <div class="row"><span class="lbl">SCRIPT:</span><span class="val">batch_trim_cropped.sh — generated from trim_manifest.json + confirmed crop values.</span></div>
+    <div class="row"><span class="lbl">RUNS:</span><span class="val">82 ffmpeg commands, one per clip. Each applies temporal trim (IN→OUT) and spatial crop simultaneously.</span></div>
+    <div class="cmd"># Example: Clip 001
+ffmpeg -y -ss 5.25 -to 15.25 -i "SORA_CAPTURES/001_20260422_033154_screen_capture.mp4" \
+  -vf "crop=648:1113:0:160" "TROUT_TOWN_TRIMMED/001_20260422_033154_trim.mp4"
+
+# Example: Clip 003 (different IN point — head detected at 4.75s)
+ffmpeg -y -ss 4.75 -to 14.75 -i "SORA_CAPTURES/003_20260422_033514_screen_capture.mp4" \
+  -vf "crop=648:1113:0:160" "TROUT_TOWN_TRIMMED/003_20260422_033514_trim.mp4"</div>
+    <div class="cmd">cd TROUT_TOWN_CONTACT_SHEETS/forensic_viewer &amp;&amp; bash batch_trim_cropped.sh
+# [1/82] 001_20260422_033154 IN=5.25s OUT=15.25s
+# [2/82] 002_20260422_033331 IN=5.0s OUT=15.0s
+# ... 
+# [82/82] 376_20260422_171302 IN=5.0s OUT=15.0s</div>
+    <div class="row"><span class="lbl">OUTPUT:</span><span class="val">82 files in TROUT_TOWN_TRIMMED/ — each 648×1113, ~10s, still at source 120fps VFR.</span></div>
+  </div>
+
+  <!-- STAGE 5: NORMALIZE -->
+  <div class="theory">
+    <h3>STAGE 5 — NORMALIZE TO 30FPS</h3>
+    <div class="row"><span class="lbl">SCRIPT:</span><span class="val">normalize.sh</span></div>
+    <div class="row"><span class="lbl">WHY:</span><span class="val">Source clips are 120fps VFR (variable frame rate). FFmpeg concat-demux requires identical frame rates. Without normalization, assembled episodes drift — a 60s episode becomes 47s or 83s due to timestamp misalignment.</span></div>
+    <div class="cmd">cd TROUT_TOWN_TRIMMED &amp;&amp; bash normalize.sh
+# Re-encodes each clip:
+ffmpeg -y -i "001_20260422_033154_trim.mp4" \
+  -r 30 -c:v libx264 -preset ultrafast -crf 22 \
+  -c:a aac -b:a 128k "norm/001_20260422_033154_trim.mp4"</div>
+    <div class="row"><span class="lbl">BEFORE:</span><span class="val">001_20260422_033154_trim.mp4 — 648×1112, 120/1 fps, 10.042s</span></div>
+    <div class="row"><span class="lbl">AFTER:</span><span class="val">norm/001_20260422_033154_trim.mp4 — 648×1112, 30/1 fps, 10.100s</span></div>
+    <div class="row"><span class="lbl">OUTPUT:</span><span class="val">82 files in TROUT_TOWN_TRIMMED/norm/ — all fixed 30fps, AAC audio, ready for concat.</span></div>
+  </div>
+
+  <!-- STAGE 6: EPISODIC ASSEMBLY -->
+  <div class="theory">
+    <h3>STAGE 6 — EPISODIC ASSEMBLY VIA CONCAT-DEMUX</h3>
+    <div class="row"><span class="lbl">SCRIPT:</span><span class="val">concat_clean.sh</span></div>
+    <div class="row"><span class="lbl">METHOD:</span><span class="val">FFmpeg concat demuxer (-f concat -safe 0) — no re-encoding. Clips are stream-copied because they share identical codec, resolution, and frame rate after normalization.</span></div>
+    <div class="cmd">cd TROUT_TOWN_ASSEMBLIES &amp;&amp; bash concat_clean.sh</div>
+  </div>
+
+  <!-- EPISODE MANIFEST -->
+  <div class="theory">
+    <h3>EPISODE MANIFEST — 8 TIERS + FULL REEL</h3>
+    <p style="font-size:11px;margin-bottom:8px">Each episode = 6 clips × ~10s = ~60s. Clips are ordered by capture timestamp.</p>
+    <div class="row" style="border-bottom:1px solid var(--blk);padding-bottom:4px;margin-bottom:6px;font-weight:bold"><span class="lbl">EPISODE</span><span class="val">CLIPS → ASSEMBLY FILE</span></div>
+
+    <div class="row"><span class="lbl">T1 GOLDFISH</span><span class="val">001 → 002 → 003 → 004 → 005 → 006 = T1_GOLDFISH_PROLOGUE.mp4 (21 MB)</span></div>
+    <div class="row"><span class="lbl">T2A INSTIT.</span><span class="val">102 → 103 → 104 → 105 → 106 → 108 = T2A_INSTITUTIONS.mp4 (25 MB)</span></div>
+    <div class="row"><span class="lbl">T2B COMMERCE</span><span class="val">109 → 110 → 111 → 112 → 113 → 114 = T2B_COMMERCE.mp4 (30 MB)</span></div>
+    <div class="row"><span class="lbl">T2C SPECTACLE</span><span class="val">115 → 116 → 117 → 118 → 119 → 121 = T2C_SPECTACLE.mp4 (29 MB)</span></div>
+    <div class="row"><span class="lbl">T2D DOMESTIC</span><span class="val">122 → 123 → 124 → 125 → 126 → 127 = T2D_DOMESTIC.mp4 (23 MB)</span></div>
+    <div class="row"><span class="lbl">T3 SUCCESSION</span><span class="val">146 → 148 → 149 → 150 → 151 → 152 = T3_SUCCESSION.mp4 (28 MB)</span></div>
+    <div class="row"><span class="lbl">T4 CROSSOVER</span><span class="val">166 → 167 → 168 → 169 → 176 → 178 = T4_CROSSOVER.mp4 (26 MB)</span></div>
+    <div class="row"><span class="lbl">T5 PERIPHERAL</span><span class="val">222 → 232 → 236 → 251 → 319 → 376 = T5_PERIPHERAL.mp4 (27 MB)</span></div>
+    <div class="row" style="border-top:2px solid var(--blk);padding-top:6px;margin-top:6px"><span class="lbl">FULL REEL</span><span class="val">All 82 clips sorted by ID = FULL_REEL_82.mp4 (350 MB · 13:46)</span></div>
+  </div>
+
+  <!-- VERIFICATION -->
+  <div class="theory">
+    <h3>VERIFICATION — THEORY SURVIVES MODIFICATION</h3>
+    <div class="row"><span class="lbl">DURATION:</span><span class="val">Each episode = ~60s (6 × 10.1s). Full reel = 13:46 (82 × 10.1s). All verified via ffprobe.</span></div>
+    <div class="row"><span class="lbl">PLAYBACK:</span><span class="val">Clean cuts. No frame drops. No audio pops. No timestamp drift. 30fps holds through all concat boundaries.</span></div>
+    <div class="row"><span class="lbl">CROP:</span><span class="val">No status bar pixels. No home indicator. All 82 clips share identical 648×1113 dimensions.</span></div>
+    <div class="cmd">ffprobe -v quiet -show_entries format=duration -of csv=p=0 TROUT_TOWN_ASSEMBLIES/T1_GOLDFISH_PROLOGUE.mp4
+# → 60.600000
+
+ffprobe -v quiet -show_entries format=duration -of csv=p=0 TROUT_TOWN_ASSEMBLIES/FULL_REEL_82.mp4
+# → 826.466000 (13:46)</div>
+  </div>
+
+  <!-- QUICK REFERENCE -->
+  <div class="theory">
+    <h3>QUICK REFERENCE — REPRODUCE THE ENTIRE PIPELINE</h3>
+    <div class="cmd" style="line-height:2.4;font-size:11px"># 1. COMPUTE FORENSIC DATA
+cd TROUT_TOWN_CONTACT_SHEETS/forensic_viewer &amp;&amp; python3 batch_compute.py
+
+# 2. OPEN LOOP FINDER — approve IN/OUT for each clip
+open index.html
+
+# 3. OPEN CROP TOOL — confirm edge values
+open crop-02.html
+
+# 4. BATCH TRIM + CROP (82 clips)
+bash batch_trim_cropped.sh
+
+# 5. NORMALIZE TO 30FPS
+cd ../../TROUT_TOWN_TRIMMED &amp;&amp; bash normalize.sh
+
+# 6. ASSEMBLE EPISODES
+cd ../TROUT_TOWN_ASSEMBLIES &amp;&amp; bash concat_clean.sh
+
+# DONE: 8 episodes + full reel in TROUT_TOWN_ASSEMBLIES/</div>
+  </div>
+</div>
+
+<!-- §9 POML DESIGN CONSTRAINTS -->
+<div class="sec" id="poml">
+  <div class="sec-head">POML DESIGN CONSTRAINTS <span class="tag">EPISTEMOLOGY</span></div>
+  <div class="poml">
+    <b>CONTRAST:</b> Absolute white and black palette. All mid-tones explicitly removed. No <code>#888</code>, no <code>#ccc</code>, no subtle grays. Maximize stark contrast.<br>
+    <b>DEPTH:</b> No glassmorphism. Blurring backgrounds destroys high-fidelity information (pixel data, waveforms, zoom strips) passing underneath. Gradients preserve visual information density.<br>
+    <b>SPATIAL:</b> No PREV/NEXT pagination. Maximum vertical space for content. Navigation via spine dots and keyboard.<br>
+    <b>PERSPECTIVE:</b> Camera anchors at the foot/base where the crop line meets the frame. Edge zooms show the strip extending away from the cut, not centered on it.<br>
+    <b>INTERACTION:</b> Bidirectional binding enforced. Editing <code>crop=W:H:X:Y</code> in the command textarea updates the visual overlay. Dragging a handle updates the command. Text IS the control surface.<br>
+    <b>OUTPUT:</b> The ffmpeg command is the ground truth. Every UI element derives from or writes to the command string.
+  </div>
+  <div class="poml">
+    <b>WITTGENSTEIN:</b> The meaning of a word is its USE in the language. The meaning of a crop value is its use in the ffmpeg command. The meaning of a waveform trough is its use in finding the narrative head. No metaphors. No abstractions. Operational pragmatism.
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  ABC-FLIX UTILITIES · EL DESIERTO · APPALACHIAN FOLK-SURREALIST PRODUCTION PIPELINE · 2026
+</div>
+
+</div><!-- /main -->
+
+<script>
+// SPINE NAV — bidirectional scroll binding
+const dots = document.querySelectorAll('.spine-dot');
+const secs = ['top','problem','theory','naurian','t1','t2','t3','t4','pipeline','poml'];
+
+function go(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+// Scroll spy
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      dots.forEach(d => d.classList.toggle('on', d.dataset.s === e.target.id));
+    }
+  });
+}, {threshold: 0.3});
+
+secs.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) observer.observe(el);
+});
+
+// NAURIAN LOOP — click to bind viewport
+document.querySelectorAll('.loop-txt').forEach(el => {
+  el.addEventListener('click', () => {
+    const target = el.dataset.bind;
+    // Clear all bindings
+    document.querySelectorAll('.loop-txt').forEach(t => t.classList.remove('bound'));
+    el.classList.add('bound');
+    // Scroll to bound section
+    if (target) go(target);
+  });
+});
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown' && e.altKey) {
+    e.preventDefault();
+    const cur = secs.findIndex(s => document.querySelector(`.spine-dot.on`)?.dataset.s === s);
+    if (cur < secs.length - 1) go(secs[cur + 1]);
+  }
+  if (e.key === 'ArrowUp' && e.altKey) {
+    e.preventDefault();
+    const cur = secs.findIndex(s => document.querySelector(`.spine-dot.on`)?.dataset.s === s);
+    if (cur > 0) go(secs[cur - 1]);
+  }
+});
+</script>
+</body>
+</html>

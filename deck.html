@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SORA DECK — watch / search / playlists</title>
+<style>
+:root{--bk:#000;--wh:#fff;--teal:#19e6c8;--amber:#ffd23f;--red:#ff2e2e;--mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--wh);color:var(--bk);font-family:var(--mono);overflow:hidden}
+button{font:inherit;font-size:10px;font-weight:900;text-transform:uppercase;background:var(--wh);color:var(--bk);border:2px solid var(--bk);padding:4px 8px;cursor:pointer;letter-spacing:.04em}
+button.on,button:active{background:var(--bk);color:var(--wh)}
+input,select{font:inherit;font-size:11px;border:2px solid var(--bk);padding:4px 6px;background:var(--wh)}
+#app{display:grid;grid-template-columns:270px 1fr 1fr;grid-template-rows:46px 1fr;height:100vh}
+/* HEADER */
+#hdr{grid-column:1/4;display:flex;align-items:center;gap:8px;border-bottom:3px solid var(--bk);padding:0 10px;overflow:hidden}
+#hdr b{font-size:12px;letter-spacing:.08em;white-space:nowrap}
+#q{flex:0 0 260px}
+#stats{font-size:10px;font-weight:700;white-space:nowrap}
+#plBar{display:flex;gap:4px;align-items:center;margin-left:auto}
+#plSel{max-width:150px}
+/* FACETS */
+#rail{border-right:3px solid var(--bk);overflow-y:auto;padding:8px}
+.fsec{margin-bottom:10px}
+.fsec h3{font-size:10px;letter-spacing:.1em;border-bottom:2px solid var(--bk);padding-bottom:2px;margin-bottom:4px;cursor:pointer;display:flex;justify-content:space-between}
+.fitem{display:flex;justify-content:space-between;font-size:10px;padding:2px 4px;cursor:pointer;border:1px solid transparent}
+.fitem:hover{border-color:var(--bk)}
+.fitem.on{background:var(--bk);color:var(--wh)}
+.fitem i{font-style:normal;opacity:.6}
+/* PLAYER */
+#playerCol{border-right:3px solid var(--bk);display:flex;flex-direction:column;min-width:0}
+#vidWrap{flex:1;background:#000;position:relative;min-height:0;display:grid;place-items:center}
+#vid{max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain}
+#vidEmpty{position:absolute;color:#888;font-size:11px;font-weight:900}
+#nowBar{border-top:3px solid var(--bk);padding:6px 8px;font-size:10px;line-height:1.5;max-height:200px;overflow-y:auto}
+#nowBar .t{font-size:12px;font-weight:900}
+#nowBar .chips{margin:3px 0}
+#nowBar .chips i{font-style:normal;border:1px solid var(--bk);padding:0 4px;margin-right:4px;font-size:9px}
+#nowBar .says{background:#000;color:var(--teal);padding:4px 6px;margin-top:4px;display:block}
+#ctl{display:flex;gap:4px;border-top:3px solid var(--bk);padding:6px 8px;flex-wrap:wrap;align-items:center}
+/* GRID */
+#gridCol{display:flex;flex-direction:column;min-width:0}
+#gridHead{border-bottom:2px solid var(--bk);padding:4px 8px;font-size:10px;font-weight:700;display:flex;gap:8px;align-items:center}
+#grid{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;padding:8px;align-content:start}
+.card{border:2px solid var(--bk);cursor:pointer;position:relative;content-visibility:auto;contain-intrinsic-size:118px 150px}
+.card.sel{outline:4px solid var(--teal)}
+.card video,.card .ph{width:100%;aspect-ratio:9/12;object-fit:cover;display:block;background:#111}
+.card .ph{display:grid;place-items:center;color:#666;font-size:9px}
+.card .cap{font-size:8px;padding:2px 3px;line-height:1.3;height:30px;overflow:hidden;font-weight:700}
+.card .st{position:absolute;top:2px;right:2px;width:10px;height:10px;border:1px solid #fff}
+.card .st.ok{background:var(--teal)} .card .st.error{background:var(--amber)} .card .st.violation{background:var(--red)} .card .st.none{background:#999}
+.card .plbtns{position:absolute;top:2px;left:2px;display:none;gap:2px}
+.card:hover .plbtns{display:flex}
+.plbtns button{padding:0 4px;height:18px;font-size:9px;border-width:1px}
+</style>
+</head>
+<body>
+<div id="app">
+ <div id="hdr">
+  <b>SORA DECK</b>
+  <input id="q" type="text" placeholder="search worlds, prompts, speech…">
+  <span id="stats"></span>
+  <div id="plBar">
+   <select id="plSel"><option value="">— playlist —</option></select>
+   <button id="plNew">new</button>
+   <button id="plAddAll" title="add all filtered">+filtered</button>
+   <button id="plExport">export</button>
+   <button id="plView" title="show playlist as queue">view</button>
+  </div>
+ </div>
+ <div id="rail"></div>
+ <div id="playerCol">
+  <div id="vidWrap"><span id="vidEmpty">SELECT A CLIP</span><video id="vid" playsinline></video></div>
+  <div id="ctl">
+   <button id="prevB">◀ prev</button>
+   <button id="playB">play</button>
+   <button id="nextB">next ▶</button>
+   <button id="autoB" title="advance to next when a clip ends">autoplay: off</button>
+   <button id="shufB">shuffle: off</button>
+   <button id="muteB">sound: on</button>
+   <button id="plAdd1">+ playlist [p]</button>
+   <span id="qpos" style="font-size:10px;font-weight:700"></span>
+  </div>
+  <div id="nowBar"></div>
+ </div>
+ <div id="gridCol">
+  <div id="gridHead"><span id="gridCount"></span><button id="clearF">clear filters</button></div>
+  <div id="grid"></div>
+ </div>
+</div>
+<script>
+(async () => {
+const $ = id => document.getElementById(id);
+const man = await fetch('master_manifest.json').then(r => r.json());
+let TR = {};
+try { TR = await fetch('transcripts.json').then(r => r.ok ? r.json() : {}); } catch (e) {}
+const THEMES = man.themes || [];
+const THL = Object.fromEntries(THEMES.map(t => [t.id, t.label]));
+const clips = man.clips.filter(c => c.media_url);
+clips.forEach((c, i) => {
+  c._i = i;
+  c.transcript = c.transcript || (TR[c.loop_file] || {}).text || '';
+  c._hay = [c.title, c.world, c.genre, c.kind, c.session, c.family,
+            c.caption_preview, c.transcript, c.video_file,
+            ...(c.themes || []).map(t => THL[t] || t)].join(' ').toLowerCase();
+});
+
+// ---------- state ----------
+const S = {
+  q: '', facets: {}, sel: null, queue: [], auto: false, shuf: false,
+  muted: false, plMode: false,
+  pls: JSON.parse(localStorage.getItem('soraDeckPls') || '{}'),
+  plCur: '',
+};
+const FACETS = [
+  ['themes', 'THEMES (bottom-up)', c => (c.themes || []).map(t => THL[t] || t)],
+  ['world', 'WORLDS', c => c.world ? [c.world] : []],
+  ['genre', 'GENRES', c => c.genre ? [c.genre] : []],
+  ['kind', 'PROMPT KIND', c => [c.kind]],
+  ['session', 'SESSION', c => [c.session]],
+  ['family', 'CROP FAMILY', c => c.family ? [c.family] : []],
+  ['status', 'STATUS', c => [c.status]],
+];
+FACETS.forEach(([k]) => S.facets[k] = new Set());
+
+function filtered() {
+  if (S.plMode && S.plCur && S.pls[S.plCur])
+    return S.pls[S.plCur].map(vf => clips.find(c => c.video_file === vf)).filter(Boolean);
+  return clips.filter(c => {
+    if (S.q && !c._hay.includes(S.q)) return false;
+    for (const [k, , fn] of FACETS) {
+      const sel = S.facets[k];
+      if (sel.size && !fn(c).some(v => sel.has(v))) return false;
+    }
+    return true;
+  });
+}
+
+// ---------- facet rail ----------
+function renderRail() {
+  const list = S.plMode ? [] : filtered();
+  const rail = $('rail');
+  rail.innerHTML = '';
+  for (const [k, label, fn] of FACETS) {
+    const counts = new Map();
+    for (const c of (S.facets[k].size ? clips : list)) {
+      // count within current filter EXCEPT own facet (standard faceting)
+      let pass = !S.q || c._hay.includes(S.q);
+      if (pass) for (const [k2, , fn2] of FACETS) {
+        if (k2 === k) continue;
+        const sel = S.facets[k2];
+        if (sel.size && !fn2(c).some(v => sel.has(v))) { pass = false; break; }
+      }
+      if (!pass) continue;
+      for (const v of fn(c)) if (v) counts.set(v, (counts.get(v) || 0) + 1);
+    }
+    const items = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 28);
+    if (!items.length) continue;
+    const sec = document.createElement('div');
+    sec.className = 'fsec';
+    sec.innerHTML = `<h3>${label}</h3>`;
+    for (const [v, n] of items) {
+      const d = document.createElement('div');
+      d.className = 'fitem' + (S.facets[k].has(v) ? ' on' : '');
+      d.innerHTML = `<span>${v.length > 26 ? v.slice(0, 26) + '…' : v}</span><i>${n}</i>`;
+      d.onclick = () => { S.facets[k].has(v) ? S.facets[k].delete(v) : S.facets[k].add(v); S.plMode = false; refresh(); };
+      sec.appendChild(d);
+    }
+    rail.appendChild(sec);
+  }
+}
+
+// ---------- grid ----------
+const io = new IntersectionObserver(es => {
+  for (const e of es) if (e.isIntersecting) {
+    const v = e.target.querySelector('video[data-src]');
+    if (v) { v.src = v.dataset.src + '#t=0.5'; v.preload = 'metadata'; v.removeAttribute('data-src'); }
+  }
+}, { rootMargin: '400px' });
+
+function renderGrid() {
+  const list = S.queue;
+  $('grid').innerHTML = '';
+  $('gridCount').textContent = list.length + ' clips' + (S.plMode ? ' · PLAYLIST: ' + S.plCur : '');
+  list.forEach((c, qi) => {
+    const d = document.createElement('div');
+    d.className = 'card' + (S.sel === c ? ' sel' : '');
+    d.innerHTML = `<video muted loop data-src="${c.media_url}" preload="none"></video>
+      <div class="st ${c.status}"></div>
+      <div class="plbtns"></div>
+      <div class="cap">#${c.index} ${(c.world || c.title || '').slice(0, 34)}</div>`;
+    const v = d.querySelector('video');
+    d.onmouseenter = () => { if (v.src) v.play().catch(() => {}); };
+    d.onmouseleave = () => v.pause();
+    d.onclick = () => playClip(c, qi);
+    const pb = d.querySelector('.plbtns');
+    if (S.plMode) {
+      for (const [sym, delta] of [['◀', -1], ['▶', 1], ['✕', 0]]) {
+        const b = document.createElement('button');
+        b.textContent = sym;
+        b.onclick = ev => { ev.stopPropagation(); plReorder(qi, delta); };
+        pb.appendChild(b);
+      }
+    } else {
+      const b = document.createElement('button');
+      b.textContent = '+pl';
+      b.onclick = ev => { ev.stopPropagation(); plAdd(c); };
+      pb.appendChild(b);
+    }
+    io.observe(d);
+    $('grid').appendChild(d);
+  });
+}
+
+// ---------- player ----------
+const vid = $('vid');
+function playClip(c, qi) {
+  S.sel = c; S.qi = qi ?? S.queue.indexOf(c);
+  $('vidEmpty').style.display = 'none';
+  vid.src = c.media_url;
+  vid.loop = !S.auto;
+  vid.muted = S.muted;
+  vid.play().catch(() => {});
+  const th = (c.themes || []).map(t => THL[t] || t).join('</i><i>');
+  $('nowBar').innerHTML =
+    `<div class="t">#${c.index} ${c.world || c.title || ''}</div>
+     <div class="chips">
+      <i>${c.status}</i><i>${c.kind}</i><i>${c.session}</i>
+      ${c.family ? '<i>' + c.family + '</i>' : ''}
+      ${c.period ? '<i>' + c.period + 's</i>' : ''}
+      ${th ? '<i>' + th + '</i>' : ''}
+     </div>
+     <div>${c.caption_preview || ''}</div>
+     ${c.transcript ? '<span class="says">SAYS: ' + c.transcript.slice(0, 500) + '</span>' : ''}
+     <div style="margin-top:3px;opacity:.6">${c.video_file} · <a href="${c.prompt_file}" target="_blank">prompt</a></div>`;
+  $('qpos').textContent = (S.qi + 1) + '/' + S.queue.length;
+  document.querySelectorAll('.card.sel').forEach(x => x.classList.remove('sel'));
+  const cards = $('grid').children;
+  if (cards[S.qi]) cards[S.qi].classList.add('sel');
+}
+function step(d) {
+  if (!S.queue.length) return;
+  let i = S.shuf ? Math.floor(Math.random() * S.queue.length)
+                 : ((S.qi ?? -1) + d + S.queue.length) % S.queue.length;
+  playClip(S.queue[i], i);
+}
+vid.addEventListener('ended', () => { if (S.auto) step(1); });
+
+// ---------- playlists ----------
+function plSave() { localStorage.setItem('soraDeckPls', JSON.stringify(S.pls)); renderPlSel(); }
+function renderPlSel() {
+  const sel = $('plSel');
+  sel.innerHTML = '<option value="">— playlist —</option>' +
+    Object.keys(S.pls).map(n => `<option ${n === S.plCur ? 'selected' : ''}>${n}</option>`).join('');
+}
+function plAdd(c) {
+  if (!S.plCur) { alert('create/select a playlist first'); return; }
+  S.pls[S.plCur].push(c.video_file); plSave(); flash('+ ' + S.plCur);
+}
+function plReorder(qi, delta) {
+  const arr = S.pls[S.plCur];
+  if (delta === 0) arr.splice(qi, 1);
+  else {
+    const j = qi + delta;
+    if (j < 0 || j >= arr.length) return;
+    [arr[qi], arr[j]] = [arr[j], arr[qi]];
+  }
+  plSave(); refresh();
+}
+function flash(msg) {
+  $('stats').textContent = msg;
+  setTimeout(updateStats, 1200);
+}
+$('plNew').onclick = () => {
+  const n = prompt('playlist name'); if (!n) return;
+  S.pls[n] = S.pls[n] || []; S.plCur = n; plSave();
+};
+$('plSel').onchange = e => { S.plCur = e.target.value; if (S.plMode) refresh(); };
+$('plAdd1').onclick = () => S.sel && plAdd(S.sel);
+$('plAddAll').onclick = () => {
+  if (!S.plCur) { alert('create/select a playlist first'); return; }
+  S.pls[S.plCur].push(...filtered().map(c => c.video_file)); plSave();
+  flash('+' + filtered().length + ' → ' + S.plCur);
+};
+$('plView').onclick = () => { S.plMode = !S.plMode; $('plView').classList.toggle('on', S.plMode); refresh(); };
+$('plExport').onclick = () => {
+  const blob = new Blob([JSON.stringify({ playlists: S.pls, exported: new Date().toISOString() }, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'sora_playlists.json'; a.click();
+};
+
+// ---------- controls ----------
+$('prevB').onclick = () => step(-1);
+$('nextB').onclick = () => step(1);
+$('playB').onclick = () => vid.paused ? vid.play() : vid.pause();
+$('autoB').onclick = () => { S.auto = !S.auto; vid.loop = !S.auto; $('autoB').textContent = 'autoplay: ' + (S.auto ? 'on' : 'off'); $('autoB').classList.toggle('on', S.auto); };
+$('shufB').onclick = () => { S.shuf = !S.shuf; $('shufB').textContent = 'shuffle: ' + (S.shuf ? 'on' : 'off'); $('shufB').classList.toggle('on', S.shuf); };
+$('muteB').onclick = () => { S.muted = !S.muted; vid.muted = S.muted; $('muteB').textContent = 'sound: ' + (S.muted ? 'off' : 'on'); };
+$('clearF').onclick = () => { FACETS.forEach(([k]) => S.facets[k].clear()); S.q = ''; $('q').value = ''; S.plMode = false; $('plView').classList.remove('on'); refresh(); };
+$('q').addEventListener('input', e => { S.q = e.target.value.trim().toLowerCase(); S.plMode = false; refresh(); });
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === ' ') { e.preventDefault(); $('playB').onclick(); }
+  else if (e.key === 'p' && S.sel) plAdd(S.sel);
+  else if (e.key === '/') { e.preventDefault(); $('q').focus(); }
+});
+
+function updateStats() {
+  $('stats').textContent = S.queue.length + '/' + clips.length + ' clips · '
+    + THEMES.length + ' themes · ' + Object.keys(S.pls).length + ' playlists';
+}
+function refresh() {
+  S.queue = filtered();
+  renderRail(); renderGrid(); updateStats();
+  $('qpos').textContent = S.sel ? ((S.queue.indexOf(S.sel) + 1) + '/' + S.queue.length) : '';
+}
+renderPlSel();
+refresh();
+})();
+</script>
+</body>
+</html>

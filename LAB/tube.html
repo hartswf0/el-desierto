@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>SORA TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#e8e6df;
+font-family:'SF Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;
+touch-action:none;user-select:none;-webkit-user-select:none}
+body.idle{cursor:none}
+
+/* VIDEO CONTAINER — centers the video + overlay stack */
+#vidWrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1}
+#vidInner{position:relative;overflow:hidden}
+#vidInner video{display:block;width:100%;height:100%;object-fit:fill}
+
+/* HUD OVERLAY — sits exactly on top of the video, same size */
+#hudOverlay{position:absolute;inset:0;z-index:4;pointer-events:none;
+transition:opacity .4s}
+#hudOverlay img{width:100%;height:100%;object-fit:fill;display:block}
+#hudOverlay.off{opacity:0}
+
+/* BLEND MODE — applied to the overlay img */
+#hudOverlay img.blend-screen{mix-blend-mode:screen}
+#hudOverlay img.blend-overlay{mix-blend-mode:overlay}
+#hudOverlay img.blend-multiply{mix-blend-mode:multiply}
+#hudOverlay img.blend-lighten{mix-blend-mode:lighten}
+#hudOverlay img.blend-hard-light{mix-blend-mode:hard-light}
+
+/* SCANLINES — matches video rect */
+#scanlines{position:absolute;inset:0;z-index:5;pointer-events:none;
+background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);
+opacity:0;transition:opacity .3s}
+#scanlines.on{opacity:.6}
+
+/* VIGNETTE — matches video rect */
+#vignette{position:absolute;inset:0;z-index:5;pointer-events:none;
+background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.5) 100%);
+opacity:0;transition:opacity .3s}
+#vignette.on{opacity:1}
+
+/* NOW PLAYING */
+#nowPlaying{position:fixed;bottom:0;left:0;right:0;z-index:10;
+padding:16px 20px 20px;
+background:linear-gradient(transparent,rgba(0,0,0,.85) 30%,rgba(0,0,0,.92));
+opacity:1;transition:opacity .6s;pointer-events:none}
+#nowPlaying.hidden{opacity:0}
+.npChannel{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;
+color:#e8d44d;margin-bottom:3px}
+.npTitle{font-size:15px;font-weight:900;line-height:1.3;margin-bottom:5px;
+max-width:80%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;
+-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.npMeta{font-size:10px;color:#888;display:flex;gap:12px;flex-wrap:wrap}
+.npMeta .gen{color:#4de8a0;font-weight:900}
+.npMeta .trans{color:#4d8ee8;font-weight:700}
+.npMeta .tc{font-weight:700;color:#e8d44d}
+
+/* PROGRESS */
+#progressWrap{position:fixed;bottom:0;left:0;right:0;height:3px;z-index:11;
+background:rgba(255,255,255,.08)}
+#progressBar{height:100%;background:#e8d44d;width:0;transition:width .15s linear}
+
+/* CHANNEL FLASH */
+#channelFlash{position:fixed;top:max(env(safe-area-inset-top,20px),20px);right:20px;z-index:15;
+font-size:48px;font-weight:900;color:#e8d44d;opacity:0;
+text-shadow:0 2px 16px rgba(232,212,77,.4);
+transition:opacity .3s;pointer-events:none;line-height:1;text-align:right}
+#channelFlash.show{opacity:1}
+#channelSub{font-size:11px;font-weight:700;color:#888;letter-spacing:.1em;
+text-transform:uppercase;margin-top:3px}
+
+/* OVERLAY/EFFECT FLASH */
+#overlayFlash,#effectFlash{position:fixed;z-index:15;font-weight:900;opacity:0;
+pointer-events:none;letter-spacing:.1em;text-transform:uppercase;transition:opacity .3s}
+#overlayFlash{top:50%;left:50%;transform:translate(-50%,-50%);font-size:16px;color:#fff;
+text-shadow:0 2px 20px rgba(255,255,255,.5)}
+#overlayFlash.show{opacity:1}
+#effectFlash{bottom:60px;left:50%;transform:translateX(-50%);font-size:12px;color:#e8d44d}
+#effectFlash.show{opacity:1}
+
+/* VOLUME */
+#volIndicator{position:fixed;top:max(env(safe-area-inset-top,20px),20px);left:20px;z-index:15;
+font-size:12px;font-weight:900;color:#e8d44d;opacity:0;
+transition:opacity .3s;pointer-events:none}
+#volIndicator.show{opacity:1}
+
+/* MOBILE TOUCH BAR */
+#touchBar{position:fixed;bottom:0;left:0;right:0;z-index:20;
+padding:8px 12px calc(env(safe-area-inset-bottom,8px) + 8px);
+display:none;gap:6px;align-items:center;justify-content:center;
+background:linear-gradient(transparent,rgba(0,0,0,.7));pointer-events:auto}
+#touchBar.show{display:flex}
+#touchBar button{background:rgba(255,255,255,.12);border:none;color:#e8e6df;
+padding:10px 14px;font:inherit;font-size:11px;font-weight:700;cursor:pointer;
+border-radius:6px;min-width:44px;min-height:44px;text-transform:uppercase;
+backdrop-filter:blur(4px)}
+#touchBar button.on{background:rgba(232,212,77,.3);color:#e8d44d}
+#touchBar button:active{background:rgba(232,212,77,.4)}
+
+/* GUIDE OVERLAY */
+#guide{position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.94);
+display:none;flex-direction:column;backdrop-filter:blur(6px);
+padding-top:env(safe-area-inset-top,0)}
+#guide.show{display:flex}
+#guideHead{padding:12px 16px 10px;border-bottom:2px solid #222;
+display:flex;align-items:center;gap:10px;flex-shrink:0}
+#guideHead h1{font-size:12px;font-weight:900;text-transform:uppercase;
+letter-spacing:.12em;color:#e8d44d;white-space:nowrap}
+#guideSearch{background:rgba(255,255,255,.06);border:1px solid #333;color:#e8e6df;
+padding:8px 14px;font:inherit;font-size:13px;flex:1;outline:none;border-radius:6px;min-width:0}
+#guideSearch:focus{border-color:#e8d44d}
+#guideSearch::placeholder{color:#444}
+#guideStats{font-size:10px;color:#666;font-weight:700;white-space:nowrap}
+#guideClose{background:transparent;border:1px solid #444;color:#e8e6df;
+padding:8px 14px;font:inherit;font-size:11px;font-weight:900;cursor:pointer;
+border-radius:6px;text-transform:uppercase}
+#guideClose:active{background:#e8d44d;color:#000}
+#guideList{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+padding-bottom:env(safe-area-inset-bottom,20px)}
+.gSession{padding:6px 16px;font-size:10px;font-weight:900;color:#e8d44d;
+text-transform:uppercase;letter-spacing:.06em;background:rgba(232,212,77,.05);
+border-top:1px solid rgba(232,212,77,.12);position:sticky;top:0;z-index:2;
+display:flex;gap:10px;align-items:center}
+.gSession .gcnt{color:#555;font-weight:700}
+.gRow{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid #151515;
+cursor:pointer;gap:10px;min-height:48px;transition:background .1s}
+.gRow:active{background:rgba(232,212,77,.12)}
+.gRow.playing{background:rgba(232,212,77,.08);border-left:3px solid #e8d44d}
+.gNum{width:32px;font-size:10px;font-weight:900;color:#444;text-align:center;flex-shrink:0}
+.gRow.playing .gNum{color:#e8d44d}
+.gBody{flex:1;overflow:hidden;min-width:0}
+.gTitle{font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gMeta{font-size:9px;color:#555;display:flex;gap:8px;margin-top:2px}
+.gMeta .gen{color:#4de8a0;font-weight:900}
+.gMeta .trans{color:#4d8ee8}
+.gDur{width:44px;text-align:right;font-size:10px;font-weight:700;color:#e8d44d;flex-shrink:0}
+
+/* PROMPT OVERLAY */
+#promptOverlay{position:fixed;inset:0;z-index:22;background:rgba(0,0,0,.90);
+padding:20px;overflow-y:auto;display:none;backdrop-filter:blur(6px);
+padding-top:calc(env(safe-area-inset-top,20px) + 20px)}
+#promptOverlay.show{display:block}
+.poLabel{font-size:10px;font-weight:900;color:#e8d44d;
+text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+#promptOverlay pre{font-size:12px;line-height:1.6;color:#ccc;
+white-space:pre-wrap;word-break:break-word;max-width:700px}
+#promptClose{position:fixed;top:calc(env(safe-area-inset-top,8px) + 8px);right:16px;z-index:23;
+background:rgba(255,255,255,.1);border:none;color:#e8e6df;padding:10px 14px;
+font:inherit;font-size:12px;font-weight:900;cursor:pointer;border-radius:6px;display:none}
+#promptOverlay.show ~ #promptClose{display:block}
+
+/* STARTUP */
+#startup{position:fixed;inset:0;z-index:30;background:#000;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+transition:opacity 1s;cursor:pointer;padding:20px}
+#startup.gone{opacity:0;pointer-events:none}
+.startTitle{font-size:24px;font-weight:900;letter-spacing:.2em;color:#e8d44d;
+text-transform:uppercase;margin-bottom:6px}
+.startSub{font-size:11px;color:#666;letter-spacing:.1em;margin-bottom:30px}
+.startStats{font-size:13px;color:#888;margin-bottom:6px;text-align:center}
+.startAction{font-size:12px;color:#e8d44d;font-weight:700;
+letter-spacing:.12em;text-transform:uppercase;
+animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+@media(max-width:600px){
+  .npTitle{font-size:13px;max-width:90%}
+  #channelFlash{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<!-- VIDEO + OVERLAY STACK — all children match the video rect -->
+<div id="vidWrap">
+  <div id="vidInner">
+    <video id="vid" playsinline webkit-playsinline></video>
+    <div id="hudOverlay" class="off"><img id="hudImg" src="" alt=""/></div>
+    <div id="scanlines"></div>
+    <div id="vignette"></div>
+  </div>
+</div>
+
+<div id="nowPlaying" class="hidden">
+  <div class="npChannel" id="npCh"></div>
+  <div class="npTitle" id="npTitle"></div>
+  <div class="npMeta" id="npMeta"></div>
+</div>
+
+<div id="progressWrap"><div id="progressBar"></div></div>
+<div id="channelFlash"><span id="chNum"></span><div id="channelSub"></div></div>
+<div id="overlayFlash"></div>
+<div id="effectFlash"></div>
+<div id="volIndicator"></div>
+
+<div id="touchBar">
+  <button id="tbPrev">&#9664;</button>
+  <button id="tbPlay">&#9654;</button>
+  <button id="tbNext">&#9654;</button>
+  <button id="tbOverlay">HUD</button>
+  <button id="tbEffect">FX</button>
+  <button id="tbMute">VOL</button>
+  <button id="tbGuide">GUIDE</button>
+</div>
+
+<div id="promptOverlay">
+  <div class="poLabel">Original Prompt</div>
+  <pre id="poText"></pre>
+</div>
+<button id="promptClose">CLOSE</button>
+
+<div id="guide">
+  <div id="guideHead">
+    <h1>TV Guide</h1>
+    <input id="guideSearch" type="text" placeholder="Search..."/>
+    <span id="guideStats"></span>
+    <button id="guideClose">CLOSE</button>
+  </div>
+  <div id="guideList"></div>
+</div>
+
+<div id="startup">
+  <div class="startTitle">SORA TV</div>
+  <div class="startSub">Operative Screening Room</div>
+  <div class="startStats" id="startStats">Loading...</div>
+  <div class="startAction">Tap to begin</div>
+</div>
+
+<script>
+(()=>{
+'use strict';
+
+// ══════════════════════════════════════════════════════════════
+// OVERLAY REGISTRY — drop PNGs in overlays/ and add here
+// blend: screen | overlay | lighten | multiply | hard-light
+// ══════════════════════════════════════════════════════════════
+const OVERLAYS = [
+  { name: 'NONE',       src: null },
+  { name: 'WAVE CYAN',  src: 'overlays/wave-cyan.png',  blend: 'screen' },
+  { name: 'DEEP OCEAN', src: 'overlays/deep-ocean.png', blend: 'screen' },
+  { name: 'ETHEREAL',   src: 'overlays/ethereal.png',   blend: 'lighten' },
+  { name: 'PORTAL',     src: 'overlays/portal.png',     blend: 'screen' },
+  { name: 'EMBER',      src: 'overlays/ember.png',      blend: 'screen' },
+];
+
+const EFFECTS = [
+  { name: 'NONE',   filter: '',                                              scan: false, vig: false },
+  { name: 'BURN',   filter: 'contrast(1.3) saturate(1.4) brightness(1.1)',   scan: false, vig: true },
+  { name: 'COLD',   filter: 'saturate(0.6) brightness(1.05) hue-rotate(20deg)', scan: false, vig: true },
+  { name: 'NOIR',   filter: 'grayscale(1) contrast(1.4) brightness(0.9)',    scan: true,  vig: true },
+  { name: 'DREAM',  filter: 'saturate(1.6) contrast(0.85) brightness(1.15)', scan: false, vig: true },
+  { name: 'VHS',    filter: 'contrast(1.2) saturate(1.3) brightness(0.95)',  scan: true,  vig: false },
+  { name: 'SEPIA',  filter: 'sepia(0.8) contrast(1.1)',                      scan: false, vig: true },
+  { name: 'INVERT', filter: 'invert(1) hue-rotate(180deg)',                  scan: false, vig: false },
+  { name: 'NEON',   filter: 'saturate(2.5) contrast(1.2) brightness(1.1)',   scan: false, vig: false },
+  { name: 'FADED',  filter: 'saturate(0.3) contrast(0.9) brightness(1.1)',   scan: false, vig: true },
+];
+
+// ── STATE ──
+let ALL=[], filtered=[], currentIdx=-1, currentEntry=null;
+let cleanStart=0, cleanEnd=999, isPlaying=false;
+let guideOpen=false, promptOpen=false, started=false;
+let overlayIdx=0, effectIdx=0;
+let idleTimer, npTimer, chFlashTimer, overlayFlashTimer, effectFlashTimer;
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth<768;
+
+// DOM
+const vid=document.getElementById('vid');
+const vidInner=document.getElementById('vidInner');
+const hudOverlay=document.getElementById('hudOverlay');
+const hudImg=document.getElementById('hudImg');
+const scanlines=document.getElementById('scanlines');
+const vignetteEl=document.getElementById('vignette');
+const npEl=document.getElementById('nowPlaying');
+const npCh=document.getElementById('npCh');
+const npTitle=document.getElementById('npTitle');
+const npMeta=document.getElementById('npMeta');
+const progressBar=document.getElementById('progressBar');
+const chNum=document.getElementById('chNum');
+const channelSub=document.getElementById('channelSub');
+const channelFlash=document.getElementById('channelFlash');
+const overlayFlash=document.getElementById('overlayFlash');
+const effectFlashEl=document.getElementById('effectFlash');
+const volIndicator=document.getElementById('volIndicator');
+const promptOverlay=document.getElementById('promptOverlay');
+const poText=document.getElementById('poText');
+const guide=document.getElementById('guide');
+const guideList=document.getElementById('guideList');
+const guideSearch=document.getElementById('guideSearch');
+const guideStats=document.getElementById('guideStats');
+const startup=document.getElementById('startup');
+const startStats=document.getElementById('startStats');
+const touchBar=document.getElementById('touchBar');
+
+// ── HELPERS ──
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function fmtTime(s){if(!s||s<0)return'0:00';return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')}
+function fmtDur(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h>0?h+'h '+m+'m':m+'m '+Math.floor(s%60)+'s'}
+
+// ══════════════════════════════════════════════════════════════
+// VIDEO SIZING — make vidInner match the video's natural aspect
+// This is the key: overlay, scanlines, vignette all sit inside
+// vidInner which is sized to exactly match the rendered video
+// ══════════════════════════════════════════════════════════════
+function sizeVideoRect(){
+  const cw = window.innerWidth;
+  const ch = window.innerHeight;
+  const vw = vid.videoWidth || 9;
+  const vh = vid.videoHeight || 16;
+
+  // Compute contain fit
+  const scale = Math.min(cw/vw, ch/vh);
+  const w = Math.round(vw * scale);
+  const h = Math.round(vh * scale);
+
+  vidInner.style.width = w + 'px';
+  vidInner.style.height = h + 'px';
+}
+
+vid.addEventListener('loadedmetadata', sizeVideoRect);
+vid.addEventListener('resize', sizeVideoRect);  // fires when video dimensions change
+window.addEventListener('resize', sizeVideoRect);
+
+// ── FLASH HELPERS ──
+function flashText(el,text,dur=2000){
+  el.textContent=text;el.classList.add('show');
+  return setTimeout(()=>el.classList.remove('show'),dur);
+}
+function showNP(dur=4000){npEl.classList.remove('hidden');clearTimeout(npTimer);npTimer=setTimeout(()=>npEl.classList.add('hidden'),dur)}
+function hideNP(){npEl.classList.add('hidden')}
+function flashChannel(num,label){
+  chNum.textContent=String(num).padStart(2,'0');channelSub.textContent=label||'';
+  channelFlash.classList.add('show');clearTimeout(chFlashTimer);
+  chFlashTimer=setTimeout(()=>channelFlash.classList.remove('show'),2500);
+}
+function showVol(t){clearTimeout(volIndicator._t);volIndicator._t=flashText(volIndicator,t,1500)}
+
+// ── IDLE ──
+function resetIdle(){
+  document.body.classList.remove('idle');
+  if(isMobile)touchBar.classList.add('show');
+  clearTimeout(idleTimer);
+  idleTimer=setTimeout(()=>{
+    document.body.classList.add('idle');hideNP();
+    if(isMobile&&!guideOpen&&!promptOpen)touchBar.classList.remove('show');
+  },5000);
+}
+
+// ══════════════════════════════════════════════════════════════
+// OVERLAY SYSTEM — swap PNGs on/off the video
+// ══════════════════════════════════════════════════════════════
+function setOverlay(idx){
+  overlayIdx = ((idx % OVERLAYS.length) + OVERLAYS.length) % OVERLAYS.length;
+  const ov = OVERLAYS[overlayIdx];
+  if(ov.src){
+    hudImg.src = ov.src;
+    // Remove old blend classes, apply new one
+    hudImg.className = 'blend-' + (ov.blend || 'screen');
+    hudOverlay.classList.remove('off');
+  } else {
+    hudOverlay.classList.add('off');
+  }
+  clearTimeout(overlayFlashTimer);
+  overlayFlashTimer = flashText(overlayFlash, 'HUD: ' + ov.name, 1500);
+}
+function nextOverlay(){ setOverlay(overlayIdx + 1) }
+function prevOverlay(){ setOverlay(overlayIdx - 1) }
+
+// ── EFFECT SYSTEM ──
+function setEffect(idx){
+  effectIdx = ((idx % EFFECTS.length) + EFFECTS.length) % EFFECTS.length;
+  const fx = EFFECTS[effectIdx];
+  vid.style.filter = fx.filter;
+  scanlines.classList.toggle('on', fx.scan);
+  vignetteEl.classList.toggle('on', fx.vig);
+  clearTimeout(effectFlashTimer);
+  effectFlashTimer = flashText(effectFlashEl, 'FX: ' + fx.name, 1500);
+}
+function nextEffect(){ setEffect(effectIdx + 1) }
+function prevEffect(){ setEffect(effectIdx - 1) }
+
+// ══════════════════════════════════════════════════════════════
+// PLAY CLIP — EDL-aware, clean bounds
+// ══════════════════════════════════════════════════════════════
+function playClip(idx, showFlash=false){
+  if(idx<0||idx>=filtered.length) return;
+  currentIdx=idx;
+  const entry=filtered[idx]; currentEntry=entry;
+  const a=entry.analysis||{};
+  cleanStart=a.clean_start||0;
+  cleanEnd=a.clean_end||(a.total_duration||999);
+
+  vid.src='SORA_CAPTURES/'+entry.source_reel;
+  vid.load();
+  vid.addEventListener('loadedmetadata',function onMeta(){
+    vid.removeEventListener('loadedmetadata',onMeta);
+    sizeVideoRect();
+    vid.currentTime=cleanStart;
+    vid.play().catch(()=>{});
+    isPlaying=true;
+  });
+
+  const promptLine=(entry.prompt||'').split('\n').find(l=>l.trim().length>3)||'Clip #'+entry.edl_number;
+  const gen=a.generation_length||'';
+  const trans=a.transition_type||'';
+  const ses=entry._session||0;
+  npCh.textContent='CH '+ses+'  /  '+entry.edl_number+' of '+filtered.length;
+  npTitle.textContent=promptLine.substring(0,200);
+  npMeta.innerHTML=`<span class="gen">${gen}</span><span class="trans">${trans}</span><span class="tc">${entry.record_in} — ${entry.record_out}</span><span>${fmtTime(cleanEnd-cleanStart)}</span>`;
+  showNP(5000);
+  if(showFlash) flashChannel(ses,'CHANNEL '+ses);
+
+  poText.textContent=entry.prompt||'';
+  const pf=entry.source_reel.replace('_screen_capture.mp4','_original_prompt.txt');
+  fetch('SORA_CAPTURES/'+pf).then(r=>{if(!r.ok)throw 0;return r.text()}).then(t=>{poText.textContent=t}).catch(()=>{});
+  if(guideOpen) highlightGuide();
+}
+
+// ── VIDEO EVENTS ──
+vid.addEventListener('timeupdate',()=>{
+  if(!vid.duration)return;
+  const cd=cleanEnd-cleanStart,cn=Math.max(0,vid.currentTime-cleanStart);
+  progressBar.style.width=(cd>0?Math.min(100,(cn/cd)*100):0)+'%';
+  if(vid.currentTime>=cleanEnd-0.15){
+    playClip(currentIdx<filtered.length-1?currentIdx+1:0);
+  }
+});
+vid.addEventListener('ended',()=>{playClip(currentIdx<filtered.length-1?currentIdx+1:0)});
+
+// ── SESSION NAV ──
+function getSessionIndices(){
+  const m=new Map();filtered.forEach((e,i)=>{const s=e._session||0;if(!m.has(s))m.set(s,i)});return[...m.entries()];
+}
+function jumpSession(dir){
+  const si=getSessionIndices();if(!si.length)return;
+  const cur=currentEntry?(currentEntry._session||0):-1;
+  const ci=si.findIndex(([s])=>s===cur);
+  let ni;if(dir>0)ni=ci<si.length-1?ci+1:0;else ni=ci>0?ci-1:si.length-1;
+  playClip(si[ni][1],true);
+}
+
+// ── GUIDE ──
+function openGuide(){guideOpen=true;guide.classList.add('show');renderGuide();highlightGuide();document.body.classList.remove('idle')}
+function closeGuide(){guideOpen=false;guide.classList.remove('show');guideSearch.value=''}
+function toggleGuide(){if(guideOpen)closeGuide();else openGuide()}
+
+function renderGuide(){
+  guideList.innerHTML='';
+  const term=guideSearch.value.toLowerCase().trim();
+  const show=term?filtered.filter(e=>(e.prompt&&e.prompt.toLowerCase().includes(term))||String(e.edl_number).includes(term)||(e.analysis&&e.analysis.generation_length&&e.analysis.generation_length.includes(term))||(e.analysis&&e.analysis.transition_type&&e.analysis.transition_type.includes(term))):filtered;
+  const groups=new Map();
+  show.forEach(e=>{const s=e._session||0;if(!groups.has(s))groups.set(s,[]);groups.get(s).push(e)});
+  groups.forEach((items,sn)=>{
+    let sd=0;items.forEach(e=>{sd+=(e.analysis&&e.analysis.clean_duration)||0});
+    const h=document.createElement('div');h.className='gSession';
+    h.innerHTML=`<span>CH ${sn}</span><span class="gcnt">${items.length} clips / ${fmtDur(sd)}</span>`;
+    guideList.appendChild(h);
+    items.forEach(e=>{
+      const a=e.analysis||{};const ri=filtered.indexOf(e);
+      const r=document.createElement('div');r.className='gRow';r.dataset.idx=ri;
+      if(currentEntry&&e.source_reel===currentEntry.source_reel)r.classList.add('playing');
+      const pl=esc((e.prompt||'').split('\n').find(l=>l.trim().length>3)||'Clip');
+      r.innerHTML=`<div class="gNum">${e.edl_number}</div><div class="gBody"><div class="gTitle">${pl.substring(0,100)}</div><div class="gMeta"><span>${e.capture_date||''}</span><span class="gen">${a.generation_length||''}</span><span class="trans">${a.transition_type||''}</span></div></div><div class="gDur">${a.clean_duration?a.clean_duration.toFixed(1)+'s':''}</div>`;
+      r.addEventListener('click',()=>{playClip(ri,true);closeGuide()});
+      guideList.appendChild(r);
+    });
+  });
+  guideStats.textContent=show.length+' / '+ALL.length;
+}
+function highlightGuide(){
+  document.querySelectorAll('.gRow.playing').forEach(r=>r.classList.remove('playing'));
+  if(currentEntry){const r=document.querySelector(`.gRow[data-idx="${currentIdx}"]`);if(r){r.classList.add('playing');r.scrollIntoView({block:'center',behavior:'smooth'})}}
+}
+guideSearch.addEventListener('input',()=>{clearTimeout(guideSearch._t);guideSearch._t=setTimeout(renderGuide,200)});
+document.getElementById('guideClose').addEventListener('click',closeGuide);
+document.getElementById('promptClose').addEventListener('click',()=>{promptOpen=false;promptOverlay.classList.remove('show')});
+
+// ── KEYBOARD ──
+window.addEventListener('keydown',(e)=>{
+  if(guideOpen&&document.activeElement===guideSearch){if(e.key==='Escape'){closeGuide();e.preventDefault()}return}
+  switch(e.key){
+    case ' ':e.preventDefault();if(!started){begin();return}
+      if(vid.paused){vid.play().catch(()=>{});isPlaying=true}else{vid.pause();isPlaying=false;showNP(99999)}break;
+    case 'ArrowUp':case'w':case'W':e.preventDefault();if(!started){begin();return}jumpSession(-1);break;
+    case 'ArrowDown':case's':case'S':e.preventDefault();if(!started){begin();return}jumpSession(1);break;
+    case 'ArrowRight':case'd':case'D':e.preventDefault();if(!started){begin();return}
+      playClip(currentIdx<filtered.length-1?currentIdx+1:0);break;
+    case 'ArrowLeft':case'a':case'A':e.preventDefault();if(!started){begin();return}
+      playClip(currentIdx>0?currentIdx-1:filtered.length-1);break;
+    case 'g':case'G':e.preventDefault();toggleGuide();break;
+    case 'Escape':if(promptOpen){promptOpen=false;promptOverlay.classList.remove('show')}else if(guideOpen)closeGuide();break;
+    case 'p':case'P':e.preventDefault();promptOpen=!promptOpen;promptOverlay.classList.toggle('show',promptOpen);break;
+    case 'm':case'M':vid.muted=!vid.muted;showVol(vid.muted?'MUTED':'VOLUME ON');break;
+    case 'i':case'I':showNP(5000);break;
+    case 'h':e.preventDefault();nextOverlay();break;
+    case 'H':e.preventDefault();prevOverlay();break;
+    case 'f':e.preventDefault();nextEffect();break;
+    case 'F':e.preventDefault();prevEffect();break;
+    case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':case'0':
+      e.preventDefault();if(!started){begin();return}
+      const si=e.key==='0'?9:parseInt(e.key)-1;const ss=getSessionIndices();
+      if(si<ss.length)playClip(ss[si][1],true);break;
+  }
+  resetIdle();
+});
+
+// ── TOUCH ──
+let touchStartX=0,touchStartY=0,touchStartTime=0;
+document.addEventListener('touchstart',(e)=>{
+  if(guideOpen||promptOpen)return;
+  touchStartX=e.touches[0].clientX;touchStartY=e.touches[0].clientY;touchStartTime=Date.now();
+  resetIdle();
+},{passive:true});
+document.addEventListener('touchend',(e)=>{
+  if(guideOpen||promptOpen)return;
+  const dx=e.changedTouches[0].clientX-touchStartX,dy=e.changedTouches[0].clientY-touchStartY;
+  const dt=Date.now()-touchStartTime,adx=Math.abs(dx),ady=Math.abs(dy);
+  if(dt<500&&(adx>50||ady>50)){
+    if(adx>ady){if(dx>0)playClip(currentIdx>0?currentIdx-1:filtered.length-1);else playClip(currentIdx<filtered.length-1?currentIdx+1:0)}
+    else{if(dy>0)jumpSession(-1);else jumpSession(1)}
+    return;
+  }
+  if(adx<15&&ady<15&&dt<300){
+    if(!started){begin();return}
+    if(vid.muted){vid.muted=false;showVol('VOLUME ON');return}
+    if(vid.paused){vid.play().catch(()=>{});isPlaying=true}else{vid.pause();isPlaying=false;showNP(99999)}
+  }
+},{passive:true});
+
+// ── TOUCH BAR ──
+document.getElementById('tbPrev').addEventListener('click',(e)=>{e.stopPropagation();playClip(currentIdx>0?currentIdx-1:filtered.length-1)});
+document.getElementById('tbNext').addEventListener('click',(e)=>{e.stopPropagation();playClip(currentIdx<filtered.length-1?currentIdx+1:0)});
+document.getElementById('tbPlay').addEventListener('click',(e)=>{e.stopPropagation();if(!started){begin();return}if(vid.paused){vid.play().catch(()=>{});isPlaying=true}else{vid.pause();isPlaying=false}});
+document.getElementById('tbOverlay').addEventListener('click',(e)=>{e.stopPropagation();nextOverlay()});
+document.getElementById('tbEffect').addEventListener('click',(e)=>{e.stopPropagation();nextEffect()});
+document.getElementById('tbMute').addEventListener('click',(e)=>{e.stopPropagation();vid.muted=!vid.muted;showVol(vid.muted?'MUTED':'VOL ON');e.target.classList.toggle('on',!vid.muted)});
+document.getElementById('tbGuide').addEventListener('click',(e)=>{e.stopPropagation();toggleGuide()});
+
+// Screen click (desktop)
+document.getElementById('vidWrap').addEventListener('click',()=>{
+  if(!started){begin();return}
+  if(guideOpen){closeGuide();return}
+  if(promptOpen){promptOpen=false;promptOverlay.classList.remove('show');return}
+  if(vid.muted){vid.muted=false;showVol('VOLUME ON');return}
+  if(vid.paused){vid.play().catch(()=>{});isPlaying=true}else{vid.pause();isPlaying=false;showNP(99999)}
+});
+document.getElementById('vidWrap').addEventListener('dblclick',(e)=>{
+  e.preventDefault();
+  if(document.fullscreenElement)document.exitFullscreen();
+  else document.documentElement.requestFullscreen().catch(()=>{});
+});
+document.addEventListener('mousemove',()=>{resetIdle();if(isPlaying&&!guideOpen&&!promptOpen)showNP(2500)});
+
+// ── BEGIN ──
+function begin(){
+  if(started)return;started=true;
+  startup.classList.add('gone');setTimeout(()=>{startup.style.display='none'},1000);
+  vid.muted=true;
+  if(isMobile)touchBar.classList.add('show');
+  if(filtered.length>0){
+    const si=getSessionIndices();const rs=si[Math.floor(Math.random()*si.length)];
+    playClip(rs?rs[1]:0,true);
+  }
+  showVol('MUTED — tap VOL or press M');resetIdle();
+}
+startup.addEventListener('click',begin);
+
+// ── INIT ──
+fetch('SORA_CAPTURES/sora_edl.json')
+  .then(r=>{if(!r.ok)throw new Error('EDL not found');return r.json()})
+  .then(edl=>{
+    const sm={};(edl.sessions||[]).forEach(s=>{(s.clips||[]).forEach(c=>{sm[c]=s.session_number})});
+    ALL=(edl.entries||[]).map(e=>{e._session=sm[e.source_reel]||0;return e});
+    filtered=ALL.slice();
+    const h=edl.edl_header||{};
+    startStats.innerHTML=`${h.total_reels||ALL.length} clips / ${h.total_runtime||''} / ${(edl.sessions||[]).length} channels`;
+    // Preload overlays
+    OVERLAYS.forEach(ov=>{if(ov.src){const img=new Image();img.src=ov.src}});
+  })
+  .catch(err=>{console.error(err);startStats.textContent='EDL LOAD FAILED — serve with python3 -m http.server 8077'});
+
+})();
+</script>
+</body>
+</html>

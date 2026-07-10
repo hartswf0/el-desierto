@@ -1,0 +1,1144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SORA WORKBENCH — Prompt / Clip / Theme / Manifest IDE</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  :root{
+    --bg:#050505;
+    --panel:#0b0b0b;
+    --panel2:#101010;
+    --text:#f2f2f2;
+    --muted:#8b8b8b;
+    --line:#292929;
+    --line2:#3a3a3a;
+    --accent:#ffb000;
+    --danger:#ff3b30;
+    --ok:#f2f2f2;
+    --h:44px;
+    --rail:178px;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%; margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); overflow:hidden;}
+  body{overscroll-behavior:none;}
+  button,input,select,textarea{font:inherit; color:inherit;}
+  button{background:#111; border:1px solid var(--line2); color:var(--text); border-radius:0; min-height:34px; padding:7px 10px; cursor:pointer; text-transform:uppercase; letter-spacing:.04em; font-family:var(--mono); font-size:11px;}
+  button:hover{border-color:var(--accent)}
+  button.primary{background:var(--accent); color:#000; border-color:var(--accent); font-weight:800;}
+  button.ghost{background:transparent;}
+  button.danger{border-color:var(--danger); color:var(--danger);}
+  button.tiny{min-height:26px; padding:4px 7px; font-size:10px;}
+  button.active{background:#fff; color:#000; border-color:#fff;}
+  input,select,textarea{background:#000; border:1px solid var(--line2); border-radius:0; padding:8px; outline:none;}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+  textarea{resize:none; min-height:72px; width:100%; line-height:1.45;}
+  .mono{font-family:var(--mono)}
+  .muted{color:var(--muted)}
+  .accent{color:var(--accent)}
+  .danger{color:var(--danger)}
+  .app{height:100dvh; display:grid; grid-template-rows:var(--h) 1fr var(--rail); grid-template-columns:1fr;}
+  .topbar{height:var(--h); border-bottom:1px solid var(--line); display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:8px; padding:0 8px; background:#030303;}
+  .brand{font-family:var(--mono); font-size:12px; letter-spacing:.08em; white-space:nowrap;}
+  .brand b{color:var(--accent)}
+  .command{height:32px; width:100%; font-family:var(--mono); font-size:12px;}
+  .top-actions{display:flex; align-items:center; gap:6px; white-space:nowrap;}
+  .hidden-input{display:none}
+  .main{min-height:0; display:grid; grid-template-columns:280px minmax(0,1fr) 260px; overflow:hidden;}
+  .pane{min-height:0; overflow:hidden; border-right:1px solid var(--line); background:var(--panel);}
+  .pane:last-child{border-right:0}
+  .pane-head{height:42px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 10px; background:#070707;}
+  .pane-title{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;}
+  .scroll{height:calc(100% - 42px); overflow:auto; -webkit-overflow-scrolling:touch;}
+  .scroll.pad{padding:10px;}
+  .tabs{display:flex; gap:4px; overflow:auto; scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{white-space:nowrap;}
+  .dropzone{border:1px dashed var(--line2); padding:14px; margin:10px; font-family:var(--mono); font-size:12px; color:var(--muted); line-height:1.5;}
+  .dropzone.hot{border-color:var(--accent); color:var(--accent);}
+  .stats{display:grid; grid-template-columns:repeat(6,1fr); gap:1px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--line);}
+  .stat{background:#080808; padding:9px; min-width:0;}
+  .stat .n{font-family:var(--mono); font-size:18px; line-height:1;}
+  .stat .l{font-family:var(--mono); color:var(--muted); font-size:9px; text-transform:uppercase; margin-top:4px;}
+  .filters{padding:10px; display:grid; gap:8px; border-bottom:1px solid var(--line);}
+  .filters-row{display:flex; gap:6px;}
+  .filters-row>*{min-width:0; flex:1}
+  .clip-list{padding:8px; display:grid; gap:8px;}
+  .clip-card{border:1px solid var(--line); background:#080808; cursor:pointer;}
+  .clip-card.active{border-color:var(--accent); box-shadow:inset 3px 0 0 var(--accent);}
+  .clip-card.selected{outline:1px solid #fff;}
+  .clip-top{display:grid; grid-template-columns:20px 1fr auto; gap:7px; align-items:start; padding:8px; border-bottom:1px solid var(--line);}
+  .check{width:16px;height:16px; border:1px solid var(--line2); display:grid; place-items:center; font-family:var(--mono); font-size:11px; margin-top:1px;}
+  .selected .check{background:#fff; color:#000;}
+  .clip-id{font-family:var(--mono); font-size:11px; word-break:break-all; line-height:1.2;}
+  .clip-meta{font-family:var(--mono); color:var(--muted); font-size:9px; margin-top:3px;}
+  .badge{display:inline-flex; align-items:center; min-height:18px; padding:2px 5px; border:1px solid var(--line2); color:var(--muted); font-family:var(--mono); font-size:9px; text-transform:uppercase; white-space:nowrap; margin:2px 3px 2px 0;}
+  .badge.ok{color:#000;background:#fff;border-color:#fff;}
+  .badge.accent{color:#000;background:var(--accent);border-color:var(--accent);}
+  .badge.danger{color:var(--danger);border-color:var(--danger);}
+  .clip-excerpt{padding:8px; color:#cfcfcf; font-size:12px; line-height:1.35; max-height:54px; overflow:hidden;}
+  .clip-actions{display:flex; gap:4px; padding:7px; border-top:1px solid var(--line); overflow:auto;}
+  .inspector{height:100%; display:grid; grid-template-rows:42px minmax(0,1fr); overflow:hidden;}
+  .work-view{height:100%; overflow:auto; padding:10px;}
+  .empty{height:100%; display:grid; place-items:center; color:var(--muted); font-family:var(--mono); text-align:center; padding:28px; line-height:1.55;}
+  video{width:100%; max-height:46vh; background:#000; border:1px solid var(--line); display:block;}
+  .section{border:1px solid var(--line); background:#080808; margin-bottom:10px;}
+  .section-head{height:34px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 9px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:10px; text-transform:uppercase; color:var(--muted);}
+  .section-body{padding:9px;}
+  .ledger{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:4px;}
+  .led{border:1px solid var(--line2); min-height:30px; display:grid; place-items:center; font-family:var(--mono); font-size:9px; color:var(--muted); text-align:center; padding:3px;}
+  .led.on{background:#fff; color:#000; border-color:#fff; font-weight:800;}
+  .promptbox{font-family:var(--mono); font-size:12px; line-height:1.48; white-space:pre-wrap; background:#000; border:1px solid var(--line); padding:10px; max-height:34vh; overflow:auto;}
+  .prompt-line{display:grid; grid-template-columns:36px 1fr; gap:8px; border-bottom:1px solid #111; padding:1px 0;}
+  .prompt-line .ln{color:var(--muted); text-align:right; user-select:none;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;}
+  .field{display:grid; gap:5px;}
+  .label{font-family:var(--mono); font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
+  .note{border:1px solid var(--line); background:#050505; padding:8px; margin-bottom:6px; font-size:12px; line-height:1.35;}
+  .note .note-meta{font-family:var(--mono); color:var(--muted); font-size:9px; margin-bottom:4px;}
+  .theme-card,.similar-card,.manifest-card{border:1px solid var(--line); background:#080808; padding:9px; margin-bottom:8px;}
+  .theme-card h3,.similar-card h3{font-family:var(--mono); font-size:13px; margin:0 0 5px 0; text-transform:uppercase;}
+  .theme-terms{font-family:var(--mono); font-size:11px; color:var(--muted); line-height:1.4;}
+  .meter{height:6px; background:#000; border:1px solid var(--line); margin:7px 0;}
+  .meter span{height:100%; display:block; background:var(--accent);}
+  .compare-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .compare-slot{min-width:0;}
+  .rail{border-top:1px solid var(--line); background:#060606; min-height:0; display:grid; grid-template-columns:1fr 380px; overflow:hidden;}
+  .manifest-strip{min-width:0; overflow:hidden; display:grid; grid-template-rows:38px 1fr; border-right:1px solid var(--line);}
+  .manifest-head{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 10px; border-bottom:1px solid var(--line);}
+  .manifest-name{font-family:var(--mono); font-size:12px; width:220px; height:28px; padding:4px 6px;}
+  .manifest-items{display:flex; gap:6px; overflow:auto; padding:7px;}
+  .manifest-pill{border:1px solid var(--line2); background:#0b0b0b; min-width:210px; max-width:210px; display:grid; grid-template-rows:auto auto 1fr; gap:4px; padding:7px;}
+  .manifest-pill .idx{font-family:var(--mono); color:var(--accent); font-size:10px;}
+  .manifest-pill .id{font-family:var(--mono); font-size:10px; word-break:break-all;}
+  .manifest-pill .ops{display:flex; gap:3px; margin-top:4px;}
+  .rail-side{overflow:auto; padding:9px;}
+  .export-box{font-family:var(--mono); font-size:11px; line-height:1.4; white-space:pre-wrap; background:#000; border:1px solid var(--line); padding:8px; min-height:68px; max-height:112px; overflow:auto;}
+  .toast{position:fixed; right:10px; bottom:calc(var(--rail) + 10px); z-index:20; background:#fff; color:#000; border:1px solid #fff; padding:9px 12px; font-family:var(--mono); font-size:11px; transform:translateY(160%); transition:.18s transform; max-width:340px;}
+  .toast.show{transform:translateY(0)}
+  .kbd{font-family:var(--mono); border:1px solid var(--line2); padding:1px 4px; color:var(--muted);}
+  .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.78); z-index:30; padding:18px;}
+  .modal.show{display:grid;}
+  .modal-card{width:min(760px,100%); max-height:90dvh; overflow:auto; background:#080808; border:1px solid var(--line2);}
+  .modal-head{height:42px; display:flex; align-items:center; justify-content:space-between; padding:0 10px; border-bottom:1px solid var(--line); font-family:var(--mono);}
+  .modal-body{padding:10px;}
+  .dragline{height:1px;background:var(--accent);display:none;}
+  .pipeline-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px;}
+  .pipeline-cell{border:1px solid var(--line); background:#050505; padding:9px;}
+  .pipeline-cell .n{font-family:var(--mono); font-size:24px;}
+  .pipeline-cell .l{font-family:var(--mono); font-size:10px; color:var(--muted); text-transform:uppercase;}
+  @media (max-width: 980px){
+    :root{--rail:164px;}
+    html,body{overflow:hidden;}
+    .topbar{grid-template-columns:1fr auto; height:auto; min-height:var(--h); padding:6px;}
+    .brand{display:none}
+    .command{grid-column:1 / 2;}
+    .top-actions{grid-column:2 / 3;}
+    .top-actions .wide{display:none}
+    .main{grid-template-columns:1fr; grid-template-rows:auto 1fr;}
+    .left-pane,.right-pane{display:none;}
+    .left-pane.mobile-show,.right-pane.mobile-show{display:block; position:absolute; inset:var(--h) 0 var(--rail) 0; z-index:11; border-right:0;}
+    .center-pane{border-right:0;}
+    .mobile-nav{display:flex!important;}
+    .rail{grid-template-columns:1fr;}
+    .rail-side{display:none;}
+    .manifest-pill{min-width:172px; max-width:172px;}
+    .compare-grid,.grid2,.grid3,.pipeline-grid{grid-template-columns:1fr;}
+    video{max-height:34vh;}
+    .toast{bottom:calc(var(--rail) + 8px); left:8px; right:8px; max-width:none;}
+  }
+  .mobile-nav{display:none; gap:4px; padding:6px; border-bottom:1px solid var(--line); background:#050505; overflow:auto;}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="brand"><b>SORA</b> WORKBENCH</div>
+    <input id="command" class="command" autocomplete="off" spellcheck="false" placeholder="search or command: bees train · tag:bees · project:none · /tag selected bees · /manifest add selected" />
+    <div class="top-actions">
+      <button class="tiny ghost" id="btnMobileList">LIST</button>
+      <button class="tiny ghost" id="btnMobileTools">TOOLS</button>
+      <button class="tiny primary" id="btnImport">IMPORT</button>
+      <button class="tiny wide" id="btnSave">SAVE</button>
+      <button class="tiny danger wide" id="btnReset">RESET</button>
+    </div>
+    <input id="fileInput" class="hidden-input" type="file" multiple webkitdirectory directory accept=".mp4,.mov,.webm,.m4v,.txt,.json,.md" />
+  </header>
+
+  <main class="main" id="main">
+    <aside class="pane left-pane" id="leftPane">
+      <div class="pane-head">
+        <div class="pane-title">Archive</div>
+        <div class="tabs">
+          <button class="tiny active" data-view="browse">Browse</button>
+          <button class="tiny" data-view="cluster">Cluster</button>
+          <button class="tiny" data-view="compare">Compare</button>
+          <button class="tiny" data-view="route">Route</button>
+          <button class="tiny" data-view="manifest">Manifest</button>
+          <button class="tiny" data-view="pipeline">Pipeline</button>
+        </div>
+      </div>
+      <div class="scroll" id="archiveScroll">
+        <div class="dropzone" id="dropzone">
+          DROP SORA FILES OR FOLDER HERE<br>
+          Expected: video files + paired .txt prompts with matching prefixes.<br>
+          No backend. No upload. Everything stays local in this browser.
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="filters">
+          <div class="filters-row">
+            <select id="projectFilter"><option value="">project:any</option></select>
+            <select id="statusFilter"><option value="">status:any</option></select>
+          </div>
+          <div class="filters-row">
+            <button class="tiny" id="btnSelectVisible">select visible</button>
+            <button class="tiny" id="btnClearSelected">clear</button>
+            <button class="tiny" id="btnFindSiblings">siblings</button>
+          </div>
+        </div>
+        <div class="clip-list" id="clipList"></div>
+      </div>
+    </aside>
+
+    <section class="pane center-pane inspector">
+      <div class="mobile-nav">
+        <button class="tiny active" data-view="browse">Browse</button>
+        <button class="tiny" data-view="cluster">Cluster</button>
+        <button class="tiny" data-view="compare">Compare</button>
+        <button class="tiny" data-view="route">Route</button>
+        <button class="tiny" data-view="manifest">Manifest</button>
+        <button class="tiny" data-view="pipeline">Pipeline</button>
+      </div>
+      <div class="pane-head">
+        <div class="pane-title" id="centerTitle">Inspector</div>
+        <div class="tabs">
+          <button class="tiny" id="btnKeep">KEEP</button>
+          <button class="tiny" id="btnMaybe">MAYBE</button>
+          <button class="tiny danger" id="btnCut">CUT</button>
+          <button class="tiny primary" id="btnAddManifest">+ MANIFEST</button>
+        </div>
+      </div>
+      <div class="work-view" id="workView"></div>
+    </section>
+
+    <aside class="pane right-pane" id="rightPane">
+      <div class="pane-head">
+        <div class="pane-title">Tools</div>
+        <button class="tiny" id="btnMineThemes">mine themes</button>
+      </div>
+      <div class="scroll pad" id="toolsPanel"></div>
+    </aside>
+  </main>
+
+  <footer class="rail">
+    <div class="manifest-strip">
+      <div class="manifest-head">
+        <div class="field" style="display:flex;align-items:center;gap:8px;min-width:0;">
+          <span class="label">manifest</span>
+          <input id="manifestName" class="manifest-name" value="SORA_MANIFEST" />
+          <span class="badge accent" id="manifestCount">0 clips</span>
+        </div>
+        <div class="tabs">
+          <button class="tiny" id="btnExportTxt">TXT</button>
+          <button class="tiny" id="btnExportJson">JSON</button>
+          <button class="tiny" id="btnExportFfmpeg">FFMPEG</button>
+          <button class="tiny" id="btnExportBash">BASH</button>
+          <button class="tiny danger" id="btnClearManifest">CLEAR</button>
+        </div>
+      </div>
+      <div class="manifest-items" id="manifestItems"></div>
+    </div>
+    <div class="rail-side">
+      <div class="label">export preview</div>
+      <div class="export-box" id="exportPreview">No manifest clips yet.</div>
+    </div>
+  </footer>
+</div>
+
+<div class="modal" id="exportModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head"><span id="modalTitle">EXPORT</span><button class="tiny" id="btnCloseModal">CLOSE</button></div>
+    <div class="modal-body">
+      <textarea id="modalText" style="height:50dvh;font-family:var(--mono);"></textarea>
+      <div style="display:flex;gap:6px;margin-top:8px;">
+        <button class="primary" id="btnCopyExport">COPY</button>
+        <button id="btnDownloadExport">DOWNLOAD</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  const VERSION = "sora-workbench-v1";
+  const STORE_KEY = "SORA_WORKBENCH_STATE_V1";
+  const state = {
+    clips: [],
+    activeId: null,
+    view: "browse",
+    query: "",
+    selected: new Set(),
+    manifest: { name: "SORA_MANIFEST", clips: [] },
+    themes: [],
+    siblings: [],
+    exportText: "",
+    exportName: "manifest.txt",
+    mobileOverlay: null
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const els = {
+    command: $("command"), fileInput: $("fileInput"), btnImport: $("btnImport"), btnSave: $("btnSave"), btnReset: $("btnReset"),
+    leftPane: $("leftPane"), rightPane: $("rightPane"), btnMobileList: $("btnMobileList"), btnMobileTools: $("btnMobileTools"),
+    dropzone: $("dropzone"), stats: $("stats"), projectFilter: $("projectFilter"), statusFilter: $("statusFilter"), clipList: $("clipList"),
+    workView: $("workView"), centerTitle: $("centerTitle"), toolsPanel: $("toolsPanel"), btnMineThemes: $("btnMineThemes"),
+    btnSelectVisible: $("btnSelectVisible"), btnClearSelected: $("btnClearSelected"), btnFindSiblings: $("btnFindSiblings"),
+    btnKeep: $("btnKeep"), btnMaybe: $("btnMaybe"), btnCut: $("btnCut"), btnAddManifest: $("btnAddManifest"),
+    manifestName: $("manifestName"), manifestCount: $("manifestCount"), manifestItems: $("manifestItems"), exportPreview: $("exportPreview"),
+    btnExportTxt: $("btnExportTxt"), btnExportJson: $("btnExportJson"), btnExportFfmpeg: $("btnExportFfmpeg"), btnExportBash: $("btnExportBash"), btnClearManifest: $("btnClearManifest"),
+    exportModal: $("exportModal"), modalTitle: $("modalTitle"), modalText: $("modalText"), btnCloseModal: $("btnCloseModal"), btnCopyExport: $("btnCopyExport"), btnDownloadExport: $("btnDownloadExport"),
+    toast: $("toast")
+  };
+
+  const STOP = new Set(("a an and are as at be by for from has have he her his in into is it its like no not of on or our over she that the their them then there they this through to under with without you your scene style camera motion mood prompt video clip sora generated generation highly cinematic close wide shot slow fast long using use create showing shows where while white black one two three four five six seven eight nine ten json yaml true false").split(/\s+/));
+
+  function toast(msg){
+    els.toast.textContent = msg;
+    els.toast.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => els.toast.classList.remove("show"), 2200);
+  }
+
+  function uid(){ return Math.random().toString(36).slice(2,9); }
+  function escapeHtml(s=""){
+    return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+  }
+  function cleanId(name){
+    let base = name.split("/").pop().replace(/\.[^.]+$/, "");
+    base = base.replace(/_screen_capture$/i, "");
+    base = base.replace(/[-_ ]?(prompt|source|text)$/i, "");
+    return base;
+  }
+  function ext(name){ return (name.split(".").pop() || "").toLowerCase(); }
+  function isVideo(name){ return /\.(mp4|mov|webm|m4v)$/i.test(name); }
+  function isText(name){ return /\.(txt|md|json)$/i.test(name); }
+  function parseDateFromId(id){
+    const m = id.match(/(20\d{6})[_-]?(\d{6})?/);
+    if(!m) return "";
+    const d = m[1];
+    const t = m[2] || "000000";
+    return `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)} ${t.slice(0,2)}:${t.slice(2,4)}:${t.slice(4,6)}`;
+  }
+  function excerpt(s, n=180){ s = String(s || "").replace(/\s+/g," ").trim(); return s.length > n ? s.slice(0,n-1) + "…" : s; }
+  function words(text){
+    return String(text||"").toLowerCase().replace(/[_/\\.,:;!?()[\]{}"'`~@#$%^&*+=<>|]/g," ").split(/\s+/).filter(w => w.length>2 && !STOP.has(w) && !/^\d+$/.test(w));
+  }
+  function topTerms(text, limit=12){
+    const counts = new Map();
+    for(const w of words(text)) counts.set(w, (counts.get(w)||0)+1);
+    return [...counts.entries()].sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0])).slice(0,limit).map(x=>x[0]);
+  }
+  function clipById(id){ return state.clips.find(c=>c.id===id); }
+  function activeClip(){ return clipById(state.activeId); }
+  function unique(arr){ return [...new Set(arr.filter(Boolean))]; }
+
+  function normalizeClip(c){
+    return {
+      uid: c.uid || uid(),
+      id: c.id,
+      videoName: c.videoName || "",
+      videoUrl: c.videoUrl || "",
+      videoPresent: !!c.videoPresent,
+      promptName: c.promptName || "",
+      promptText: c.promptText || "",
+      promptPresent: !!c.promptPresent,
+      captureDate: c.captureDate || parseDateFromId(c.id),
+      duration: c.duration || "",
+      tags: unique(c.tags || []),
+      clusters: unique(c.clusters || []),
+      primaryProject: c.primaryProject || "",
+      tier: c.tier || "",
+      notes: c.notes || [],
+      promptNotes: c.promptNotes || [],
+      score: c.score || "",
+      keepState: c.keepState || "RAW",
+      frameExtracted: !!c.frameExtracted,
+      stripped: !!c.stripped,
+      sheeted: !!c.sheeted,
+      assembled: !!c.assembled
+    };
+  }
+
+  function serializableState(){
+    return {
+      version: VERSION,
+      clips: state.clips.map(c => ({...c, videoUrl:"", videoPresent: !!c.videoName && c.videoPresent})),
+      activeId: state.activeId,
+      manifest: state.manifest,
+      themes: state.themes
+    };
+  }
+
+  function save(){
+    localStorage.setItem(STORE_KEY, JSON.stringify(serializableState()));
+    toast("STATE SAVED LOCALLY");
+  }
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      if(!raw) return;
+      const data = JSON.parse(raw);
+      if(data && Array.isArray(data.clips)){
+        state.clips = data.clips.map(c => normalizeClip({...c, videoUrl:"", videoPresent:false}));
+        state.activeId = data.activeId || state.clips[0]?.id || null;
+        state.manifest = data.manifest || state.manifest;
+        state.themes = data.themes || [];
+        els.manifestName.value = state.manifest.name || "SORA_MANIFEST";
+      }
+    }catch(e){ console.warn(e); }
+  }
+
+  async function importFiles(fileList){
+    const files = [...fileList].filter(f => isVideo(f.name) || isText(f.name));
+    if(!files.length){ toast("NO SUPPORTED FILES FOUND"); return; }
+    const map = new Map();
+    for(const f of files){
+      const id = cleanId(f.webkitRelativePath || f.name);
+      if(!map.has(id)) map.set(id, { id, videos:[], texts:[] });
+      const item = map.get(id);
+      if(isVideo(f.name)) item.videos.push(f);
+      if(isText(f.name)) item.texts.push(f);
+    }
+    let added = 0, merged = 0;
+    for(const [id, group] of map.entries()){
+      let existing = clipById(id);
+      if(!existing){ existing = normalizeClip({id}); state.clips.push(existing); added++; } else merged++;
+      const video = group.videos.sort((a,b)=>a.name.localeCompare(b.name))[0];
+      const text = group.texts.sort((a,b)=>a.name.localeCompare(b.name))[0];
+      if(video){
+        if(existing.videoUrl) URL.revokeObjectURL(existing.videoUrl);
+        existing.videoName = video.webkitRelativePath || video.name;
+        existing.videoUrl = URL.createObjectURL(video);
+        existing.videoPresent = true;
+      }
+      if(text){
+        existing.promptName = text.webkitRelativePath || text.name;
+        existing.promptText = await text.text();
+        existing.promptPresent = true;
+      }
+      existing.captureDate = existing.captureDate || parseDateFromId(id);
+      autoTags(existing);
+    }
+    state.clips.sort((a,b) => (a.captureDate||a.id).localeCompare(b.captureDate||b.id));
+    state.activeId = state.activeId || state.clips[0]?.id || null;
+    mineThemes(false);
+    render();
+    save();
+    toast(`IMPORTED ${added} NEW / ${merged} MERGED`);
+  }
+
+  function autoTags(c){
+    const t = (c.promptText || "").toLowerCase();
+    const rules = [
+      ["train", /\b(train|trolley|rail|railway|station|locomotive|subway|passenger|tram)\b/],
+      ["bees", /\b(bee|bees|swarm|hive|honey)\b/],
+      ["trout-town", /\b(trout|goldfish)\b/],
+      ["viking", /\b(viking|valhalla|volholla|odin|norse|mead.hall)\b/],
+      ["lineage-genome", /lineage.genome|visual.lineage/],
+      ["ripple", /ripple.session|auto.step|auto.seed|rrc.loaded/],
+      ["crab-reef", /\b(crab|reef|sparky|fire.pit)\b/],
+      ["labyrinth", /\b(labyrinth|uncanny)\b/],
+      ["ethnography", /sensory.ethnography|corneal/],
+      ["poison", /well.is.poisoned|poisoned.well/],
+      ["azmari", /\b(azmari|krar)\b/],
+      ["matriarch", /\bmatriarch\b/],
+      ["spaghetti", /\bspaghetti\b/],
+      ["legos", /legos.model/],
+      ["forecast", /\b(forecast|gene.spam|plasmid|speculative)\b/],
+      ["puppet", /\b(puppet|core.block)\b/],
+      ["meta-qa", /\b(critique|design.qa|heuristic.forge)\b/]
+    ];
+    for(const [tag, re] of rules){ if(re.test(t) && !c.tags.includes(tag)) c.tags.push(tag); }
+    if(!c.primaryProject){
+      if(c.tags.includes("bees") && c.tags.includes("train")) c.primaryProject = "BEES_ON_A_TRAIN";
+      else if(c.tags.includes("poison")) c.primaryProject = "POISONED_WELL";
+      else if(c.tags.includes("azmari") || (c.tags.includes("matriarch") && c.tags.includes("spaghetti"))) c.primaryProject = "AZMARI_MATRIARCH";
+      else if(c.tags.includes("crab-reef")) c.primaryProject = "CRAB_REEF";
+      else if(c.tags.includes("viking")) c.primaryProject = "VALHALLA_VIKINGS";
+      else if(c.tags.includes("trout-town")) c.primaryProject = "TROUT_TOWN";
+      else if(c.tags.includes("ethnography")) c.primaryProject = "SENSORY_ETHNOGRAPHY";
+      else if(c.tags.includes("labyrinth")) c.primaryProject = "UNCANNY_LABYRINTH";
+      else if(c.tags.includes("forecast")) c.primaryProject = "SPECULATIVE_FORECAST";
+      else if(c.tags.includes("meta-qa")) c.primaryProject = "META_DESIGN_QA";
+      else if(c.tags.includes("puppet")) c.primaryProject = "PUPPET_CORE_BLOCKS";
+      else if(c.tags.includes("lineage-genome")) c.primaryProject = "LINEAGE_GENOME";
+      else if(c.tags.includes("legos")) c.primaryProject = "LEGOS_SCENES";
+      else if(c.tags.includes("ripple")) c.primaryProject = "RIPPLE_SESSIONS";
+      else if(c.tags.includes("train")) c.primaryProject = "TRAINS_TROLLEYS";
+    }
+  }
+
+  function statusOf(c){
+    if(c.assembled) return "ASSEMBLED";
+    if(c.sheeted) return "SHEETED";
+    if(c.stripped) return "STRIPPED";
+    if(c.frameExtracted) return "EXTRACTED";
+    if(state.manifest.clips.includes(c.id)) return "MANIFESTED";
+    if(c.tier) return "TIERED";
+    if(c.primaryProject) return "ROUTED";
+    if(c.clusters.length) return "CLUSTERED";
+    if(c.tags.length) return "TAGGED";
+    return c.keepState || "RAW";
+  }
+
+  function filteredClips(){
+    const q = state.query.trim();
+    const project = els.projectFilter.value;
+    const status = els.statusFilter.value;
+    let clips = state.clips;
+    if(project === "__none") clips = clips.filter(c=>!c.primaryProject);
+    else if(project) clips = clips.filter(c=>c.primaryProject===project);
+    if(status) clips = clips.filter(c=>statusOf(c)===status || c.keepState===status);
+    if(q && !q.startsWith("/")) clips = clips.filter(c => matchQuery(c,q));
+    return clips;
+  }
+
+  function matchQuery(c, q){
+    const chunks = q.match(/(?:"[^"]+"|\S+)/g) || [];
+    const hay = `${c.id} ${c.promptText} ${c.tags.join(" ")} ${c.clusters.join(" ")} ${c.primaryProject} ${c.tier} ${c.keepState}`.toLowerCase();
+    for(let raw of chunks){
+      raw = raw.replace(/^"|"$/g,"");
+      const lower = raw.toLowerCase();
+      if(lower.includes(":")){
+        const [k,...rest] = lower.split(":");
+        const v = rest.join(":");
+        if(k==="tag" && !c.tags.map(x=>x.toLowerCase()).includes(v)) return false;
+        if(k==="cluster" && !c.clusters.map(x=>x.toLowerCase()).includes(v)) return false;
+        if(k==="project"){
+          if(v==="none" && c.primaryProject) return false;
+          else if(v!=="none" && c.primaryProject.toLowerCase()!==v) return false;
+        }
+        if(k==="tier"){
+          if(v==="none" && c.tier) return false;
+          else if(v!=="none" && c.tier.toLowerCase()!==v) return false;
+        }
+        if(k==="status" && statusOf(c).toLowerCase()!==v && c.keepState.toLowerCase()!==v) return false;
+        if(k==="date" && !(c.captureDate||"").replaceAll("-","").includes(v)) return false;
+        if(k==="motion" && !new RegExp(`\\b${escapeReg(v)}\\b`,"i").test(c.promptText)) return false;
+      } else if(!hay.includes(lower)) return false;
+    }
+    return true;
+  }
+  function escapeReg(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"); }
+
+  function executeCommand(input){
+    const parts = input.trim().split(/\s+/);
+    const cmd = parts[0]?.toLowerCase();
+    const selected = [...state.selected].map(clipById).filter(Boolean);
+    const active = activeClip();
+    const targetClips = selected.length ? selected : active ? [active] : [];
+    if(cmd === "/tag"){
+      const tag = parts.slice(2).join("-") || parts[1];
+      if(!tag) return toast("TAG MISSING");
+      for(const c of targetClips){ if(!c.tags.includes(tag)) c.tags.push(tag); }
+      toast(`TAGGED ${targetClips.length} CLIPS: ${tag}`);
+    } else if(cmd === "/route"){
+      const project = parts.slice(2).join("_") || parts[1];
+      if(!project) return toast("PROJECT MISSING");
+      for(const c of targetClips) c.primaryProject = project.toUpperCase();
+      toast(`ROUTED ${targetClips.length} CLIPS`);
+    } else if(cmd === "/tier"){
+      const tier = parts.slice(2).join("_") || parts[1];
+      if(!tier) return toast("TIER MISSING");
+      for(const c of targetClips) c.tier = tier.toUpperCase();
+      toast(`TIERED ${targetClips.length} CLIPS`);
+    } else if(cmd === "/manifest"){
+      if(parts[1] === "add") addManyToManifest(targetClips.map(c=>c.id));
+      else if(parts[1] === "clear") clearManifest();
+      else toast("COMMAND: /manifest add selected");
+    } else if(cmd === "/keep" || cmd === "/maybe" || cmd === "/cut"){
+      const val = cmd.slice(1).toUpperCase();
+      for(const c of targetClips) c.keepState = val;
+      toast(`${val}: ${targetClips.length} CLIPS`);
+    } else if(cmd === "/theme"){
+      mineThemes(true);
+    } else if(cmd === "/export"){
+      openExport("json");
+    } else {
+      toast("UNKNOWN COMMAND");
+    }
+    els.command.value = "";
+    state.query = "";
+    render(); save();
+  }
+
+  function setView(v){
+    state.view = v;
+    document.querySelectorAll("[data-view]").forEach(b => b.classList.toggle("active", b.dataset.view === v));
+    renderWork();
+    closeMobileOverlays();
+  }
+
+  function render(){
+    renderStats(); renderFilters(); renderList(); renderWork(); renderTools(); renderManifest();
+  }
+
+  function renderStats(){
+    const total = state.clips.length;
+    const routed = state.clips.filter(c=>c.primaryProject).length;
+    const tagged = state.clips.filter(c=>c.tags.length).length;
+    const manifested = state.manifest.clips.length;
+    const unpaired = state.clips.filter(c=>!c.videoPresent || !c.promptPresent).length;
+    els.stats.innerHTML = [
+      [total,"clips"], [tagged,"tagged"], [routed,"routed"], [manifested,"manifest"], [unpaired,"unpaired"], [state.themes.length,"themes"]
+    ].map(([n,l])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
+  }
+
+  function renderFilters(){
+    const projects = unique(state.clips.map(c=>c.primaryProject)).sort();
+    const curP = els.projectFilter.value;
+    els.projectFilter.innerHTML = `<option value="">project:any</option><option value="__none">project:none</option>` + projects.map(p=>`<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join("");
+    els.projectFilter.value = projects.includes(curP) || curP==="__none" ? curP : "";
+    const statuses = unique(state.clips.map(statusOf).concat(["RAW","KEEP","MAYBE","CUT"])).sort();
+    const curS = els.statusFilter.value;
+    els.statusFilter.innerHTML = `<option value="">status:any</option>` + statuses.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
+    els.statusFilter.value = statuses.includes(curS) ? curS : "";
+  }
+
+  function renderList(){
+    const clips = filteredClips();
+    if(!state.clips.length){
+      els.clipList.innerHTML = `<div class="empty" style="height:auto;min-height:180px;">NO CLIPS LOADED.<br>IMPORT A SORA FOLDER OR DROP VIDEO/TEXT PAIRS.</div>`;
+      return;
+    }
+    const frag = document.createDocumentFragment();
+    const visible = clips.slice(0, 600);
+    for(const c of visible){
+      const div = document.createElement("div");
+      div.className = `clip-card ${c.id===state.activeId?"active":""} ${state.selected.has(c.id)?"selected":""}`;
+      div.dataset.id = c.id;
+      const tags = c.tags.slice(0,5).map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join("");
+      const st = statusOf(c);
+      div.innerHTML = `
+        <div class="clip-top">
+          <div class="check">${state.selected.has(c.id)?"✓":""}</div>
+          <div><div class="clip-id">${escapeHtml(c.id)}</div><div class="clip-meta">${escapeHtml(c.captureDate || "no date")} · ${escapeHtml(c.videoPresent?"video":"no video")} / ${escapeHtml(c.promptPresent?"prompt":"no prompt")}</div></div>
+          <span class="badge ${st==="CUT"?"danger":st==="KEEP"?"ok":"accent"}">${escapeHtml(st)}</span>
+        </div>
+        <div class="clip-excerpt">${escapeHtml(excerpt(c.promptText || "No prompt text loaded.", 150))}</div>
+        <div style="padding:0 8px 6px 8px;">${tags || `<span class="badge danger">untagged</span>`}${c.primaryProject?`<span class="badge accent">${escapeHtml(c.primaryProject)}</span>`:""}</div>
+        <div class="clip-actions">
+          <button class="tiny" data-op="keep">keep</button>
+          <button class="tiny" data-op="tag">tag</button>
+          <button class="tiny" data-op="route">route</button>
+          <button class="tiny" data-op="compare">compare</button>
+          <button class="tiny primary" data-op="manifest">+</button>
+        </div>`;
+      frag.appendChild(div);
+    }
+    els.clipList.replaceChildren(frag);
+    if(clips.length > visible.length){
+      const more = document.createElement("div");
+      more.className = "muted mono"; more.style.padding="8px"; more.textContent = `Showing first ${visible.length} of ${clips.length}. Narrow search for more.`;
+      els.clipList.appendChild(more);
+    }
+  }
+
+  function renderWork(){
+    const c = activeClip();
+    const titles = {browse:"Inspector", cluster:"Theme Miner", compare:"Compare", route:"Route", manifest:"Manifest", pipeline:"Pipeline"};
+    els.centerTitle.textContent = titles[state.view] || "Inspector";
+    if(state.view === "cluster") return renderClusterView();
+    if(state.view === "compare") return renderCompareView();
+    if(state.view === "route") return renderRouteView();
+    if(state.view === "manifest") return renderManifestView();
+    if(state.view === "pipeline") return renderPipelineView();
+    if(!c){
+      els.workView.innerHTML = `<div class="empty">NO ACTIVE CLIP.<br>IMPORT FILES, THEN SELECT A CLIP.</div>`;
+      return;
+    }
+    els.workView.innerHTML = inspectorHTML(c);
+    bindInspector(c);
+  }
+
+  function inspectorHTML(c){
+    const lines = promptLinesHTML(c.promptText);
+    const notes = c.notes.map(n => `<div class="note"><div class="note-meta">${escapeHtml(n.surface||"clip")} · ${escapeHtml(n.time||"")}</div>${escapeHtml(n.text)}</div>`).join("") || `<div class="muted mono">No clip notes yet.</div>`;
+    const promptNotes = c.promptNotes.map(n => `<div class="note"><div class="note-meta">line ${escapeHtml(n.line)} · prompt</div>${escapeHtml(n.text)}</div>`).join("") || `<div class="muted mono">No prompt-line notes yet.</div>`;
+    return `
+      <div class="section">
+        <div class="section-head"><span>${escapeHtml(c.id)}</span><span>${escapeHtml(statusOf(c))}</span></div>
+        <div class="section-body">
+          ${c.videoUrl ? `<video controls playsinline src="${c.videoUrl}"></video>` : `<div class="empty" style="height:190px;border:1px solid var(--line);">VIDEO NOT AVAILABLE IN THIS SESSION.<br>REIMPORT FILES TO RESTORE LOCAL VIDEO URL.</div>`}
+        </div>
+      </div>
+      <div class="section"><div class="section-head"><span>state ledger</span><span>visible truth</span></div><div class="section-body"><div class="ledger">${ledgerHTML(c)}</div></div></div>
+      <div class="section"><div class="section-head"><span>route</span><span>primary project / tier</span></div><div class="section-body grid2">
+        <div class="field"><div class="label">project</div><input id="projectInput" value="${escapeHtml(c.primaryProject)}" placeholder="BEES_ON_A_TRAIN"></div>
+        <div class="field"><div class="label">tier</div><input id="tierInput" value="${escapeHtml(c.tier)}" placeholder="T1_OPENING"></div>
+      </div></div>
+      <div class="section"><div class="section-head"><span>tags</span><button class="tiny" id="btnAddTag">add tag</button></div><div class="section-body">
+        <div>${c.tags.map(t=>`<span class="badge" data-rmtag="${escapeHtml(t)}">${escapeHtml(t)} ×</span>`).join("") || `<span class="badge danger">none</span>`}</div>
+        <input id="tagInput" style="width:100%;margin-top:8px;" placeholder="add tag then Enter" />
+      </div></div>
+      <div class="section"><div class="section-head"><span>prompt source</span><span>${escapeHtml(c.promptName || "no prompt file")}</span></div><div class="section-body"><div class="promptbox">${lines}</div></div></div>
+      <div class="section"><div class="section-head"><span>clip notes</span><button class="tiny" id="btnAddNote">add note</button></div><div class="section-body">${notes}<textarea id="noteInput" placeholder="clip-level or timecode note. Example: 00:07 best swarm motion."></textarea></div></div>
+      <div class="section"><div class="section-head"><span>prompt-line notes</span><button class="tiny" id="btnAddPromptNote">bind note</button></div><div class="section-body">${promptNotes}<div class="grid2"><input id="promptLineInput" placeholder="line #"><input id="promptNoteInput" placeholder="what this line causes"></div></div></div>
+    `;
+  }
+
+  function promptLinesHTML(text){
+    if(!text) return `<span class="muted">No prompt text loaded.</span>`;
+    return text.split(/\r?\n/).map((line,i)=>`<div class="prompt-line"><span class="ln">${String(i+1).padStart(3,"0")}</span><span>${escapeHtml(line || " ")}</span></div>`).join("");
+  }
+
+  function ledgerHTML(c){
+    const on = {
+      PROMPT: c.promptPresent, VIDEO: c.videoPresent, TAGGED: c.tags.length, PROJECT: c.primaryProject, TIER: c.tier,
+      FRAMES: c.frameExtracted, STRIP: c.stripped, SHEET: c.sheeted, CUT: c.assembled
+    };
+    return Object.entries(on).map(([k,v])=>`<div class="led ${v?"on":""}">${k}<br>${v?"✓":"—"}</div>`).join("");
+  }
+
+  function bindInspector(c){
+    const p = $("projectInput"), t = $("tierInput"), tag = $("tagInput");
+    p?.addEventListener("change", () => { c.primaryProject = p.value.trim().toUpperCase(); render(); save(); });
+    t?.addEventListener("change", () => { c.tier = t.value.trim().toUpperCase(); render(); save(); });
+    tag?.addEventListener("keydown", e => { if(e.key==="Enter") addTag(c, tag.value); });
+    $("btnAddTag")?.addEventListener("click", () => addTag(c, tag.value));
+    document.querySelectorAll("[data-rmtag]").forEach(b => b.addEventListener("click", () => { c.tags = c.tags.filter(x=>x!==b.dataset.rmtag); render(); save(); }));
+    $("btnAddNote")?.addEventListener("click", () => {
+      const input = $("noteInput"); const text = input.value.trim(); if(!text) return;
+      const tm = text.match(/\b\d{1,2}:\d{2}(?:\.\d+)?\b/);
+      c.notes.push({ surface:"clip", time: tm?.[0] || "", text, created: new Date().toISOString() });
+      input.value=""; render(); save();
+    });
+    $("btnAddPromptNote")?.addEventListener("click", () => {
+      const line = $("promptLineInput").value.trim(); const text = $("promptNoteInput").value.trim(); if(!line || !text) return;
+      c.promptNotes.push({ line, text, created: new Date().toISOString() });
+      render(); save();
+    });
+  }
+
+  function addTag(c, raw){
+    const tag = raw.trim().toLowerCase().replace(/\s+/g,"-");
+    if(!tag) return;
+    if(!c.tags.includes(tag)) c.tags.push(tag);
+    render(); save();
+  }
+
+  function renderClusterView(){
+    if(!state.themes.length) mineThemes(false);
+    els.workView.innerHTML = `
+      <div class="section"><div class="section-head"><span>bottom-up theme hypotheses</span><button class="tiny primary" id="btnMineNow">mine now</button></div>
+      <div class="section-body"><div class="muted mono">Themes are provisional. Accept, rename, split, merge, or route them. They are not truth.</div></div></div>
+      ${state.themes.map(themeHTML).join("") || `<div class="empty" style="height:220px;">NO THEMES YET.<br>IMPORT PROMPTS, THEN MINE THEMES.</div>`}`;
+    $("btnMineNow")?.addEventListener("click", () => { mineThemes(true); render(); });
+    document.querySelectorAll("[data-theme-inspect]").forEach(b => b.addEventListener("click", () => {
+      state.query = b.dataset.themeInspect; els.command.value = state.query; setView("browse"); render();
+    }));
+    document.querySelectorAll("[data-theme-tag]").forEach(b => b.addEventListener("click", () => {
+      const th = state.themes.find(t=>t.name===b.dataset.themeTag); if(!th) return;
+      for(const id of th.clips){ const c = clipById(id); if(c && !c.tags.includes(th.name)) c.tags.push(th.name); }
+      render(); save(); toast(`TAGGED THEME: ${th.name}`);
+    }));
+    document.querySelectorAll("[data-theme-project]").forEach(b => b.addEventListener("click", () => {
+      const th = state.themes.find(t=>t.name===b.dataset.themeProject); if(!th) return;
+      const project = th.name.toUpperCase().replace(/[^A-Z0-9]+/g,"_");
+      for(const id of th.clips){ const c = clipById(id); if(c && !c.primaryProject) c.primaryProject = project; }
+      render(); save(); toast(`ROUTED UNROUTED CLIPS TO ${project}`);
+    }));
+  }
+
+  function themeHTML(t){
+    const pct = Math.max(3, Math.min(100, Math.round((t.clips.length / Math.max(1,state.clips.length))*100)));
+    return `<div class="theme-card">
+      <h3>${escapeHtml(t.name)}</h3>
+      <div><span class="badge accent">${t.clips.length} clips</span><span class="badge">confidence ${Math.round(t.confidence*100)}%</span></div>
+      <div class="meter"><span style="width:${pct}%"></span></div>
+      <div class="theme-terms">terms: ${escapeHtml(t.terms.join(", "))}</div>
+      <div style="display:flex;gap:5px;margin-top:8px;overflow:auto;"><button class="tiny" data-theme-inspect="${escapeHtml(t.terms.slice(0,2).join(" "))}">inspect</button><button class="tiny" data-theme-tag="${escapeHtml(t.name)}">apply tag</button><button class="tiny" data-theme-project="${escapeHtml(t.name)}">route as project</button><button class="tiny primary" onclick="window.SoraWorkbenchAddThemeToManifest('${escapeHtml(t.name)}')">+ manifest</button></div>
+    </div>`;
+  }
+
+  function mineThemes(showToast=true){
+    const termMap = new Map();
+    for(const c of state.clips){
+      const terms = topTerms(c.promptText, 18);
+      const bigrams = [];
+      const ws = words(c.promptText);
+      for(let i=0;i<ws.length-1;i++) if(!STOP.has(ws[i]) && !STOP.has(ws[i+1])) bigrams.push(`${ws[i]} ${ws[i+1]}`);
+      for(const term of unique(terms.concat(bigrams.slice(0,20)))){
+        if(!termMap.has(term)) termMap.set(term, new Set());
+        termMap.get(term).add(c.id);
+      }
+    }
+    const themes = [...termMap.entries()]
+      .filter(([term,set]) => set.size >= Math.max(3, Math.ceil(state.clips.length * 0.012)))
+      .map(([term,set]) => ({ name: term.replace(/\s+/g,"-"), terms: term.split(/\s+/), clips:[...set], confidence: Math.min(.98, .35 + set.size / Math.max(10,state.clips.length)) }))
+      .sort((a,b) => b.clips.length - a.clips.length)
+      .slice(0, 40);
+    state.themes = themes;
+    if(showToast) toast(`MINED ${themes.length} THEME HYPOTHESES`);
+  }
+
+  window.SoraWorkbenchAddThemeToManifest = (name) => {
+    const th = state.themes.find(t=>t.name===name); if(!th) return;
+    addManyToManifest(th.clips);
+  };
+
+  function vector(text){
+    const m = new Map();
+    for(const w of words(text)) m.set(w,(m.get(w)||0)+1);
+    return m;
+  }
+  function cosine(a,b){
+    let dot=0, aa=0, bb=0;
+    for(const v of a.values()) aa += v*v;
+    for(const v of b.values()) bb += v*v;
+    for(const [k,v] of a) dot += v * (b.get(k)||0);
+    return aa && bb ? dot/(Math.sqrt(aa)*Math.sqrt(bb)) : 0;
+  }
+  function findSiblings(baseId=state.activeId){
+    const base = clipById(baseId); if(!base) return [];
+    const bv = vector(base.promptText);
+    const baseTerms = new Set(topTerms(base.promptText, 20));
+    const rows = state.clips.filter(c=>c.id!==base.id).map(c => {
+      const score = cosine(bv, vector(c.promptText));
+      const terms = topTerms(c.promptText, 20);
+      const shared = terms.filter(t=>baseTerms.has(t)).slice(0,8);
+      const different = terms.filter(t=>!baseTerms.has(t)).slice(0,8);
+      return {id:c.id, score, shared, different};
+    }).filter(r=>r.score>0).sort((a,b)=>b.score-a.score).slice(0,24);
+    state.siblings = rows;
+    return rows;
+  }
+
+  function renderCompareView(){
+    const active = activeClip();
+    if(!state.siblings.length && active) findSiblings(active.id);
+    const second = state.siblings[0] ? clipById(state.siblings[0].id) : null;
+    els.workView.innerHTML = `
+      <div class="section"><div class="section-head"><span>difference viewer</span><button class="tiny primary" id="btnRunSiblings">find siblings</button></div><div class="section-body"><div class="muted mono">Compare similar prompt structures against different motion outcomes. Mark the difference that makes the difference.</div></div></div>
+      <div class="compare-grid">
+        <div class="compare-slot">${compareSlotHTML(active, "A")}</div>
+        <div class="compare-slot">${compareSlotHTML(second, "B")}</div>
+      </div>
+      <div class="section"><div class="section-head"><span>similar prompt candidates</span><span>${state.siblings.length}</span></div><div class="section-body">${state.siblings.map(similarHTML).join("") || `<div class="muted mono">No siblings yet.</div>`}</div></div>`;
+    $("btnRunSiblings")?.addEventListener("click", () => { findSiblings(); renderCompareView(); });
+    document.querySelectorAll("[data-compare-id]").forEach(b => b.addEventListener("click", () => { state.activeId = b.dataset.compareId; findSiblings(); render(); }));
+  }
+
+  function compareSlotHTML(c, label){
+    if(!c) return `<div class="section"><div class="section-head"><span>clip ${label}</span></div><div class="section-body"><div class="empty" style="height:200px;">NO CLIP</div></div></div>`;
+    return `<div class="section"><div class="section-head"><span>clip ${label}: ${escapeHtml(c.id)}</span><span>${escapeHtml(statusOf(c))}</span></div><div class="section-body">
+      ${c.videoUrl ? `<video controls playsinline src="${c.videoUrl}"></video>` : `<div class="empty" style="height:150px;border:1px solid var(--line);">NO VIDEO URL</div>`}
+      <div class="promptbox" style="max-height:220px;margin-top:8px;">${promptLinesHTML(c.promptText)}</div>
+      <div style="margin-top:8px;">${topTerms(c.promptText,10).map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join("")}</div>
+    </div></div>`;
+  }
+  function similarHTML(r){
+    return `<div class="similar-card"><h3>${escapeHtml(r.id)}</h3><div><span class="badge accent">${Math.round(r.score*100)}% similar</span></div><div class="theme-terms">shared: ${escapeHtml(r.shared.join(", ") || "—")}</div><div class="theme-terms">different: ${escapeHtml(r.different.join(", ") || "—")}</div><div style="margin-top:7px;"><button class="tiny" data-compare-id="${escapeHtml(r.id)}">inspect as A</button><button class="tiny primary" onclick="window.SoraWorkbenchAddOneToManifest('${escapeHtml(r.id)}')">+ manifest</button></div></div>`;
+  }
+
+  window.SoraWorkbenchAddOneToManifest = (id) => addManyToManifest([id]);
+
+  function renderRouteView(){
+    const clips = filteredClips();
+    const projects = groupBy(state.clips, c=>c.primaryProject || "UNROUTED");
+    els.workView.innerHTML = `
+      <div class="section"><div class="section-head"><span>route selected clips</span><span>${state.selected.size} selected</span></div><div class="section-body grid3">
+        <input id="bulkProject" placeholder="PROJECT_NAME">
+        <input id="bulkTier" placeholder="TIER_NAME">
+        <button class="primary" id="btnBulkRoute">APPLY</button>
+      </div></div>
+      <div class="section"><div class="section-head"><span>project buckets</span><span>${Object.keys(projects).length}</span></div><div class="section-body">
+      ${Object.entries(projects).sort((a,b)=>b[1].length-a[1].length).map(([p,arr])=>`<div class="theme-card"><h3>${escapeHtml(p)}</h3><span class="badge accent">${arr.length} clips</span><button class="tiny" style="margin-left:5px;" onclick="window.SoraWorkbenchQueryProject('${escapeHtml(p)}')">inspect</button></div>`).join("")}
+      </div></div>`;
+    $("btnBulkRoute")?.addEventListener("click", () => {
+      const p = $("bulkProject").value.trim().toUpperCase(); const t = $("bulkTier").value.trim().toUpperCase();
+      const ids = state.selected.size ? [...state.selected] : clips.map(c=>c.id);
+      for(const id of ids){ const c=clipById(id); if(!c) continue; if(p) c.primaryProject=p; if(t) c.tier=t; }
+      render(); save(); toast(`ROUTED ${ids.length} CLIPS`);
+    });
+  }
+  window.SoraWorkbenchQueryProject = (p) => { state.query = p === "UNROUTED" ? "project:none" : `project:${p.toLowerCase()}`; els.command.value=state.query; setView("browse"); render(); };
+
+  function groupBy(arr, fn){ return arr.reduce((m,x)=>{ const k=fn(x); (m[k] ||= []).push(x); return m; },{}); }
+
+  function renderManifestView(){
+    const rows = state.manifest.clips.map((id,i)=>clipById(id)).filter(Boolean);
+    els.workView.innerHTML = `
+      <div class="section"><div class="section-head"><span>manifest builder</span><span>${rows.length} clips</span></div><div class="section-body">
+        <div class="grid3"><button id="btnAddVisible" class="primary">add visible</button><button id="btnDedupeManifest">dedupe</button><button id="btnExportPackage">export package</button></div>
+      </div></div>
+      <div class="section"><div class="section-head"><span>ordered clips</span><span>playlist / build target</span></div><div class="section-body">${rows.map((c,i)=>manifestRowHTML(c,i)).join("") || `<div class="muted mono">No clips in manifest.</div>`}</div></div>`;
+    $("btnAddVisible")?.addEventListener("click", () => addManyToManifest(filteredClips().map(c=>c.id)));
+    $("btnDedupeManifest")?.addEventListener("click", () => { state.manifest.clips = unique(state.manifest.clips); render(); save(); });
+    $("btnExportPackage")?.addEventListener("click", () => openExport("package"));
+  }
+  function manifestRowHTML(c,i){
+    return `<div class="manifest-card"><div class="mono"><span class="accent">${String(i+1).padStart(2,"0")}</span> ${escapeHtml(c.id)}</div><div class="muted" style="font-size:12px;margin:5px 0;">${escapeHtml(excerpt(c.promptText,120))}</div><span class="badge">${escapeHtml(c.primaryProject||"no project")}</span><span class="badge">${escapeHtml(c.tier||"no tier")}</span></div>`;
+  }
+
+  function renderPipelineView(){
+    const counts = {
+      PROMPT: state.clips.filter(c=>c.promptPresent).length,
+      VIDEO: state.clips.filter(c=>c.videoPresent).length,
+      TAGGED: state.clips.filter(c=>c.tags.length).length,
+      ROUTED: state.clips.filter(c=>c.primaryProject).length,
+      TIERED: state.clips.filter(c=>c.tier).length,
+      MANIFESTED: state.manifest.clips.length,
+      EXTRACTED: state.clips.filter(c=>c.frameExtracted).length,
+      SHEETED: state.clips.filter(c=>c.sheeted).length
+    };
+    els.workView.innerHTML = `<div class="section"><div class="section-head"><span>pipeline state</span><span>truth ledger</span></div><div class="section-body"><div class="pipeline-grid">${Object.entries(counts).map(([k,v])=>`<div class="pipeline-cell"><div class="n">${v}</div><div class="l">${k}</div></div>`).join("")}</div></div></div>
+    <div class="section"><div class="section-head"><span>shell handoff idea</span><span>external pipeline</span></div><div class="section-body"><div class="export-box">Export manifest.txt, then feed it to your ffmpeg/ImageMagick contact-sheet script. This browser MVP does not run ffmpeg; it prepares clean build targets.</div></div></div>`;
+  }
+
+  function renderTools(){
+    const c = activeClip();
+    const selectedCount = state.selected.size;
+    const siblings = state.siblings.slice(0,6).map(similarHTML).join("");
+    els.toolsPanel.innerHTML = `
+      <div class="section"><div class="section-head"><span>selection</span><span>${selectedCount}</span></div><div class="section-body">
+        <div class="grid2"><button id="toolTagSelected">tag</button><button id="toolRouteSelected">route</button></div>
+        <div class="grid2" style="margin-top:6px;"><button id="toolManifestSelected" class="primary">+ manifest</button><button id="toolClearSelected">clear</button></div>
+      </div></div>
+      <div class="section"><div class="section-head"><span>active terms</span><span>${c?escapeHtml(c.id):"none"}</span></div><div class="section-body">${c ? topTerms(c.promptText,18).map(t=>`<span class="badge">${escapeHtml(t)}</span>`).join("") : `<div class="muted mono">No active clip.</div>`}</div></div>
+      <div class="section"><div class="section-head"><span>siblings</span><button class="tiny" id="toolSiblings">find</button></div><div class="section-body">${siblings || `<div class="muted mono">No similarity run yet.</div>`}</div></div>
+      <div class="section"><div class="section-head"><span>theme hypotheses</span><span>${state.themes.length}</span></div><div class="section-body">${state.themes.slice(0,8).map(t=>`<div class="note"><b>${escapeHtml(t.name)}</b><br><span class="muted mono">${t.clips.length} clips</span></div>`).join("") || `<div class="muted mono">No themes yet.</div>`}</div></div>`;
+    $("toolSiblings")?.addEventListener("click", () => { findSiblings(); render(); });
+    $("toolClearSelected")?.addEventListener("click", () => { state.selected.clear(); render(); });
+    $("toolManifestSelected")?.addEventListener("click", () => addManyToManifest([...state.selected]));
+    $("toolTagSelected")?.addEventListener("click", () => {
+      const tag = prompt("Tag selected clips:"); if(!tag) return;
+      for(const id of state.selected){ const c=clipById(id); if(c && !c.tags.includes(tag)) c.tags.push(tag); }
+      render(); save();
+    });
+    $("toolRouteSelected")?.addEventListener("click", () => {
+      const p = prompt("Route selected clips to project:"); if(!p) return;
+      for(const id of state.selected){ const c=clipById(id); if(c) c.primaryProject = p.toUpperCase().replace(/\s+/g,"_"); }
+      render(); save();
+    });
+  }
+
+  function renderManifest(){
+    state.manifest.name = els.manifestName.value.trim() || "SORA_MANIFEST";
+    els.manifestCount.textContent = `${state.manifest.clips.length} clips`;
+    els.manifestItems.innerHTML = state.manifest.clips.map((id,i)=>{
+      const c = clipById(id);
+      return `<div class="manifest-pill"><div class="idx">${String(i+1).padStart(3,"0")}</div><div class="id">${escapeHtml(id)}</div><div class="muted" style="font-size:11px;line-height:1.25;">${escapeHtml(excerpt(c?.promptText || "missing clip", 88))}</div><div class="ops"><button class="tiny" onclick="window.SoraManifestMove(${i},-1)">↑</button><button class="tiny" onclick="window.SoraManifestMove(${i},1)">↓</button><button class="tiny danger" onclick="window.SoraManifestRemove(${i})">×</button></div></div>`;
+    }).join("") || `<div class="muted mono" style="padding:10px;">Manifest rail empty. Add clips with + MANIFEST.</div>`;
+    els.exportPreview.textContent = makeTxtExport();
+  }
+
+  function addManyToManifest(ids){
+    let n=0;
+    for(const id of ids){ if(id && !state.manifest.clips.includes(id)){ state.manifest.clips.push(id); n++; } }
+    render(); save(); toast(`ADDED ${n} CLIPS TO MANIFEST`);
+  }
+  function clearManifest(){ state.manifest.clips = []; render(); save(); toast("MANIFEST CLEARED"); }
+  window.SoraManifestMove = (i,dir) => { const j=i+dir; if(j<0 || j>=state.manifest.clips.length) return; const arr=state.manifest.clips; [arr[i],arr[j]]=[arr[j],arr[i]]; render(); save(); };
+  window.SoraManifestRemove = (i) => { state.manifest.clips.splice(i,1); render(); save(); };
+
+  function makeTxtExport(){
+    const name = state.manifest.name || "SORA_MANIFEST";
+    const rows = [`# PROJECT: ${name}`, `# CLIPS: ${state.manifest.clips.length}`, ""];
+    for(const id of state.manifest.clips) rows.push(id);
+    return rows.join("\n");
+  }
+  function makeFfmpegExport(){
+    return state.manifest.clips.map(id => {
+      const c = clipById(id);
+      const name = c?.videoName || `${id}_screen_capture.mp4`;
+      return `file '${String(name).replace(/'/g,"'\\''")}'`;
+    }).join("\n");
+  }
+  function makeJsonExport(){
+    const rows = state.manifest.clips.map((id,index)=>{
+      const c=clipById(id) || {id};
+      return { index:index+1, id, video:c.videoName||"", prompt:c.promptName||"", project:c.primaryProject||"", tier:c.tier||"", tags:c.tags||[], notes:c.notes||[] };
+    });
+    return JSON.stringify({ version:VERSION, manifest:state.manifest.name, clip_count:rows.length, clips:rows }, null, 2);
+  }
+  function makePackageExport(){
+    const projects = groupBy(state.manifest.clips.map(clipById).filter(Boolean), c=>c.primaryProject || "UNROUTED");
+    const pkg = { version:VERSION, exported_at:new Date().toISOString(), manifest:state.manifest.name, txt:makeTxtExport(), ffmpeg_concat:makeFfmpegExport(), projects:{} };
+    for(const [project, clips] of Object.entries(projects)){
+      pkg.projects[project] = { output_directory:`projects/${project}`, clips:clips.map(c=>c.id), tiers: groupBy(clips, c=>c.tier || "UNTIERED") };
+    }
+    return JSON.stringify(pkg,null,2);
+  }
+  function makeBashExport(){
+    const name = state.manifest.name || "SORA_MANIFEST";
+    const projects = groupBy(state.manifest.clips.map(clipById).filter(Boolean), c=>c.primaryProject || "UNROUTED");
+    const lines = [`#!/bin/bash`, `# Generated by SORA WORKBENCH`, `# Project: ${name}`, `# Date: ${new Date().toISOString()}`, `# Clips: ${state.manifest.clips.length}`, ``, `SOURCE_DIR="../SORA_CAPTURES"`, `OUTPUT_DIR="./${name}_CONTACT_SHEETS"`, `mkdir -p "$OUTPUT_DIR"`, ``];
+    for(const [project, clips] of Object.entries(projects).sort((a,b)=>a[0].localeCompare(b[0]))){
+      const tiers = groupBy(clips, c=>c.tier || "UNTIERED");
+      for(const [tier, tierClips] of Object.entries(tiers).sort((a,b)=>a[0].localeCompare(b[0]))){
+        const varName = `${project}__${tier}`.replace(/[^A-Z0-9_]/gi,"_");
+        lines.push(`${varName}=(`);
+        for(const c of tierClips) lines.push(`  "${c.id}_screen_capture.mp4"`);
+        lines.push(`)`, ``);
+      }
+    }
+    lines.push(`# --- EXTRACTION LOOP ---`);
+    lines.push(`for clip in "${state.manifest.clips.map(id=>`${id}_screen_capture.mp4`).join('" "')}"; do`);
+    lines.push(`  echo "EXTRACTING: $clip"`);
+    lines.push(`  ffmpeg -y -i "$SOURCE_DIR/$clip" -vf "fps=1,scale=320:-1" -q:v 3 "$OUTPUT_DIR/$(basename "$clip" .mp4)_%03d.jpg"`);
+    lines.push(`done`);
+    return lines.join("\n");
+  }
+  function openExport(kind){
+    let text, title, name;
+    if(kind==="txt"){ text=makeTxtExport(); title="MANIFEST.TXT"; name=`${state.manifest.name}.txt`; }
+    else if(kind==="ffmpeg"){ text=makeFfmpegExport(); title="FFMPEG CONCAT LIST"; name=`${state.manifest.name}_ffmpeg_concat.txt`; }
+    else if(kind==="bash"){ text=makeBashExport(); title="BASH EXTRACT SCRIPT"; name=`${state.manifest.name}_extract.sh`; }
+    else if(kind==="package"){ text=makePackageExport(); title="PROJECT PACKAGE JSON"; name=`${state.manifest.name}_package.json`; }
+    else { text=makeJsonExport(); title="MANIFEST.JSON"; name=`${state.manifest.name}.json`; }
+    state.exportText = text; state.exportName = name;
+    els.modalTitle.textContent = title; els.modalText.value = text; els.exportModal.classList.add("show");
+  }
+  function downloadText(filename, text){
+    const blob = new Blob([text], {type:"text/plain"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = filename; a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+  }
+
+  function bindEvents(){
+    els.btnImport.addEventListener("click", () => els.fileInput.click());
+    els.fileInput.addEventListener("change", e => importFiles(e.target.files));
+    els.btnSave.addEventListener("click", save);
+    els.btnReset.addEventListener("click", () => {
+      if(!confirm("Reset local SORA Workbench state? This does not delete your source files.")) return;
+      localStorage.removeItem(STORE_KEY); location.reload();
+    });
+    els.command.addEventListener("input", e => { state.query = e.target.value; if(!state.query.startsWith("/")) renderList(); });
+    els.command.addEventListener("keydown", e => { if(e.key==="Enter" && els.command.value.trim().startsWith("/")) executeCommand(els.command.value); });
+    document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => setView(b.dataset.view)));
+    els.projectFilter.addEventListener("change", renderList);
+    els.statusFilter.addEventListener("change", renderList);
+    els.clipList.addEventListener("click", e => {
+      const card = e.target.closest(".clip-card"); if(!card) return;
+      const id = card.dataset.id;
+      const op = e.target.dataset.op;
+      const c = clipById(id);
+      if(op){ e.stopPropagation(); handleCardOp(op,c); return; }
+      if(e.target.classList.contains("check")) toggleSelect(id);
+      else { state.activeId = id; render(); closeMobileOverlays(); }
+    });
+    els.clipList.addEventListener("dblclick", e => { const card=e.target.closest(".clip-card"); if(card) toggleSelect(card.dataset.id); });
+    els.btnSelectVisible.addEventListener("click", () => { for(const c of filteredClips()) state.selected.add(c.id); render(); });
+    els.btnClearSelected.addEventListener("click", () => { state.selected.clear(); render(); });
+    els.btnFindSiblings.addEventListener("click", () => { findSiblings(); setView("compare"); render(); });
+    els.btnMineThemes.addEventListener("click", () => { mineThemes(true); render(); });
+    els.btnKeep.addEventListener("click", () => setKeep("KEEP"));
+    els.btnMaybe.addEventListener("click", () => setKeep("MAYBE"));
+    els.btnCut.addEventListener("click", () => setKeep("CUT"));
+    els.btnAddManifest.addEventListener("click", () => { const c=activeClip(); if(c) addManyToManifest([c.id]); });
+    els.manifestName.addEventListener("input", () => { state.manifest.name = els.manifestName.value.trim() || "SORA_MANIFEST"; renderManifest(); });
+    els.btnExportTxt.addEventListener("click", () => openExport("txt"));
+    els.btnExportJson.addEventListener("click", () => openExport("json"));
+    els.btnExportFfmpeg.addEventListener("click", () => openExport("ffmpeg"));
+    els.btnExportBash.addEventListener("click", () => openExport("bash"));
+    els.btnClearManifest.addEventListener("click", clearManifest);
+    els.btnCloseModal.addEventListener("click", () => els.exportModal.classList.remove("show"));
+    els.btnCopyExport.addEventListener("click", async () => { await navigator.clipboard.writeText(els.modalText.value); toast("COPIED EXPORT"); });
+    els.btnDownloadExport.addEventListener("click", () => downloadText(state.exportName, els.modalText.value));
+    els.btnMobileList.addEventListener("click", () => toggleMobile("list"));
+    els.btnMobileTools.addEventListener("click", () => toggleMobile("tools"));
+    for(const ev of ["dragenter","dragover"]){ els.dropzone.addEventListener(ev, e => { e.preventDefault(); els.dropzone.classList.add("hot"); }); document.body.addEventListener(ev, e => e.preventDefault()); }
+    for(const ev of ["dragleave","drop"]){ els.dropzone.addEventListener(ev, e => { e.preventDefault(); els.dropzone.classList.remove("hot"); }); }
+    els.dropzone.addEventListener("drop", e => importFiles(e.dataTransfer.files));
+    document.body.addEventListener("drop", e => { e.preventDefault(); if(e.dataTransfer?.files?.length) importFiles(e.dataTransfer.files); });
+    document.addEventListener("keydown", e => {
+      if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==="s"){ e.preventDefault(); save(); }
+      if(e.key==="Escape") { closeMobileOverlays(); els.exportModal.classList.remove("show"); }
+      if(e.key==="/" && document.activeElement.tagName!=="INPUT" && document.activeElement.tagName!=="TEXTAREA"){ e.preventDefault(); els.command.focus(); }
+    });
+  }
+
+  function toggleSelect(id){ if(state.selected.has(id)) state.selected.delete(id); else state.selected.add(id); render(); }
+  function handleCardOp(op,c){
+    if(!c) return;
+    if(op==="keep") c.keepState = c.keepState==="KEEP" ? "RAW" : "KEEP";
+    if(op==="tag"){ const tag = prompt("Add tag:"); if(tag) addTag(c, tag); }
+    if(op==="route"){ const p = prompt("Primary project:", c.primaryProject || ""); if(p!==null) c.primaryProject = p.trim().toUpperCase().replace(/\s+/g,"_"); }
+    if(op==="compare"){ state.activeId = c.id; findSiblings(c.id); setView("compare"); }
+    if(op==="manifest") addManyToManifest([c.id]);
+    render(); save();
+  }
+  function setKeep(v){ const c=activeClip(); if(!c) return; c.keepState=v; render(); save(); }
+  function toggleMobile(which){
+    if(which==="list"){
+      els.rightPane.classList.remove("mobile-show");
+      els.leftPane.classList.toggle("mobile-show");
+    } else {
+      els.leftPane.classList.remove("mobile-show");
+      els.rightPane.classList.toggle("mobile-show");
+    }
+  }
+  function closeMobileOverlays(){ els.leftPane.classList.remove("mobile-show"); els.rightPane.classList.remove("mobile-show"); }
+
+  // --- INDEX BOOTSTRAP: FULL REAL DATA ---
+  async function bootstrapFromIndex(){
+    try {
+      const resp = await fetch('sora_full_index.json');
+      if(!resp.ok) return;
+      const index = await resp.json();
+      if(!index.clips || !index.clips.length) return;
+
+      // Collect any user edits from existing state (tags, notes, keepState, etc.)
+      const userEdits = new Map();
+      for(const c of state.clips){
+        if(c.keepState !== 'RAW' || c.notes.length || c.promptNotes.length || c.tier){
+          userEdits.set(c.id, { keepState: c.keepState, notes: c.notes, promptNotes: c.promptNotes, tier: c.tier, score: c.score });
+        }
+      }
+
+      // Rebuild from real data
+      state.clips = [];
+      for(const entry of index.clips){
+        const edits = userEdits.get(entry.id) || {};
+        const c = normalizeClip({
+          id: entry.id,
+          promptText: entry.prompt || '',
+          promptPresent: !!(entry.prompt),
+          promptName: entry.prompt_file || '',
+          videoPresent: !!entry.video,
+          videoName: entry.video || '',
+          videoUrl: entry.video ? `captures/${entry.video}` : '',
+          captureDate: parseDateFromId(entry.id),
+          primaryProject: entry.cluster !== 'UNCLASSIFIED' ? entry.cluster : '',
+          clusters: entry.clusters || [],
+          tags: (entry.clusters || []).map(c => c.toLowerCase().replace(/_/g,'-')),
+          keepState: edits.keepState || 'RAW',
+          notes: edits.notes || [],
+          promptNotes: edits.promptNotes || [],
+          tier: edits.tier || '',
+          score: edits.score || ''
+        });
+        state.clips.push(c);
+      }
+      state.clips.sort((a,b) => (a.captureDate||a.id).localeCompare(b.captureDate||b.id));
+      state.activeId = state.clips[0]?.id || null;
+      mineThemes(false);
+      render();
+      toast(`LOADED ${state.clips.length} CLIPS FROM SORA_CAPTURES`);
+    } catch(e) { console.log('No index file found, use manual import.', e); }
+  }
+
+  load(); bindEvents(); render(); bootstrapFromIndex();
+})();
+</script>
+</body>
+</html>

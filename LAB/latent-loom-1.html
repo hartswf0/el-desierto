@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sora Latent Loom | Transclusive IDE</title>
+    <style>
+        /* --- DESIGN SYSTEM & VARIABLES --- */
+        :root {
+            --bg-base: #0d1117;
+            --bg-surface: #161b22;
+            --bg-panel: #21262d;
+            --border: #30363d;
+            --text-main: #c9d1d9;
+            --text-dim: #8b949e;
+            
+            /* Semantic Colors */
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --success: #3fb950;
+            --danger: #f85149;
+            --warning: #d29922;
+            
+            /* Diff Engine Colors */
+            --diff-add-bg: rgba(46, 160, 67, 0.15);
+            --diff-add-text: #3fb950;
+            --diff-del-bg: rgba(248, 81, 73, 0.15);
+            --diff-del-text: #f85149;
+
+            /* Cluster Colors */
+            --c-trains: #d29922;
+            --c-bees: #e3b341;
+            --c-ripple: #bc8cff;
+            --c-unclassified: #484f58;
+
+            /* Typography */
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        }
+
+        /* --- RESETS & BASICS --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior: none;
+        }
+        button { cursor: pointer; font-family: inherit; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            z-index: 20;
+            flex-shrink: 0;
+        }
+        .brand {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .brand::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+        }
+
+        .zoom-controls {
+            display: flex;
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .btn-zoom {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 6px 12px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-zoom.active {
+            background: var(--bg-panel);
+            color: var(--text-main);
+        }
+
+        /* --- SEMANTIC CANVAS (Top 60%) --- */
+        #canvas {
+            flex: 1;
+            position: relative;
+            background: var(--bg-base);
+            overflow: hidden;
+        }
+        .view-layer {
+            position: absolute;
+            inset: 0;
+            display: none;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 100px; /* Tray buffer */
+        }
+        .view-layer.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Z-1: MAP VIEW */
+        #view-map {
+            background: radial-gradient(circle at center, #161b22 0%, #0d1117 100%);
+            padding: 0;
+        }
+        .map-node {
+            position: absolute;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .map-node:hover {
+            transform: translate(-50%, -50%) scale(2.5);
+            z-index: 10;
+            box-shadow: 0 0 10px currentColor;
+        }
+        .map-label {
+            position: absolute;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: bold;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        /* Z-2: FEED VIEW */
+        #view-feed {
+            padding: 16px;
+            gap: 16px;
+        }
+        .feed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .clip-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .clip-header {
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border);
+        }
+        .clip-id {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .transclusion-pips { display: flex; gap: 4px; }
+        .pip { width: 8px; height: 8px; border-radius: 50%; }
+
+        /* Film Strip Mechanic */
+        .strip-container {
+            display: flex;
+            height: 70px;
+            width: 100%;
+            cursor: ew-resize;
+            background: #000;
+        }
+        .frame {
+            flex: 1;
+            background-size: cover;
+            background-position: center;
+            border-right: 1px solid var(--bg-base);
+            opacity: 0.7;
+            filter: grayscale(30%);
+            transition: opacity 0.1s, filter 0.1s;
+        }
+        .frame:last-child { border-right: none; }
+        .strip-container:hover .frame { opacity: 0.3; filter: grayscale(80%); }
+        .strip-container .frame.active-scrub { opacity: 1 !important; filter: grayscale(0%) brightness(1.2) !important; }
+
+        .clip-body { padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+        .prompt-text {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-dim);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+        .clip-actions { display: flex; gap: 8px; }
+        .btn-action {
+            flex: 1;
+            background: transparent;
+            border: 1px dashed var(--border);
+            color: var(--text-main);
+            padding: 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+        .btn-action:hover { background: var(--bg-panel); border-style: solid; }
+        .btn-diff.selected {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            border-color: var(--accent);
+            border-style: solid;
+        }
+
+        /* Z-3: DIFF VIEW */
+        #view-diff { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+        .diff-header {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--accent);
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 8px;
+        }
+        .diff-layout { display: flex; gap: 16px; flex: 1; min-height: 0; }
+        @media (max-width: 768px) { .diff-layout { flex-direction: column; } }
+        
+        .diff-pane {
+            flex: 1;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .diff-vid {
+            height: 120px;
+            background: #000;
+            display: flex;
+            align-items: flex-end;
+            padding: 8px;
+            position: relative;
+        }
+        .diff-vid-label {
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            z-index: 2;
+        }
+        .diff-code {
+            flex: 1;
+            padding: 12px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            line-height: 1.6;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: var(--text-main);
+        }
+        ins { background: var(--diff-add-bg); color: var(--diff-add-text); text-decoration: none; padding: 2px 4px; border-radius: 3px; font-weight: bold; }
+        del { background: var(--diff-del-bg); color: var(--diff-del-text); text-decoration: line-through; padding: 2px 4px; border-radius: 3px; }
+
+        /* --- MANIFEST TRAY (Bottom 40%) --- */
+        #tray {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 40vh;
+            min-height: 60px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--accent);
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+            transition: height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: height;
+        }
+        #tray.dragging { transition: none; }
+
+        .tray-handle-area {
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: ns-resize;
+            background: rgba(255,255,255,0.02);
+            touch-action: none;
+        }
+        .tray-handle-area::after {
+            content: '';
+            width: 40px; height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        .tray-header {
+            padding: 8px 16px 16px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .tray-title {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tray-title input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px dashed var(--border);
+            color: var(--c-bees);
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            outline: none;
+            width: 140px;
+        }
+
+        .btn-compile {
+            background: rgba(46, 160, 67, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .btn-compile:hover { background: var(--success); color: #fff; }
+
+        .tray-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--bg-base);
+        }
+
+        /* Playlist Editor Elements */
+        .tier-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: bold;
+            outline: none;
+            padding: 8px 0 4px 0;
+            border-bottom: 1px dashed var(--border);
+            margin-top: 8px;
+        }
+
+        .manifest-clip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 6px;
+            border-radius: 6px;
+        }
+        .mini-strip {
+            display: flex;
+            width: 60px;
+            height: 24px;
+            border-radius: 2px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .manifest-clip-id {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-main);
+            flex: 1;
+        }
+        .btn-icon {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            padding: 4px;
+        }
+        .btn-icon:hover { color: var(--danger); }
+
+        /* --- COMPILER TERMINAL --- */
+        #terminal {
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 17, 23, 0.95);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            padding: 24px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            line-height: 1.6;
+            backdrop-filter: blur(4px);
+        }
+        #terminal.active { display: flex; }
+        .term-line { color: var(--success); opacity: 0; animation: fadeIn 0.1s forwards; margin-bottom: 4px; }
+        .term-line.cmd { color: var(--accent); font-weight: bold; }
+        .term-line.sys { color: var(--text-dim); }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">SORA_LATENT_LOOM</div>
+        <div class="zoom-controls">
+            <button class="btn-zoom active" onclick="setZoom(1)" id="btn-z1">Z-1 MAP</button>
+            <button class="btn-zoom" onclick="setZoom(2)" id="btn-z2">Z-2 FEED</button>
+            <button class="btn-zoom" onclick="setZoom(3)" id="btn-z3">Z-3 DIFF</button>
+        </div>
+    </header>
+
+    <div id="canvas">
+        
+        <div id="view-map" class="view-layer active">
+            <div id="map-container" style="position:relative; width:100%; height:100%;"></div>
+        </div>
+
+        <div id="view-feed" class="view-layer">
+            <div class="feed-grid" id="feed-container"></div>
+        </div>
+
+        <div id="view-diff" class="view-layer">
+            <div class="diff-header">MORPHOLOGICAL DIFF ENGINE: Isolating causal prompt variables</div>
+            <div class="diff-layout" id="diff-container">
+                <div style="color:var(--text-dim); font-family:var(--font-mono); font-size:11px; padding:20px;">
+                    Select exactly two clips from the Z-2 Feed using "[ Select for Diff ]" to execute a side-by-side prompt analysis.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="tray">
+        <div class="tray-handle-area" id="tray-handle"></div>
+        <div class="tray-header">
+            <div class="tray-title">
+                MANIFEST:
+                <input type="text" value="BEES_ON_A_TRAIN" id="project-name">
+            </div>
+            <button class="btn-compile" onclick="runPipeline()">$ COMPILE</button>
+        </div>
+        <div class="tray-content" id="manifest-content">
+            <button class="btn-action" style="margin-top:8px; border-style:dashed;" onclick="addTier()">+ ADD # TIER_HEADER</button>
+        </div>
+    </div>
+
+    <div id="terminal" onclick="this.classList.remove('active')">
+        <div id="term-output" style="flex:1; overflow-y:auto;"></div>
+    </div>
+
+    <script>
+        // --- 1. REAL DATA & CLUSTER MAP ---
+        const CLUSTER_COLORS = {
+            'TRAINS_TROLLEYS': { color: 'var(--c-trains)', label: 'TRAINS', x: 15, y: 25 },
+            'BEES_ON_A_TRAIN': { color: 'var(--c-bees)', label: 'BEES', x: 20, y: 55 },
+            'RIPPLE_SESSIONS': { color: 'var(--c-ripple)', label: 'RIPPLE', x: 75, y: 35 },
+            'VALHALLA_VIKINGS': { color: '#d29922', label: 'VIKINGS', x: 85, y: 20 },
+            'TROUT_TOWN': { color: '#58a6ff', label: 'TROUT', x: 40, y: 20 },
+            'POISONED_WELL': { color: '#f85149', label: 'POISON', x: 60, y: 65 },
+            'CRAB_REEF': { color: '#3fb950', label: 'CRAB', x: 30, y: 75 },
+            'AZMARI_MATRIARCH': { color: '#bc8cff', label: 'AZMARI', x: 55, y: 45 },
+            'LINEAGE_GENOME': { color: '#e3b341', label: 'GENOME', x: 70, y: 55 },
+            'SPECULATIVE_FORECAST': { color: '#79c0ff', label: 'FORECAST', x: 45, y: 80 },
+            'SENSORY_ETHNOGRAPHY': { color: '#d2a8ff', label: 'ETHNO', x: 90, y: 70 },
+            'UNCANNY_LABYRINTH': { color: '#f0883e', label: 'LABYRINTH', x: 10, y: 80 },
+            'META_DESIGN_QA': { color: '#8b949e', label: 'QA', x: 80, y: 80 },
+            'UNCLASSIFIED': { color: 'var(--c-unclassified)', label: '', x: 50, y: 50 }
+        };
+        let CLUSTERS = CLUSTER_COLORS;
+
+        const DB = [];
+
+        // Bootstrap from real SORA_CAPTURES data
+        async function bootstrapLoom() {
+            try {
+                const resp = await fetch('sora_full_index.json');
+                if (!resp.ok) return;
+                const index = await resp.json();
+                DB.length = 0;
+
+                for (const entry of index.clips) {
+                    const cluster = CLUSTER_COLORS[entry.cluster] ? entry.cluster : 'UNCLASSIFIED';
+                    const base = CLUSTER_COLORS[cluster] || CLUSTER_COLORS['UNCLASSIFIED'];
+                    DB.push({
+                        id: entry.id,
+                        cluster: cluster,
+                        tags: (entry.clusters || []).filter(c => c !== cluster),
+                        hue: cluster === 'UNCLASSIFIED' ? 0 : (entry.id.charCodeAt(0) * 7) % 360,
+                        x: base.x + (Math.random() * 12 - 6),
+                        y: base.y + (Math.random() * 12 - 6),
+                        prompt: entry.prompt || '',
+                        video: entry.video ? `captures/${entry.video}` : null
+                    });
+                }
+
+                renderMap();
+                renderFeed();
+                renderManifest();
+            } catch(e) { console.log('Index not available:', e); }
+        }
+
+        let manifestState = [
+            { type: 'tier', text: '# TIER_1_ESTABLISHMENT' },
+            { type: 'clip', id: '008_20260422' }
+        ];
+        
+        let diffQueue = [];
+
+        // --- 2. RENDERERS ---
+        
+        // Helper to generate abstract film strip gradients
+        function getFramesHTML(hue, isMini = false) {
+            let html = '';
+            const count = isMini ? 3 : 5;
+            for(let i=0; i<count; i++) {
+                const lightness = 15 + (i * 8);
+                const bg = hue === 0 ? `hsl(0, 0%, ${lightness}%)` : `hsl(${hue}, 60%, ${lightness}%)`;
+                html += `<div class="frame" style="background-color: ${bg};"></div>`;
+            }
+            return html;
+        }
+
+        function renderMap() {
+            const map = document.getElementById('map-container');
+            let html = '';
+            
+            // Labels
+            Object.keys(CLUSTERS).forEach(key => {
+                if(key === 'UNCLASSIFIED') return;
+                html += `<div class="map-label" style="left:${CLUSTERS[key].x}%; top:${CLUSTERS[key].y - 4}%; color:${CLUSTERS[key].color}; transform:translateX(-50%);">${CLUSTERS[key].label}</div>`;
+            });
+
+            // Nodes
+            DB.forEach(clip => {
+                const isDust = clip.cluster === 'UNCLASSIFIED';
+                const size = isDust ? '4px' : '8px';
+                const opacity = isDust ? '0.3' : '1';
+                html += `
+                    <div class="map-node" 
+                         style="left:${clip.x}%; top:${clip.y}%; width:${size}; height:${size}; background:${CLUSTERS[clip.cluster].color}; opacity:${opacity};"
+                         title="${clip.id}"
+                         onclick="jumpToClip('${clip.id}')">
+                    </div>
+                `;
+            });
+            map.innerHTML = html;
+        }
+
+        function renderFeed() {
+            const container = document.getElementById('feed-container');
+            let html = '';
+            
+            // Render only named clips for performance
+            DB.filter(c => c.cluster !== 'UNCLASSIFIED').forEach(clip => {
+                const isDiff = diffQueue.includes(clip.id) ? 'selected' : '';
+                const cColor = CLUSTERS[clip.cluster].color;
+                
+                let pipsHtml = `<div class="pip" style="background:${cColor}" title="Primary: ${clip.cluster}"></div>`;
+                clip.tags.forEach(t => {
+                    const tColor = CLUSTERS[t] ? CLUSTERS[t].color : 'var(--c-unclassified)';
+                    pipsHtml += `<div class="pip" style="background:${tColor}" title="Transcluded: ${t}"></div>`;
+                });
+
+                html += `
+                    <div class="clip-card" id="card-${clip.id}">
+                        <div class="clip-header">
+                            <div class="clip-id">
+                                <div class="transclusion-pips">${pipsHtml}</div>
+                                ${clip.id}
+                            </div>
+                        </div>
+                        <div class="strip-container" 
+                             onmousemove="scrub(event, this)" 
+                             ontouchmove="scrub(event, this)"
+                             onmouseleave="resetScrub(this)"
+                             ontouchend="resetScrub(this)"
+                             title="Scrub horizontally to view frames">
+                            ${getFramesHTML(clip.hue)}
+                        </div>
+                        <div class="clip-body">
+                            <div class="prompt-text">${clip.prompt.replace(/\n/g, ' <span style="color:#444">↵</span> ')}</div>
+                            <div class="clip-actions">
+                                <button class="btn-action" onclick="addToManifest('${clip.id}')">+ ROUTE TO MANIFEST</button>
+                                <button class="btn-action btn-diff ${isDiff}" onclick="toggleDiff('${clip.id}')">[ SELECT DIFF ]</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderManifest() {
+            const content = document.getElementById('manifest-content');
+            // Keep the add button at the bottom
+            const addBtnHTML = `<button class="btn-action" style="margin-top:8px; border-style:dashed;" onclick="addTier()">+ ADD # TIER_HEADER</button>`;
+            
+            let html = '';
+            manifestState.forEach((item, idx) => {
+                if (item.type === 'tier') {
+                    html += `<input type="text" class="tier-input" value="${item.text}" onchange="updateTier(${idx}, this.value)">`;
+                } else {
+                    const clip = DB.find(c => c.id === item.id);
+                    if(!clip) return;
+                    html += `
+                        <div class="manifest-clip">
+                            <span style="color:var(--text-dim); font-size:10px; cursor:grab;">⋮⋮</span>
+                            <div class="mini-strip">${getFramesHTML(clip.hue, true)}</div>
+                            <div class="manifest-clip-id">[[clip:${item.id}]]</div>
+                            <button class="btn-icon" onclick="removeManifestItem(${idx})">✕</button>
+                        </div>
+                    `;
+                }
+            });
+            
+            content.innerHTML = html + addBtnHTML;
+        }
+
+        // --- 3. INTERACTIONS ---
+        
+        function setZoom(level) {
+            // Update Buttons
+            [1,2,3].forEach(n => {
+                document.getElementById(`btn-z${n}`).classList.remove('active');
+                document.getElementById(`view-${n===1?'map':n===2?'feed':'diff'}`).classList.remove('active');
+            });
+            
+            document.getElementById(`btn-z${level}`).classList.add('active');
+            document.getElementById(`view-${level===1?'map':level===2?'feed':'diff'}`).classList.add('active');
+        }
+
+        function jumpToClip(id) {
+            if(id.startsWith('unk_')) return; // Ignore dust
+            setZoom(2);
+            setTimeout(() => {
+                const el = document.getElementById(`card-${id}`);
+                if(el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.style.borderColor = 'var(--accent)';
+                    setTimeout(() => el.style.borderColor = 'var(--border)', 1500);
+                }
+            }, 100);
+        }
+
+        // Thumb Scrubbing
+        window.scrub = function(e, container) {
+            e.preventDefault();
+            const rect = container.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const x = Math.max(0, Math.min(clientX - rect.left, rect.width - 1));
+            const percentage = x / rect.width;
+            const activeIndex = Math.floor(percentage * 5);
+            
+            const frames = container.querySelectorAll('.frame');
+            frames.forEach((f, i) => {
+                if(i === activeIndex) f.classList.add('active-scrub');
+                else f.classList.remove('active-scrub');
+            });
+        }
+        window.resetScrub = function(container) {
+            container.querySelectorAll('.frame').forEach(f => f.classList.remove('active-scrub'));
+        }
+
+        // Manifest Logic
+        function addToManifest(id) {
+            manifestState.push({ type: 'clip', id: id });
+            renderManifest();
+            
+            // Pop tray up slightly
+            const tray = document.getElementById('tray');
+            if(tray.offsetHeight < window.innerHeight * 0.2) {
+                tray.style.height = '40vh';
+            }
+            
+            // Scroll to bottom of tray
+            const content = document.getElementById('manifest-content');
+            setTimeout(() => content.scrollTop = content.scrollHeight, 50);
+        }
+
+        function removeManifestItem(idx) {
+            manifestState.splice(idx, 1);
+            renderManifest();
+        }
+
+        function addTier() {
+            manifestState.push({ type: 'tier', text: '# NEW_TIER' });
+            renderManifest();
+            const content = document.getElementById('manifest-content');
+            setTimeout(() => content.scrollTop = content.scrollHeight, 50);
+        }
+
+        function updateTier(idx, val) {
+            manifestState[idx].text = val;
+        }
+
+        // --- 4. FORENSIC DIFF ENGINE ---
+        
+        function toggleDiff(id) {
+            const idx = diffQueue.indexOf(id);
+            if(idx > -1) {
+                diffQueue.splice(idx, 1);
+            } else {
+                if(diffQueue.length >= 2) diffQueue.shift();
+                diffQueue.push(id);
+            }
+            
+            renderFeed(); // Update button states
+            
+            if(diffQueue.length === 2) {
+                setZoom(3);
+                executeDiff();
+            } else if (diffQueue.length < 2 && document.getElementById('view-diff').classList.contains('active')) {
+                 document.getElementById('diff-container').innerHTML = `
+                    <div style="color:var(--text-dim); font-family:var(--font-mono); font-size:11px; padding:20px;">
+                        Waiting for second clip selection...
+                    </div>`;
+            }
+        }
+
+        function executeDiff() {
+            const container = document.getElementById('diff-container');
+            const c1 = DB.find(c => c.id === diffQueue[0]);
+            const c2 = DB.find(c => c.id === diffQueue[1]);
+            
+            // Naive word diff
+            const wordsA = c1.prompt.split(/([\s\n]+)/);
+            const wordsB = c2.prompt.split(/([\s\n]+)/);
+            
+            let htmlA = '', htmlB = '';
+            
+            wordsA.forEach(w => {
+                if(w.trim()==='') htmlA += w;
+                else if(!wordsB.includes(w)) htmlA += `<del>${w}</del>`;
+                else htmlA += `<span style="opacity:0.6">${w}</span>`;
+            });
+            
+            wordsB.forEach(w => {
+                if(w.trim()==='') htmlB += w;
+                else if(!wordsA.includes(w)) htmlB += `<ins>${w}</ins>`;
+                else htmlB += `<span style="opacity:0.6">${w}</span>`;
+            });
+
+            container.innerHTML = `
+                <div class="diff-pane">
+                    <div class="diff-vid">
+                        <div style="position:absolute; inset:0; display:flex;">${getFramesHTML(c1.hue)}</div>
+                        <div class="diff-vid-label">A: ${c1.id}</div>
+                    </div>
+                    <div class="diff-code">${htmlA}</div>
+                </div>
+                <div class="diff-pane">
+                    <div class="diff-vid">
+                        <div style="position:absolute; inset:0; display:flex;">${getFramesHTML(c2.hue)}</div>
+                        <div class="diff-vid-label">B: ${c2.id}</div>
+                    </div>
+                    <div class="diff-code">${htmlB}</div>
+                </div>
+            `;
+        }
+
+        // --- 5. TRAY DRAG PHYSICS ---
+        const tray = document.getElementById('tray');
+        const handle = document.getElementById('tray-handle');
+        let isDragging = false;
+        let startY, startHeight;
+
+        const onStart = (e) => {
+            isDragging = true;
+            startY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            startHeight = tray.offsetHeight;
+            tray.classList.add('dragging');
+        };
+
+        const onMove = (e) => {
+            if(!isDragging) return;
+            const y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            const delta = startY - y;
+            let newHeight = startHeight + delta;
+            
+            const minH = 60;
+            const maxH = window.innerHeight * 0.85;
+            
+            newHeight = Math.max(minH, Math.min(newHeight, maxH));
+            tray.style.height = `${newHeight}px`;
+        };
+
+        const onEnd = () => {
+            if(!isDragging) return;
+            isDragging = false;
+            tray.classList.remove('dragging');
+            
+            const h = tray.offsetHeight;
+            const vh = window.innerHeight;
+            
+            // Snap points
+            if(h < vh * 0.2) tray.style.height = '60px'; // Collapsed
+            else if(h > vh * 0.6) tray.style.height = '85vh'; // Expanded
+            else tray.style.height = '40vh'; // Default
+        };
+
+        handle.addEventListener('mousedown', onStart);
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+        
+        handle.addEventListener('touchstart', onStart, {passive: true});
+        document.addEventListener('touchmove', onMove, {passive: false});
+        document.addEventListener('touchend', onEnd);
+
+        // --- 6. COMPILER SIMULATION ---
+        async function runPipeline() {
+            const term = document.getElementById('terminal');
+            const out = document.getElementById('term-output');
+            const projName = document.getElementById('project-name').value;
+            
+            term.classList.add('active');
+            out.innerHTML = '';
+            
+            const clips = manifestState.filter(m => m.type === 'clip').length;
+
+            const logs = [
+                `<span class="term-line cmd">$ ./extract_frames.sh --manifest ${projName}.txt</span>`,
+                `<span class="term-line sys">> Parsing semantic layout graph...</span>`,
+                `<span class="term-line sys">> Found ${clips} clips routed to sequence.</span>`,
+                `> [CACHE HIT] 008_20260422_screen_capture.mp4 -> Skipping ffmpeg extraction`,
+                `> [EXTRACT] 011_20260422_screen_capture.mp4 -> pulling frames at 25% intervals...`,
+                `<span class="term-line sys">> Building horizontal compositing strips (hstack)...</span>`,
+                `<span class="term-line sys">> Assembling vertical tier contact sheet...</span>`,
+                `<br><span class="term-line" style="color:#3fb950; font-weight:bold;">[SUCCESS] Output written to /SORA_CONTACT_SHEETS/${projName}/</span>`,
+                `<br><span class="term-line sys" style="cursor:pointer; text-decoration:underline;">[ Click anywhere to close terminal ]</span>`
+            ];
+
+            for(let i=0; i<logs.length; i++) {
+                out.innerHTML += `<div class="term-line">${logs[i]}</div>`;
+                out.scrollTop = out.scrollHeight;
+                await new Promise(r => setTimeout(r, Math.random() * 300 + 100));
+            }
+        }
+
+        // Boot
+        renderMap();
+        renderFeed();
+        renderManifest();
+        bootstrapLoom(); // Load real data
+    </script>
+</body>
+</html>

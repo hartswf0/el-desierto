@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+    <title>TUBE ARC // FLEET — 1000-Clip Organizer</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --ink: #000000;
+            --teal: #19e6c8;
+            --amber: #ffd23f;
+            --red: #ff2e2e;
+            --blue: #3b82f6;
+            --left: 56px;
+            --right: 340px;
+            --top: 48px;
+            --bottom: 56px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            width: 100%; height: 100%; overflow: hidden;
+            background: var(--bg); color: var(--ink);
+            font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            touch-action: none; user-select: none;
+        }
+
+        canvas#stage { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; z-index: 1; }
+
+        button {
+            font: inherit; background: var(--bg); color: var(--ink);
+            border: 2px solid var(--ink); border-radius: 0;
+            height: 30px; padding: 0 8px; font-weight: 900; text-transform: uppercase;
+            cursor: pointer; font-size: 10px; letter-spacing: .04em;
+        }
+        button.on, button:active { background: var(--ink); color: var(--bg); }
+        input[type=text], select {
+            font: inherit; font-size: 11px; border: 2px solid var(--ink); border-radius: 0;
+            background: var(--bg); color: var(--ink); padding: 4px 6px; width: 100%;
+        }
+
+        /* LEFT RAIL */
+        #rail {
+            position: fixed; z-index: 30; left: 0; top: 0; bottom: 0; width: var(--left);
+            border-right: 3px solid var(--ink); background: var(--bg);
+            display: flex; flex-direction: column; gap: 5px; padding: 8px 5px; pointer-events: auto;
+        }
+        #rail b { height: 34px; border: 2px solid var(--ink); display: grid; place-items: center; font-size: 13px; }
+        #rail button { width: 44px; height: 36px; font-size: 9px; padding: 0; }
+        .spacer { flex: 1; }
+
+        /* TOP BAR */
+        #top {
+            position: fixed; z-index: 28; left: var(--left); right: 0; top: 0; height: var(--top);
+            border-bottom: 3px solid var(--ink); background: var(--bg);
+            display: flex; align-items: center; gap: 8px; padding: 0 10px; pointer-events: auto; overflow: hidden;
+        }
+        #brand { font-weight: 900; letter-spacing: .08em; white-space: nowrap; font-size: 12px; }
+        #aggStrip { font-size: 10px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+        #aggStrip i { font-style: normal; padding: 1px 4px; border: 1px solid var(--ink); margin-right: 4px; }
+        #aggStrip i.vio { background: var(--red); color: #fff; border-color: var(--red); }
+        #aggStrip i.err { background: var(--amber); border-color: var(--ink); }
+        #tubeChips { display: flex; gap: 4px; }
+        #tubeChips button { height: 26px; font-size: 9px; padding: 0 6px; }
+        #binBtn { height: 30px; }
+
+        /* RIGHT OPS */
+        #ops {
+            position: fixed; z-index: 26; right: 0; top: var(--top); bottom: var(--bottom); width: var(--right);
+            border-left: 3px solid var(--ink); background: var(--bg);
+            display: flex; flex-direction: column; pointer-events: auto;
+            transition: transform .15s steps(4);
+        }
+        #ops.hide { transform: translateX(100%); }
+
+        /* MONITOR */
+        #mon { border-bottom: 3px solid var(--ink); position: relative; background: #000; aspect-ratio: 16/9; flex: 0 0 auto; overflow: hidden; }
+        #monVideo { width: 100%; height: 100%; object-fit: contain; display: block; }
+        #monEmpty { position: absolute; inset: 0; display: grid; place-items: center; color: #777; font-size: 11px; font-weight: 900; }
+        .monBadge { position: absolute; top: 6px; left: 6px; background: #fff; color: #000; border: 2px solid #000; font-size: 10px; font-weight: 900; padding: 2px 5px; }
+        #monTime { position: absolute; top: 6px; right: 6px; background: #000; color: #fff; border: 2px solid #fff; font-size: 10px; font-weight: 900; padding: 2px 5px; }
+        #monStatus { position: absolute; bottom: 6px; right: 6px; font-size: 9px; font-weight: 900; padding: 2px 5px; border: 2px solid #fff; color: #fff; display: none; }
+        #monStatus.vio { display: block; background: var(--red); }
+        #monStatus.err { display: block; background: var(--amber); color: #000; border-color: #000; }
+        #monCap {
+            position: absolute; left: 0; right: 0; bottom: 0; padding: 5px 8px;
+            background: rgba(0,0,0,.78); color: #fff; font-size: 9px; line-height: 1.35;
+            max-height: 44%; overflow: hidden; display: none;
+        }
+        #monCap.show { display: block; }
+
+        /* TABS */
+        #tabs { display: flex; border-bottom: 3px solid var(--ink); flex: 0 0 auto; }
+        #tabs button { flex: 1; border: 0; border-right: 2px solid var(--ink); height: 30px; }
+        #tabs button:last-child { border-right: 0; }
+
+        /* PANES */
+        .pane { flex: 1; overflow: hidden; display: none; flex-direction: column; min-height: 0; }
+        .pane.show { display: flex; }
+
+        /* BIN — virtual list */
+        #binHead { padding: 6px; border-bottom: 2px solid var(--ink); display: flex; gap: 4px; flex: 0 0 auto; }
+        #binHead input { flex: 1; }
+        #binHead button { height: 28px; }
+        #binScroller { flex: 1; overflow-y: auto; position: relative; touch-action: pan-y; }
+        #binSpace { position: relative; width: 100%; }
+        .row {
+            position: absolute; left: 0; right: 0; height: 58px;
+            border-bottom: 2px solid var(--ink); display: flex; align-items: stretch; cursor: pointer;
+            background: var(--bg); overflow: hidden;
+        }
+        .row.sel { background: var(--ink); color: var(--bg); }
+        .row .gbar { width: 5px; flex: 0 0 auto; }
+        .row .thumb {
+            width: 84px; flex: 0 0 auto; border-right: 2px solid var(--ink);
+            background-size: cover; background-position: center; position: relative;
+            display: grid; place-items: center; font-size: 8px; font-weight: 900; color: #555;
+        }
+        .row.sel .thumb { border-color: var(--bg); }
+        .row .info { flex: 1; min-width: 0; padding: 4px 6px; display: flex; flex-direction: column; justify-content: center; }
+        .row .info b { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .row .info p { font-size: 8.5px; line-height: 1.25; opacity: .75; height: 22px; overflow: hidden; }
+        .row .info small { font-size: 8px; font-weight: 700; opacity: .9; }
+        .row .st { width: 8px; flex: 0 0 auto; }
+        .row .st.vio { background: var(--red); }
+        .row .st.err { background: var(--amber); }
+        .row .prog { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--teal); width: 0; }
+
+        /* GROUPS / TUBES / IO */
+        .stack { flex: 1; overflow-y: auto; padding: 6px; display: flex; flex-direction: column; gap: 6px; touch-action: pan-y; }
+        .card { border: 2px solid var(--ink); padding: 6px; display: flex; flex-direction: column; gap: 5px; }
+        .card .hd { display: flex; align-items: center; gap: 5px; }
+        .card .hd .dot { width: 14px; height: 14px; border: 2px solid var(--ink); flex: 0 0 auto; }
+        .card .hd input { flex: 1; border-width: 0 0 2px 0; padding: 2px 2px; font-weight: 900; font-size: 11px; }
+        .card .btns { display: flex; gap: 4px; flex-wrap: wrap; }
+        .card .btns button { height: 24px; font-size: 8.5px; padding: 0 6px; }
+        .card small { font-size: 9px; font-weight: 700; }
+        .stack > button { flex: 0 0 auto; }
+        .ioNote { font-size: 9px; line-height: 1.5; border: 2px dashed var(--ink); padding: 6px; }
+
+        /* DOCK */
+        #dock {
+            position: fixed; z-index: 28; left: var(--left); right: 0; bottom: 0; height: var(--bottom);
+            border-top: 3px solid var(--ink); background: var(--bg);
+            display: flex; align-items: center; gap: 6px; padding: 0 8px; pointer-events: auto; overflow-x: auto;
+        }
+        #dock button { flex: 0 0 auto; }
+        #timeRead { font-weight: 900; font-size: 12px; border: 2px solid var(--ink); padding: 4px 8px; white-space: nowrap; }
+        #hud { margin-left: auto; font-size: 9px; font-weight: 700; white-space: nowrap; }
+
+        /* BATCH BAR */
+        #batch {
+            position: fixed; z-index: 32; left: 50%; transform: translateX(-50%); bottom: calc(var(--bottom) + 10px);
+            background: var(--ink); color: var(--bg); border: 3px solid var(--ink);
+            display: none; align-items: center; gap: 6px; padding: 6px 8px;
+        }
+        #batch.show { display: flex; }
+        #batch b { font-size: 11px; padding-right: 4px; }
+        #batch button { background: var(--bg); color: var(--ink); height: 26px; font-size: 9px; }
+
+        /* CONTEXT MENU */
+        #menu {
+            position: fixed; z-index: 40; background: var(--bg); border: 3px solid var(--ink);
+            display: none; flex-direction: column; min-width: 150px;
+        }
+        #menu.show { display: flex; }
+        #menu .mi { padding: 8px 10px; font-size: 10px; font-weight: 900; border-bottom: 2px solid var(--ink); cursor: pointer; }
+        #menu .mi:last-child { border-bottom: 0; }
+        #menu .mi:active { background: var(--ink); color: var(--bg); }
+
+        /* INSPECTOR SHEET */
+        #insp {
+            position: fixed; z-index: 34; left: var(--left); right: var(--right); bottom: var(--bottom);
+            max-height: 46%; background: var(--bg); border: 3px solid var(--ink); border-bottom: 0;
+            display: none; flex-direction: column; pointer-events: auto;
+        }
+        #insp.show { display: flex; }
+        #insp .hd { display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-bottom: 2px solid var(--ink); }
+        #insp .hd b { font-size: 11px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #insp .bd { overflow-y: auto; padding: 8px; font-size: 10px; line-height: 1.5; touch-action: pan-y; user-select: text; }
+        #insp .bd code { display: block; border: 2px solid var(--ink); padding: 6px; margin: 6px 0; white-space: pre-wrap; word-break: break-word; font-size: 9px; }
+        #insp .kv { display: grid; grid-template-columns: 84px 1fr; gap: 2px 8px; font-size: 9px; }
+        #insp .kv b { font-weight: 900; }
+
+        /* TOAST */
+        #toast {
+            position: fixed; z-index: 50; top: calc(var(--top) + 10px); left: 50%; transform: translateX(-50%);
+            background: var(--ink); color: var(--bg); font-size: 11px; font-weight: 900;
+            padding: 6px 12px; opacity: 0; transition: opacity .12s; pointer-events: none; white-space: nowrap;
+        }
+        #toast.show { opacity: 1; }
+
+        /* NARROW */
+        @media (max-width: 900px) {
+            :root { --left: 48px; --right: 300px; --top: 44px; --bottom: 52px; }
+            #ops { width: min(300px, 88vw); }
+            #brand { font-size: 10px; }
+            #insp { right: 0; }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="stage"></canvas>
+
+    <nav id="rail">
+        <b>TA</b>
+        <button data-view="0" class="on">TUBE</button>
+        <button data-view="1">BENCH</button>
+        <button data-view="2">ATLAS</button>
+        <button data-view="3">STATS</button>
+        <div class="spacer"></div>
+        <button data-tool="MOVE" class="on">MOVE</button>
+        <button data-tool="TRIM">TRIM</button>
+        <button data-tool="SPLIT">SPLIT</button>
+        <button data-tool="SEL">SEL+</button>
+    </nav>
+
+    <header id="top">
+        <span id="brand">TUBE ARC // FLEET</span>
+        <div id="tubeChips"></div>
+        <span id="aggStrip"></span>
+        <button id="binBtn" class="on">BIN</button>
+    </header>
+
+    <aside id="ops">
+        <div id="mon">
+            <video id="monVideo" muted playsinline></video>
+            <div id="monEmpty">NO SIGNAL</div>
+            <span class="monBadge" id="monBadge" style="display:none"></span>
+            <span id="monTime">00:00</span>
+            <span id="monStatus"></span>
+            <div id="monCap"></div>
+        </div>
+        <div id="tabs">
+            <button data-tab="bin" class="on">BIN</button>
+            <button data-tab="grp">GROUPS</button>
+            <button data-tab="tub">TUBES</button>
+            <button data-tab="io">I/O</button>
+        </div>
+
+        <div class="pane show" id="pane-bin">
+            <div id="binHead">
+                <input id="q" type="text" placeholder="FILTER CAPTIONS…" />
+                <button id="fStatus" title="cycle status filter">ALL</button>
+                <button id="ccBtn" title="caption overlay">CC</button>
+            </div>
+            <div id="binScroller">
+                <div id="binSpace"></div>
+            </div>
+        </div>
+
+        <div class="pane" id="pane-grp">
+            <div class="stack" id="grpStack"></div>
+        </div>
+
+        <div class="pane" id="pane-tub">
+            <div class="stack" id="tubStack"></div>
+        </div>
+
+        <div class="pane" id="pane-io">
+            <div class="stack">
+                <button id="loadManifest">LOAD MANIFEST.JSON</button>
+                <button id="linkMedia">LINK MEDIA FOLDER</button>
+                <button id="exportJson">EXPORT PROJECT JSON</button>
+                <button id="importJson">IMPORT PROJECT JSON</button>
+                <button id="exportEdl">EXPORT EDL (ACTIVE TUBE)</button>
+                <button id="stress">STRESS TEST · 1000 CLIPS</button>
+                <button id="wipe">WIPE PROJECT</button>
+                <div class="ioNote" id="ioNote">
+                    MANIFEST: none · MEDIA: 0 linked.<br>
+                    Layout persists in this browser. Media links are session-only —
+                    re-run LINK MEDIA FOLDER after reload; clips re-attach by filename.
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <footer id="dock">
+        <button id="jumpBack">|&lt;</button>
+        <button id="playBtn">PLAY</button>
+        <button id="jumpFwd">&gt;|</button>
+        <span id="timeRead">00:00</span>
+        <button id="snapBtn" class="on">SNAP</button>
+        <button id="fitBtn">FIT</button>
+        <span id="hud"></span>
+    </footer>
+
+    <div id="batch">
+        <b id="batchN">0 SEL</b>
+        <button id="bGroup">GROUP</button>
+        <button id="bTube">TO TUBE</button>
+        <button id="bPack">PACK</button>
+        <button id="bDel">DEL</button>
+        <button id="bClear">CLEAR</button>
+    </div>
+
+    <div id="menu"></div>
+
+    <div id="insp">
+        <div class="hd">
+            <b id="inspTitle">—</b>
+            <button id="inspLock">LOCK</button>
+            <button id="inspDel">DEL</button>
+            <button id="inspClose">X</button>
+        </div>
+        <div class="bd" id="inspBody"></div>
+    </div>
+
+    <div id="toast"></div>
+
+    <input type="file" id="fileManifest" accept=".json,application/json" style="display:none" />
+    <input type="file" id="fileMedia" webkitdirectory multiple style="display:none" />
+    <input type="file" id="fileMediaFlat" accept="video/*" multiple style="display:none" />
+    <input type="file" id="fileProject" accept=".json,application/json" style="display:none" />
+    <video id="thumbVideo" muted playsinline preload="metadata" style="display:none"></video>
+
+    <script>
+        'use strict';
+        /* ============ TUBE ARC // FLEET ============
+           1000-clip organizer + viewer. Recursive Pitch doctrine:
+           plex mono, ink on paper, named accents, no radii, no emoji.
+           Perf spine:
+             - ONE decode surface (monitor video) + ONE thumb factory video
+             - lazy thumbnails, LRU-less small canvases keyed by filename
+             - virtualized bin (renders ~12 rows regardless of clip count)
+             - dirty-flag rAF; ribbon LOD geometry; per-frame draw caps
+             - indexes rebuilt on mutation, never per frame
+        */
+        (() => {
+            // ---------- CONSTANTS ----------
+            const U = 60;                       // 60 units = 1 second
+            const SNAP = 60, FAR = 8000, R = 170, GAP = 60;
+            const SAVE = 'tube-arc-fleet-v1';
+            const ACCENTS = ['#19e6c8', '#ffd23f', '#3b82f6', '#ff2e2e'];
+            const ROWH = 58;
+            const STATUS_ORDER = ['ALL', 'ok', 'violation', 'error'];
+
+            // ---------- DOM ----------
+            const $ = id => document.getElementById(id);
+            const stage = $('stage'), ctx = stage.getContext('2d');
+            const toastEl = $('toast'), hudEl = $('hud'), timeRead = $('timeRead');
+            const aggStrip = $('aggStrip'), tubeChips = $('tubeChips');
+            const ops = $('ops'), binBtn = $('binBtn');
+            const monVideo = $('monVideo'), monEmpty = $('monEmpty'), monBadge = $('monBadge'),
+                monTime = $('monTime'), monStatus = $('monStatus'), monCap = $('monCap');
+            const binScroller = $('binScroller'), binSpace = $('binSpace');
+            const qInput = $('q'), fStatusBtn = $('fStatus'), ccBtn = $('ccBtn');
+            const grpStack = $('grpStack'), tubStack = $('tubStack'), ioNote = $('ioNote');
+            const batch = $('batch'), batchN = $('batchN');
+            const menu = $('menu');
+            const insp = $('insp'), inspTitle = $('inspTitle'), inspBody = $('inspBody');
+            const thumbVideo = $('thumbVideo');
+
+            // ---------- STATE ----------
+            const DOC = {
+                tubes: [{ id: 'T1', name: 'MAIN', chN: 4 }],
+                groups: [],   // {id, name, accent, collapsed}
+                clips: []     // {id, idx, title, cap, vf, pf, status, ts, tube, ch, start, dur, group, locked, srcDur}
+            };
+            const S = {
+                view: 0, tool: 'MOVE', cam: 0, zoom: .5, roll: -.25,
+                tube: 'T1', ch: 0, play: false, snap: true, cc: false,
+                sel: new Set(), lastSel: null, drag: null, marquee: null,
+                q: '', fStatus: 'ALL', listSort: 'START',
+                atlasScroll: 0, benchScroll: 0,
+                needsDraw: true, listDirty: true,
+                drawCount: 0, fps: 60, manifestName: null
+            };
+            const media = new Map();   // filename -> {url, dur, thumb, queued}
+            const IX = { byId: new Map(), byTube: new Map(), units: new Map(), agg: null, terms: [] };
+            let rendered = [];         // hit-test records from last draw
+            let statRects = [];        // clickable stat bars
+            let nextId = 1, toastTimer = 0, DPR = 1, W = 0, H = 0;
+
+            const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+            const lerp = (a, b, t) => a + (b - a) * t;
+            const qsnap = v => S.snap ? Math.round(v / SNAP) * SNAP : Math.round(v);
+            const fmt = z => { const s = Math.max(0, Math.round(z / U)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+            const uid = p => p + '-' + (nextId++).toString(36).toUpperCase();
+            const tube = id => DOC.tubes.find(t => t.id === id) || DOC.tubes[0];
+            const group = id => DOC.groups.find(g => g.id === id) || null;
+            const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+
+            function toast(x) { clearTimeout(toastTimer); toastEl.textContent = x; toastEl.classList.add('show'); toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1000); }
+            function dirty() { S.needsDraw = true; }
+            function listDirty() { S.listDirty = true; dirty(); }
+
+            // haptic + tone kept minimal
+            let AC = null, master = null;
+            function tone(f = 700, d = .012, g = .005) {
+                try {
+                    if (!AC) { const A = window.AudioContext || window.webkitAudioContext; if (!A) return; AC = new A(); master = AC.createGain(); master.gain.value = .05; master.connect(AC.destination); }
+                    if (AC.state === 'suspended') AC.resume();
+                    const o = AC.createOscillator(), gn = AC.createGain(), t = AC.currentTime;
+                    o.type = 'triangle'; o.frequency.value = f;
+                    gn.gain.setValueAtTime(.0001, t); gn.gain.linearRampToValueAtTime(g, t + .001); gn.gain.exponentialRampToValueAtTime(.0001, t + d + .02);
+                    o.connect(gn); gn.connect(master); o.start(t); o.stop(t + d + .04);
+                } catch (e) { }
+            }
+            function haptic(p) { try { navigator.vibrate && navigator.vibrate(p); } catch (e) { } }
+            function tick(kind) {
+                if (kind === 'snap') { tone(1100, .008, .004); haptic(3); }
+                else if (kind === 'drop') { tone(520, .014); setTimeout(() => tone(780, .012), 24); haptic([5, 14, 6]); }
+                else if (kind === 'bad') { tone(180, .03, .007); haptic([10, 24, 10]); }
+                else tone(760, .01, .004);
+            }
+            // =========================================================
+            // INDEXES — rebuilt on mutation only
+            // =========================================================
+            function rebuildIndex() {
+                IX.byId.clear(); IX.byTube.clear(); IX.units.clear();
+                for (const t of DOC.tubes) IX.byTube.set(t.id, []);
+                const agg = { n: DOC.clips.length, status: { ok: 0, violation: 0, error: 0, none: 0 }, perTube: new Map(), perGroup: new Map(), perHour: new Array(24).fill(0), linked: 0, dur: 0, thumbed: 0 };
+                for (const t of DOC.tubes) agg.perTube.set(t.id, 0);
+                for (const g of DOC.groups) agg.perGroup.set(g.id, 0);
+                for (const c of DOC.clips) {
+                    IX.byId.set(c.id, c);
+                    if (!IX.byTube.has(c.tube)) c.tube = DOC.tubes[0].id;
+                    IX.byTube.get(c.tube).push(c);
+                    agg.perTube.set(c.tube, (agg.perTube.get(c.tube) || 0) + 1);
+                    if (c.group && agg.perGroup.has(c.group)) agg.perGroup.set(c.group, agg.perGroup.get(c.group) + 1);
+                    agg.status[c.status] !== undefined ? agg.status[c.status]++ : agg.status.none++;
+                    if (c.ts) { const h = new Date(c.ts).getHours(); if (h >= 0 && h < 24) agg.perHour[h]++; }
+                    const m = c.vf && media.get(c.vf);
+                    if (m) { agg.linked++; if (m.thumb) agg.thumbed++; }
+                    agg.dur += c.dur;
+                }
+                for (const [tid, arr] of IX.byTube) {
+                    arr.sort((a, b) => a.start - b.start || a.ch - b.ch);
+                    // build draw units: collapsed groups fold to one block per (group, ch)
+                    const units = [], folded = new Map();
+                    for (const c of arr) {
+                        const g = c.group && group(c.group);
+                        if (g && g.collapsed) {
+                            const k = g.id + ':' + c.ch;
+                            let u = folded.get(k);
+                            if (!u) { u = { k: 'g', g, tube: tid, ch: c.ch, start: c.start, end: c.start + c.dur, members: [] }; folded.set(k, u); units.push(u); }
+                            u.start = Math.min(u.start, c.start); u.end = Math.max(u.end, c.start + c.dur); u.members.push(c);
+                        } else units.push({ k: 'c', c });
+                    }
+                    IX.units.set(tid, units);
+                }
+                IX.agg = agg;
+                updateAggStrip(); updateTubeChips(); updateIoNote();
+            }
+
+            function computeTerms() {
+                const stop = new Set('the,a,an,and,or,of,in,on,to,with,for,as,is,at,by,from,that,this,it,its,into,over,under,through,across,while,where,each,are,be,was,were,has,have,not,but,their,they,his,her,them,then,than,out,up,down,we,you,your,our,all,one,two,three,new,more,most,very,also'.split(','));
+                const counts = new Map();
+                for (const c of DOC.clips) {
+                    if (!c.cap) continue;
+                    for (const w of c.cap.toLowerCase().split(/[^a-z0-9_]+/)) {
+                        if (w.length < 4 || stop.has(w)) continue;
+                        counts.set(w, (counts.get(w) || 0) + 1);
+                    }
+                }
+                IX.terms = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 14);
+            }
+
+            // =========================================================
+            // MEDIA — one thumb factory, one monitor decoder
+            // =========================================================
+            const thumbQ = [];
+            let thumbBusy = false, thumbGuard = 0;
+
+            function mediaRec(fn) {
+                let r = media.get(fn);
+                if (!r) { r = { url: null, dur: 0, thumb: null, queued: false }; media.set(fn, r); }
+                return r;
+            }
+
+            function wantThumb(fn) {
+                const r = fn && media.get(fn);
+                if (!r || !r.url || r.thumb || r.queued) return r ? r.thumb : null;
+                r.queued = true; thumbQ.push(fn); pumpThumbs();
+                return null;
+            }
+
+            function pumpThumbs() {
+                if (thumbBusy || !thumbQ.length) return;
+                const fn = thumbQ.shift(), r = media.get(fn);
+                if (!r || !r.url) { pumpThumbs(); return; }
+                thumbBusy = true;
+                clearTimeout(thumbGuard);
+                thumbGuard = setTimeout(() => { r.queued = false; thumbBusy = false; pumpThumbs(); }, 5000);
+                const done = () => {
+                    clearTimeout(thumbGuard);
+                    thumbVideo.onloadedmetadata = thumbVideo.onseeked = thumbVideo.onerror = null;
+                    thumbBusy = false; dirty(); listDirty(); pumpThumbs();
+                };
+                thumbVideo.onerror = () => { r.queued = false; done(); };
+                thumbVideo.onloadedmetadata = () => {
+                    r.dur = thumbVideo.duration || 0;
+                    try { thumbVideo.currentTime = Math.min(0.4, (r.dur || 1) / 2); } catch (e) { done(); }
+                };
+                thumbVideo.onseeked = () => {
+                    try {
+                        const cv = document.createElement('canvas');
+                        cv.width = 176; cv.height = 99;
+                        const c2 = cv.getContext('2d');
+                        const vw = thumbVideo.videoWidth || 16, vh = thumbVideo.videoHeight || 9;
+                        const sc = Math.max(176 / vw, 99 / vh);
+                        c2.drawImage(thumbVideo, (176 - vw * sc) / 2, (99 - vh * sc) / 2, vw * sc, vh * sc);
+                        r.thumb = cv;
+                        // propagate real duration to clips that still hold the default
+                        for (const c of DOC.clips) if (c.vf === fn) c.srcDur = r.dur;
+                    } catch (e) { }
+                    done();
+                };
+                thumbVideo.src = r.url;
+            }
+
+            // monitor: the single live decode surface
+            let monSrcFn = null;
+            function playheadClip() {
+                // topmost channel wins on the active tube
+                const arr = IX.byTube.get(S.tube) || [];
+                let best = null;
+                for (const c of arr) {
+                    if (c.start > S.cam) break;
+                    if (S.cam <= c.start + c.dur && (!best || c.ch > best.ch)) best = c;
+                }
+                return best;
+            }
+
+            function syncMonitor() {
+                const primary = S.lastSel && IX.byId.get(S.lastSel);
+                const c = S.play || !primary ? playheadClip() : primary;
+                if (!c) {
+                    monEmpty.style.display = 'grid'; monBadge.style.display = 'none';
+                    monStatus.className = ''; monCap.classList.remove('show');
+                    if (!monVideo.paused) monVideo.pause();
+                    monTime.textContent = fmt(S.cam);
+                    return;
+                }
+                const t = tube(c.tube);
+                monBadge.style.display = 'block';
+                monBadge.textContent = t.name + ' C' + (c.ch + 1) + ' · ' + c.title;
+                monTime.textContent = fmt(S.cam);
+                monStatus.className = c.status === 'violation' ? 'vio' : c.status === 'error' ? 'err' : '';
+                monStatus.textContent = c.status === 'violation' ? 'VIOLATION' : 'ERROR';
+                if (S.cc && c.cap) { monCap.textContent = c.cap; monCap.classList.add('show'); } else monCap.classList.remove('show');
+
+                const r = c.vf && media.get(c.vf);
+                if (r && r.url) {
+                    monEmpty.style.display = 'none';
+                    if (monSrcFn !== c.vf) { monSrcFn = c.vf; monVideo.src = r.url; }
+                    const local = clamp((S.cam - c.start) / U, 0, (r.dur || c.dur / U));
+                    if (S.play) {
+                        if (monVideo.paused) monVideo.play().catch(() => { });
+                        if (Math.abs(monVideo.currentTime - local) > 0.15) monVideo.currentTime = local;
+                    } else {
+                        if (!monVideo.paused) monVideo.pause();
+                        if (Math.abs(monVideo.currentTime - local) > 0.05) monVideo.currentTime = local;
+                    }
+                } else {
+                    monEmpty.style.display = 'grid';
+                    monEmpty.textContent = c.vf ? 'MEDIA NOT LINKED' : 'CAPTION-ONLY CLIP';
+                    if (!monVideo.paused) monVideo.pause();
+                }
+            }
+
+            // =========================================================
+            // INGEST
+            // =========================================================
+            function normStatus(s) { return s === 'ok' || s === 'violation' || s === 'error' ? s : 'none'; }
+
+            function titleFrom(rec) {
+                const cap = (rec.caption_preview || '').replace(/\s+/g, ' ').trim();
+                const head = cap.replace(/^[#\s{`*-]+/, '').slice(0, 26);
+                return '#' + rec.index + (head ? ' ' + head : '');
+            }
+
+            function loadManifest(json, name) {
+                const rows = Array.isArray(json) ? json : (json.clips || []);
+                if (!rows.length) { toast('NO CLIPS IN MANIFEST'); return; }
+                DOC.clips = []; nextId = 1; S.sel.clear(); S.lastSel = null;
+                const t = DOC.tubes[0], cursors = new Array(t.chN).fill(0);
+                rows.forEach((rec, i) => {
+                    const ch = i % t.chN;
+                    const dur = 720; // 12 s default; real duration arrives with media metadata
+                    DOC.clips.push({
+                        id: uid('C'), idx: rec.index ?? i, title: titleFrom(rec),
+                        cap: rec.caption_preview || '', vf: rec.video_file || '', pf: rec.prompt_file || '',
+                        status: normStatus(rec.status), ts: rec.timestamp || null,
+                        tube: t.id, ch, start: cursors[ch], dur, group: null, locked: false, srcDur: 0
+                    });
+                    cursors[ch] += dur + GAP;
+                });
+                S.manifestName = name || 'manifest.json';
+                S.cam = 0;
+                rebuildIndex(); computeTerms(); listDirty(); save();
+                toast(rows.length + ' CLIPS LOADED');
+            }
+
+            function linkMediaFiles(files) {
+                let hit = 0;
+                for (const f of files) {
+                    if (!f.type.startsWith('video/') && !/\.(mp4|webm|mov)$/i.test(f.name)) continue;
+                    const r = mediaRec(f.name);
+                    if (r.url) URL.revokeObjectURL(r.url);
+                    r.url = URL.createObjectURL(f); r.thumb = null; r.queued = false;
+                    hit++;
+                }
+                if (monSrcFn) { monSrcFn = null; } // force re-attach
+                rebuildIndex(); listDirty();
+                toast(hit + ' MEDIA FILES LINKED');
+            }
+
+            function stress1000() {
+                DOC.clips = []; nextId = 1; S.sel.clear(); S.lastSel = null;
+                const t = DOC.tubes[0], cursors = new Array(t.chN).fill(0);
+                const words = ['barrel', 'signal', 'lattice', 'ghost', 'meridian', 'copper', 'archive', 'orbit', 'furnace', 'harbor', 'static', 'meadow'];
+                for (let i = 0; i < 1000; i++) {
+                    const ch = i % t.chN, dur = 480 + (i % 5) * 120;
+                    const st = i % 29 === 0 ? 'violation' : i % 41 === 0 ? 'error' : 'ok';
+                    DOC.clips.push({
+                        id: uid('C'), idx: i, title: '#' + i + ' ' + words[i % words.length],
+                        cap: 'synthetic stress clip ' + i + ' — ' + words[i % words.length] + ' ' + words[(i * 7) % words.length] + ' field test for fleet-scale draw, virtual bin, and aggregate honesty.',
+                        vf: '', pf: '', status: st,
+                        ts: new Date(Date.now() - i * 47000).toISOString(),
+                        tube: t.id, ch, start: cursors[ch], dur, group: null, locked: false, srcDur: 0
+                    });
+                    cursors[ch] += dur + GAP;
+                }
+                S.manifestName = 'STRESS-1000';
+                rebuildIndex(); computeTerms(); listDirty(); save();
+                toast('1000 SYNTHETIC CLIPS');
+            }
+
+            // =========================================================
+            // GEOMETRY + RENDER — dirty-flag, culled, LOD-capped
+            // =========================================================
+            function resize() {
+                DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+                stage.width = Math.round(W * DPR); stage.height = Math.round(H * DPR);
+                ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+                dirty(); listDirty();
+            }
+            addEventListener('resize', resize);
+
+            function opsOpen() { return !ops.classList.contains('hide'); }
+            function area() {
+                const left = W < 900 ? 48 : 56, top = W < 900 ? 44 : 48, bottom = W < 900 ? 52 : 56;
+                const right = opsOpen() ? (W < 900 ? 0 : 340) : 0; // narrow ops overlays the stage
+                const w = Math.max(120, W - left - right), h = Math.max(120, H - top - bottom);
+                return { x: left, y: top, w, h, cx: left + w * .52, cy: top + h * .52 };
+            }
+
+            function project(x, y, z) {
+                const A = area(), dz = z - S.cam + 900;
+                if (dz < 12) return null;
+                const s = 720 / dz;
+                return { x: A.cx + x * s, y: A.cy + y * s, s, d: dz };
+            }
+            function chAngle(t, ch) { return ch * (Math.PI * 2 / t.chN) - Math.PI / 2 + S.roll; }
+
+            function hatchRect(x, y, w, h, color, gap) {
+                ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+                ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.beginPath();
+                for (let i = -h; i < w; i += gap) { ctx.moveTo(x + i, y + h); ctx.lineTo(x + i + h, y); }
+                ctx.stroke(); ctx.restore();
+            }
+
+            function statusInk(st) { return st === 'violation' ? '#ff2e2e' : st === 'error' ? '#ffd23f' : null; }
+
+            function clearStage() {
+                ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
+                const A = area(); ctx.save(); ctx.globalAlpha = .12; ctx.strokeStyle = '#000'; ctx.lineWidth = 1;
+                ctx.beginPath();
+                for (let x = A.x; x < A.x + A.w; x += 48) { ctx.moveTo(x, A.y); ctx.lineTo(x, A.y + A.h); }
+                for (let y = A.y; y < A.y + A.h; y += 48) { ctx.moveTo(A.x, y); ctx.lineTo(A.x + A.w, y); }
+                ctx.stroke(); ctx.restore();
+            }
+
+            function tag(x, y, text, active) {
+                const A = area(), fs = W < 900 ? 10 : 11, w = Math.max(48, String(text).length * 6.6 + 12), h = fs + 9;
+                x = clamp(x - w / 2, A.x + 4, A.x + A.w - w - 4); y = clamp(y - h / 2, A.y + 4, A.y + A.h - h - 4);
+                ctx.fillStyle = active ? '#000' : '#fff'; ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
+                ctx.fillRect(x, y, w, h); ctx.strokeRect(x, y, w, h);
+                ctx.fillStyle = active ? '#fff' : '#000'; ctx.font = '900 ' + fs + 'px "IBM Plex Mono",ui-monospace';
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(text), x + w / 2, y + h / 2);
+                return { x, y, w, h };
+            }
+
+            // ---------- TUBE VIEW ----------
+            function drawTube() {
+                const t = tube(S.tube), units = IX.units.get(t.id) || [];
+                ctx.save();
+                for (let c = 0; c < t.chN; c++) {
+                    const a = chAngle(t, c);
+                    ctx.globalAlpha = c === S.ch ? .9 : .3; ctx.lineWidth = c === S.ch ? 3 : 1.5; ctx.strokeStyle = '#000';
+                    ctx.beginPath();
+                    for (let i = 0; i <= 30; i++) {
+                        const z = S.cam - 850 + i * (FAR / 30), q = project(Math.cos(a) * R, Math.sin(a) * R, z);
+                        if (q) { if (i) ctx.lineTo(q.x, q.y); else ctx.moveTo(q.x, q.y); }
+                    }
+                    ctx.stroke();
+                }
+                ctx.globalAlpha = .25; ctx.lineWidth = 1;
+                for (let z = qsnap(S.cam - 600); z < S.cam + FAR; z += SNAP * 4) {
+                    const q = project(0, 0, z);
+                    if (q && q.s > .05) { ctx.beginPath(); ctx.arc(q.x, q.y, R * q.s, 0, Math.PI * 2); ctx.stroke(); }
+                }
+                ctx.restore();
+
+                const vis = [];
+                for (const u of units) {
+                    const s0 = u.k === 'c' ? u.c.start : u.start, s1 = u.k === 'c' ? u.c.start + u.c.dur : u.end;
+                    if (s1 < S.cam - 600 || s0 > S.cam + FAR) continue;
+                    vis.push({ u, s0, s1, near: Math.max(s0, S.cam) });
+                }
+                vis.sort((a, b) => a.near - b.near);
+                const capped = vis.slice(0, 140);
+                capped.sort((a, b) => b.near - a.near);
+                let thumbBudget = 26;
+                for (const v of capped) thumbBudget = drawTubeUnit(t, v.u, v.s0, v.s1, thumbBudget);
+
+                const q = project(0, 0, S.cam);
+                if (q) {
+                    ctx.save(); ctx.lineWidth = 3; ctx.strokeStyle = '#000';
+                    ctx.beginPath(); ctx.arc(q.x, q.y, R * q.s, 0, Math.PI * 2); ctx.stroke();
+                    tag(q.x, q.y - R * q.s - 16, fmt(S.cam), true);
+                    ctx.restore();
+                }
+                S.drawCount = capped.length;
+            }
+
+            function drawTubeUnit(t, u, z0, z1, thumbBudget) {
+                const isG = u.k === 'g';
+                const c = isG ? null : u.c;
+                const ch = isG ? u.ch : c.ch;
+                const a = chAngle(t, ch);
+                const hw = Math.PI / t.chN * .42;
+                const a0 = a - hw, a1 = a + hw;
+                const nearD = Math.max(z0, S.cam) - S.cam;
+                const segs = nearD > 3600 ? 2 : clamp(Math.ceil((z1 - z0) / 480), 2, 8);
+                const lo = [], hi = [];
+                for (let i = 0; i <= segs; i++) {
+                    const z = lerp(z0, z1, i / segs);
+                    const p0 = project(Math.cos(a0) * R, Math.sin(a0) * R, z);
+                    const p1 = project(Math.cos(a1) * R, Math.sin(a1) * R, z);
+                    if (p0 && p1) { lo.push(p0); hi.push(p1); }
+                }
+                if (lo.length < 2) return thumbBudget;
+                const pts = lo.concat(hi.slice().reverse());
+                const p = new Path2D();
+                p.moveTo(pts[0].x, pts[0].y);
+                for (let i = 1; i < pts.length; i++) p.lineTo(pts[i].x, pts[i].y);
+                p.closePath();
+
+                const sel = c && S.sel.has(c.id);
+                const g = isG ? u.g : (c.group && group(c.group));
+                const alpha = clamp(1 - nearD / 8600, .1, 1);
+                ctx.save(); ctx.globalAlpha = alpha;
+
+                ctx.fillStyle = sel ? '#000' : (g ? g.accent : '#fff');
+                if (g && !sel) { ctx.globalAlpha = alpha * .45; ctx.fill(p); ctx.globalAlpha = alpha; }
+                else ctx.fill(p);
+
+                if (!isG && !sel && c.vf && nearD < 2600 && thumbBudget > 0) {
+                    const th = wantThumb(c.vf);
+                    if (th) {
+                        thumbBudget--;
+                        const n = Math.min(2, lo.length - 1);
+                        const cell = [lo[0], lo[n], hi[n], hi[0]];
+                        let mnx = 1e9, mny = 1e9, mxx = -1e9, mxy = -1e9;
+                        for (const q of cell) { mnx = Math.min(mnx, q.x); mny = Math.min(mny, q.y); mxx = Math.max(mxx, q.x); mxy = Math.max(mxy, q.y); }
+                        const cp = new Path2D();
+                        cp.moveTo(cell[0].x, cell[0].y);
+                        for (let i = 1; i < 4; i++) cp.lineTo(cell[i].x, cell[i].y);
+                        cp.closePath();
+                        ctx.save(); ctx.clip(cp);
+                        const bw = mxx - mnx, bh = mxy - mny, r = Math.max(bw / 176, bh / 99);
+                        ctx.drawImage(th, mnx + (bw - 176 * r) / 2, mny + (bh - 99 * r) / 2, 176 * r, 99 * r);
+                        ctx.restore();
+                    }
+                }
+
+                const stc = statusInk(isG ? null : c.status);
+                ctx.lineWidth = sel ? 5 : 2;
+                ctx.strokeStyle = stc || '#000';
+                if (isG) ctx.setLineDash([10, 5]);
+                ctx.stroke(p);
+                ctx.setLineDash([]);
+                if (sel) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke(p); }
+                ctx.restore();
+
+                if (nearD < 1500) {
+                    const mid = project(Math.cos(a) * R, Math.sin(a) * R, (Math.max(z0, S.cam) + Math.min(z1, S.cam + 1500)) / 2);
+                    if (mid) {
+                        const txt = isG ? 'GRP ' + u.g.name + ' x' + u.members.length : c.title.slice(0, 18);
+                        tag(mid.x, mid.y, txt, !!sel);
+                    }
+                }
+                let mnx = 1e9, mny = 1e9, mxx = -1e9, mxy = -1e9;
+                for (const q of pts) { mnx = Math.min(mnx, q.x); mny = Math.min(mny, q.y); mxx = Math.max(mxx, q.x); mxy = Math.max(mxy, q.y); }
+                rendered.push({ u, pts, rect: { x: mnx, y: mny, w: mxx - mnx, h: mxy - mny } });
+                return thumbBudget;
+            }
+
+            // ---------- BENCH VIEW (all tubes stacked) ----------
+            function benchX(z) { const A = area(); return A.x + A.w * .5 + (z - S.cam) * S.zoom; }
+            function benchTime(x) { const A = area(); return qsnap(S.cam + (x - (A.x + A.w * .5)) / S.zoom); }
+
+            function benchLayout() {
+                const A = area(); const bands = [];
+                let totalCh = 0;
+                for (const t of DOC.tubes) totalCh += t.chN;
+                const headH = 20, avail = A.h - 40 - DOC.tubes.length * (headH + 8);
+                const laneH = clamp(avail / Math.max(1, totalCh), 26, 76);
+                let y = A.y + 8 - S.benchScroll;
+                for (const t of DOC.tubes) {
+                    bands.push({ t, headY: y, laneY0: y + headH, laneH });
+                    y += headH + t.chN * laneH + 8;
+                }
+                return { bands, laneH, contentH: y + S.benchScroll - A.y };
+            }
+
+            function drawBench() {
+                const A = area(), L = benchLayout();
+                S.benchScroll = clamp(S.benchScroll, 0, Math.max(0, L.contentH - A.h + 30));
+                ctx.save(); ctx.beginPath(); ctx.rect(A.x, A.y, A.w, A.h); ctx.clip();
+                let drawn = 0, thumbBudget = 60;
+                for (const b of L.bands) {
+                    const t = b.t;
+                    ctx.globalAlpha = 1;
+                    ctx.fillStyle = t.id === S.tube ? '#000' : '#fff';
+                    ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
+                    ctx.fillRect(A.x + 4, b.headY, 120, 16); ctx.strokeRect(A.x + 4, b.headY, 120, 16);
+                    ctx.fillStyle = t.id === S.tube ? '#fff' : '#000';
+                    ctx.font = '900 9px "IBM Plex Mono",ui-monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                    ctx.fillText(t.name + ' · ' + t.chN + 'CH', A.x + 10, b.headY + 8.5);
+                    rendered.push({ hdr: t, rect: { x: A.x + 4, y: b.headY, w: 120, h: 16 } });
+                    for (let c = 0; c < t.chN; c++) {
+                        const y = b.laneY0 + c * L.laneH;
+                        ctx.globalAlpha = .3; ctx.strokeStyle = '#000'; ctx.lineWidth = 1;
+                        ctx.strokeRect(A.x, y, A.w, L.laneH);
+                        ctx.globalAlpha = 1;
+                        if (t.id === S.tube && c === S.ch) { ctx.globalAlpha = .06; ctx.fillStyle = '#000'; ctx.fillRect(A.x, y, A.w, L.laneH); ctx.globalAlpha = 1; }
+                        rendered.push({ lane: { tube: t.id, ch: c }, rect: { x: A.x, y, w: A.w, h: L.laneH } });
+                    }
+                    const units = IX.units.get(t.id) || [];
+                    const zLeft = benchTime(A.x) - 1200, zRight = benchTime(A.x + A.w) + 1200;
+                    for (const u of units) {
+                        const s0 = u.k === 'c' ? u.c.start : u.start, s1 = u.k === 'c' ? u.c.start + u.c.dur : u.end;
+                        if (s1 < zLeft || s0 > zRight) continue;
+                        const ch = u.k === 'c' ? u.c.ch : u.ch;
+                        const y = b.laneY0 + ch * L.laneH + 3, h = L.laneH - 6;
+                        if (y + h < A.y || y > A.y + A.h) continue;
+                        const x0 = benchX(s0), x1 = benchX(s1), w = Math.max(2, x1 - x0);
+                        drawn++;
+                        thumbBudget = drawBenchUnit(u, x0, y, w, h, thumbBudget);
+                    }
+                }
+                ctx.restore();
+                const x = benchX(S.cam);
+                ctx.save(); ctx.lineWidth = 3; ctx.strokeStyle = '#000';
+                ctx.beginPath(); ctx.moveTo(x, A.y); ctx.lineTo(x, A.y + A.h); ctx.stroke();
+                tag(x, A.y + 16, fmt(S.cam), true);
+                ctx.restore();
+                if (S.marquee) {
+                    const m = S.marquee;
+                    ctx.save(); ctx.setLineDash([5, 5]); ctx.lineWidth = 2; ctx.strokeStyle = '#000';
+                    ctx.strokeRect(Math.min(m.x0, m.x1), Math.min(m.y0, m.y1), Math.abs(m.x1 - m.x0), Math.abs(m.y1 - m.y0));
+                    ctx.restore();
+                }
+                S.drawCount = drawn;
+                drawDensityStrip();
+            }
+
+            function drawBenchUnit(u, x, y, w, h, thumbBudget) {
+                const isG = u.k === 'g', c = isG ? null : u.c;
+                const sel = c && S.sel.has(c.id);
+                const g = isG ? u.g : (c.group && group(c.group));
+                ctx.fillStyle = sel ? '#000' : '#fff';
+                ctx.fillRect(x, y, w, h);
+                if (g && !sel) { ctx.save(); ctx.globalAlpha = .4; ctx.fillStyle = g.accent; ctx.fillRect(x, y, w, h); ctx.restore(); }
+                if (!isG && !sel && c.vf && w > 46 && h > 26 && thumbBudget > 0) {
+                    const th = wantThumb(c.vf);
+                    if (th) {
+                        thumbBudget--;
+                        ctx.save(); ctx.beginPath(); ctx.rect(x + 1, y + 1, w - 2, h - 2); ctx.clip();
+                        const r = Math.max((w - 2) / 176, (h - 2) / 99);
+                        ctx.drawImage(th, x + 1 + (w - 2 - 176 * r) / 2, y + 1 + (h - 2 - 99 * r) / 2, 176 * r, 99 * r);
+                        ctx.restore();
+                    }
+                }
+                const stc = statusInk(isG ? null : c.status);
+                ctx.lineWidth = sel ? 3 : 2; ctx.strokeStyle = stc || '#000';
+                if (isG) ctx.setLineDash([8, 4]);
+                ctx.strokeRect(x, y, w, h);
+                ctx.setLineDash([]);
+                if (w > 60) {
+                    ctx.fillStyle = sel ? '#fff' : '#000';
+                    ctx.font = '900 9px "IBM Plex Mono",ui-monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+                    const txt = isG ? 'GRP ' + u.g.name + ' x' + u.members.length : c.title;
+                    ctx.save(); ctx.beginPath(); ctx.rect(x + 2, y + 2, w - 4, 12); ctx.clip();
+                    ctx.fillText(txt, x + 4, y + 3); ctx.restore();
+                }
+                rendered.push({ u, rect: { x, y, w, h } });
+                return thumbBudget;
+            }
+
+            function drawDensityStrip() {
+                const A = area(), y = A.y + A.h - 22, h = 16;
+                let maxZ = 1;
+                for (const c of DOC.clips) maxZ = Math.max(maxZ, c.start + c.dur);
+                const bins = 120, hist = new Array(bins).fill(0);
+                for (const c of DOC.clips) {
+                    const b0 = clamp(Math.floor(c.start / maxZ * bins), 0, bins - 1);
+                    const b1 = clamp(Math.floor((c.start + c.dur) / maxZ * bins), 0, bins - 1);
+                    for (let b = b0; b <= b1; b++) hist[b]++;
+                }
+                const peak = Math.max(1, ...hist);
+                ctx.save();
+                ctx.fillStyle = '#fff'; ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
+                ctx.fillRect(A.x + 4, y, A.w - 8, h); ctx.strokeRect(A.x + 4, y, A.w - 8, h);
+                ctx.fillStyle = '#000';
+                const bw = (A.w - 8) / bins;
+                for (let b = 0; b < bins; b++) {
+                    const bh = hist[b] / peak * (h - 4);
+                    if (bh > 0) ctx.fillRect(A.x + 4 + b * bw, y + h - 2 - bh, Math.max(1, bw - 1), bh);
+                }
+                const px = A.x + 4 + clamp(S.cam / maxZ, 0, 1) * (A.w - 8);
+                ctx.fillStyle = '#19e6c8'; ctx.fillRect(px - 2, y - 3, 4, h + 6);
+                ctx.strokeRect(px - 2, y - 3, 4, h + 6);
+                ctx.restore();
+                rendered.push({ strip: true, maxZ, rect: { x: A.x + 4, y: y - 6, w: A.w - 8, h: h + 12 } });
+            }
+
+            // ---------- ATLAS VIEW (virtual thumbnail grid) ----------
+            function atlasLayout() {
+                const A = area();
+                const tw = W < 900 ? 128 : 156, th = tw * (99 / 176) + 26;
+                const cols = Math.max(1, Math.floor((A.w - 12) / (tw + 8)));
+                return { A, tw, th, cols, pad: 8 };
+            }
+
+            function drawAtlas() {
+                const { A, tw, th, cols, pad } = atlasLayout();
+                buildList();
+                const list = listCache;
+                const rows = Math.ceil(list.length / cols);
+                const totalH = rows * (th + pad) + pad;
+                S.atlasScroll = clamp(S.atlasScroll, 0, Math.max(0, totalH - A.h));
+                const r0 = Math.max(0, Math.floor(S.atlasScroll / (th + pad)) - 1);
+                const r1 = Math.min(rows, Math.ceil((S.atlasScroll + A.h) / (th + pad)) + 1);
+                ctx.save(); ctx.beginPath(); ctx.rect(A.x, A.y, A.w, A.h); ctx.clip();
+                let drawn = 0, thumbBudget = 48;
+                for (let r = r0; r < r1; r++) {
+                    for (let col = 0; col < cols; col++) {
+                        const i = r * cols + col;
+                        if (i >= list.length) break;
+                        const c = list[i];
+                        const x = A.x + pad + col * (tw + pad);
+                        const y = A.y + pad + r * (th + pad) - S.atlasScroll;
+                        drawn++;
+                        const sel = S.sel.has(c.id);
+                        const g = c.group && group(c.group);
+                        ctx.fillStyle = sel ? '#000' : '#fff';
+                        ctx.fillRect(x, y, tw, th);
+                        const thH = tw * 99 / 176;
+                        let th2 = null;
+                        if (c.vf && thumbBudget > 0) { th2 = wantThumb(c.vf); if (th2) thumbBudget--; }
+                        if (th2) ctx.drawImage(th2, x + 1, y + 1, tw - 2, thH - 2);
+                        else {
+                            hatchRect(x + 1, y + 1, tw - 2, thH - 2, 'rgba(0,0,0,.25)', 9);
+                            ctx.fillStyle = sel ? '#fff' : '#000';
+                            ctx.font = '900 9px "IBM Plex Mono",ui-monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                            ctx.fillText(c.vf ? (media.has(c.vf) && media.get(c.vf).url ? 'QUEUED' : 'NOT LINKED') : 'NO MEDIA', x + tw / 2, y + thH / 2);
+                        }
+                        ctx.fillStyle = sel ? '#fff' : '#000';
+                        ctx.font = '900 8.5px "IBM Plex Mono",ui-monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+                        ctx.save(); ctx.beginPath(); ctx.rect(x + 3, y + thH + 2, tw - 6, 22); ctx.clip();
+                        ctx.fillText(c.title, x + 8, y + thH + 3);
+                        ctx.globalAlpha = .7; ctx.font = '8px "IBM Plex Mono",ui-monospace';
+                        ctx.fillText(fmt(c.start) + ' · ' + tube(c.tube).name + ' C' + (c.ch + 1), x + 8, y + thH + 13);
+                        ctx.restore();
+                        const stc = statusInk(c.status);
+                        ctx.lineWidth = sel ? 3 : 2; ctx.strokeStyle = stc || '#000';
+                        ctx.strokeRect(x, y, tw, th);
+                        if (g) { ctx.fillStyle = g.accent; ctx.fillRect(x, y, 6, th); ctx.strokeStyle = '#000'; ctx.lineWidth = 1; ctx.strokeRect(x, y, 6, th); }
+                        rendered.push({ atlas: c, rect: { x, y, w: tw, h: th } });
+                    }
+                }
+                ctx.restore();
+                S.drawCount = drawn;
+            }
+
+            // ---------- STATS VIEW ----------
+            function drawStats() {
+                statRects = [];
+                const A = area(), a = IX.agg;
+                if (!a || !a.n) {
+                    ctx.fillStyle = '#000'; ctx.font = '900 12px "IBM Plex Mono",ui-monospace';
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText('NO CLIPS — LOAD MANIFEST FROM I/O TAB', A.cx, A.cy);
+                    return;
+                }
+                let y = A.y + 22;
+                const barX = A.x + 130, barW = Math.max(80, A.w - 200);
+                function head(t2) {
+                    ctx.fillStyle = '#000'; ctx.font = '900 11px "IBM Plex Mono",ui-monospace';
+                    ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+                    ctx.fillText(t2, A.x + 12, y); y += 8;
+                }
+                function bar(label, n, total, fill, click) {
+                    const h = 15, w = total ? n / total * barW : 0;
+                    ctx.font = '700 9px "IBM Plex Mono",ui-monospace'; ctx.fillStyle = '#000'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                    ctx.fillText(label.slice(0, 17), A.x + 12, y + h / 2);
+                    ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.strokeRect(barX, y, barW, h);
+                    ctx.fillStyle = fill || '#000'; ctx.fillRect(barX, y, Math.max(n ? 2 : 0, w), h);
+                    ctx.fillStyle = '#000';
+                    ctx.fillText(String(n), barX + barW + 6, y + h / 2);
+                    if (click) statRects.push({ rect: { x: A.x + 8, y: y - 2, w: A.w - 16, h: h + 4 }, click });
+                    y += h + 6;
+                }
+                head('STATUS — TAP TO FILTER BIN');
+                bar('OK', a.status.ok, a.n, '#000', () => { S.fStatus = 'ok'; fStatusBtn.textContent = 'OK'; openBin(); });
+                bar('VIOLATION', a.status.violation, a.n, '#ff2e2e', () => { S.fStatus = 'violation'; fStatusBtn.textContent = 'VIO'; openBin(); });
+                bar('ERROR', a.status.error, a.n, '#ffd23f', () => { S.fStatus = 'error'; fStatusBtn.textContent = 'ERR'; openBin(); });
+                y += 6; head('TUBES');
+                for (const t of DOC.tubes) {
+                    const tid = t.id;
+                    bar(t.name, a.perTube.get(t.id) || 0, a.n, t.id === S.tube ? '#19e6c8' : '#000', () => { S.tube = tid; updateTubeChips(); dirty(); });
+                }
+                if (DOC.groups.length) {
+                    y += 6; head('GROUPS');
+                    for (const g of DOC.groups) {
+                        const gg = g;
+                        bar(g.name, a.perGroup.get(g.id) || 0, a.n, g.accent, () => selectGroup(gg));
+                    }
+                }
+                y += 6; head('MEDIA');
+                bar('LINKED', a.linked, a.n, '#3b82f6');
+                bar('THUMBED', a.thumbed, a.n, '#3b82f6');
+                y += 6; head('CAPTURE HOUR (LOCAL)');
+                const peak = Math.max(1, ...a.perHour), hh = 52, hw = Math.min(barW + 130, A.w - 24), bw = hw / 24;
+                ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.strokeRect(A.x + 12, y, hw, hh);
+                ctx.fillStyle = '#000';
+                for (let hI = 0; hI < 24; hI++) {
+                    const bh = a.perHour[hI] / peak * (hh - 6);
+                    if (bh > 0) ctx.fillRect(A.x + 12 + hI * bw + 1, y + hh - 2 - bh, Math.max(1, bw - 2), bh);
+                }
+                ctx.font = '8px "IBM Plex Mono",ui-monospace'; ctx.textBaseline = 'top'; ctx.textAlign = 'left';
+                ctx.fillText('00', A.x + 12, y + hh + 3);
+                ctx.textAlign = 'right'; ctx.fillText('23', A.x + 12 + hw, y + hh + 3); ctx.textAlign = 'left';
+                y += hh + 22;
+                if (IX.terms.length && y < A.y + A.h - 40) {
+                    head('TOP CAPTION TERMS — TAP TO SEARCH');
+                    ctx.font = '700 9px "IBM Plex Mono",ui-monospace'; ctx.textBaseline = 'middle';
+                    let x = A.x + 12;
+                    for (const pair of IX.terms) {
+                        const w2 = pair[0], n2 = pair[1];
+                        const txt = w2 + ' ' + n2, tw2 = txt.length * 6 + 14;
+                        if (x + tw2 > A.x + A.w - 12) { x = A.x + 12; y += 24; if (y > A.y + A.h - 24) break; }
+                        ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.strokeRect(x, y, tw2, 18);
+                        ctx.fillStyle = '#000'; ctx.fillText(txt, x + 7, y + 9.5);
+                        statRects.push({ rect: { x, y, w: tw2, h: 18 }, click: () => { S.q = w2; qInput.value = w2; openBin(); } });
+                        x += tw2 + 8;
+                    }
+                }
+                S.drawCount = 0;
+            }
+
+            function openBin() { setTab('bin'); if (!opsOpen()) toggleOps(true); listDirty(); dirty(); }
+
+            // ---------- MASTER RENDER + LOOP ----------
+            function render() {
+                rendered = [];
+                clearStage();
+                if (S.view === 0) drawTube();
+                else if (S.view === 1) drawBench();
+                else if (S.view === 2) drawAtlas();
+                else drawStats();
+                timeRead.textContent = fmt(S.cam);
+                syncMonitor();
+            }
+
+            let lastTs = 0, fpsAcc = 0, fpsN = 0, fpsAt = 0;
+            function loop(ts) {
+                const dt = Math.min(50, ts - lastTs || 16); lastTs = ts;
+                if (S.play) {
+                    S.cam += dt * .06; dirty();
+                    if (ts - (loop.binAt || 0) > 250) { loop.binAt = ts; S.listDirty = true; }
+                }
+                if (S.needsDraw) {
+                    S.needsDraw = false;
+                    const t0 = performance.now();
+                    render();
+                    fpsAcc += performance.now() - t0; fpsN++;
+                    if (ts - fpsAt > 500) {
+                        const avg = fpsAcc / Math.max(1, fpsN);
+                        hudEl.textContent = (IX.agg ? IX.agg.n : 0) + ' CLIPS · DRAW ' + S.drawCount + ' · ' + avg.toFixed(1) + 'MS';
+                        fpsAcc = 0; fpsN = 0; fpsAt = ts;
+                    }
+                }
+                if (S.listDirty) { S.listDirty = false; renderBin(); }
+                requestAnimationFrame(loop);
+            }
+
+            // =========================================================
+            // VIRTUAL BIN — ~12 pooled rows regardless of clip count
+            // =========================================================
+            let listCache = [], listCacheKey = '';
+            function buildList() {
+                const key = [S.q, S.fStatus, S.listSort, DOC.clips.length, S.tube].join('|');
+                if (key === listCacheKey && !S.forceList) return;
+                listCacheKey = key; S.forceList = false;
+                const q = S.q.trim().toLowerCase();
+                listCache = DOC.clips.filter(c => {
+                    if (S.fStatus !== 'ALL' && c.status !== S.fStatus) return false;
+                    if (q && !(c.title.toLowerCase().includes(q) || c.cap.toLowerCase().includes(q) || c.vf.toLowerCase().includes(q))) return false;
+                    return true;
+                });
+                listCache.sort((a, b) => a.start - b.start || a.ch - b.ch);
+            }
+
+            const rowPool = [];
+            function getRow(i) {
+                let r = rowPool[i];
+                if (!r) {
+                    r = document.createElement('div');
+                    r.className = 'row';
+                    r.innerHTML = '<div class="gbar"></div><div class="thumb"></div><div class="info"><b></b><p></p><small></small></div><div class="st"></div><div class="prog"></div>';
+                    r.onpointerdown = e => rowPointer(e, r);
+                    rowPool[i] = r; binSpace.appendChild(r);
+                }
+                return r;
+            }
+
+            function rowPointer(e, r) {
+                const c = IX.byId.get(r.dataset.cid);
+                if (!c) return;
+                if (S.tool === 'SEL') { toggleSel(c); return; }
+                selectOnly(c);
+                // drag along row scrubs inside the clip
+                const scrub = ev => {
+                    const rect = r.getBoundingClientRect();
+                    const pct = clamp((ev.clientX - rect.left) / rect.width, 0, 1);
+                    S.cam = c.start + Math.round(c.dur * pct); dirty();
+                };
+                scrub(e);
+                const up = () => { removeEventListener('pointermove', scrub); removeEventListener('pointerup', up); };
+                addEventListener('pointermove', scrub); addEventListener('pointerup', up);
+            }
+
+            function renderBin() {
+                buildList();
+                const n = listCache.length;
+                binSpace.style.height = (n * ROWH + 4) + 'px';
+                const top = binScroller.scrollTop, vh = binScroller.clientHeight || 1;
+                const i0 = Math.max(0, Math.floor(top / ROWH) - 1);
+                const i1 = Math.min(n, Math.ceil((top + vh) / ROWH) + 1);
+                let pi = 0;
+                for (let i = i0; i < i1; i++, pi++) {
+                    const c = listCache[i], r = getRow(pi);
+                    r.style.display = 'flex';
+                    r.style.top = (i * ROWH) + 'px';
+                    r.dataset.cid = c.id;
+                    r.classList.toggle('sel', S.sel.has(c.id));
+                    const g = c.group && group(c.group);
+                    r.children[0].style.background = g ? g.accent : 'transparent';
+                    const th = r.children[1], rec = c.vf && media.get(c.vf);
+                    if (rec && rec.thumb) {
+                        if (!rec.thumbURL) rec.thumbURL = rec.thumb.toDataURL('image/jpeg', .7);
+                        th.style.backgroundImage = 'url(' + rec.thumbURL + ')'; th.textContent = '';
+                    }
+                    else {
+                        th.style.backgroundImage = 'none';
+                        th.textContent = c.vf ? (rec && rec.url ? '…' : 'UNLINKED') : 'TEXT';
+                        if (rec && rec.url) wantThumb(c.vf);
+                    }
+                    const info = r.children[2];
+                    info.children[0].textContent = c.title;
+                    info.children[1].textContent = c.cap || '(no caption)';
+                    info.children[2].textContent = fmt(c.start) + ' · DUR ' + fmt(c.dur) + ' · ' + tube(c.tube).name + ' C' + (c.ch + 1);
+                    r.children[3].className = 'st' + (c.status === 'violation' ? ' vio' : c.status === 'error' ? ' err' : '');
+                    const playing = S.cam >= c.start && S.cam <= c.start + c.dur;
+                    r.children[4].style.width = playing ? (clamp((S.cam - c.start) / c.dur, 0, 1) * 100) + '%' : '0';
+                }
+                for (; pi < rowPool.length; pi++) rowPool[pi].style.display = 'none';
+            }
+            binScroller.addEventListener('scroll', () => { S.listDirty = true; }, { passive: true });
+            qInput.addEventListener('input', () => { S.q = qInput.value; S.forceList = true; listDirty(); });
+            fStatusBtn.onclick = () => {
+                const i = STATUS_ORDER.indexOf(S.fStatus);
+                S.fStatus = STATUS_ORDER[(i + 1) % STATUS_ORDER.length];
+                fStatusBtn.textContent = S.fStatus === 'ALL' ? 'ALL' : S.fStatus === 'ok' ? 'OK' : S.fStatus === 'violation' ? 'VIO' : 'ERR';
+                S.forceList = true; listDirty();
+            };
+            ccBtn.onclick = () => { S.cc = !S.cc; ccBtn.classList.toggle('on', S.cc); dirty(); };
+
+            // =========================================================
+            // SELECTION + BATCH OPS
+            // =========================================================
+            function selectOnly(c) {
+                S.sel.clear();
+                if (c) { S.sel.add(c.id); S.lastSel = c.id; }
+                else S.lastSel = null;
+                updateBatch(); S.forceList = true; listDirty(); dirty();
+            }
+            function toggleSel(c) {
+                if (S.sel.has(c.id)) S.sel.delete(c.id); else { S.sel.add(c.id); S.lastSel = c.id; }
+                updateBatch(); S.forceList = true; listDirty(); dirty();
+                tick('snap');
+            }
+            function selectGroup(g) {
+                S.sel.clear();
+                for (const c of DOC.clips) if (c.group === g.id) { S.sel.add(c.id); S.lastSel = c.id; }
+                updateBatch(); S.forceList = true; listDirty(); dirty();
+                toast(g.name + ' — ' + S.sel.size + ' SELECTED');
+            }
+            function updateBatch() {
+                batchN.textContent = S.sel.size + ' SEL';
+                batch.classList.toggle('show', S.sel.size > 1);
+                if (S.lastSel && S.sel.size === 1) openInspector(IX.byId.get(S.lastSel));
+                else if (!S.sel.size) insp.classList.remove('show');
+            }
+            function selClips() { return [...S.sel].map(id2 => IX.byId.get(id2)).filter(Boolean); }
+
+            $('bClear').onclick = () => selectOnly(null);
+            $('bDel').onclick = () => {
+                const del = new Set(S.sel);
+                DOC.clips = DOC.clips.filter(c => !del.has(c.id));
+                selectOnly(null); rebuildIndex(); computeTerms(); save(); toast(del.size + ' DELETED');
+            };
+            $('bGroup').onclick = () => {
+                const g = { id: uid('G'), name: 'GRP-' + (DOC.groups.length + 1), accent: ACCENTS[DOC.groups.length % ACCENTS.length], collapsed: false };
+                DOC.groups.push(g);
+                for (const c of selClips()) c.group = g.id;
+                rebuildIndex(); renderGroups(); save(); dirty(); listDirty();
+                toast(g.name + ' CREATED — ' + S.sel.size + ' CLIPS');
+            };
+            $('bPack').onclick = () => {
+                // ripple-pack selection per (tube, channel), preserving order
+                const byLane = new Map();
+                for (const c of selClips()) {
+                    const k = c.tube + ':' + c.ch;
+                    if (!byLane.has(k)) byLane.set(k, []);
+                    byLane.get(k).push(c);
+                }
+                for (const arr of byLane.values()) {
+                    arr.sort((a, b) => a.start - b.start);
+                    let cur = arr[0].start;
+                    for (const c of arr) { c.start = cur; cur += c.dur + GAP; }
+                }
+                rebuildIndex(); save(); dirty(); listDirty(); tick('drop'); toast('PACKED');
+            };
+            $('bTube').onclick = e => {
+                openMenu(e.clientX, e.clientY, DOC.tubes.map(t => ({
+                    label: '-> ' + t.name, fn: () => {
+                        for (const c of selClips()) { c.tube = t.id; c.ch = Math.min(c.ch, t.chN - 1); }
+                        rebuildIndex(); save(); dirty(); listDirty(); toast('SENT TO ' + t.name);
+                    }
+                })));
+            };
+
+            // =========================================================
+            // CONTEXT MENU
+            // =========================================================
+            function openMenu(x, y, items) {
+                menu.innerHTML = '';
+                for (const it of items) {
+                    const d = document.createElement('div');
+                    d.className = 'mi'; d.textContent = it.label;
+                    d.onclick = () => { menu.classList.remove('show'); it.fn(); };
+                    menu.appendChild(d);
+                }
+                menu.classList.add('show');
+                menu.style.left = Math.min(x, W - 170) + 'px';
+                menu.style.top = Math.min(y, H - items.length * 36 - 10) + 'px';
+            }
+            addEventListener('pointerdown', e => { if (!menu.contains(e.target)) menu.classList.remove('show'); }, true);
+
+            // =========================================================
+            // INSPECTOR
+            // =========================================================
+            function openInspector(c) {
+                if (!c) return;
+                inspTitle.textContent = c.title;
+                const g = c.group && group(c.group);
+                inspBody.innerHTML =
+                    '<div class="kv">' +
+                    '<b>INDEX</b><span>' + esc(c.idx) + '</span>' +
+                    '<b>STATUS</b><span>' + esc(c.status) + '</span>' +
+                    '<b>TUBE</b><span>' + esc(tube(c.tube).name) + ' · C' + (c.ch + 1) + '</span>' +
+                    '<b>TIME</b><span>' + fmt(c.start) + ' + ' + fmt(c.dur) + (c.srcDur ? ' (SRC ' + c.srcDur.toFixed(1) + 'S)' : '') + '</span>' +
+                    '<b>GROUP</b><span>' + (g ? esc(g.name) : '—') + '</span>' +
+                    '<b>VIDEO</b><span>' + esc(c.vf || '—') + '</span>' +
+                    '<b>PROMPT</b><span>' + esc(c.pf || '—') + '</span>' +
+                    '<b>CAPTURED</b><span>' + (c.ts ? esc(new Date(c.ts).toLocaleString()) : '—') + '</span>' +
+                    '</div>' +
+                    (c.cap ? '<code>' + esc(c.cap) + '</code>' : '');
+                $('inspLock').classList.toggle('on', c.locked);
+                insp.classList.add('show');
+            }
+            $('inspClose').onclick = () => { insp.classList.remove('show'); };
+            $('inspLock').onclick = () => {
+                const c = IX.byId.get(S.lastSel); if (!c) return;
+                c.locked = !c.locked; $('inspLock').classList.toggle('on', c.locked); save(); toast(c.locked ? 'LOCKED' : 'UNLOCKED');
+            };
+            $('inspDel').onclick = () => {
+                const c = IX.byId.get(S.lastSel); if (!c) return;
+                DOC.clips = DOC.clips.filter(x => x !== c);
+                selectOnly(null); rebuildIndex(); computeTerms(); save(); toast('DELETED');
+            };
+
+            // =========================================================
+            // STAGE INTERACTION
+            // =========================================================
+            function hitAt(x, y) {
+                if (S.view === 3) {
+                    for (const s2 of statRects) {
+                        const r = s2.rect;
+                        if (x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) return { stat: s2 };
+                    }
+                    return null;
+                }
+                for (let i = rendered.length - 1; i >= 0; i--) {
+                    const h = rendered[i], r = h.rect;
+                    if (x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) {
+                        if (h.pts && !hitPoly({ x, y }, h.pts)) continue;
+                        return h;
+                    }
+                }
+                return null;
+            }
+            function hitPoly(pt, pts) {
+                let h = false;
+                for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+                    const xi = pts[i].x, yi = pts[i].y, xj = pts[j].x, yj = pts[j].y;
+                    if (((yi > pt.y) !== (yj > pt.y)) && pt.x < (xj - xi) * (pt.y - yi) / ((yj - yi) || 1e-6) + xi) h = !h;
+                }
+                return h;
+            }
+
+            function laneAt(y) {
+                for (const h of rendered) {
+                    if (h.lane && y >= h.rect.y && y <= h.rect.y + h.rect.h) return h.lane;
+                }
+                return null;
+            }
+
+            stage.addEventListener('pointerdown', e => {
+                const x = e.clientX, y = e.clientY;
+                stage.setPointerCapture(e.pointerId);
+                const h = hitAt(x, y);
+
+                if (h && h.stat) { h.stat.click(); return; }
+                if (h && h.strip) { // density minimap jump
+                    const drag = ev => {
+                        const pct = clamp((ev.clientX - h.rect.x) / h.rect.w, 0, 1);
+                        S.cam = Math.round(pct * h.maxZ); dirty();
+                    };
+                    drag(e);
+                    const up = () => { removeEventListener('pointermove', drag); removeEventListener('pointerup', up); };
+                    addEventListener('pointermove', drag); addEventListener('pointerup', up);
+                    return;
+                }
+                if (h && h.hdr) { S.tube = h.hdr.id; updateTubeChips(); dirty(); toast(h.hdr.name); return; }
+                if (h && h.atlas) {
+                    const c = h.atlas;
+                    if (S.tool === 'SEL') toggleSel(c);
+                    else { selectOnly(c); S.cam = c.start; S.tube = c.tube; S.ch = c.ch; updateTubeChips(); dirty(); }
+                    return;
+                }
+                if (h && h.u) { beginUnitDrag(h.u, x, y); return; }
+
+                // empty space
+                if (S.tool === 'SEL' && S.view === 1) { beginMarquee(x, y); return; }
+                beginPan(x, y);
+            });
+
+            function beginUnitDrag(u, x, y) {
+                const isG = u.k === 'g';
+                const c = isG ? null : u.c;
+                if (S.tool === 'SEL' && c) { toggleSel(c); return; }
+                if (S.tool === 'SPLIT' && c) {
+                    const z = S.view === 1 ? benchTime(x) : S.cam;
+                    splitClip(c, z);
+                    return;
+                }
+                // establish drag set
+                let set;
+                if (isG) set = u.members;
+                else if (S.sel.has(c.id) && S.sel.size > 1) set = selClips();
+                else { selectOnly(c); set = [c]; }
+                set = set.filter(cl => !cl.locked);
+                if (!set.length) { tick('bad'); toast('LOCKED'); return; }
+
+                const z0 = S.view === 1 ? benchTime(x) : screenToZ_tube(x, y);
+                const origin = set.map(cl => ({ cl, start: cl.start, dur: cl.dur, ch: cl.ch, tube: cl.tube }));
+                const anchor = c || u.members[0];
+                let mode = S.tool === 'TRIM' && c ? trimEdge(u, x) : 'move';
+                let lastSnap = null;
+
+                const mv = ev => {
+                    const zx = S.view === 1 ? benchTime(ev.clientX) : screenToZ_tube(ev.clientX, ev.clientY);
+                    const dz = zx - z0;
+                    if (mode === 'move') {
+                        for (const o of origin) o.cl.start = Math.max(0, qsnap(o.start + dz));
+                        // channel / tube retarget in bench
+                        if (S.view === 1 && set.length === 1) {
+                            const lane = laneAt(ev.clientY);
+                            if (lane) {
+                                set[0].tube = lane.tube;
+                                set[0].ch = Math.min(lane.ch, tube(lane.tube).chN - 1);
+                            }
+                        }
+                    } else if (mode === 'trim-start' && c) {
+                        const ns = clamp(qsnap(origin[0].start + dz), 0, origin[0].start + origin[0].dur - SNAP);
+                        c.dur = origin[0].start + origin[0].dur - ns; c.start = ns;
+                    } else if (mode === 'trim-end' && c) {
+                        c.dur = Math.max(SNAP, qsnap(origin[0].dur + dz));
+                    }
+                    const snapKey = Math.round(anchor.start / SNAP);
+                    if (snapKey !== lastSnap) { lastSnap = snapKey; tick('snap'); }
+                    dirty();
+                };
+                const up = () => {
+                    removeEventListener('pointermove', mv); removeEventListener('pointerup', up);
+                    rebuildIndex(); S.forceList = true; listDirty(); save(); tick('drop');
+                };
+                addEventListener('pointermove', mv); addEventListener('pointerup', up);
+            }
+
+            function trimEdge(u, x) {
+                const r = u && rendered.find(h => h.u === u);
+                if (!r) return 'move';
+                return (x - r.rect.x) < r.rect.w / 2 ? 'trim-start' : 'trim-end';
+            }
+
+            function splitClip(c, z) {
+                z = qsnap(z);
+                if (z <= c.start + SNAP || z >= c.start + c.dur - SNAP) { toast('CUT OUTSIDE'); tick('bad'); return; }
+                const n = Object.assign({}, c, { id: uid('C'), title: c.title + '-B', start: z, dur: c.start + c.dur - z });
+                c.dur = z - c.start; c.title = c.title + '-A';
+                DOC.clips.push(n);
+                selectOnly(n); rebuildIndex(); save(); tick('drop'); toast('SPLIT');
+            }
+
+            function screenToZ_tube(x, y) {
+                // radial distance -> depth, reversible with project()
+                const A = area(), dx = x - A.cx, dy = y - A.cy;
+                const dr = Math.max(6, Math.hypot(dx, dy));
+                const dz = 720 / (dr / R);
+                return clamp(dz + S.cam - 900, 0, 1e7);
+            }
+
+            function beginPan(x, y) {
+                const cam0 = S.cam, roll0 = S.roll, sc0 = S.benchScroll, at0 = S.atlasScroll;
+                const mv = ev => {
+                    const dx = ev.clientX - x, dy = ev.clientY - y;
+                    if (S.view === 0) { S.cam = Math.max(0, cam0 - dy * 6); S.roll = roll0 + dx * .004; }
+                    else if (S.view === 1) {
+                        S.cam = Math.max(0, cam0 - dx / S.zoom);
+                        S.benchScroll = sc0 - dy;
+                    }
+                    else if (S.view === 2) S.atlasScroll = at0 - dy;
+                    dirty();
+                };
+                const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); };
+                addEventListener('pointermove', mv); addEventListener('pointerup', up);
+            }
+
+            function beginMarquee(x, y) {
+                S.marquee = { x0: x, y0: y, x1: x, y1: y };
+                const mv = ev => { S.marquee.x1 = ev.clientX; S.marquee.y1 = ev.clientY; dirty(); };
+                const up = () => {
+                    removeEventListener('pointermove', mv); removeEventListener('pointerup', up);
+                    const m = S.marquee; S.marquee = null;
+                    const rx0 = Math.min(m.x0, m.x1), rx1 = Math.max(m.x0, m.x1), ry0 = Math.min(m.y0, m.y1), ry1 = Math.max(m.y0, m.y1);
+                    for (const h of rendered) {
+                        if (!h.u || h.u.k !== 'c') continue;
+                        const r = h.rect;
+                        if (r.x < rx1 && r.x + r.w > rx0 && r.y < ry1 && r.y + r.h > ry0) S.sel.add(h.u.c.id);
+                    }
+                    if (S.sel.size) S.lastSel = [...S.sel][S.sel.size - 1];
+                    updateBatch(); S.forceList = true; listDirty(); dirty();
+                    toast(S.sel.size + ' SELECTED');
+                };
+                addEventListener('pointermove', mv); addEventListener('pointerup', up);
+            }
+
+            stage.addEventListener('wheel', e => {
+                e.preventDefault();
+                if (S.view === 0) S.cam = Math.max(0, S.cam + e.deltaY * 3);
+                else if (S.view === 1) {
+                    if (e.ctrlKey || e.metaKey) S.zoom = clamp(S.zoom * (e.deltaY > 0 ? .9 : 1.11), .04, 4);
+                    else if (e.shiftKey) S.benchScroll += e.deltaY;
+                    else S.cam = Math.max(0, S.cam + e.deltaY / S.zoom * .8);
+                }
+                else if (S.view === 2) S.atlasScroll += e.deltaY;
+                dirty();
+            }, { passive: false });
+
+            stage.addEventListener('dblclick', e => {
+                const h = hitAt(e.clientX, e.clientY);
+                if (h && h.u && h.u.k === 'c') { openInspector(h.u.c); selectOnly(h.u.c); }
+                else if (h && h.u && h.u.k === 'g') { h.u.g.collapsed = false; rebuildIndex(); renderGroups(); dirty(); toast('EXPANDED ' + h.u.g.name); }
+            });
+
+            // =========================================================
+            // UI — rail, tabs, chips, dock
+            // =========================================================
+            document.querySelectorAll('#rail [data-view]').forEach(b => {
+                b.onclick = () => {
+                    S.view = +b.dataset.view;
+                    document.querySelectorAll('#rail [data-view]').forEach(x => x.classList.toggle('on', x === b));
+                    dirty(); toast(['TUBE', 'BENCH', 'ATLAS', 'STATS'][S.view]);
+                };
+            });
+            document.querySelectorAll('#rail [data-tool]').forEach(b => {
+                b.onclick = () => {
+                    S.tool = b.dataset.tool;
+                    document.querySelectorAll('#rail [data-tool]').forEach(x => x.classList.toggle('on', x === b));
+                    toast(S.tool);
+                };
+            });
+
+            function setTab(name) {
+                document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === name));
+                document.querySelectorAll('.pane').forEach(p => p.classList.toggle('show', p.id === 'pane-' + name));
+                if (name === 'grp') renderGroups();
+                if (name === 'tub') renderTubes();
+                if (name === 'bin') listDirty();
+            }
+            document.querySelectorAll('#tabs button').forEach(b => { b.onclick = () => setTab(b.dataset.tab); });
+
+            function toggleOps(force) {
+                const show = force !== undefined ? force : ops.classList.contains('hide');
+                ops.classList.toggle('hide', !show);
+                binBtn.classList.toggle('on', show);
+                dirty();
+            }
+            binBtn.onclick = () => toggleOps();
+
+            function updateTubeChips() {
+                tubeChips.innerHTML = '';
+                for (const t of DOC.tubes) {
+                    const b = document.createElement('button');
+                    b.textContent = t.name;
+                    b.classList.toggle('on', t.id === S.tube);
+                    b.onclick = () => { S.tube = t.id; S.ch = Math.min(S.ch, t.chN - 1); updateTubeChips(); dirty(); toast(t.name); };
+                    tubeChips.appendChild(b);
+                }
+            }
+            function updateAggStrip() {
+                const a = IX.agg;
+                if (!a || !a.n) { aggStrip.innerHTML = '<i>EMPTY — LOAD MANIFEST IN I/O</i>'; return; }
+                aggStrip.innerHTML =
+                    '<i>' + a.n + ' CLIPS</i>' +
+                    '<i>' + a.status.ok + ' OK</i>' +
+                    (a.status.violation ? '<i class="vio">' + a.status.violation + ' VIO</i>' : '') +
+                    (a.status.error ? '<i class="err">' + a.status.error + ' ERR</i>' : '') +
+                    '<i>' + a.linked + ' MEDIA</i>' +
+                    '<i>' + fmt(a.dur) + ' TOTAL</i>';
+            }
+            function updateIoNote() {
+                const a = IX.agg;
+                ioNote.innerHTML = 'MANIFEST: ' + esc(S.manifestName || 'none') + ' · MEDIA: ' + (a ? a.linked : 0) + ' linked / ' + (a ? a.n : 0) + ' clips.<br>' +
+                    'Layout persists in this browser. Media links are session-only — re-run LINK MEDIA FOLDER after reload; clips re-attach by filename.';
+            }
+
+            $('playBtn').onclick = () => {
+                S.play = !S.play;
+                $('playBtn').classList.toggle('on', S.play);
+                $('playBtn').textContent = S.play ? 'STOP' : 'PLAY';
+                dirty();
+            };
+            $('snapBtn').onclick = () => { S.snap = !S.snap; $('snapBtn').classList.toggle('on', S.snap); toast('SNAP ' + (S.snap ? 'ON' : 'OFF')); };
+            $('jumpBack').onclick = () => { S.cam = 0; dirty(); };
+            $('jumpFwd').onclick = () => {
+                let mx = 0;
+                for (const c of DOC.clips) mx = Math.max(mx, c.start + c.dur);
+                S.cam = mx; dirty();
+            };
+            $('fitBtn').onclick = () => {
+                let mx = 1;
+                for (const c of IX.byTube.get(S.tube) || DOC.clips) mx = Math.max(mx, c.start + c.dur);
+                const A = area();
+                S.zoom = clamp(A.w / (mx + 600), .04, 4);
+                S.cam = mx / 2; dirty(); toast('FIT');
+            };
+
+            // =========================================================
+            // GROUPS PANE
+            // =========================================================
+            function renderGroups() {
+                grpStack.innerHTML = '';
+                if (!DOC.groups.length) {
+                    const d = document.createElement('div');
+                    d.className = 'ioNote';
+                    d.textContent = 'No groups yet. Multi-select clips (SEL+ tool, or marquee in BENCH), then tap GROUP in the batch bar.';
+                    grpStack.appendChild(d);
+                }
+                for (const g of DOC.groups) {
+                    const n = DOC.clips.filter(c => c.group === g.id).length;
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = '<div class="hd"><div class="dot" style="background:' + g.accent + '"></div><input value="' + esc(g.name) + '" /></div>' +
+                        '<small>' + n + ' CLIPS · ' + (g.collapsed ? 'COLLAPSED' : 'EXPANDED') + '</small>' +
+                        '<div class="btns"><button data-a="sel">SELECT</button><button data-a="fold">' + (g.collapsed ? 'EXPAND' : 'COLLAPSE') + '</button><button data-a="color">COLOR</button><button data-a="del">DISSOLVE</button></div>';
+                    card.querySelector('input').onchange = e => { g.name = e.target.value.toUpperCase().slice(0, 14) || g.name; save(); dirty(); renderGroups(); };
+                    card.querySelector('[data-a="sel"]').onclick = () => selectGroup(g);
+                    card.querySelector('[data-a="fold"]').onclick = () => { g.collapsed = !g.collapsed; rebuildIndex(); save(); dirty(); renderGroups(); };
+                    card.querySelector('[data-a="color"]').onclick = () => {
+                        g.accent = ACCENTS[(ACCENTS.indexOf(g.accent) + 1) % ACCENTS.length];
+                        save(); dirty(); listDirty(); renderGroups();
+                    };
+                    card.querySelector('[data-a="del"]').onclick = () => {
+                        for (const c of DOC.clips) if (c.group === g.id) c.group = null;
+                        DOC.groups = DOC.groups.filter(x => x !== g);
+                        rebuildIndex(); save(); dirty(); listDirty(); renderGroups(); toast('GROUP DISSOLVED');
+                    };
+                    grpStack.appendChild(card);
+                }
+            }
+
+            // =========================================================
+            // TUBES PANE
+            // =========================================================
+            function renderTubes() {
+                tubStack.innerHTML = '';
+                for (const t of DOC.tubes) {
+                    const n = (IX.byTube.get(t.id) || []).length;
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = '<div class="hd"><div class="dot" style="background:' + (t.id === S.tube ? '#19e6c8' : '#fff') + '"></div><input value="' + esc(t.name) + '" /></div>' +
+                        '<small>' + n + ' CLIPS · ' + t.chN + ' CHANNELS</small>' +
+                        '<div class="btns"><button data-a="go">ACTIVATE</button><button data-a="ch-">CH −</button><button data-a="ch+">CH +</button><button data-a="fit">FIT DUR + PACK</button>' + (DOC.tubes.length > 1 ? '<button data-a="del">DELETE</button>' : '') + '</div>';
+                    card.querySelector('input').onchange = e => { t.name = e.target.value.toUpperCase().slice(0, 12) || t.name; save(); updateTubeChips(); dirty(); renderTubes(); };
+                    card.querySelector('[data-a="go"]').onclick = () => { S.tube = t.id; updateTubeChips(); dirty(); renderTubes(); };
+                    card.querySelector('[data-a="ch-"]').onclick = () => {
+                        if (t.chN <= 2) return;
+                        t.chN--;
+                        for (const c of DOC.clips) if (c.tube === t.id) c.ch = Math.min(c.ch, t.chN - 1);
+                        rebuildIndex(); save(); dirty(); renderTubes();
+                    };
+                    card.querySelector('[data-a="ch+"]').onclick = () => {
+                        if (t.chN >= 8) return;
+                        t.chN++;
+                        rebuildIndex(); save(); dirty(); renderTubes();
+                    };
+                    card.querySelector('[data-a="fit"]').onclick = () => {
+                        // apply real source durations where known, then pack each channel
+                        const arr = IX.byTube.get(t.id) || [];
+                        for (const c of arr) if (c.srcDur > 0) c.dur = Math.max(SNAP, Math.round(c.srcDur * U / SNAP) * SNAP);
+                        const lanes = new Map();
+                        for (const c of arr) { if (!lanes.has(c.ch)) lanes.set(c.ch, []); lanes.get(c.ch).push(c); }
+                        for (const lane of lanes.values()) {
+                            lane.sort((a, b) => a.start - b.start);
+                            let cur = 0;
+                            for (const c of lane) { c.start = cur; cur += c.dur + GAP; }
+                        }
+                        rebuildIndex(); save(); dirty(); listDirty(); toast('FIT + PACKED ' + t.name);
+                    };
+                    const del = card.querySelector('[data-a="del"]');
+                    if (del) del.onclick = () => {
+                        const dest = DOC.tubes.find(x => x !== t);
+                        for (const c of DOC.clips) if (c.tube === t.id) { c.tube = dest.id; c.ch = Math.min(c.ch, dest.chN - 1); }
+                        DOC.tubes = DOC.tubes.filter(x => x !== t);
+                        if (S.tube === t.id) S.tube = dest.id;
+                        rebuildIndex(); save(); updateTubeChips(); dirty(); renderTubes(); toast('TUBE DELETED — CLIPS MOVED');
+                    };
+                    tubStack.appendChild(card);
+                }
+                const add = document.createElement('button');
+                add.textContent = '+ ADD TUBE';
+                add.onclick = () => {
+                    if (DOC.tubes.length >= 6) { toast('MAX 6 TUBES'); return; }
+                    DOC.tubes.push({ id: uid('T'), name: 'TUBE-' + (DOC.tubes.length + 1), chN: 4 });
+                    rebuildIndex(); save(); updateTubeChips(); dirty(); renderTubes();
+                };
+                tubStack.appendChild(add);
+            }
+
+            // =========================================================
+            // PERSISTENCE + I/O
+            // =========================================================
+            function save() {
+                try {
+                    localStorage.setItem(SAVE, JSON.stringify({
+                        v: 1, manifestName: S.manifestName, tubes: DOC.tubes, groups: DOC.groups,
+                        clips: DOC.clips, nextId
+                    }));
+                } catch (e) { }
+            }
+            function load() {
+                try {
+                    const d = JSON.parse(localStorage.getItem(SAVE));
+                    if (!d || !Array.isArray(d.clips)) return false;
+                    DOC.tubes = d.tubes && d.tubes.length ? d.tubes : DOC.tubes;
+                    DOC.groups = d.groups || [];
+                    DOC.clips = d.clips;
+                    nextId = d.nextId || DOC.clips.length + 1;
+                    S.manifestName = d.manifestName || null;
+                    S.tube = DOC.tubes[0].id;
+                    return true;
+                } catch (e) { return false; }
+            }
+
+            function download(text, name, type) {
+                const b = new Blob([text], { type: type || 'text/plain' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(b); a.download = name;
+                document.body.appendChild(a); a.click();
+                setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+            }
+
+            $('loadManifest').onclick = () => { $('fileManifest').value = ''; $('fileManifest').click(); };
+            $('fileManifest').onchange = e => {
+                const f = e.target.files[0]; if (!f) return;
+                f.text().then(t2 => {
+                    try { loadManifest(JSON.parse(t2), f.name); }
+                    catch (err) { toast('BAD JSON'); }
+                });
+            };
+            $('linkMedia').onclick = () => {
+                const inp = $('fileMedia');
+                inp.value = '';
+                // folder pickers are unsupported on some mobile browsers; fall back to multi-file
+                if ('webkitdirectory' in inp) inp.click(); else { $('fileMediaFlat').value = ''; $('fileMediaFlat').click(); }
+            };
+            $('fileMedia').onchange = e => { if (e.target.files.length) linkMediaFiles([...e.target.files]); else { $('fileMediaFlat').value = ''; $('fileMediaFlat').click(); } };
+            $('fileMediaFlat').onchange = e => { if (e.target.files.length) linkMediaFiles([...e.target.files]); };
+
+            $('exportJson').onclick = () => {
+                download(JSON.stringify({ v: 1, manifestName: S.manifestName, tubes: DOC.tubes, groups: DOC.groups, clips: DOC.clips }, null, 1), 'tube-arc-project.json', 'application/json');
+                toast('PROJECT EXPORTED');
+            };
+            $('importJson').onclick = () => { $('fileProject').value = ''; $('fileProject').click(); };
+            $('fileProject').onchange = e => {
+                const f = e.target.files[0]; if (!f) return;
+                f.text().then(t2 => {
+                    try {
+                        const d = JSON.parse(t2);
+                        if (!Array.isArray(d.clips)) throw 0;
+                        DOC.tubes = d.tubes && d.tubes.length ? d.tubes : [{ id: 'T1', name: 'MAIN', chN: 4 }];
+                        DOC.groups = d.groups || []; DOC.clips = d.clips;
+                        S.manifestName = d.manifestName || f.name; S.tube = DOC.tubes[0].id;
+                        nextId = DOC.clips.length + DOC.groups.length + DOC.tubes.length + 2;
+                        selectOnly(null); rebuildIndex(); computeTerms(); save(); toast('PROJECT IMPORTED');
+                    } catch (err) { toast('BAD PROJECT FILE'); }
+                });
+            };
+            $('exportEdl').onclick = () => {
+                const t = tube(S.tube), arr = (IX.byTube.get(t.id) || []).slice().sort((a, b) => a.ch - b.ch || a.start - b.start);
+                const tc = z => {
+                    const s = z / U, hh2 = Math.floor(s / 3600), mm = Math.floor(s / 60) % 60, ss = Math.floor(s) % 60, ff = Math.floor((s % 1) * 30);
+                    return [hh2, mm, ss, ff].map(v => String(v).padStart(2, '0')).join(':');
+                };
+                let out = 'TITLE: TUBE ARC FLEET — ' + t.name + '\nFCM: NON-DROP FRAME\n\n';
+                arr.forEach((c, i) => {
+                    out += String(i + 1).padStart(3, '0') + '  CH' + (c.ch + 1) + '  V  C  ' + tc(0) + ' ' + tc(c.dur) + ' ' + tc(c.start) + ' ' + tc(c.start + c.dur) + '\n';
+                    out += '* FROM CLIP NAME: ' + (c.vf || c.title) + (c.status !== 'ok' ? '  [' + c.status.toUpperCase() + ']' : '') + '\n\n';
+                });
+                download(out, 'tube-arc-' + t.name.toLowerCase() + '.edl');
+                toast('EDL EXPORTED — ' + t.name);
+            };
+            $('stress').onclick = stress1000;
+            $('wipe').onclick = () => {
+                DOC.clips = []; DOC.groups = []; DOC.tubes = [{ id: 'T1', name: 'MAIN', chN: 4 }];
+                S.tube = 'T1'; S.manifestName = null; selectOnly(null);
+                rebuildIndex(); computeTerms(); save(); listDirty(); toast('WIPED');
+            };
+
+            // =========================================================
+            // KEYBOARD
+            // =========================================================
+            addEventListener('keydown', e => {
+                if (e.target.tagName === 'INPUT') return;
+                const c = S.lastSel && IX.byId.get(S.lastSel);
+                if (e.key === ' ') { e.preventDefault(); $('playBtn').onclick(); }
+                else if (e.key >= '1' && e.key <= '4') { document.querySelectorAll('#rail [data-view]')[+e.key - 1].onclick(); }
+                else if (e.key === 'ArrowLeft' && c && !c.locked) { c.start = Math.max(0, c.start - SNAP); rebuildIndex(); save(); dirty(); listDirty(); }
+                else if (e.key === 'ArrowRight' && c && !c.locked) { c.start += SNAP; rebuildIndex(); save(); dirty(); listDirty(); }
+                else if (e.key === 'ArrowUp' && c && !c.locked) { c.ch = Math.max(0, c.ch - 1); rebuildIndex(); save(); dirty(); }
+                else if (e.key === 'ArrowDown' && c && !c.locked) { c.ch = Math.min(tube(c.tube).chN - 1, c.ch + 1); rebuildIndex(); save(); dirty(); }
+                else if (e.key === 'Escape') selectOnly(null);
+                else if ((e.key === 'Delete' || e.key === 'Backspace') && S.sel.size) $('bDel').onclick();
+            });
+
+            // =========================================================
+            // BOOT
+            // =========================================================
+            resize();
+            if (!load()) { /* fresh start */ }
+            rebuildIndex(); computeTerms();
+            updateTubeChips(); renderGroups(); renderTubes();
+            setTab('io');
+            requestAnimationFrame(loop);
+        })();
+    </script>
+</body>
+
+</html>

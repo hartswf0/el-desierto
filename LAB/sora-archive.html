@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SORA ARCHIVE — Command Center</title>
+<style>
+  :root {
+    --bg: #050505;
+    --card: #0b0b0b;
+    --text: #f2f2f2;
+    --muted: #7a7a7a;
+    --accent: #ffb000;
+    --green: #00cc66;
+    --red: #ff4444;
+    --line: #1e1e1e;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: var(--mono); cursor: pointer; }
+
+  .page { max-width: 1080px; margin: 0 auto; padding: 28px 20px; }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 3px solid var(--text);
+    padding-bottom: 18px;
+    margin-bottom: 28px;
+    display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 8px;
+  }
+  h1 { font-family: var(--mono); font-size: 26px; font-weight: 900; letter-spacing: -0.04em; line-height: 1; }
+  h1 b { color: var(--accent); }
+  .subtitle { font-family: var(--mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .server-status {
+    font-family: var(--mono); font-size: 10px; padding: 4px 10px;
+    border: 1px solid var(--line); text-transform: uppercase;
+  }
+  .server-status.ok { border-color: var(--green); color: var(--green); }
+  .server-status.off { border-color: var(--red); color: var(--red); }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); margin-bottom: 28px;
+  }
+  .stat { background: var(--card); padding: 12px 8px; text-align: center; }
+  .stat .n { font-family: var(--mono); font-size: 24px; font-weight: 900; line-height: 1; }
+  .stat .l { font-family: var(--mono); font-size: 8px; color: var(--muted); text-transform: uppercase; margin-top: 5px; letter-spacing: 0.05em; }
+  @media (max-width: 600px) { .stats-bar { grid-template-columns: repeat(3, 1fr); } }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 900;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); margin-bottom: 12px; margin-top: 32px;
+    border-bottom: 1px solid var(--line); padding-bottom: 6px;
+  }
+
+  /* ── INSTRUMENTS GRID ── */
+  .instruments {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 4px;
+  }
+  @media (max-width: 720px) { .instruments { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .instruments { grid-template-columns: 1fr; } }
+
+  .inst {
+    border: 2px solid var(--line); background: var(--card);
+    display: flex; flex-direction: column; transition: border-color 0.15s;
+  }
+  .inst:hover { border-color: var(--accent); }
+
+  .inst-badge {
+    padding: 6px 10px; font-family: var(--mono); font-size: 8px; font-weight: 900;
+    text-transform: uppercase; letter-spacing: 0.08em; color: #000; background: var(--accent);
+  }
+  .inst-badge.dim { background: var(--muted); }
+  .inst-badge.green { background: var(--green); }
+  .inst-badge.secondary { background: var(--text); }
+
+  .inst-body { padding: 10px; flex: 1; }
+  .inst-title { font-family: var(--mono); font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .inst-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  .inst-footer {
+    padding: 8px 10px; border-top: 1px solid var(--line);
+    display: flex; gap: 4px; flex-wrap: wrap;
+  }
+  .tag {
+    font-family: var(--mono); font-size: 8px; font-weight: 900;
+    text-transform: uppercase; padding: 2px 5px; border: 1px solid var(--line);
+    color: var(--muted); letter-spacing: 0.04em;
+  }
+  .tag.live { border-color: var(--accent); color: var(--accent); }
+  .tag.ok { border-color: var(--green); color: var(--green); }
+
+  /* ── CLUSTER TAXONOMY ── */
+  .taxonomy { margin-top: 8px; }
+  .cluster-row {
+    display: grid; grid-template-columns: 200px 48px 1fr; gap: 8px;
+    align-items: center; padding: 3px 0; border-bottom: 1px solid #111;
+    font-family: var(--mono); font-size: 11px; cursor: pointer;
+    transition: background 0.1s;
+  }
+  .cluster-row:hover { background: #111; }
+  .cluster-name { text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cluster-count { text-align: right; color: var(--muted); font-size: 10px; }
+  .cluster-bar { height: 6px; background: var(--accent); border-radius: 1px; min-width: 2px; transition: width 0.3s; }
+  .cluster-row.expanded .cluster-name { color: var(--accent); }
+
+  .sub-clusters { padding-left: 16px; display: none; }
+  .sub-clusters.open { display: block; }
+  .sub-row {
+    display: grid; grid-template-columns: 200px 36px 1fr; gap: 6px;
+    align-items: center; padding: 2px 0; font-family: var(--mono); font-size: 10px;
+  }
+  .sub-name { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sub-count { text-align: right; color: #555; font-size: 9px; }
+  .sub-bar { height: 4px; background: #555; border-radius: 1px; min-width: 1px; }
+
+  /* ── PIPELINE STATUS ── */
+  .pipeline-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px;
+  }
+  @media (max-width: 600px) { .pipeline-grid { grid-template-columns: 1fr 1fr; } }
+
+  .pipe-card {
+    border: 1px solid var(--line); background: var(--card); padding: 14px;
+    position: relative;
+  }
+  .pipe-num {
+    font-family: var(--mono); font-size: 32px; font-weight: 900;
+    color: var(--line); position: absolute; top: 8px; right: 10px; line-height: 1;
+  }
+  .pipe-title { font-family: var(--mono); font-size: 11px; font-weight: 900; text-transform: uppercase; margin-bottom: 6px; }
+  .pipe-desc { font-size: 10px; color: var(--muted); line-height: 1.35; }
+  .pipe-cmd {
+    font-family: var(--mono); font-size: 9px; color: var(--accent);
+    margin-top: 8px; padding: 4px 6px; background: #111; border: 1px solid var(--line);
+    word-break: break-all;
+  }
+  .pipe-status {
+    margin-top: 8px; font-family: var(--mono); font-size: 9px;
+    text-transform: uppercase;
+  }
+  .pipe-status.ready { color: var(--green); }
+  .pipe-status.pending { color: var(--muted); }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 9px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    display: flex; justify-content: space-between;
+  }
+
+  /* ── TAB BUTTONS ── */
+  .tab-btn {
+    background: none;
+    border: 2px solid var(--line);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: bold;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+  }
+  .tab-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .tab-btn.active {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* ── FORENSIC LAB ── */
+  .lab-nudge-btn {
+    flex: 1;
+    background: #000;
+    color: var(--text);
+    border: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 6px;
+    cursor: pointer;
+    transition: all 0.1s;
+    text-transform: uppercase;
+  }
+  .lab-nudge-btn:hover {
+    border-color: var(--accent);
+    background: #111;
+  }
+  .lab-drag-handle:hover {
+    background: var(--text) !important;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div>
+      <h1><b>SORA</b> ARCHIVE</h1>
+      <div class="subtitle" id="subtitle">Loading index…</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+      <div class="server-status off" id="server-status">server offline</div>
+      <div style="display: flex; gap: 4px;">
+        <button class="tab-btn active" id="btn-tab-dashboard" onclick="switchView('dashboard')">Dashboard</button>
+        <button class="tab-btn" id="btn-tab-lab" onclick="switchView('lab')">Forensic Lab</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="view-dashboard">
+    <div class="stats-bar" id="stats"></div>
+
+    <!-- ═══ INSTRUMENTS ═══ -->
+    <div class="section-label">Instruments</div>
+    <div class="instruments">
+      <a class="inst" href="workbench.html">
+        <div class="inst-badge">Production</div>
+        <div class="inst-body">
+          <div class="inst-title">Sora Workbench</div>
+          <div class="inst-desc">3-pane IDE. Auto-tagging, theme mining, manifest builder. Cosine similarity, command palette, BASH/FFMPEG export.</div>
+        </div>
+        <div class="inst-footer">
+          <span class="tag live">real data</span>
+          <span class="tag">pipeline</span>
+          <span class="tag">export</span>
+        </div>
+      </a>
+
+      <a class="inst" href="soradu.html">
+        <div class="inst-badge secondary">Triage</div>
+        <div class="inst-body">
+          <div class="inst-title">Prism</div>
+          <div class="inst-desc">Tinder-style swipe triage. D3 force-simulation bubble chart. Manifest builder with glassmorphism UI.</div>
+        </div>
+        <div class="inst-footer">
+          <span class="tag live">real data</span>
+          <span class="tag">d3.js</span>
+          <span class="tag">swipe</span>
+        </div>
+      </a>
+
+      <a class="inst" href="gemini-code-1778788108820.html">
+        <div class="inst-badge dim">Explorer</div>
+        <div class="inst-body">
+          <div class="inst-title">Loom — Dark</div>
+          <div class="inst-desc">Z-level topology, semantic map, film-strip scrubbing, morphological prompt diff engine.</div>
+        </div>
+        <div class="inst-footer">
+          <span class="tag live">real data</span>
+          <span class="tag">diff engine</span>
+        </div>
+      </a>
+
+      <a class="inst" href="gemini-code-1778790709245.html">
+        <div class="inst-badge dim">Explorer</div>
+        <div class="inst-body">
+          <div class="inst-title">Loom — Brutalist</div>
+          <div class="inst-desc">B&W topology. Column-reverse manifest, brutalist diff engine. No color — only structure.</div>
+        </div>
+        <div class="inst-footer">
+          <span class="tag live">real data</span>
+          <span class="tag">b&w</span>
+        </div>
+      </a>
+
+      <a class="inst" href="relational_angel_single_file_app (4).html">
+        <div class="inst-badge dim">Conceptual</div>
+        <div class="inst-body">
+          <div class="inst-title">Train Field</div>
+          <div class="inst-desc">Animated word-field with 4 passenger agents. LLM-powered ticket generation via OpenAI API.</div>
+        </div>
+        <div class="inst-footer">
+          <span class="tag">llm</span>
+          <span class="tag">animation</span>
+        </div>
+      </a>
+
+      <a class="inst" href="sora_full_index.json" target="_blank">
+        <div class="inst-badge dim">Data</div>
+        <div class="inst-body">
+          <div class="inst-title">Full Clip Index</div>
+          <div class="inst-desc">Complete JSON — 1,107 clips, full prompts, cluster + sub-cluster assignments, processing metadata.</div>
+        </div>
+        <div class="inst-footer">
+          <span class="tag">json</span>
+          <span class="tag" id="index-size">2.2 mb</span>
+          <span class="tag">v7</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- ═══ PROCESSING PIPELINE ═══ -->
+    <div class="section-label">Processing Pipeline</div>
+    <div class="pipeline-grid">
+      <div class="pipe-card">
+        <div class="pipe-num">1</div>
+        <div class="pipe-title">Probe</div>
+        <div class="pipe-desc">Scan all 1,107 videos. Detect dimensions, duration, codec, audio levels, content window.</div>
+        <div class="pipe-cmd">python3 process.py probe</div>
+        <div class="pipe-status pending" id="pipe-probe">not started</div>
+      </div>
+      <div class="pipe-card">
+        <div class="pipe-num">2</div>
+        <div class="pipe-title">Crop Detect</div>
+        <div class="pipe-desc">Auto-detect Sora iOS chrome. Map video content band per clip. Status bar (55px top), nav bar (130px bottom).</div>
+        <div class="pipe-cmd">Built into probe phase</div>
+        <div class="pipe-status pending" id="pipe-crop">not started</div>
+      </div>
+      <div class="pipe-card">
+        <div class="pipe-num">3</div>
+        <div class="pipe-title">Extract Frames</div>
+        <div class="pipe-desc">5 key frames per clip (0.5s, 25%, 50%, 75%, end). 360px thumbnails for contact sheet assembly.</div>
+        <div class="pipe-cmd">python3 process.py frames</div>
+        <div class="pipe-status pending" id="pipe-frames">not started</div>
+      </div>
+      <div class="pipe-card">
+        <div class="pipe-num">4</div>
+        <div class="pipe-title">Contact Sheets</div>
+        <div class="pipe-desc">Per-cluster contact sheets. 5-frame strip per clip, stacked vertically. 30 clips per sheet max.</div>
+        <div class="pipe-cmd">python3 process.py sheets</div>
+        <div class="pipe-status pending" id="pipe-sheets">not started</div>
+      </div>
+    </div>
+
+    <!-- ═══ CLUSTER TAXONOMY ═══ -->
+    <div class="section-label">Cluster Taxonomy <span id="cluster-summary" style="color:var(--muted);font-weight:400;"></span></div>
+    <div class="taxonomy" id="taxonomy"></div>
+  </div> <!-- End of view-dashboard -->
+
+  <!-- ═══ FORENSIC LAB WORKSPACE ═══ -->
+  <div id="view-lab" style="display: none; margin-top: 20px;">
+    <div style="display: grid; grid-template-columns: 280px 1fr 340px; gap: 20px; align-items: start;">
+      
+      <!-- COLUMN 1: NAVIGATOR -->
+      <div style="background: var(--card); border: 2px solid var(--line); padding: 15px; display: flex; flex-direction: column; gap: 12px; height: 750px; overflow: hidden;">
+        <div style="font-family: var(--mono); font-size: 11px; font-weight: 900; color: var(--accent); text-transform: uppercase;">1. Clip Navigator</div>
+        
+        <!-- Filter dropdowns -->
+        <div>
+          <label style="font-size: 9px; color: var(--muted); display: block; margin-bottom: 4px; font-family: var(--mono);">FILTER CLUSTER</label>
+          <select id="lab-filter-cluster" onchange="onLabFilterChange()" style="width: 100%; background: #000; color: var(--text); border: 1px solid var(--line); padding: 6px; font-family: var(--mono); font-size: 11px; outline: none;"></select>
+        </div>
+        
+        <div>
+          <label style="font-size: 9px; color: var(--muted); display: block; margin-bottom: 4px; font-family: var(--mono);">SEARCH PROMPTS</label>
+          <input type="text" id="lab-filter-search" oninput="onLabFilterChange()" placeholder="Type query..." style="width: 100%; background: #000; color: var(--text); border: 1px solid var(--line); padding: 6px; font-family: var(--mono); font-size: 11px; outline: none;">
+        </div>
+
+        <div id="lab-clip-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; border: 1px solid #1e1e1e; background: #000; padding: 4px;">
+          <!-- Rows will be injected here -->
+        </div>
+      </div>
+      
+      <!-- COLUMN 2: SPATIOTEMPORAL PLAYGROUND -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        
+        <!-- Draggable Video Container -->
+        <div style="background: var(--card); border: 2px solid var(--line); padding: 10px; display: flex; justify-content: center;">
+          <div id="lab-video-container" style="position: relative; width: 280px; height: 622px; background: #000; border: 2px solid var(--line); overflow: hidden;">
+            <video id="lab-video" style="width: 100%; height: 100%; object-fit: fill;" playsinline muted></video>
+            
+            <!-- Green/Amber Crop Overlays -->
+            <div id="lab-crop-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 10;">
+              <!-- Outer grey mask -->
+              <div id="lab-mask-top" style="position: absolute; top: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); transition: height 0.05s;"></div>
+              <div id="lab-mask-bottom" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); transition: height 0.05s;"></div>
+              
+              <!-- Dashed border -->
+              <div id="lab-crop-border" style="position: absolute; left: 0; right: 0; border: 2px dashed var(--accent); pointer-events: none; transition: top 0.05s, height 0.05s;"></div>
+              
+              <!-- Draggable Crop Handles -->
+              <div id="lab-handle-top" class="lab-drag-handle" style="position: absolute; left: 50%; transform: translateX(-50%); width: 24px; height: 12px; background: var(--accent); cursor: ns-resize; pointer-events: auto; z-index: 20; display: flex; align-items: center; justify-content: center; border: 1px solid #000; transition: top 0.05s;">
+                <div style="width: 8px; height: 2px; background: #000;"></div>
+              </div>
+              <div id="lab-handle-bottom" class="lab-drag-handle" style="position: absolute; left: 50%; transform: translateX(-50%); width: 24px; height: 12px; background: var(--accent); cursor: ns-resize; pointer-events: auto; z-index: 20; display: flex; align-items: center; justify-content: center; border: 1px solid #000; transition: top 0.05s;">
+                <div style="width: 8px; height: 2px; background: #000;"></div>
+              </div>
+            </div>
+            
+            <div id="lab-video-time" style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); border: 1px solid var(--line); color: var(--text); padding: 3px 8px; font-family: var(--mono); font-size: 11px; z-index: 15; letter-spacing: 0.05em;">0.00s</div>
+          </div>
+        </div>
+        
+        <!-- Waveform visualizer & playhead scrubbing -->
+        <div style="background: var(--card); border: 2px solid var(--line); padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-family: var(--mono); font-size: 10px; text-transform: uppercase; color: var(--muted);">AUDIO WAVEFORM PROFILE</div>
+            <div style="font-family: var(--mono); font-size: 10px; color: var(--accent);" id="lab-trim-readout">TRIM WINDOW: 0.0s - 10.0s</div>
+          </div>
+          
+          <div id="lab-waveform-wrap" style="height: 60px; background: #000; border: 1px solid var(--line); position: relative; cursor: crosshair; overflow: hidden;">
+            <canvas id="lab-waveform-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+            
+            <!-- Trim Markers (IN and OUT bands shaded) -->
+            <div id="lab-trim-mask-in" style="position: absolute; top: 0; bottom: 0; left: 0; background: rgba(255,176,0,0.15); border-right: 2px solid var(--accent); pointer-events: none;"></div>
+            <div id="lab-trim-mask-out" style="position: absolute; top: 0; bottom: 0; right: 0; background: rgba(255,176,0,0.15); border-left: 2px solid var(--accent); pointer-events: none;"></div>
+            
+            <!-- Red playhead line -->
+            <div id="lab-playhead" style="position: absolute; top: 0; bottom: 0; width: 2px; background: var(--red); pointer-events: none;"></div>
+          </div>
+          <div style="font-family: var(--mono); font-size: 9px; color: var(--muted); text-align: center;">Click or drag to scrub video · Shift+Click sets IN · Alt+Click sets OUT</div>
+        </div>
+        
+      </div>
+      
+      <!-- COLUMN 3: METADATA & OPERATIONS CONTROLS -->
+      <div style="background: var(--card); border: 2px solid var(--line); padding: 15px; display: flex; flex-direction: column; gap: 14px; min-height: 750px;">
+        <div style="font-family: var(--mono); font-size: 11px; font-weight: 900; color: var(--accent); text-transform: uppercase;">3. Forensic Inspector</div>
+        
+        <!-- Clip Identification -->
+        <div style="border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+          <div style="font-family: var(--mono); font-size: 14px; font-weight: 900; color: var(--text); word-break: break-all;" id="lab-inspect-id">No Clip Selected</div>
+          <div style="font-family: var(--mono); font-size: 9px; color: var(--accent); text-transform: uppercase; margin-top: 4px;" id="lab-inspect-cluster">CLUSTER: —</div>
+        </div>
+        
+        <!-- Prompt Box -->
+        <div>
+          <label style="font-size: 9px; color: var(--muted); display: block; margin-bottom: 4px; font-family: var(--mono);">SORA ORIGINAL PROMPT</label>
+          <div id="lab-inspect-prompt" style="background: #000; border: 1px solid var(--line); padding: 8px; font-size: 10px; line-height: 1.4; color: #bbb; height: 110px; overflow-y: auto; font-family: var(--sans);"></div>
+        </div>
+        
+        <!-- Visual Comparison keyframes -->
+        <div>
+          <label style="font-size: 9px; color: var(--muted); display: block; margin-bottom: 4px; font-family: var(--mono);">PERCEPTUAL LOOP COMPARISON</label>
+          <div style="display: flex; gap: 6px;">
+            <div style="flex: 1; border: 1px solid var(--line); background: #000; position: relative;">
+              <img id="lab-frame-in" src="" style="width: 100%; height: 110px; object-fit: contain; display: block;">
+              <div style="position: absolute; bottom: 2px; left: 2px; background: rgba(0,0,0,0.8); padding: 1px 4px; font-size: 8px; color: var(--text); font-family: var(--mono);">IN MATCH</div>
+            </div>
+            <div style="flex: 1; border: 1px solid var(--line); background: #000; position: relative;">
+              <img id="lab-frame-out" src="" style="width: 100%; height: 110px; object-fit: contain; display: block;">
+              <div style="position: absolute; bottom: 2px; left: 2px; background: rgba(0,0,0,0.8); padding: 1px 4px; font-size: 8px; color: var(--text); font-family: var(--mono);">OUT MATCH</div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-family: var(--mono); font-size: 10px;">
+            <span>LOOP CONFIDENCE:</span>
+            <span id="lab-inspect-loop-score" style="color: var(--green); font-weight: bold;">—</span>
+          </div>
+        </div>
+
+        <!-- Spatial Tuning Controls -->
+        <div style="border-top: 1px solid var(--line); padding-top: 10px;">
+          <div style="font-family: var(--mono); font-size: 10px; font-weight: 900; color: var(--muted); text-transform: uppercase; margin-bottom: 8px;">Spatial Trimming</div>
+          
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div>
+              <div style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; margin-bottom: 4px;">
+                <span>TOP CROPLINE:</span>
+                <span id="lab-val-top" style="color: var(--accent);">—</span>
+              </div>
+              <div style="display: flex; gap: 4px;">
+                <button class="lab-nudge-btn" onclick="nudgeCrop('top', -10)">-10</button>
+                <button class="lab-nudge-btn" onclick="nudgeCrop('top', -1)">-1</button>
+                <button class="lab-nudge-btn" onclick="nudgeCrop('top', 1)">+1</button>
+                <button class="lab-nudge-btn" onclick="nudgeCrop('top', 10)">+10</button>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; margin-bottom: 4px;">
+                <span>BOTTOM CROPLINE:</span>
+                <span id="lab-val-bottom" style="color: var(--accent);">—</span>
+              </div>
+              <div style="display: flex; gap: 4px;">
+                <button class="lab-nudge-btn" onclick="nudgeCrop('bottom', -10)">-10</button>
+                <button class="lab-nudge-btn" onclick="nudgeCrop('bottom', -1)">-1</button>
+                <button class="lab-nudge-btn" onclick="nudgeCrop('bottom', 1)">+1</button>
+                <button class="lab-nudge-btn" onclick="nudgeCrop('bottom', 10)">+10</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Temporal Tuning inputs -->
+        <div>
+          <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+              <label style="font-size: 9px; color: var(--muted); display: block; margin-bottom: 4px; font-family: var(--mono);">TRIM IN (s)</label>
+              <input type="number" step="0.1" id="lab-input-in" onchange="onLabTimeInputChange()" style="width: 100%; background: #000; color: var(--text); border: 1px solid var(--line); padding: 6px; font-family: var(--mono); font-size: 11px; outline: none; text-align: center;">
+            </div>
+            <div style="flex: 1;">
+              <label style="font-size: 9px; color: var(--muted); display: block; margin-bottom: 4px; font-family: var(--mono);">TRIM OUT (s)</label>
+              <input type="number" step="0.1" id="lab-input-out" onchange="onLabTimeInputChange()" style="width: 100%; background: #000; color: var(--text); border: 1px solid var(--line); padding: 6px; font-family: var(--mono); font-size: 11px; outline: none; text-align: center;">
+            </div>
+          </div>
+        </div>
+        
+        <!-- FFmpeg command copy and save -->
+        <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+          <div>
+            <label style="font-size: 9px; color: var(--muted); display: block; margin-bottom: 4px; font-family: var(--mono);">CONFORMED FFMPEG OVERRIDE</label>
+            <textarea id="lab-ffmpeg-cmd" readonly onclick="this.select()" style="width: 100%; background: #000; color: var(--accent); border: 1px solid var(--line); padding: 6px; font-family: var(--mono); font-size: 9px; height: 48px; resize: none; outline: none; word-break: break-all;"></textarea>
+          </div>
+          
+          <div style="display: flex; gap: 4px;">
+            <button onclick="toggleLoopPlay()" id="lab-btn-loop" style="flex: 1; background: #000; border: 2px solid var(--green); color: var(--green); font-family: var(--mono); font-weight: bold; font-size: 11px; padding: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;">▶ Play Loop</button>
+            <button onclick="saveActiveClip()" style="flex: 1; background: var(--green); border: 2px solid var(--green); color: #000; font-family: var(--mono); font-weight: bold; font-size: 11px; padding: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;">✓ Confirm Loop</button>
+          </div>
+          
+          <button onclick="downloadConformedIndex()" style="width: 100%; background: var(--accent); border: 2px solid var(--accent); color: #000; font-family: var(--mono); font-weight: bold; font-size: 12px; padding: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;">⬇ EXPORT CONFORMED INDEX.JSON</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>EL DESIERTO / SORA CAPTURES</span>
+    <span id="ts"></span>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  document.getElementById('ts').textContent = new Date().toISOString().slice(0,10);
+
+  // Global/Module-scoped state variables for the Forensic Lab
+  window.soraData = null;
+  window.activeLabClip = null;
+  window.isLoopingPlay = false;
+  window.currentView = 'dashboard';
+
+  // Check if server is running (try to load index)
+  const serverEl = document.getElementById('server-status');
+
+  const localRaw = localStorage.getItem('sora_full_index_local');
+  if (localRaw) {
+    try {
+      const data = JSON.parse(localRaw);
+      window.soraData = data;
+      serverEl.className = 'server-status ok';
+      serverEl.textContent = 'server online (local state)';
+      render(data);
+      initLab();
+    } catch(e) {
+      loadIndexFromServer();
+    }
+  } else {
+    loadIndexFromServer();
+  }
+
+  function loadIndexFromServer() {
+    fetch('sora_full_index.json')
+      .then(r => { if(!r.ok) throw new Error(); return r.json(); })
+      .then(data => {
+        window.soraData = data;
+        serverEl.className = 'server-status ok';
+        serverEl.textContent = 'server online';
+        render(data);
+        initLab();
+      })
+      .catch(() => {
+        serverEl.className = 'server-status off';
+        serverEl.textContent = 'index not found';
+        document.getElementById('stats').innerHTML = '<div class="stat" style="grid-column:1/-1;"><div class="n">—</div><div class="l">run: python3 serve.py</div></div>';
+      });
+  }
+
+  // ── FORENSIC LAB CORE CONTROLLER ──
+  function initLab() {
+    // Populate cluster dropdown
+    const select = document.getElementById('lab-filter-cluster');
+    select.innerHTML = '<option value="ALL">ALL CLUSTERS</option>';
+    
+    // Sort clusters by count descending
+    const sortedClusters = Object.entries(window.soraData.clusters).sort((a,b) => b[1].count - a[1].count);
+    for (const [name, info] of sortedClusters) {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = `${name} (${info.count})`;
+      select.appendChild(opt);
+    }
+    
+    // Initial display filter
+    onLabFilterChange();
+    setupDragHandlers();
+    setupWaveformScrubHandlers();
+    setupVideoPlaybackLoop();
+  }
+
+  window.switchView = function(view) {
+    window.currentView = view;
+    
+    const dashContainer = document.getElementById('view-dashboard');
+    const labContainer = document.getElementById('view-lab');
+    
+    const btnDash = document.getElementById('btn-tab-dashboard');
+    const btnLab = document.getElementById('btn-tab-lab');
+    
+    if (view === 'dashboard') {
+      btnDash.classList.add('active');
+      btnLab.classList.remove('active');
+      dashContainer.style.display = 'block';
+      labContainer.style.display = 'none';
+      
+      // Stop video playback in lab
+      const video = document.getElementById('lab-video');
+      video.pause();
+      window.isLoopingPlay = false;
+      const loopBtn = document.getElementById('lab-btn-loop');
+      if (loopBtn) {
+        loopBtn.textContent = '▶ Play Loop';
+        loopBtn.style.borderColor = 'var(--green)';
+        loopBtn.style.color = 'var(--green)';
+      }
+    } else {
+      btnDash.classList.remove('active');
+      btnLab.classList.add('active');
+      dashContainer.style.display = 'none';
+      labContainer.style.display = 'block';
+      
+      // Trigger list refresh
+      onLabFilterChange();
+    }
+  };
+
+  window.onLabFilterChange = function() {
+    const cluster = document.getElementById('lab-filter-cluster').value;
+    const query = document.getElementById('lab-filter-search').value.toLowerCase().trim();
+    const listContainer = document.getElementById('lab-clip-list');
+    
+    listContainer.innerHTML = '';
+    
+    // Filter clips
+    const matchedClips = window.soraData.clips.filter(c => {
+      // Cluster filter
+      if (cluster !== 'ALL') {
+        if (c.cluster !== cluster) return false;
+      }
+      // Search query filter
+      if (query !== '') {
+        const idMatch = c.id.toLowerCase().includes(query);
+        const promptMatch = (c.prompt || '').toLowerCase().includes(query);
+        if (!idMatch && !promptMatch) return false;
+      }
+      return true;
+    });
+    
+    // Render list
+    matchedClips.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'lab-clip-row';
+      row.style.display = 'flex';
+      row.style.justifyContent = 'space-between';
+      row.style.alignItems = 'center';
+      row.style.padding = '6px 8px';
+      row.style.borderBottom = '1px solid #111';
+      row.style.fontSize = '10px';
+      row.style.cursor = 'pointer';
+      row.style.fontFamily = 'var(--mono)';
+      row.style.color = '#bbb';
+      row.style.transition = 'background 0.1s';
+      
+      row.addEventListener('mouseover', () => {
+        row.style.background = '#111';
+      });
+      row.addEventListener('mouseout', () => {
+        if (window.activeLabClip?.id !== c.id) {
+          row.style.background = 'none';
+        } else {
+          row.style.background = '#1e1e1e';
+        }
+      });
+      
+      if (window.activeLabClip?.id === c.id) {
+        row.style.background = '#1e1e1e';
+        row.style.color = 'var(--accent)';
+      }
+      
+      row.onclick = () => {
+        selectLabClip(c);
+        // Reset row highlights
+        document.querySelectorAll('.lab-clip-row').forEach(r => {
+          r.style.background = 'none';
+          r.style.color = '#bbb';
+        });
+        row.style.background = '#1e1e1e';
+        row.style.color = 'var(--accent)';
+      };
+      
+      const idSpan = document.createElement('span');
+      idSpan.textContent = c.id.split('_')[0] + '_' + (c.id.split('_')[1] || '');
+      
+      const scoreBadge = document.createElement('span');
+      scoreBadge.style.color = 'var(--accent)';
+      if (c._proc?.loop_score) {
+        scoreBadge.textContent = `${c._proc.loop_score}%`;
+      } else {
+        scoreBadge.textContent = '—';
+      }
+      
+      row.appendChild(idSpan);
+      row.appendChild(scoreBadge);
+      listContainer.appendChild(row);
+    });
+    
+    // Auto select first matched clip if none selected or if active no longer matches
+    if (matchedClips.length > 0) {
+      const stillMatched = matchedClips.find(c => c.id === window.activeLabClip?.id);
+      if (!stillMatched) {
+        selectLabClip(matchedClips[0]);
+      }
+    }
+  };
+
+  window.selectLabClip = function(c) {
+    window.activeLabClip = JSON.parse(JSON.stringify(c)); // deep copy to edit locally
+    
+    // Update Inspector text elements
+    document.getElementById('lab-inspect-id').textContent = c.id;
+    document.getElementById('lab-inspect-cluster').textContent = `CLUSTER: ${c.cluster || 'UNCLASSIFIED'}`;
+    document.getElementById('lab-inspect-prompt').textContent = c.prompt || '';
+    
+    // Load Video
+    const video = document.getElementById('lab-video');
+    video.src = `/captures/${c.video}`;
+    video.load();
+    
+    // Play loop status off
+    window.isLoopingPlay = false;
+    const btn = document.getElementById('lab-btn-loop');
+    btn.textContent = '▶ Play Loop';
+    btn.style.borderColor = 'var(--green)';
+    btn.style.color = 'var(--green)';
+    
+    // Update Crop Overlay coordinates
+    updateCropUI();
+    
+    // Draw waveform canvas
+    drawLabWaveform(c._proc?.audio_rms);
+    
+    // Update IN and OUT times
+    updateTrimUI();
+    
+    // Side-by-side keyframes rendering
+    const imgIn = document.getElementById('lab-frame-in');
+    const imgOut = document.getElementById('lab-frame-out');
+    
+    // Attempt loop frames first, then sheet frames fallback
+    imgIn.onerror = () => {
+      imgIn.src = `processed/frames/${c.id}/f00.jpg`;
+      imgIn.onerror = () => {
+        imgIn.src = '';
+      };
+    };
+    imgOut.onerror = () => {
+      imgOut.src = `processed/frames/${c.id}/f04.jpg`;
+      imgOut.onerror = () => {
+        imgOut.src = '';
+      };
+    };
+    
+    imgIn.src = `processed/loop_frames/${c.id}/first.jpg`;
+    imgOut.src = `processed/loop_frames/${c.id}/last.jpg`;
+    
+    // Loop Score
+    const loopScoreSpan = document.getElementById('lab-inspect-loop-score');
+    if (c._proc?.loop_score) {
+      loopScoreSpan.textContent = `${c._proc.loop_score}% MATCH`;
+      loopScoreSpan.style.color = c._proc.loop_score >= 80 ? 'var(--green)' : 'var(--accent)';
+    } else {
+      loopScoreSpan.textContent = 'NOT COMPUTED';
+      loopScoreSpan.style.color = 'var(--muted)';
+    }
+  };
+
+  function drawLabWaveform(rmsArray) {
+    const canvas = document.getElementById('lab-waveform-canvas');
+    const ctx = canvas.getContext('2d');
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    canvas.width = w;
+    canvas.height = h;
+    
+    ctx.clearRect(0, 0, w, h);
+    if (!rmsArray || rmsArray.length === 0) {
+      ctx.fillStyle = '#333';
+      ctx.font = '9px monospace';
+      ctx.fillText('NO AUDIO PROFILE AVAILABLE', 10, h / 2 + 3);
+      return;
+    }
+    
+    const maxVal = Math.max(...rmsArray) || 1;
+    const barWidth = w / rmsArray.length;
+    
+    ctx.fillStyle = '#444'; // Muted dark background waveform
+    for (let i = 0; i < rmsArray.length; i++) {
+      const val = rmsArray[i];
+      const barHeight = (val / maxVal) * (h - 10);
+      const x = i * barWidth;
+      const y = h / 2 - barHeight / 2;
+      ctx.fillRect(x, y, barWidth - 1, barHeight);
+    }
+  }
+
+  function updateTrimUI() {
+    const activeClip = window.activeLabClip;
+    if (!activeClip) return;
+    
+    const dur = activeClip._proc?.duration || activeClip.duration || 10;
+    const trimIn = activeClip._proc?.trim_in !== undefined ? activeClip._proc.trim_in : 0;
+    const trimOut = activeClip._proc?.trim_out !== undefined ? activeClip._proc.trim_out : dur;
+    
+    const inPct = (trimIn / dur) * 100;
+    const outPct = 100 - (trimOut / dur) * 100;
+    
+    document.getElementById('lab-trim-mask-in').style.width = inPct + '%';
+    document.getElementById('lab-trim-mask-out').style.width = outPct + '%';
+    document.getElementById('lab-trim-readout').textContent = `TRIM WINDOW: ${trimIn.toFixed(1)}s - ${trimOut.toFixed(1)}s (dur: ${(trimOut - trimIn).toFixed(1)}s)`;
+    
+    document.getElementById('lab-input-in').value = trimIn.toFixed(1);
+    document.getElementById('lab-input-out').value = trimOut.toFixed(1);
+    
+    updateFFmpegCommand();
+  }
+
+  function updateCropUI() {
+    const activeClip = window.activeLabClip;
+    if (!activeClip) return;
+    
+    // Default to probed y_top and y_bottom, or full dimensions if not probed
+    const yTop = activeClip._proc?.y_top !== undefined ? activeClip._proc.y_top : 0;
+    const yBottom = activeClip._proc?.y_bottom !== undefined ? activeClip._proc.y_bottom : 1440;
+    
+    // Display readouts
+    document.getElementById('lab-val-top').textContent = yTop + 'px';
+    document.getElementById('lab-val-bottom').textContent = yBottom + 'px';
+    
+    // Map to aspect ratio display elements
+    const topPct = (yTop / 1440) * 100;
+    const bottomPct = (yBottom / 1440) * 100;
+    
+    document.getElementById('lab-mask-top').style.height = topPct + '%';
+    document.getElementById('lab-mask-bottom').style.height = (100 - bottomPct) + '%';
+    
+    const cropBorder = document.getElementById('lab-crop-border');
+    cropBorder.style.top = topPct + '%';
+    cropBorder.style.height = (bottomPct - topPct) + '%';
+    
+    // Top handle sits right on top edge
+    document.getElementById('lab-handle-top').style.top = `calc(${topPct}% - 6px)`;
+    // Bottom handle sits right on bottom edge
+    document.getElementById('lab-handle-bottom').style.top = `calc(${bottomPct}% - 6px)`;
+    
+    updateFFmpegCommand();
+  }
+
+  function updateFFmpegCommand() {
+    const activeClip = window.activeLabClip;
+    if (!activeClip) return;
+    
+    const dur = activeClip._proc?.duration || activeClip.duration || 10;
+    const trimIn = activeClip._proc?.trim_in !== undefined ? activeClip._proc.trim_in : 0;
+    const trimOut = activeClip._proc?.trim_out !== undefined ? activeClip._proc.trim_out : dur;
+    const yTop = activeClip._proc?.y_top !== undefined ? activeClip._proc.y_top : 0;
+    const yBottom = activeClip._proc?.y_bottom !== undefined ? activeClip._proc.y_bottom : 1440;
+    const cropH = yBottom - yTop;
+    
+    // ffmpeg crop=width:height:x:y
+    const cropFilter = `crop=648:${cropH}:0:${yTop}`;
+    const cmd = `ffmpeg -y -ss ${trimIn.toFixed(2)} -to ${trimOut.toFixed(2)} -i "SORA_CAPTURES/${activeClip.video}" -vf "${cropFilter}" "trimmed/${activeClip.id}_trimmed.mp4"`;
+    
+    document.getElementById('lab-ffmpeg-cmd').value = cmd;
+  }
+
+  window.nudgeCrop = function(edge, delta) {
+    const activeClip = window.activeLabClip;
+    if (!activeClip) return;
+    
+    if (!activeClip._proc) activeClip._proc = {};
+    if (edge === 'top') {
+      const curVal = activeClip._proc.y_top !== undefined ? activeClip._proc.y_top : 0;
+      activeClip._proc.y_top = Math.max(0, Math.min(curVal + delta, (activeClip._proc.y_bottom || 1440) - 100));
+    } else if (edge === 'bottom') {
+      const curVal = activeClip._proc.y_bottom !== undefined ? activeClip._proc.y_bottom : 1440;
+      activeClip._proc.y_bottom = Math.max((activeClip._proc.y_top || 0) + 100, Math.min(curVal + delta, 1440));
+    }
+    
+    updateCropUI();
+  };
+
+  window.onLabTimeInputChange = function() {
+    const activeClip = window.activeLabClip;
+    if (!activeClip) return;
+    
+    const dur = activeClip._proc?.duration || activeClip.duration || 10;
+    const trimIn = Math.max(0, parseFloat(document.getElementById('lab-input-in').value) || 0);
+    const trimOut = Math.min(dur, parseFloat(document.getElementById('lab-input-out').value) || dur);
+    
+    if (!activeClip._proc) activeClip._proc = {};
+    activeClip._proc.trim_in = Math.min(trimIn, trimOut);
+    activeClip._proc.trim_out = Math.max(trimIn, trimOut);
+    
+    updateTrimUI();
+  };
+
+  window.toggleLoopPlay = function() {
+    const video = document.getElementById('lab-video');
+    const btn = document.getElementById('lab-btn-loop');
+    
+    window.isLoopingPlay = !window.isLoopingPlay;
+    if (window.isLoopingPlay) {
+      btn.textContent = '⏸ Pause Loop';
+      btn.style.borderColor = 'var(--accent)';
+      btn.style.color = 'var(--accent)';
+      
+      const activeClip = window.activeLabClip;
+      if (activeClip) {
+        video.currentTime = activeClip._proc?.trim_in !== undefined ? activeClip._proc.trim_in : 0;
+      }
+      video.play();
+    } else {
+      btn.textContent = '▶ Play Loop';
+      btn.style.borderColor = 'var(--green)';
+      btn.style.color = 'var(--green)';
+      video.pause();
+    }
+  };
+
+  window.saveActiveClip = function() {
+    const activeClip = window.activeLabClip;
+    if (!activeClip) return;
+    
+    // Save to global window.soraData.clips array
+    const idx = window.soraData.clips.findIndex(c => c.id === activeClip.id);
+    if (idx !== -1) {
+      window.soraData.clips[idx] = JSON.parse(JSON.stringify(activeClip));
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('sora_full_index_local', JSON.stringify(window.soraData));
+    
+    // Show toast or alert
+    alert('✓ CLIP METADATA SAVED TO LOCAL STORAGE');
+    
+    // Re-render taxonomy and stats to reflect any updates!
+    render(window.soraData);
+  };
+
+  window.downloadConformedIndex = function() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.soraData, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "sora_full_index.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  };
+
+  // ── ERGONOMIC INTERACTIVE DRAGGERS ──
+  function setupDragHandlers() {
+    let isDraggingTop = false;
+    let isDraggingBottom = false;
+    const container = document.getElementById('lab-video-container');
+    
+    document.getElementById('lab-handle-top').addEventListener('mousedown', (e) => {
+      isDraggingTop = true;
+      e.stopPropagation();
+      e.preventDefault();
+    });
+    
+    document.getElementById('lab-handle-bottom').addEventListener('mousedown', (e) => {
+      isDraggingBottom = true;
+      e.stopPropagation();
+      e.preventDefault();
+    });
+    
+    document.addEventListener('mouseup', () => {
+      isDraggingTop = false;
+      isDraggingBottom = false;
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      if (!isDraggingTop && !isDraggingBottom) return;
+      const rect = container.getBoundingClientRect();
+      const y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+      const logicalY = Math.round((y / rect.height) * 1440);
+      
+      if (isDraggingTop) {
+        const activeClip = window.activeLabClip;
+        if (activeClip) {
+          if (!activeClip._proc) activeClip._proc = {};
+          activeClip._proc.y_top = Math.min(logicalY, (activeClip._proc.y_bottom !== undefined ? activeClip._proc.y_bottom : 1440) - 100);
+          updateCropUI();
+        }
+      } else if (isDraggingBottom) {
+        const activeClip = window.activeLabClip;
+        if (activeClip) {
+          if (!activeClip._proc) activeClip._proc = {};
+          activeClip._proc.y_bottom = Math.max(logicalY, (activeClip._proc.y_top !== undefined ? activeClip._proc.y_top : 0) + 100);
+          updateCropUI();
+        }
+      }
+    });
+  }
+
+  function setupWaveformScrubHandlers() {
+    const waveWrap = document.getElementById('lab-waveform-wrap');
+    
+    function scrubFromWaveEvent(e) {
+      const activeClip = window.activeLabClip;
+      if (!activeClip) return;
+      
+      const rect = waveWrap.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const dur = activeClip._proc?.duration || activeClip.duration || 10;
+      const time = pct * dur;
+      
+      const video = document.getElementById('lab-video');
+      video.currentTime = time;
+      
+      if (e.shiftKey) {
+        if (!activeClip._proc) activeClip._proc = {};
+        activeClip._proc.trim_in = Math.min(time, activeClip._proc.trim_out !== undefined ? activeClip._proc.trim_out : dur);
+        updateTrimUI();
+      } else if (e.altKey) {
+        if (!activeClip._proc) activeClip._proc = {};
+        activeClip._proc.trim_out = Math.max(time, activeClip._proc.trim_in !== undefined ? activeClip._proc.trim_in : 0);
+        updateTrimUI();
+      }
+    }
+    
+    waveWrap.addEventListener('mousemove', (e) => {
+      if (e.buttons === 1) {
+        scrubFromWaveEvent(e);
+      }
+    });
+    waveWrap.addEventListener('mousedown', scrubFromWaveEvent);
+  }
+
+  function setupVideoPlaybackLoop() {
+    const video = document.getElementById('lab-video');
+    video.addEventListener('timeupdate', () => {
+      const dur = video.duration || 10;
+      const pct = (video.currentTime / dur) * 100;
+      const playhead = document.getElementById('lab-playhead');
+      if (playhead) playhead.style.left = pct + '%';
+      
+      const timeDisplay = document.getElementById('lab-video-time');
+      if (timeDisplay) timeDisplay.textContent = video.currentTime.toFixed(2) + 's';
+      
+      // Play loop logic
+      if (window.isLoopingPlay) {
+        const activeClip = window.activeLabClip;
+        if (activeClip) {
+          const trimIn = activeClip._proc?.trim_in !== undefined ? activeClip._proc.trim_in : 0;
+          const trimOut = activeClip._proc?.trim_out !== undefined ? activeClip._proc.trim_out : dur;
+          if (video.currentTime >= trimOut) {
+            video.currentTime = trimIn;
+          }
+        }
+      }
+    });
+  }
+
+  function render(data) {
+    const total = data.total;
+    const withVideo = data.total_with_video || 0;
+    const clusterNames = Object.keys(data.clusters).filter(k => k !== 'UNCLASSIFIED' && k !== 'MISC_SMALL_CLUSTER');
+    const classified = clusterNames.reduce((s,k) => s + (data.clusters[k]?.count || 0), 0);
+    const misc = data.clusters.MISC_SMALL_CLUSTER?.count || 0;
+    const unclassified = data.clusters.UNCLASSIFIED?.count || 0;
+
+    // Count sub-clustered
+    let subClusterCount = 0;
+    for (const [name, info] of Object.entries(data.clusters)) {
+      if (info.sub_clusters) subClusterCount += Object.keys(info.sub_clusters).length;
+    }
+
+    // Count processing status
+    let probed = 0, framed = 0;
+    for (const c of data.clips) {
+      if (c._proc?.status === 'probed') probed++;
+      if (c._proc?.frames > 0) framed++;
+    }
+
+    // Subtitle
+    document.getElementById('subtitle').textContent =
+      `${total} Clips · ${clusterNames.length} Clusters · ${subClusterCount} Sub-clusters · ${data.generated || ''}`;
+
+    // Stats
+    document.getElementById('stats').innerHTML = [
+      [total, 'total clips'],
+      [withVideo, 'with video'],
+      [classified + misc, 'classified'],
+      [unclassified, 'unclassified'],
+      [clusterNames.length, 'clusters'],
+      [subClusterCount, 'sub-clusters']
+    ].map(([n,l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+
+    // Pipeline status
+    if (probed > 0) {
+      document.getElementById('pipe-probe').className = 'pipe-status ready';
+      document.getElementById('pipe-probe').textContent = `${probed}/${total} probed`;
+      document.getElementById('pipe-crop').className = 'pipe-status ready';
+      document.getElementById('pipe-crop').textContent = `detected`;
+    }
+    if (framed > 0) {
+      document.getElementById('pipe-frames').className = 'pipe-status ready';
+      document.getElementById('pipe-frames').textContent = `${framed} clips`;
+    }
+
+    // Cluster taxonomy
+    const taxEl = document.getElementById('taxonomy');
+    const maxCount = Math.max(...Object.values(data.clusters).map(v => v.count));
+    document.getElementById('cluster-summary').textContent =
+      `— ${Object.keys(data.clusters).length} clusters, ${total} clips`;
+
+    const sorted = Object.entries(data.clusters).sort((a,b) => b[1].count - a[1].count);
+
+    let html = '';
+    for (const [name, info] of sorted) {
+      const pct = Math.round((info.count / maxCount) * 100);
+      const hasSubs = info.sub_clusters && Object.keys(info.sub_clusters).length > 0;
+      const arrow = hasSubs ? '▸ ' : '  ';
+
+      html += `<div class="cluster-row" data-cluster="${name}" onclick="toggleSub(this)">
+        <div class="cluster-name">${arrow}${name}</div>
+        <div class="cluster-count">${info.count}</div>
+        <div><div class="cluster-bar" style="width:${pct}%"></div></div>
+      </div>`;
+
+      if (hasSubs) {
+        html += `<div class="sub-clusters" data-parent="${name}">`;
+        const subSorted = Object.entries(info.sub_clusters).sort((a,b) => b[1].count - a[1].count);
+        const subMax = Math.max(...subSorted.map(([,v]) => v.count));
+        for (const [subName, subInfo] of subSorted) {
+          const subPct = Math.round((subInfo.count / subMax) * 100);
+          html += `<div class="sub-row">
+            <div class="sub-name">${subName}</div>
+            <div class="sub-count">${subInfo.count}</div>
+            <div><div class="sub-bar" style="width:${subPct}%"></div></div>
+          </div>`;
+        }
+        html += '</div>';
+      }
+    }
+    taxEl.innerHTML = html;
+  }
+
+  window.toggleSub = function(el) {
+    const name = el.dataset.cluster;
+    const subEl = document.querySelector(`.sub-clusters[data-parent="${name}"]`);
+    if (!subEl) return;
+    const isOpen = subEl.classList.contains('open');
+    subEl.classList.toggle('open');
+    el.classList.toggle('expanded');
+    // Toggle arrow
+    const nameEl = el.querySelector('.cluster-name');
+    if (nameEl) {
+      nameEl.textContent = nameEl.textContent.replace(/^[▸▾]\s/, (isOpen ? '▸ ' : '▾ '));
+    }
+  };
+})();
+</script>
+</body>
+</html>
