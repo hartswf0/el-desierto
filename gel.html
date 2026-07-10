@@ -1130,10 +1130,24 @@ function exportLane(l){
 const ghost=document.createElement('div');ghost.id='ghost';
 ghost.innerHTML='<img><div class="gn"></div>';document.body.appendChild(ghost);
 const esc2=s2=>String(s2).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-function dlVideo(id){
+let FINALS_MAP=null, LOCAL_FINALS=null;
+async function finalUrl(id){
+  const c=clips[id]||{};
+  if(LOCAL_FINALS===null){
+    try{const r=await fetch(c.media_url||'FINAL_CLIPS/none',{method:'HEAD'});LOCAL_FINALS=r.ok;}
+    catch(e){LOCAL_FINALS=false;}
+  }
+  if(LOCAL_FINALS&&c.media_url)return c.media_url;
+  if(!FINALS_MAP){
+    try{FINALS_MAP=await fetch('finals_urls.json').then(r=>r.json());}
+    catch(e){FINALS_MAP={};}
+  }
+  return FINALS_MAP[id]||previewOf(id);
+}
+async function dlVideo(id){
   const c=clips[id]||{};
   const a=document.createElement('a');
-  a.href=c.media_url||previewOf(id);
+  a.href=await finalUrl(id);
   a.download=(c.clip_id||id)+'.mp4'; a.click();
   flash('DOWNLOADING #'+(c.index||''),false);
 }

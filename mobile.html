@@ -366,9 +366,27 @@ function updateSelbar(){
 $('selAdd').onclick=()=>pickPlaylist();
 
 // ---------- WATCH ----------
+let FINALS_MAP=null, LOCAL_FINALS=null;
+async function finalUrl(id){
+  const c=clips[id]||{};
+  if(LOCAL_FINALS===null){
+    try{const r=await fetch(c.media_url||'FINAL_CLIPS/none',{method:'HEAD'});LOCAL_FINALS=r.ok;}
+    catch(e){LOCAL_FINALS=false;}
+  }
+  if(LOCAL_FINALS&&c.media_url)return c.media_url;
+  if(!FINALS_MAP){
+    try{FINALS_MAP=await fetch('finals_urls.json').then(r=>r.json());}
+    catch(e){FINALS_MAP={};}
+  }
+  return FINALS_MAP[id]||previewOf(id);
+}
 function playSrc(v, id, hd){
   const c=clips[id];
-  v.src = hd ? (c.media_url||'') : (previewOf(id));
+  if(hd){
+    finalUrl(id).then(u=>{v.src=u; v.load(); v.play().catch(()=>{});});
+    return;
+  }
+  v.src = previewOf(id);
   v.load(); v.play().catch(()=>{});
 }
 function watch(id){
@@ -671,7 +689,7 @@ function digNext(advance){
   const c=clips[id];
   const v=$('digVid');
   if(!v.dataset.wired){wireVideo(v,$('digLoad'),null);v.dataset.wired='1';
-    v.addEventListener('error',()=>{ if(v.src.includes('PREVIEWS/')){v.src=c.media_url||'';v.load();v.play().catch(()=>{});} });}
+    v.addEventListener('error',()=>{ if(v.src.includes('PREVIEWS/')){finalUrl(c.clip_id||'').then(u=>{v.src=u;v.load();v.play().catch(()=>{});});} });}
   v.src=previewOf(id); v.load(); v.play().catch(()=>{});
   $('digMeta').innerHTML=`<b>${c.title||'#'+c.index}</b><br>
     ${(c.named_films||[]).join(' &middot; ')||c.domain||''} &middot; ${(c.objects||[]).slice(0,5).join(', ')}

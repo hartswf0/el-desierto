@@ -1,6 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>
+/* EL DESIERTO compatibility shim: route this lab piece at the repo's real media.
+   Any clip-id mp4/jpg -> ../PREVIEWS | ../POSTERS; SORA_CAPTURES/ paths -> ../ */
+(function(){
+  var ROOT='../';
+  var CID=/(\d{1,4}_\d{8}_\d{6})/;
+  function remap(u){
+    if(typeof u!=='string')return u;
+    if(u.indexOf('data:')===0||u.indexOf('blob:')===0)return u;
+    var m=u.match(CID);
+    if(m&&/\.mp4/.test(u))return ROOT+'PREVIEWS/'+m[1]+'.mp4';
+    if(m&&/\.(jpg|jpeg|png)/.test(u))return ROOT+'POSTERS/'+m[1]+'.jpg';
+    u=u.replace(/^.*SORA_CAPTURES\//,ROOT);
+    if(/^manifest\.json/.test(u))return ROOT+'manifest.json';
+    return u;
+  }
+  var of=window.fetch;
+  if(of)window.fetch=function(u,o){return of.call(this,remap(u&&u.url?u.url:u),o);};
+  function hook(proto){
+    var d=Object.getOwnPropertyDescriptor(proto,'src');
+    if(!d||!d.set)return;
+    Object.defineProperty(proto,'src',{
+      get:function(){return d.get.call(this);},
+      set:function(v){d.set.call(this,remap(v));}
+    });
+  }
+  try{hook(HTMLMediaElement.prototype);}catch(e){}
+  try{hook(HTMLImageElement.prototype);}catch(e){}
+  try{hook(HTMLSourceElement.prototype);}catch(e){}
+  var osa=Element.prototype.setAttribute;
+  Element.prototype.setAttribute=function(k,v){
+    if(k==='src'&&typeof v==='string')v=remap(v);
+    return osa.call(this,k,v);
+  };
+})();
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>TRAIN FIELD</title>

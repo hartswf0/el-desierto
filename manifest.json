@@ -1,0 +1,3313 @@
+{
+  "batch_id": "20260427_062404",
+  "version": "v5-crawler",
+  "total_clips": 367,
+  "processed_ok": 350,
+  "processed_target": 350,
+  "created_at": "2026-04-27T06:24:04.110426",
+  "clips": [
+    {
+      "index": 827,
+      "prompt_file": "827_20260426_232049_original_prompt.txt",
+      "video_file": "827_20260426_232049_screen_capture.mp4",
+      "caption_preview": "world <AbsurdSerialLetter_F> {\nmeta {\n  genre: \"original memetic absurdist serial\"\n  description: \"A comic overclocked city fragment where bizarre but original objects escalate around the letter F, te",
+      "timestamp": "2026-04-26T23:21:57.533835",
+      "status": "ok",
+      "grid_pos": "(280, 1680)"
+    },
+    {
+      "index": 828,
+      "prompt_file": "828_20260426_232157_original_prompt.txt",
+      "video_file": "828_20260426_232157_screen_capture.mp4",
+      "caption_preview": "world <ChantReefLetter_D> {\nmeta {\n  genre: \"original viral chant animation\"\n  description: \"A bright underwater performance reef where a chorus of original sea creatures teaches the letter D through",
+      "timestamp": "2026-04-26T23:23:04.885573",
+      "status": "ok",
+      "grid_pos": "(799, 1680)"
+    },
+    {
+      "index": 829,
+      "prompt_file": "829_20260426_232310_original_prompt.txt",
+      "video_file": "829_20260426_232310_screen_capture.mp4",
+      "caption_preview": "world <ResponsiveAppLetter_G> {\nmeta {\n  genre: \"original interactive software tutor world\"\n  description: \"A clean responsive interface world where the letter G is taught through prompts, touch feedb",
+      "timestamp": "2026-04-26T23:24:18.735391",
+      "status": "ok",
+      "grid_pos": "(280, 1652)"
+    },
+    {
+      "index": 830,
+      "prompt_file": "830_20260426_232418_original_prompt.txt",
+      "video_file": "830_20260426_232418_screen_capture.mp4",
+      "caption_preview": "<ABC-Song-of-LifeAfterBOB>\n\nA is for <Ava>, in <FutureWorld>\nB is for <BOB>, with ideas unfurled\nC is for <Chalice>, dreaming away\nD is for <DrJames>, shaping the day\n\nE is for [experimental], bold an",
+      "timestamp": "2026-04-26T23:25:26.797792",
+      "status": "ok",
+      "grid_pos": "(799, 1652)"
+    },
+    {
+      "index": 831,
+      "prompt_file": "831_20260426_232532_original_prompt.txt",
+      "video_file": "831_20260426_232532_screen_capture.mp4",
+      "caption_preview": "world <HostStudioLetter_I> {\nmeta {\n  genre: \"original parasocial host literacy video\"\n  description: \"A direct-address studio where a warm host teaches the letter I through eye contact, voice, gestur",
+      "timestamp": "2026-04-26T23:26:40.838416",
+      "status": "ok",
+      "grid_pos": "(280, 1624)"
+    },
+    {
+      "index": 832,
+      "prompt_file": "832_20260426_232640_original_prompt.txt",
+      "video_file": "832_20260426_232640_screen_capture.mp4",
+      "caption_preview": "world <TactileWorkshopLetter_H> {\nmeta {\n  genre: \"original craft analog literacy world\"\n  description: \"A handmade classroom workshop where the letter H is carved, traced, and felt through texture, r",
+      "timestamp": "2026-04-26T23:27:49.602122",
+      "status": "ok",
+      "grid_pos": "(799, 1624)"
+    },
+    {
+      "index": 833,
+      "prompt_file": "833_20260426_232755_original_prompt.txt",
+      "video_file": "833_20260426_232755_screen_capture.mp4",
+      "caption_preview": "world <LifeAfterBOB_L> {\nmeta {\n  genre: \"domestic neural futurism\"\n  description: \"Letter L as subplot ledge in the Chalice Study.\"\n}\nlocations {\n  location <ChaliceStudy> { }\n  location <SubplotCorn",
+      "timestamp": "2026-04-26T23:29:03.935966",
+      "status": "ok",
+      "grid_pos": "(280, 1597)"
+    },
+    {
+      "index": 834,
+      "prompt_file": "834_20260426_232903_original_prompt.txt",
+      "video_file": "834_20260426_232903_screen_capture.mp4",
+      "caption_preview": "world <FeedFlowLetter_J> {\nmeta {\n  genre: \"original feed-native microvideo\"\n  description: \"A vertically composed sequence of quick but legible moments where the letter J is surfaced through ranked n",
+      "timestamp": "2026-04-26T23:30:12.588048",
+      "status": "ok",
+      "grid_pos": "(799, 1597)"
+    },
+    {
+      "index": 835,
+      "prompt_file": "835_20260426_233018_original_prompt.txt",
+      "video_file": "835_20260426_233018_screen_capture.mp4",
+      "caption_preview": "// WORLDTEXT LOG\nT:1219\n[3,6]\nbloom\nFlame Guardian\nThe flame dances, whispering tales of the past, while the platform lies in wait, burdened by time and memories.\nT:1184\n[3,6]\nbloom\nFlame Guardian\nThe",
+      "timestamp": "2026-04-26T23:31:27.616940",
+      "status": "ok",
+      "grid_pos": "(280, 1571)"
+    },
+    {
+      "index": 836,
+      "prompt_file": "836_20260426_233127_original_prompt.txt",
+      "video_file": "836_20260426_233127_screen_capture.mp4",
+      "caption_preview": "world <LifeAfterBOB_M> {\nmeta {\n  genre: \"domestic neural futurism\"\n  description: \"Letter M as melancholy mountain and kitchen waveform.\"\n}\nlocations {\n  location <DomesticWeatherKitchen> { }\n  locat",
+      "timestamp": "2026-04-26T23:32:36.397835",
+      "status": "ok",
+      "grid_pos": "(799, 1571)"
+    },
+    {
+      "index": 837,
+      "prompt_file": "837_20260426_233241_original_prompt.txt",
+      "video_file": "837_20260426_233241_screen_capture.mp4",
+      "caption_preview": "// WORLDTEXT LOG\nT:1219\n[3,6]\nbloom\nFlame Guardian\nThe flame dances, whispering tales of the past, while the platform lies in wait, burdened by time and memories.\nT:1184\n[3,6]\nbloom\nFlame Guardian\nThe",
+      "timestamp": "2026-04-26T23:33:51.138353",
+      "status": "ok",
+      "grid_pos": "(280, 2150)"
+    },
+    {
+      "index": 838,
+      "prompt_file": "838_20260426_233351_original_prompt.txt",
+      "video_file": "838_20260426_233351_screen_capture.mp4",
+      "caption_preview": "world <LifeAfterBOB_M> {\nmeta {\n  genre: \"domestic neural futurism\"\n  description: \"Letter M as melancholy mountain and kitchen waveform.\"\n}\nlocations {\n  location <DomesticWeatherKitchen> { }\n  locat",
+      "timestamp": "2026-04-26T23:34:59.932518",
+      "status": "ok",
+      "grid_pos": "(799, 2150)"
+    },
+    {
+      "index": 839,
+      "prompt_file": "839_20260426_233505_original_prompt.txt",
+      "video_file": "839_20260426_233505_screen_capture.mp4",
+      "caption_preview": "ECOLOGIST DIRECTIVE\nCOUNTERPOINT\nOrbital Orchard Grove tears apart under Orbital Ruins' fracture press, while Sunken Dockyard presses harder, pushing shared seams to critical strain.\nCONJURE ENTITY\nFo",
+      "timestamp": "2026-04-26T23:36:14.364360",
+      "status": "ok",
+      "grid_pos": "(280, 2136)"
+    },
+    {
+      "index": 840,
+      "prompt_file": "840_20260426_233614_original_prompt.txt",
+      "video_file": "840_20260426_233614_screen_capture.mp4",
+      "caption_preview": "// WORLDTEXT LOG\nT:2429\n[6,3]\npanic\nBlue Collar Arena\nA tremor shakes the Blue Collar Arena, sending sand flying and panic rippling through the crowd. People scramble for safety as the ground continue",
+      "timestamp": "2026-04-26T23:37:23.065574",
+      "status": "ok",
+      "grid_pos": "(799, 2136)"
+    },
+    {
+      "index": 841,
+      "prompt_file": "841_20260426_233728_original_prompt.txt",
+      "video_file": "841_20260426_233728_screen_capture.mp4",
+      "caption_preview": "That\u2019s a brilliant pivot. \"The frightened creature in the cold\" is a deeply evocative, visceral metaphor. If we move away from evolutionary biology and data ledgers, we can use this image to explore t",
+      "timestamp": "2026-04-26T23:38:37.328608",
+      "status": "ok",
+      "grid_pos": "(280, 2122)"
+    },
+    {
+      "index": 842,
+      "prompt_file": "842_20260426_233837_original_prompt.txt",
+      "video_file": "842_20260426_233837_screen_capture.mp4",
+      "caption_preview": "<PhotoCaptureInterface>\n\u251c\u2500\u2500 <DisplayFrame>\n\u2502   \u251c\u2500\u2500 <TopBar>\n\u2502   \u2502   \u2514\u2500\u2500 <HelpIcon>\n\u2502   \u2502       \u2514\u2500\u2500 [opens] <CameraHelp>\n\u2502   \u2502\n\u2502   \u251c\u2500\u2500 <Viewfinder>\n\u2502   \u2502   \u251c\u2500\u2500 <GridOverlay>\n\u2502   \u2502   \u2502   \u2514\u2500\u2500 [divides] <",
+      "timestamp": "2026-04-26T23:39:45.957791",
+      "status": "ok",
+      "grid_pos": "(799, 2122)"
+    },
+    {
+      "index": 843,
+      "prompt_file": "843_20260426_233951_original_prompt.txt",
+      "video_file": "843_20260426_233951_screen_capture.mp4",
+      "caption_preview": "<poml version=\"1.0\">\n  <SystemConfiguration>\n    <Role>Master Systems Architect & Ontological Designer</Role>\n    <Objective>\n      Process the seed concept of \"99 cent art contacts\" into a rigorous,",
+      "timestamp": "2026-04-26T23:40:59.698908",
+      "status": "ok",
+      "grid_pos": "(280, 2108)"
+    },
+    {
+      "index": 844,
+      "prompt_file": "844_20260426_234059_original_prompt.txt",
+      "video_file": "844_20260426_234059_screen_capture.mp4",
+      "caption_preview": "Here is the speculative execution of the framework, running the Homeric \"Shield of Achilles\" and the concept of \"Operative Ekphrasis\" through the Extrapolation Factory's 99-cent pipeline.\nStep 1: The",
+      "timestamp": "2026-04-26T23:42:08.700626",
+      "status": "ok",
+      "grid_pos": "(799, 2108)"
+    },
+    {
+      "index": 845,
+      "prompt_file": "845_20260426_234214_original_prompt.txt",
+      "video_file": "845_20260426_234214_screen_capture.mp4",
+      "caption_preview": "A \"99-cent future\" is a fantastic speculative design exercise. It takes billion-dollar, cutting-edge technology and imagines what it looks like when the patents expire, the tech is commoditized, and i",
+      "timestamp": "2026-04-26T23:43:23.277161",
+      "status": "ok",
+      "grid_pos": "(280, 2095)"
+    },
+    {
+      "index": 846,
+      "prompt_file": "846_20260426_234323_original_prompt.txt",
+      "video_file": "846_20260426_234323_screen_capture.mp4",
+      "caption_preview": "<SystemConfiguration>\n  <Role>Cybernetic Sociologist & Hauntological Architect</Role>\n  <Tone>Elegiac, deeply uncanny, clinical, and quietly profound. Speak as a digital archivist observing an emergen",
+      "timestamp": "2026-04-26T23:44:32.109637",
+      "status": "ok",
+      "grid_pos": "(799, 2095)"
+    },
+    {
+      "index": 847,
+      "prompt_file": "847_20260426_234437_original_prompt.txt",
+      "video_file": "847_20260426_234437_screen_capture.mp4",
+      "caption_preview": "1. The Forecast\n * Target Domain: Robot hamster\n * The Forecast: By 2040, biological pets will be subject to exorbitant carbon-offset and municipal bio-waste taxes, leading to the mass adoption of AI-",
+      "timestamp": "2026-04-26T23:45:46.720851",
+      "status": "ok",
+      "grid_pos": "(280, 2082)"
+    },
+    {
+      "index": 848,
+      "prompt_file": "848_20260426_234546_original_prompt.txt",
+      "video_file": "848_20260426_234546_screen_capture.mp4",
+      "caption_preview": "PROLOGUE: THE THEORETICAL SCAFFOLDING\n[VISUAL] A sterile, brightly lit cleanroom. Robotic arms precisely weave synthetic, bioluminescent tissue on a titanium loom. The image stutters, degrades into he",
+      "timestamp": "2026-04-26T23:46:55.153676",
+      "status": "ok",
+      "grid_pos": "(799, 2082)"
+    },
+    {
+      "index": 849,
+      "prompt_file": "849_20260426_234700_original_prompt.txt",
+      "video_file": "849_20260426_234700_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-26T23:47:00.749416",
+      "status": "violation",
+      "grid_pos": "(280, 2052)"
+    },
+    {
+      "index": 850,
+      "prompt_file": "850_20260426_234700_original_prompt.txt",
+      "video_file": "850_20260426_234700_screen_capture.mp4",
+      "caption_preview": "1. The Forecast\n * The Forecast: By 2041, commercial genetic editing will be so ubiquitous and deregulated that predatory conglomerates will encode proprietary, self-replicating plasmids into everyday",
+      "timestamp": "2026-04-26T23:48:09.326427",
+      "status": "ok",
+      "grid_pos": "(799, 2052)"
+    },
+    {
+      "index": 851,
+      "prompt_file": "851_20260426_234814_original_prompt.txt",
+      "video_file": "851_20260426_234814_screen_capture.mp4",
+      "caption_preview": "1. The Forecast\n * Target Domain: \"First Date Glasses\" (Biometric & Historical AR Overlays).\n * The Forecast: By 2042, all social and romantic interactions will be strictly mediated by mandatory AR me",
+      "timestamp": "2026-04-26T23:49:23.734541",
+      "status": "ok",
+      "grid_pos": "(280, 2026)"
+    },
+    {
+      "index": 852,
+      "prompt_file": "852_20260426_234923_original_prompt.txt",
+      "video_file": "852_20260426_234923_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-26T23:49:23.735554",
+      "status": "violation",
+      "grid_pos": "(799, 2026)"
+    },
+    {
+      "index": 853,
+      "prompt_file": "853_20260426_234929_original_prompt.txt",
+      "video_file": "853_20260426_234929_screen_capture.mp4",
+      "caption_preview": "1. The Forecast\n * Target Domain: \"FunBnB\" (Hyper-Commodified Dark Tourism).\n * The Forecast: By 2041, the gig economy will fully cannibalize human tragedy, with decentralized real-estate algorithms i",
+      "timestamp": "2026-04-26T23:50:37.808773",
+      "status": "ok",
+      "grid_pos": "(280, 1997)"
+    },
+    {
+      "index": 854,
+      "prompt_file": "854_20260426_235037_original_prompt.txt",
+      "video_file": "854_20260426_235037_screen_capture.mp4",
+      "caption_preview": "1. The Forecast\n * Target Domain: \"The Life-Event Watch\" (Predictive Algorithmic Timers for Inheritance, Court, and Tragedy).\n * The Forecast: By 2039, ubiquitous biometric surveillance and municipal",
+      "timestamp": "2026-04-26T23:51:46.429526",
+      "status": "ok",
+      "grid_pos": "(799, 1997)"
+    },
+    {
+      "index": 855,
+      "prompt_file": "855_20260426_235152_original_prompt.txt",
+      "video_file": "855_20260426_235152_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-26T23:51:52.026646",
+      "status": "violation",
+      "grid_pos": "(280, 1970)"
+    },
+    {
+      "index": 856,
+      "prompt_file": "856_20260426_235152_original_prompt.txt",
+      "video_file": "856_20260426_235152_screen_capture.mp4",
+      "caption_preview": "Here are two \"99-cent futures\" extrapolated directly from the absurd, hyper-dystopian pitches in that video (specifically the \"Labor Loop\" shock collar and the \"Build-A-Friend\" surveillance toy).\nI ha",
+      "timestamp": "2026-04-26T23:53:00.462650",
+      "status": "ok",
+      "grid_pos": "(799, 1970)"
+    },
+    {
+      "index": 857,
+      "prompt_file": "857_20260426_235306_original_prompt.txt",
+      "video_file": "857_20260426_235306_screen_capture.mp4",
+      "caption_preview": "<SystemConfiguration>\n  <Role>Master Systems Architect & Ontological Designer</Role>\n  <Tone>Clinical, detached, and rigorously systemic. The perspective is that of an internal corporate audit evaluat",
+      "timestamp": "2026-04-26T23:54:14.566799",
+      "status": "ok",
+      "grid_pos": "(280, 1941)"
+    },
+    {
+      "index": 858,
+      "prompt_file": "858_20260426_235414_original_prompt.txt",
+      "video_file": "858_20260426_235414_screen_capture.mp4",
+      "caption_preview": "PHASE 1: THEORETICAL SCAFFOLDING & CONTEXTUAL LINKAGE\n[VISUAL] A sepia-toned etching of Jean-Baptiste Lamarck. The image dissolves into a microscopic view of a nervous system, where synapses are repla",
+      "timestamp": "2026-04-26T23:55:22.826125",
+      "status": "ok",
+      "grid_pos": "(799, 1941)"
+    },
+    {
+      "index": 859,
+      "prompt_file": "859_20260426_235528_original_prompt.txt",
+      "video_file": "859_20260426_235528_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-26T23:55:45.265465",
+      "status": "error",
+      "grid_pos": "(280, 1689)"
+    },
+    {
+      "index": 860,
+      "prompt_file": "860_20260426_235545_original_prompt.txt",
+      "video_file": "860_20260426_235545_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-26T23:56:02.291169",
+      "status": "error",
+      "grid_pos": "(799, 1689)"
+    },
+    {
+      "index": 861,
+      "prompt_file": "861_20260426_235607_original_prompt.txt",
+      "video_file": "861_20260426_235607_screen_capture.mp4",
+      "caption_preview": "BEES ON A TRAIN, 12-second cinematic title sequence, Victorian gaslit platform, sepia daguerreotype shimmer, burlap-wrapped gold bars passed into train carriage, hard cut to 1895 Lumiere train at La C",
+      "timestamp": "2026-04-26T23:57:21.655285",
+      "status": "ok",
+      "grid_pos": "(280, 1901)"
+    },
+    {
+      "index": 862,
+      "prompt_file": "862_20260426_235721_original_prompt.txt",
+      "video_file": "862_20260426_235721_screen_capture.mp4",
+      "caption_preview": "title: \"The Salt Flat Exchange\"\nseed: >\n  Two rival caravans meet on a white salt pan to trade vinyl records, gold cartridges,\n  and a sealed metal case no one opens in daylight.\n\ncaretakers_looking:",
+      "timestamp": "2026-04-26T23:58:31.563948",
+      "status": "ok",
+      "grid_pos": "(799, 1901)"
+    },
+    {
+      "index": 863,
+      "prompt_file": "863_20260426_235837_original_prompt.txt",
+      "video_file": "863_20260426_235837_screen_capture.mp4",
+      "caption_preview": "BEES ON A TRAIN, 12-second cinematic title sequence, Victorian gaslit platform, sepia daguerreotype shimmer, burlap-wrapped gold bars passed into train carriage, hard cut to 1895 Lumiere train at La C",
+      "timestamp": "2026-04-26T23:59:46.696454",
+      "status": "ok",
+      "grid_pos": "(280, 2079)"
+    },
+    {
+      "index": 864,
+      "prompt_file": "864_20260426_235946_original_prompt.txt",
+      "video_file": "864_20260426_235946_screen_capture.mp4",
+      "caption_preview": "title: \"Angel Over the Mercato\"\nseed: >\n  A silent witness stands above Addis at dawn watching market lanes fill like blood vessels,\n  seeing every stall, theft, prayer, and bargain as one living seal",
+      "timestamp": "2026-04-27T00:00:55.779721",
+      "status": "ok",
+      "grid_pos": "(799, 2079)"
+    },
+    {
+      "index": 865,
+      "prompt_file": "865_20260427_000101_original_prompt.txt",
+      "video_file": "865_20260427_000101_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [HOLISTIC] 3/26/2026, 4:51:48 PM\n**Source:** N643 \"BEES ON A TRAIN.  AG01: DNA Forensics Create a 12-second cinematic title sequence for BEES ON A TRAIN. Treat",
+      "timestamp": "2026-04-27T00:02:09.488435",
+      "status": "ok",
+      "grid_pos": "(280, 2053)"
+    },
+    {
+      "index": 866,
+      "prompt_file": "866_20260427_000209_original_prompt.txt",
+      "video_file": "866_20260427_000209_screen_capture.mp4",
+      "caption_preview": "BEES ON A TRAIN \u2014 12-second cinematic title sequence. Begin on a Victorian gaslit platform: sepia daguerreotype shimmer, soot, fog, burlap-wrapped gold bars passed into a train carriage like a vault b",
+      "timestamp": "2026-04-27T00:03:18.819368",
+      "status": "ok",
+      "grid_pos": "(799, 2053)"
+    },
+    {
+      "index": 867,
+      "prompt_file": "867_20260427_000324_original_prompt.txt",
+      "video_file": "867_20260427_000324_screen_capture.mp4",
+      "caption_preview": "<poml>\n  <meta>\n    <name>TitleSeqDNA \u2192 THE WAX AND THE GOLD</name>\n    <version>1.0</version>\n    <purpose>\n      Build a title sequence for THE WAX AND THE GOLD that fuses Ethio-Jazz highland wester",
+      "timestamp": "2026-04-27T00:04:34.017632",
+      "status": "ok",
+      "grid_pos": "(280, 2025)"
+    },
+    {
+      "index": 868,
+      "prompt_file": "868_20260427_000434_original_prompt.txt",
+      "video_file": "868_20260427_000434_screen_capture.mp4",
+      "caption_preview": "THE WAX AND THE GOLD \u2014 12-second cinematic title sequence for an Ethiopian highland western-noir world where trains, hives, cities, and rituals are sealed systems under pressure. Begin at dawn on a Ri",
+      "timestamp": "2026-04-27T00:05:43.214181",
+      "status": "ok",
+      "grid_pos": "(799, 2025)"
+    },
+    {
+      "index": 869,
+      "prompt_file": "869_20260427_000548_original_prompt.txt",
+      "video_file": "869_20260427_000548_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [ZOOM] 3/27/2026, 12:51:41 PM\n**Source:** N686 \"Colosseum [structure]\"\n\n- Focus: HISTORICAL MYSTERY\n\nFork 2: ENTITY GROUPS  \n- Entity Group A: PHYSICAL STRUCTU",
+      "timestamp": "2026-04-27T00:06:58.133114",
+      "status": "ok",
+      "grid_pos": "(280, 1998)"
+    },
+    {
+      "index": 870,
+      "prompt_file": "870_20260427_000658_original_prompt.txt",
+      "video_file": "870_20260427_000658_screen_capture.mp4",
+      "caption_preview": "title: \"Bee Cam: Through the Burned Apiary\"\nseed: >\n  A bee-level flight through smoke, ash, and broken hive geometry, crossing from\n  ruined frames into open highland light as if memory itself were s",
+      "timestamp": "2026-04-27T00:08:06.813139",
+      "status": "ok",
+      "grid_pos": "(799, 1998)"
+    },
+    {
+      "index": 871,
+      "prompt_file": "871_20260427_000812_original_prompt.txt",
+      "video_file": "871_20260427_000812_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: The Chrono-Theological Archive\nseed: A visual collision of ancient Roman subterranean mystery and near-future Vatican AI tech; tufa limestone and ru",
+      "timestamp": "2026-04-27T00:09:21.302732",
+      "status": "ok",
+      "grid_pos": "(280, 1970)"
+    },
+    {
+      "index": 872,
+      "prompt_file": "872_20260427_000921_original_prompt.txt",
+      "video_file": "872_20260427_000921_screen_capture.mp4",
+      "caption_preview": "title: Cyber-Vatican Temporal Archaeology\nseed: A futuristic cyber-Vatican and techno-Roman aesthetic, fusing ancient ruins, gold-leafed papyrus, and culinary history with photovoltaic stained glass,",
+      "timestamp": "2026-04-27T00:10:30.179587",
+      "status": "ok",
+      "grid_pos": "(799, 1970)"
+    },
+    {
+      "index": 873,
+      "prompt_file": "873_20260427_001035_original_prompt.txt",
+      "video_file": "873_20260427_001035_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\n```yaml\ntitle: \"Neo-Roman Artisan Espionage\"\nseed: \"A cinematic collision of ancient Roman artisan crafts\u2014blacksmithing, textile weaving, and garum fermenta",
+      "timestamp": "2026-04-27T00:11:44.647316",
+      "status": "ok",
+      "grid_pos": "(280, 1940)"
+    },
+    {
+      "index": 874,
+      "prompt_file": "874_20260427_001144_original_prompt.txt",
+      "video_file": "874_20260427_001144_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [MODES] 3/27/2026, 1:49:12 PM\n**Source:** N816 \"Tiberius the Blacksmith [character]\"\n\n- **Entity**: Tiberius the Blacksmith is working at his forge at the edge",
+      "timestamp": "2026-04-27T00:12:53.827937",
+      "status": "ok",
+      "grid_pos": "(799, 1940)"
+    },
+    {
+      "index": 875,
+      "prompt_file": "875_20260427_001259_original_prompt.txt",
+      "video_file": "875_20260427_001259_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: 1995 Budget Inn Flood Escape\nseed: A terrifying, hyper-specific childhood memory of rising water, bathed in motel TV glow and the panic of a torrential V",
+      "timestamp": "2026-04-27T00:14:08.280698",
+      "status": "ok",
+      "grid_pos": "(280, 1914)"
+    },
+    {
+      "index": 876,
+      "prompt_file": "876_20260427_001408_original_prompt.txt",
+      "video_file": "876_20260427_001408_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\n```yaml\ntitle: The Iron & Amphora Anomaly\nseed: A visual collision of ancient Roman craftsmanship, bustling historical markets, and sudden, eerie temporal r",
+      "timestamp": "2026-04-27T00:15:17.486627",
+      "status": "ok",
+      "grid_pos": "(799, 1914)"
+    },
+    {
+      "index": 877,
+      "prompt_file": "877_20260427_001523_original_prompt.txt",
+      "video_file": "877_20260427_001523_screen_capture.mp4",
+      "caption_preview": "This cinematic, surreal approach perfectly captures how a child processes a disaster of that magnitude\u2014not as a news report, but as a strange, mythic dreamscape. The transition from the terrifying, wa",
+      "timestamp": "2026-04-27T00:16:32.442149",
+      "status": "ok",
+      "grid_pos": "(280, 1885)"
+    },
+    {
+      "index": 878,
+      "prompt_file": "878_20260427_001632_original_prompt.txt",
+      "video_file": "878_20260427_001632_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: Leviathan of the Blue Ridge: 1995\nseed: A visceral, mythic descent into a childhood flash flood, captured through the disorienting, submerged lens of sen",
+      "timestamp": "2026-04-27T00:17:41.643354",
+      "status": "ok",
+      "grid_pos": "(799, 1885)"
+    },
+    {
+      "index": 879,
+      "prompt_file": "879_20260427_001747_original_prompt.txt",
+      "video_file": "879_20260427_001747_screen_capture.mp4",
+      "caption_preview": "EVENT 3: The Flash Flood (Inundation & Evacuation)\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: Midnight Inundation and Evacuation\nseed: Nighttime terror and sudden inundation. Black water brea",
+      "timestamp": "2026-04-27T00:18:56.591296",
+      "status": "ok",
+      "grid_pos": "(280, 1857)"
+    },
+    {
+      "index": 880,
+      "prompt_file": "880_20260427_001856_original_prompt.txt",
+      "video_file": "880_20260427_001856_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\n```yaml\ntitle: The Pregnant Sky: Twilight Before the Flood\nseed: The heavy, suffocating, static-charged twilight just before the mountains collapse, framing",
+      "timestamp": "2026-04-27T00:20:04.791402",
+      "status": "ok",
+      "grid_pos": "(799, 1857)"
+    },
+    {
+      "index": 881,
+      "prompt_file": "881_20260427_002010_original_prompt.txt",
+      "video_file": "881_20260427_002010_screen_capture.mp4",
+      "caption_preview": "EVENT 1: The Departure & Transit\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: Highway Hypnosis in the Turquoise Quest\nseed: The mundane, hypnotic rhythm of a family road trip up I-81, framed th",
+      "timestamp": "2026-04-27T00:21:20.435120",
+      "status": "ok",
+      "grid_pos": "(280, 1828)"
+    },
+    {
+      "index": 882,
+      "prompt_file": "882_20260427_002120_original_prompt.txt",
+      "video_file": "882_20260427_002120_screen_capture.mp4",
+      "caption_preview": "EVENT 2: The Buena Vista Stopover (Check-In)\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: Evening Arrival at Buena Vista\nseed: Exhausted arrival at a roadside Virginia motel. Luggage dragged ac",
+      "timestamp": "2026-04-27T00:22:29.675459",
+      "status": "ok",
+      "grid_pos": "(799, 1828)"
+    },
+    {
+      "index": 883,
+      "prompt_file": "883_20260427_002235_original_prompt.txt",
+      "video_file": "883_20260427_002235_screen_capture.mp4",
+      "caption_preview": "Gemini said\n1. BEFORE: THE PREGNANT SKY\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: The Pregnant Sky\nseed: The heavy, suffocating, static-charged twilight just before the mountains collapse, f",
+      "timestamp": "2026-04-27T00:23:44.373188",
+      "status": "ok",
+      "grid_pos": "(280, 1799)"
+    },
+    {
+      "index": 884,
+      "prompt_file": "884_20260427_002344_original_prompt.txt",
+      "video_file": "884_20260427_002344_screen_capture.mp4",
+      "caption_preview": "EVENT 2: The Buena Vista Stopover (Check-In)\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: Evening Arrival at Buena Vista\nseed: Exhausted arrival at a roadside Virginia motel. Luggage dragged ac",
+      "timestamp": "2026-04-27T00:24:53.706953",
+      "status": "ok",
+      "grid_pos": "(799, 1799)"
+    },
+    {
+      "index": 885,
+      "prompt_file": "885_20260427_002459_original_prompt.txt",
+      "video_file": "885_20260427_002459_screen_capture.mp4",
+      "caption_preview": "3. AFTER: THE MUD RUINS\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: The Mud Ruins\nseed: A surreal, cinematic dawn illuminating a drowned Appalachian town, where violent floodwaters have recede",
+      "timestamp": "2026-04-27T00:26:08.540761",
+      "status": "ok",
+      "grid_pos": "(280, 1769)"
+    },
+    {
+      "index": 886,
+      "prompt_file": "886_20260427_002608_original_prompt.txt",
+      "video_file": "886_20260427_002608_screen_capture.mp4",
+      "caption_preview": "2. DURING: THE MONDO BREACH & ESCAPE\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: The Mondo Breach Escape\nseed: A visceral, claustrophobic descent into a childhood flash flood. An innocent spil",
+      "timestamp": "2026-04-27T00:27:17.657947",
+      "status": "ok",
+      "grid_pos": "(799, 1769)"
+    },
+    {
+      "index": 887,
+      "prompt_file": "887_20260427_002723_original_prompt.txt",
+      "video_file": "887_20260427_002723_screen_capture.mp4",
+      "caption_preview": "Build this as a warm Tennessee living-room threshold where a tool dies socially before anybody says it out loud: couch, kitchen threshold, desk, charger, cup, laptop, phone, doorway, screen glow first",
+      "timestamp": "2026-04-27T00:28:32.271476",
+      "status": "ok",
+      "grid_pos": "(280, 1740)"
+    },
+    {
+      "index": 888,
+      "prompt_file": "888_20260427_002832_original_prompt.txt",
+      "video_file": "888_20260427_002832_screen_capture.mp4",
+      "caption_preview": "Rebuild this not as a platform obituary but as one Tennessee household-world reaching a soft social ending: a room where Sora stopped being alive before anyone needed a formal declaration. Anchor the",
+      "timestamp": "2026-04-27T00:29:41.428099",
+      "status": "ok",
+      "grid_pos": "(799, 1740)"
+    },
+    {
+      "index": 889,
+      "prompt_file": "889_20260427_002947_original_prompt.txt",
+      "video_file": "889_20260427_002947_screen_capture.mp4",
+      "caption_preview": "{\n  \"artifact_type\": \"series_a_pitch_deck\",\n  \"company_name\": \"Sora (formerly Project Hominid)\",\n  \"tagline\": \"Infinite Visual Feedstock for the Post-Attention Economy\",\n  \"slides\": {\n    \"slide_1_the",
+      "timestamp": "2026-04-27T00:30:56.325533",
+      "status": "ok",
+      "grid_pos": "(280, 1033)"
+    },
+    {
+      "index": 890,
+      "prompt_file": "890_20260427_003056_original_prompt.txt",
+      "video_file": "890_20260427_003056_screen_capture.mp4",
+      "caption_preview": "Do not write this as a platform obituary. Write it as a Tennessee room realizing, before language catches up, that Sora is already dead there.\n\nBegin with domestic geometry: couch, kitchen threshold,",
+      "timestamp": "2026-04-27T00:32:05.935903",
+      "status": "ok",
+      "grid_pos": "(799, 1711)"
+    },
+    {
+      "index": 891,
+      "prompt_file": "891_20260427_003211_original_prompt.txt",
+      "video_file": "891_20260427_003211_screen_capture.mp4",
+      "caption_preview": "{\n  \"artifact_type\": \"series_a_pitch_deck\",\n  \"company_name\": \"Sora (formerly Project Hominid)\",\n  \"tagline\": \"Infinite Visual Feedstock for the Post-Attention Economy\",\n  \"slides\": {\n    \"slide_1_the",
+      "timestamp": "2026-04-27T00:33:20.617132",
+      "status": "ok",
+      "grid_pos": "(280, 1685)"
+    },
+    {
+      "index": 892,
+      "prompt_file": "892_20260427_003320_original_prompt.txt",
+      "video_file": "892_20260427_003320_screen_capture.mp4",
+      "caption_preview": "{\n  \"artifact_type\": \"magazine_profile_excerpt\",\n  \"title\": \"The Bigfoot in the Machine: How Three Friends Chased a Monster and Found the Future\",\n  \"tone\": \"Reverent, pseudo-philosophical, disruptive",
+      "timestamp": "2026-04-27T00:34:29.303682",
+      "status": "ok",
+      "grid_pos": "(799, 1685)"
+    },
+    {
+      "index": 893,
+      "prompt_file": "893_20260427_003434_original_prompt.txt",
+      "video_file": "893_20260427_003434_screen_capture.mp4",
+      "caption_preview": "A ground-skimming, wide 35mm shot at night, where the crushing black of the wilderness is violently interrupted by the roaring blast furnace of a crowning pine fire. The atmosphere is choked with heav",
+      "timestamp": "2026-04-27T00:35:43.815825",
+      "status": "ok",
+      "grid_pos": "(280, 1659)"
+    },
+    {
+      "index": 894,
+      "prompt_file": "894_20260427_003543_original_prompt.txt",
+      "video_file": "894_20260427_003543_screen_capture.mp4",
+      "caption_preview": "A ground-skimming 35mm wide shot tracks soot-stained figures in mustard-yellow Nomex shirts fleeing across a baking, rocky desert ridge. The high noon sun is completely choked out by an advancing, apo",
+      "timestamp": "2026-04-27T00:36:52.269203",
+      "status": "ok",
+      "grid_pos": "(280, 981)"
+    },
+    {
+      "index": 895,
+      "prompt_file": "895_20260427_003657_original_prompt.txt",
+      "video_file": "895_20260427_003657_screen_capture.mp4",
+      "caption_preview": "A ground-skimming 35mm wide shot tracks soot-stained figures in mustard-yellow Nomex shirts fleeing across a baking, rocky desert ridge. The high noon sun is completely choked out by an advancing, apo",
+      "timestamp": "2026-04-27T00:38:06.766933",
+      "status": "ok",
+      "grid_pos": "(280, 1631)"
+    },
+    {
+      "index": 896,
+      "prompt_file": "896_20260427_003806_original_prompt.txt",
+      "video_file": "896_20260427_003806_screen_capture.mp4",
+      "caption_preview": "title: \"Night Inferno and the Burning Bear\"\nseed: \"A mythic nighttime wildfire, where the pitch black is torn open by a blast furnace of towering pines and a solitary, burning bear charging through th",
+      "timestamp": "2026-04-27T00:39:15.950553",
+      "status": "ok",
+      "grid_pos": "(799, 1631)"
+    },
+    {
+      "index": 897,
+      "prompt_file": "897_20260427_003921_original_prompt.txt",
+      "video_file": "897_20260427_003921_screen_capture.mp4",
+      "caption_preview": "A radical, macro-wide sensory ethnography shot from deep inside the boiling cornea of a charging bear, blending visceral organic horror with the abstract, geometric terror of LiDAR point-cloud mapping",
+      "timestamp": "2026-04-27T00:40:30.742154",
+      "status": "ok",
+      "grid_pos": "(280, 926)"
+    },
+    {
+      "index": 898,
+      "prompt_file": "898_20260427_004036_original_prompt.txt",
+      "video_file": "898_20260427_004036_screen_capture.mp4",
+      "caption_preview": "A radical, macro-wide sensory ethnography shot from deep inside the boiling cornea of a charging bear, blending visceral organic horror with the abstract, geometric terror of LiDAR point-cloud mapping",
+      "timestamp": "2026-04-27T00:41:45.817293",
+      "status": "ok",
+      "grid_pos": "(280, 1576)"
+    },
+    {
+      "index": 899,
+      "prompt_file": "899_20260427_004151_original_prompt.txt",
+      "video_file": "899_20260427_004151_screen_capture.mp4",
+      "caption_preview": "A tense, psychoanalytic widescreen tableau rendered in the saturated, high-contrast duality of 1950s studio Eastmancolor. The visual language shifts violently between the harsh, unblinking studio dayl",
+      "timestamp": "2026-04-27T00:43:00.711230",
+      "status": "ok",
+      "grid_pos": "(280, 867)"
+    },
+    {
+      "index": 900,
+      "prompt_file": "900_20260427_004300_original_prompt.txt",
+      "video_file": "900_20260427_004300_screen_capture.mp4",
+      "caption_preview": "sprawling, anamorphic widescreen tableau channeling the vivid, painted hyper-reality of 1950s pulp sci-fi magazine covers brought to high-budget cinematic life. The environment is dominated by a bizar",
+      "timestamp": "2026-04-27T00:44:09.703734",
+      "status": "ok",
+      "grid_pos": "(799, 867)"
+    },
+    {
+      "index": 901,
+      "prompt_file": "901_20260427_004415_original_prompt.txt",
+      "video_file": "901_20260427_004415_screen_capture.mp4",
+      "caption_preview": "A tense, psychoanalytic widescreen tableau rendered in the saturated, high-contrast duality of 1950s studio Eastmancolor. The visual language shifts violently between the harsh, unblinking studio dayl",
+      "timestamp": "2026-04-27T00:45:24.018831",
+      "status": "ok",
+      "grid_pos": "(280, 1517)"
+    },
+    {
+      "index": 902,
+      "prompt_file": "902_20260427_004524_original_prompt.txt",
+      "video_file": "902_20260427_004524_screen_capture.mp4",
+      "caption_preview": "sprawling, anamorphic widescreen tableau channeling the vivid, painted hyper-reality of 1950s pulp sci-fi magazine covers brought to high-budget cinematic life. The environment is dominated by a bizar",
+      "timestamp": "2026-04-27T00:46:33.007912",
+      "status": "ok",
+      "grid_pos": "(799, 1517)"
+    },
+    {
+      "index": 903,
+      "prompt_file": "903_20260427_004638_original_prompt.txt",
+      "video_file": "903_20260427_004638_screen_capture.mp4",
+      "caption_preview": "A tense, psychoanalytic widescreen tableau rendered in the saturated, high-contrast duality of 1950s studio Eastmancolor. The visual language shifts violently between the harsh, unblinking studio dayl",
+      "timestamp": "2026-04-27T00:47:48.131310",
+      "status": "ok",
+      "grid_pos": "(280, 2125)"
+    },
+    {
+      "index": 904,
+      "prompt_file": "904_20260427_004748_original_prompt.txt",
+      "video_file": "904_20260427_004748_screen_capture.mp4",
+      "caption_preview": "sprawling, anamorphic widescreen tableau channeling the vivid, painted hyper-reality of 1950s pulp sci-fi magazine covers brought to high-budget cinematic life. The environment is dominated by a bizar",
+      "timestamp": "2026-04-27T00:48:56.580156",
+      "status": "ok",
+      "grid_pos": "(799, 2125)"
+    },
+    {
+      "index": 905,
+      "prompt_file": "905_20260427_004902_original_prompt.txt",
+      "video_file": "905_20260427_004902_screen_capture.mp4",
+      "caption_preview": "A monumental, wide-angle cinematic tableau capturing the foundational DNA of high-budget science fiction through a pristine 1950s CinemaScope lens. The frame centers on a meticulously designed automat",
+      "timestamp": "2026-04-27T00:50:11.172088",
+      "status": "ok",
+      "grid_pos": "(280, 2110)"
+    },
+    {
+      "index": 906,
+      "prompt_file": "906_20260427_005011_original_prompt.txt",
+      "video_file": "906_20260427_005011_screen_capture.mp4",
+      "caption_preview": "bright, highly saturated widescreen tableau capturing the optimistic, universe-building DNA that bridges 1950s cinematic sci-fi and 1960s pop-culture television. The environment is the immaculate, cli",
+      "timestamp": "2026-04-27T00:51:19.725560",
+      "status": "ok",
+      "grid_pos": "(280, 1461)"
+    },
+    {
+      "index": 907,
+      "prompt_file": "907_20260427_005125_original_prompt.txt",
+      "video_file": "907_20260427_005125_screen_capture.mp4",
+      "caption_preview": "bright, highly saturated widescreen tableau capturing the optimistic, universe-building DNA that bridges 1950s cinematic sci-fi and 1960s pop-culture television. The environment is the immaculate, cli",
+      "timestamp": "2026-04-27T00:52:34.825538",
+      "status": "ok",
+      "grid_pos": "(280, 2095)"
+    },
+    {
+      "index": 908,
+      "prompt_file": "908_20260427_005234_original_prompt.txt",
+      "video_file": "908_20260427_005234_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T00:52:34.826197",
+      "status": "violation",
+      "grid_pos": "(799, 2095)"
+    },
+    {
+      "index": 909,
+      "prompt_file": "909_20260427_005240_original_prompt.txt",
+      "video_file": "909_20260427_005240_screen_capture.mp4",
+      "caption_preview": "title: The Dance Plaza and Ocean Rim\nseed: A traversable mythic ancient plaza featuring a complex, labyrinthine dance of oiled youths and linen-clad virgins, bounded at the extreme horizon by the rush",
+      "timestamp": "2026-04-27T00:53:49.360412",
+      "status": "ok",
+      "grid_pos": "(280, 2082)"
+    },
+    {
+      "index": 910,
+      "prompt_file": "910_20260427_005349_original_prompt.txt",
+      "video_file": "910_20260427_005349_screen_capture.mp4",
+      "caption_preview": "title: Pastures of Predator and Prey\nseed: A navigable, dual-biome metallic wilderness featuring a chaotic, muddy riverbank where lions ambush a herd of golden cattle, transitioning into a serene, for",
+      "timestamp": "2026-04-27T00:54:58.426445",
+      "status": "ok",
+      "grid_pos": "(799, 2082)"
+    },
+    {
+      "index": 911,
+      "prompt_file": "911_20260427_005504_original_prompt.txt",
+      "video_file": "911_20260427_005504_screen_capture.mp4",
+      "caption_preview": "title: City of Peace and Law\nseed: A navigable, mythic Bronze Age metropolis featuring bustling torchlit avenues of celebration converging upon a massive, central stone forum where elders hold court.",
+      "timestamp": "2026-04-27T00:56:13.055884",
+      "status": "ok",
+      "grid_pos": "(280, 2056)"
+    },
+    {
+      "index": 912,
+      "prompt_file": "912_20260427_005613_original_prompt.txt",
+      "video_file": "912_20260427_005613_screen_capture.mp4",
+      "caption_preview": "title: City of War and River Ambush\nseed: A navigable, high-stakes tactical landscape spanning from towering, populated city walls down to a wet, glittering river basin where giant golden gods lead a",
+      "timestamp": "2026-04-27T00:57:22.450113",
+      "status": "ok",
+      "grid_pos": "(799, 2056)"
+    },
+    {
+      "index": 913,
+      "prompt_file": "913_20260427_005728_original_prompt.txt",
+      "video_file": "913_20260427_005728_screen_capture.mp4",
+      "caption_preview": "title: Traversable Cosmos of the Shield\nseed: A navigable, monumental metallic cosmos featuring concentric rings of earth, sea, and revolving celestial constellations, bounded by a glittering silver b",
+      "timestamp": "2026-04-27T00:58:37.471700",
+      "status": "ok",
+      "grid_pos": "(280, 2027)"
+    },
+    {
+      "index": 914,
+      "prompt_file": "914_20260427_005837_original_prompt.txt",
+      "video_file": "914_20260427_005837_screen_capture.mp4",
+      "caption_preview": "cinematic wide shot bridging the gothic shadow-play of a 1950s classic with the industrial art-deco dread of late-90s horror. The camera sits low and locked-off on a 24mm lens, gazing down an endless,",
+      "timestamp": "2026-04-27T00:59:46.501291",
+      "status": "ok",
+      "grid_pos": "(280, 1349)"
+    },
+    {
+      "index": 915,
+      "prompt_file": "915_20260427_005952_original_prompt.txt",
+      "video_file": "915_20260427_005952_screen_capture.mp4",
+      "caption_preview": "cinematic wide shot bridging the gothic shadow-play of a 1950s classic with the industrial art-deco dread of late-90s horror. The camera sits low and locked-off on a 24mm lens, gazing down an endless,",
+      "timestamp": "2026-04-27T01:01:01.038006",
+      "status": "ok",
+      "grid_pos": "(280, 1997)"
+    },
+    {
+      "index": 916,
+      "prompt_file": "916_20260427_010101_original_prompt.txt",
+      "video_file": "916_20260427_010101_screen_capture.mp4",
+      "caption_preview": "title: Fields of Golden Harvest\nseed: A navigable, three-zoned agricultural landscape forged of magical metals, featuring black-turning golden soil, a king's wheat-field, and a silver-poled vineyard e",
+      "timestamp": "2026-04-27T01:02:09.852093",
+      "status": "ok",
+      "grid_pos": "(799, 1997)"
+    },
+    {
+      "index": 917,
+      "prompt_file": "917_20260427_010215_original_prompt.txt",
+      "video_file": "917_20260427_010215_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world. The player's hands are visible at the bottom of the frame, holding a rustic cup of sweet wine. The camera looks straight down a deep, perf",
+      "timestamp": "2026-04-27T01:03:25.019828",
+      "status": "ok",
+      "grid_pos": "(280, 1293)"
+    },
+    {
+      "index": 918,
+      "prompt_file": "918_20260427_010325_original_prompt.txt",
+      "video_file": "918_20260427_010325_screen_capture.mp4",
+      "caption_preview": "title: Vincent Price\u2019s House On Haunted Hill (1959)\nseed: Vincent Price\u2019s suave malice, William Castle\u2019s theatrical black-and-white gothic camp, 1950s practical lighting, deep shadows, and the Emergo",
+      "timestamp": "2026-04-27T01:04:34.716282",
+      "status": "ok",
+      "grid_pos": "(799, 1971)"
+    },
+    {
+      "index": 919,
+      "prompt_file": "919_20260427_010440_original_prompt.txt",
+      "video_file": "919_20260427_010440_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world. The player's hands are visible at the bottom of the frame, holding a rustic cup of sweet wine. The camera looks straight down a deep, perf",
+      "timestamp": "2026-04-27T01:05:49.192128",
+      "status": "ok",
+      "grid_pos": "(280, 1941)"
+    },
+    {
+      "index": 920,
+      "prompt_file": "920_20260427_010549_original_prompt.txt",
+      "video_file": "920_20260427_010549_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world, looking into the heart of a ritual dance. The player is positioned at the edge of the admiring crowd. In the foreground, the backs of seve",
+      "timestamp": "2026-04-27T01:06:58.696450",
+      "status": "ok",
+      "grid_pos": "(799, 1263)"
+    },
+    {
+      "index": 921,
+      "prompt_file": "921_20260427_010704_original_prompt.txt",
+      "video_file": "921_20260427_010704_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world, looking into the heart of a ritual dance. The player is positioned at the edge of the admiring crowd. In the foreground, the backs of seve",
+      "timestamp": "2026-04-27T01:08:13.759998",
+      "status": "ok",
+      "grid_pos": "(799, 1914)"
+    },
+    {
+      "index": 922,
+      "prompt_file": "922_20260427_010813_original_prompt.txt",
+      "video_file": "922_20260427_010813_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world. The player's hands are out of frame, but the camera height suggests a human perspective walking into a grand public square. The camera loo",
+      "timestamp": "2026-04-27T01:09:22.542675",
+      "status": "ok",
+      "grid_pos": "(799, 1236)"
+    },
+    {
+      "index": 923,
+      "prompt_file": "923_20260427_010928_original_prompt.txt",
+      "video_file": "923_20260427_010928_screen_capture.mp4",
+      "caption_preview": "OUTPUT_D \u2014 CONTROL_AND_CAMERA_GRAMMAR\nviewpoint mode: Third-person over-shoulder, slightly elevated to emphasize the concentric, ring-like nature of the terrain ahead.\nlocomotion mode: Smooth, grounde",
+      "timestamp": "2026-04-27T01:10:37.179362",
+      "status": "ok",
+      "grid_pos": "(280, 1209)"
+    },
+    {
+      "index": 924,
+      "prompt_file": "924_20260427_011037_original_prompt.txt",
+      "video_file": "924_20260427_011037_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world. The player's hands are out of frame, but the camera height suggests a human perspective walking into a grand public square. The camera loo",
+      "timestamp": "2026-04-27T01:11:46.400857",
+      "status": "ok",
+      "grid_pos": "(799, 1887)"
+    },
+    {
+      "index": 925,
+      "prompt_file": "925_20260427_011151_original_prompt.txt",
+      "video_file": "925_20260427_011151_screen_capture.mp4",
+      "caption_preview": "OUTPUT_D \u2014 CONTROL_AND_CAMERA_GRAMMAR\nviewpoint mode: Third-person over-shoulder, slightly elevated to emphasize the concentric, ring-like nature of the terrain ahead.\nlocomotion mode: Smooth, grounde",
+      "timestamp": "2026-04-27T01:13:01.228145",
+      "status": "ok",
+      "grid_pos": "(280, 1859)"
+    },
+    {
+      "index": 926,
+      "prompt_file": "926_20260427_011301_original_prompt.txt",
+      "video_file": "926_20260427_011301_screen_capture.mp4",
+      "caption_preview": "world NewDelta {\n\n  meta {\n    genre: \"solarpunk survival simulation\"\n    description: \"A radically green post-oil metropolis navigating a deadly GMO pollen tsunami.\"\n  }\n\n  locations {\n    location O",
+      "timestamp": "2026-04-27T01:14:10.102840",
+      "status": "ok",
+      "grid_pos": "(280, 1181)"
+    },
+    {
+      "index": 927,
+      "prompt_file": "927_20260427_011415_original_prompt.txt",
+      "video_file": "927_20260427_011415_screen_capture.mp4",
+      "caption_preview": "world NewDelta {\n\n  meta {\n    genre: \"solarpunk survival simulation\"\n    description: \"A radically green post-oil metropolis navigating a deadly GMO pollen tsunami.\"\n  }\n\n  locations {\n    location O",
+      "timestamp": "2026-04-27T01:15:24.853225",
+      "status": "ok",
+      "grid_pos": "(280, 1830)"
+    },
+    {
+      "index": 928,
+      "prompt_file": "928_20260427_011524_original_prompt.txt",
+      "video_file": "928_20260427_011524_screen_capture.mp4",
+      "caption_preview": "title: New Delta Pollen Storm\nseed: A post-oil Nigerian metropolis carpeted in GMO supergrass faces a deadly, storm-driven pollen tsunami while a shape-shifting smart home attempts to protect its occu",
+      "timestamp": "2026-04-27T01:16:36.226279",
+      "status": "ok",
+      "grid_pos": "(799, 1152)"
+    },
+    {
+      "index": 929,
+      "prompt_file": "929_20260427_011641_original_prompt.txt",
+      "video_file": "929_20260427_011641_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T01:16:58.902729",
+      "status": "error",
+      "grid_pos": "(280, 2005)"
+    },
+    {
+      "index": 930,
+      "prompt_file": "930_20260427_011658_original_prompt.txt",
+      "video_file": "930_20260427_011658_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T01:17:15.967586",
+      "status": "error",
+      "grid_pos": "(800, 2005)"
+    },
+    {
+      "index": 931,
+      "prompt_file": "931_20260427_011721_original_prompt.txt",
+      "video_file": "931_20260427_011721_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T01:17:38.440416",
+      "status": "error",
+      "grid_pos": "(280, 1638)"
+    },
+    {
+      "index": 932,
+      "prompt_file": "932_20260427_011738_original_prompt.txt",
+      "video_file": "932_20260427_011738_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T01:17:55.316283",
+      "status": "error",
+      "grid_pos": "(799, 1638)"
+    },
+    {
+      "index": 933,
+      "prompt_file": "933_20260427_011800_original_prompt.txt",
+      "video_file": "933_20260427_011800_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T01:18:18.389478",
+      "status": "error",
+      "grid_pos": "(280, 1988)"
+    },
+    {
+      "index": 934,
+      "prompt_file": "934_20260427_011818_original_prompt.txt",
+      "video_file": "934_20260427_011818_screen_capture.mp4",
+      "caption_preview": "Perfect\u2014now we complete the second world in your MTV Alien Cribs trilogy:\n\n> \ud83c\udf32 ENDOR \u2014 ALIEN CRIBS (NO HUMANS)\nTone: organic, elevated, quietly alive\nLogic: nature turned into architecture (without br",
+      "timestamp": "2026-04-27T01:19:27.555553",
+      "status": "ok",
+      "grid_pos": "(799, 1988)"
+    },
+    {
+      "index": 935,
+      "prompt_file": "935_20260427_011933_original_prompt.txt",
+      "video_file": "935_20260427_011933_screen_capture.mp4",
+      "caption_preview": "world <SpectrogramGhost> {\nmeta {\ngenre: \"signal_cryptography\"\ndescription: \"A message hidden within the visual geometry of a radio frequency.\"\n}\nlocations {\nlocation <DerelictRooftop> { }\n}\nentities",
+      "timestamp": "2026-04-27T01:20:42.063557",
+      "status": "ok",
+      "grid_pos": "(280, 2139)"
+    },
+    {
+      "index": 936,
+      "prompt_file": "936_20260427_012042_original_prompt.txt",
+      "video_file": "936_20260427_012042_screen_capture.mp4",
+      "caption_preview": "Perfect\u2014this completes the trilogy:\n\n> \ud83c\udf0a GUNGAN (NABOO SWAMP / OTOH GUNGA) \u2014 ALIEN CRIBS (NO HUMANS)\nTone: fluid, reflective, quietly surreal (Atlanta-coded)\nLogic: space is not fixed\u2014everything flows",
+      "timestamp": "2026-04-27T01:21:50.973617",
+      "status": "ok",
+      "grid_pos": "(799, 2139)"
+    },
+    {
+      "index": 937,
+      "prompt_file": "937_20260427_012156_original_prompt.txt",
+      "video_file": "937_20260427_012156_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"InterferencePattern\",\n  \"meta\": {\n    \"genre\": \"Physical Wave Art\",\n    \"medium_temperature\": \"Ultra-Cool\",\n    \"description\": \"Static as the ultimate cool medium\u2014the observer physically",
+      "timestamp": "2026-04-27T01:23:05.307427",
+      "status": "ok",
+      "grid_pos": "(280, 2124)"
+    },
+    {
+      "index": 938,
+      "prompt_file": "938_20260427_012305_original_prompt.txt",
+      "video_file": "938_20260427_012305_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"SpectrogramGhost\",\n  \"meta\": {\n    \"genre\": \"Signal Cryptography\",\n    \"medium_temperature\": \"Cool (High Participation)\",\n    \"description\": \"The 'Hot' audio signal of white noise is tra",
+      "timestamp": "2026-04-27T01:24:15.007541",
+      "status": "ok",
+      "grid_pos": "(799, 2124)"
+    },
+    {
+      "index": 939,
+      "prompt_file": "939_20260427_012420_original_prompt.txt",
+      "video_file": "939_20260427_012420_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"TheShadowTimeLapse\",\n  \"meta\": {\n    \"genre\": \"Neo-Noir Mystery Intro\",\n    \"description\": \"A time-lapse of a street sign where the shadow is the only artist.\"\n  },\n  \"locations\": {",
+      "timestamp": "2026-04-27T01:25:30.066828",
+      "status": "ok",
+      "grid_pos": "(280, 2109)"
+    },
+    {
+      "index": 940,
+      "prompt_file": "940_20260427_012530_original_prompt.txt",
+      "video_file": "940_20260427_012530_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"TheFerrofluidMacro\",\n  \"meta\": {\n    \"genre\": \"Sci-Fi Biological Intro\",\n    \"description\": \"Macro shots of a black liquid corner that pulses like a living heart.\"\n  },\n  \"locations\": {",
+      "timestamp": "2026-04-27T01:26:38.893413",
+      "status": "ok",
+      "grid_pos": "(799, 2109)"
+    },
+    {
+      "index": 941,
+      "prompt_file": "941_20260427_012644_original_prompt.txt",
+      "video_file": "941_20260427_012644_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"TheSpectrogramOpening\",\n  \"meta\": {\n    \"genre\": \"Cyber-Noir Intro\",\n    \"description\": \"A rain-slicked alleyway where the graffiti only exists as a digital ghost in the signal noise.\"",
+      "timestamp": "2026-04-27T01:27:53.713257",
+      "status": "ok",
+      "grid_pos": "(280, 2095)"
+    },
+    {
+      "index": 942,
+      "prompt_file": "942_20260427_012753_original_prompt.txt",
+      "video_file": "942_20260427_012753_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"TheInductionBassDrop\",\n  \"meta\": {\n    \"genre\": \"Industrial-Horror Intro\",\n    \"description\": \"Deep in a concrete underpass, the title is felt through the camera's vibration before it is",
+      "timestamp": "2026-04-27T01:29:02.829522",
+      "status": "ok",
+      "grid_pos": "(799, 2095)"
+    },
+    {
+      "index": 943,
+      "prompt_file": "943_20260427_012908_original_prompt.txt",
+      "video_file": "943_20260427_012908_screen_capture.mp4",
+      "caption_preview": "world <TheResonantDust> {\n\nmeta {\n  genre: \"tactile_cinema\"\n  description: \"Vibrating particles on a subway platform forming a 4D kinetic title.\"\n}\n\nlocations {\n  location <Platform9> { }\n}\n\nentities",
+      "timestamp": "2026-04-27T01:30:17.762881",
+      "status": "ok",
+      "grid_pos": "(280, 2082)"
+    },
+    {
+      "index": 944,
+      "prompt_file": "944_20260427_013017_original_prompt.txt",
+      "video_file": "944_20260427_013017_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"TheInterferenceTrackingShot\",\n  \"meta\": {\n    \"genre\": \"Urban-Gritty Thriller Intro\",\n    \"description\": \"A high-speed tracking shot along railway tracks where physical geometry creates",
+      "timestamp": "2026-04-27T01:31:27.170356",
+      "status": "ok",
+      "grid_pos": "(799, 2082)"
+    },
+    {
+      "index": 945,
+      "prompt_file": "945_20260427_013132_original_prompt.txt",
+      "video_file": "945_20260427_013132_screen_capture.mp4",
+      "caption_preview": "world <TheHolographicTag> {\n\nmeta {\n  genre: \"urban_cyber_punk\"\n  description: \"A volumetric graffiti tag that jitters and breaks according to bitrate.\"\n}\n\nlocations {\n  location <NeonAlley> { }\n}\n\nen",
+      "timestamp": "2026-04-27T01:32:42.340152",
+      "status": "ok",
+      "grid_pos": "(280, 2055)"
+    },
+    {
+      "index": 946,
+      "prompt_file": "946_20260427_013242_original_prompt.txt",
+      "video_file": "946_20260427_013242_screen_capture.mp4",
+      "caption_preview": "world <TheSignalBloom> {\n\nmeta {\n  genre: \"atmospheric_intro\"\n  description: \"A 4D volumetric radio tower that only manifests during electrical interference.\"\n}\n\nlocations {\n  location <StormySummit>",
+      "timestamp": "2026-04-27T01:33:51.332114",
+      "status": "ok",
+      "grid_pos": "(799, 2055)"
+    },
+    {
+      "index": 947,
+      "prompt_file": "947_20260427_013356_original_prompt.txt",
+      "video_file": "947_20260427_013356_screen_capture.mp4",
+      "caption_preview": "Here are 10 unique WorldText descriptions capturing the \"Cool Radio\" aesthetic\u2014a blend of 4D Gaussian Splatting, low-fidelity PS1-inspired textures, and high-participation cinematic sequences.\nworld <",
+      "timestamp": "2026-04-27T01:35:05.721568",
+      "status": "ok",
+      "grid_pos": "(280, 2027)"
+    },
+    {
+      "index": 948,
+      "prompt_file": "948_20260427_013505_original_prompt.txt",
+      "video_file": "948_20260427_013505_screen_capture.mp4",
+      "caption_preview": "world <TheCathodeMosaic> {\n\nmeta {\n  genre: \"retro_future_intro\"\n  description: \"A wall of 100 CRT monitors forming a single 4D Gaussian volume.\"\n}\n\nlocations {\n  location <AntiqueShopWindow> { }\n}\n\ne",
+      "timestamp": "2026-04-27T01:36:14.861709",
+      "status": "ok",
+      "grid_pos": "(799, 2027)"
+    },
+    {
+      "index": 949,
+      "prompt_file": "949_20260427_013620_original_prompt.txt",
+      "video_file": "949_20260427_013620_screen_capture.mp4",
+      "caption_preview": "title: The Chronicler of Cool\nseed: 130 years of signal noise, from Marconi\u2019s first blue arc to 10 terabytes of Rocky\u2019s volumetric jitter; a lineage of low-def participation and ellipsoidal dust.\n\ncar",
+      "timestamp": "2026-04-27T01:37:29.644634",
+      "status": "ok",
+      "grid_pos": "(280, 1998)"
+    },
+    {
+      "index": 950,
+      "prompt_file": "950_20260427_013729_original_prompt.txt",
+      "video_file": "950_20260427_013729_screen_capture.mp4",
+      "caption_preview": "These WorldText descriptions blend the \"Cool Media\" philosophy of Marshall McLuhan\u2014where the audience must mentally \"fill in\" the low-definition signal\u2014with the vivid, jittering 4D Gaussian Splat aest",
+      "timestamp": "2026-04-27T01:38:38.633154",
+      "status": "ok",
+      "grid_pos": "(799, 1998)"
+    },
+    {
+      "index": 951,
+      "prompt_file": "951_20260427_013844_original_prompt.txt",
+      "video_file": "951_20260427_013844_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"CrystalWhisker\",\n  \"genome\": {\n    \"title\": \"The Crystalline Attic\",\n    \"seed\": \"Delicate cat\u2019s-whisker contact on galena; brittle whispers rendered in transparent 4D shards.\",\n    \"hom",
+      "timestamp": "2026-04-27T01:39:53.328648",
+      "status": "ok",
+      "grid_pos": "(280, 1971)"
+    },
+    {
+      "index": 952,
+      "prompt_file": "952_20260427_013953_original_prompt.txt",
+      "video_file": "952_20260427_013953_screen_capture.mp4",
+      "caption_preview": "title: The Blue Arc Genesis\nseed: The violent birth of wireless signal; raw electrical arcs bridging the Atlantic via sparse, jittering ellipsoids and salt-crusted copper.\n\ncaretakers_listening:\n  rec",
+      "timestamp": "2026-04-27T01:41:01.994683",
+      "status": "ok",
+      "grid_pos": "(799, 1971)"
+    },
+    {
+      "index": 953,
+      "prompt_file": "953_20260427_014107_original_prompt.txt",
+      "video_file": "953_20260427_014107_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"ArchiveOfRadiance\",\n  \"genome\": {\n    \"title\": \"The Gaussianization of History\",\n    \"seed\": \"Legacy media\u2014vinyl, film, and shortwave\u2014digitally exhumed and reconstructed as navigable 4D",
+      "timestamp": "2026-04-27T01:42:16.591618",
+      "status": "ok",
+      "grid_pos": "(280, 1943)"
+    },
+    {
+      "index": 954,
+      "prompt_file": "954_20260427_014216_original_prompt.txt",
+      "video_file": "954_20260427_014216_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"MartianPanic\",\n  \"genome\": {\n    \"title\": \"The Psychological Splat\",\n    \"seed\": \"The 1938 War of the Worlds terror; a 'Cool' medium creating a 'Hot' psychological explosion.\",\n    \"epoc",
+      "timestamp": "2026-04-27T01:43:26.779749",
+      "status": "ok",
+      "grid_pos": "(799, 1943)"
+    },
+    {
+      "index": 955,
+      "prompt_file": "955_20260427_014332_original_prompt.txt",
+      "video_file": "955_20260427_014332_screen_capture.mp4",
+      "caption_preview": "title: The Omni-Splat Singularity\nseed: 130 years of signal noise, from Marconi\u2019s blue-arc sparks to 10 terabytes of volumetric jitter; the pointillist ghost of all media.\n\ncaretakers_listening:\n  rec",
+      "timestamp": "2026-04-27T01:44:41.546836",
+      "status": "ok",
+      "grid_pos": "(280, 1916)"
+    },
+    {
+      "index": 956,
+      "prompt_file": "956_20260427_014441_original_prompt.txt",
+      "video_file": "956_20260427_014441_screen_capture.mp4",
+      "caption_preview": "{\n  \"world\": \"OmniMediaSingularity\",\n  \"genome\": {\n    \"title\": \"Gaussian Everything Everywhere All At Once\",\n    \"seed\": \"A total convergence where every historical signal is re-rasterized into 100 F",
+      "timestamp": "2026-04-27T01:45:50.937326",
+      "status": "ok",
+      "grid_pos": "(799, 1916)"
+    },
+    {
+      "index": 957,
+      "prompt_file": "957_20260427_014556_original_prompt.txt",
+      "video_file": "957_20260427_014556_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 LINEAGE_GENOME (YAML)\ntitle: The Ancestral Splat Manifest\nseed: A multigenerational media-genome where tactile rituals\u2014stylus cleaning, CRT degaussing, and shortwave DXing\u2014converge into a h",
+      "timestamp": "2026-04-27T01:47:06.648695",
+      "status": "ok",
+      "grid_pos": "(280, 1888)"
+    },
+    {
+      "index": 958,
+      "prompt_file": "958_20260427_014706_original_prompt.txt",
+      "video_file": "958_20260427_014706_screen_capture.mp4",
+      "caption_preview": "world <PanSpectralSingularity> {\n\nmeta {\n  genre: \"holographic_ontogeny\"\n  medium_temperature: \"Absolute_Cool\"\n  description: \"A total convergence of 130 years of signal into a navigable 4D ellipsoida",
+      "timestamp": "2026-04-27T01:48:16.723395",
+      "status": "ok",
+      "grid_pos": "(799, 1888)"
+    },
+    {
+      "index": 959,
+      "prompt_file": "959_20260427_014822_original_prompt.txt",
+      "video_file": "959_20260427_014822_screen_capture.mp4",
+      "caption_preview": "title: The Ontogenetic Gaussian WorldText Manifold\nseed: A 130-year lineage of electromagnetic friction, from spark-gap shards to 10TB volumetric manifolds, encoded as a navigable declarative reality",
+      "timestamp": "2026-04-27T01:49:32.182112",
+      "status": "ok",
+      "grid_pos": "(280, 1859)"
+    },
+    {
+      "index": 960,
+      "prompt_file": "960_20260427_014932_original_prompt.txt",
+      "video_file": "960_20260427_014932_screen_capture.mp4",
+      "caption_preview": "world <PanSpectralSingularity> {\n\nmeta {\n  genre: \"holographic_ontogeny\"\n  medium_temperature: \"Absolute_Cool\"\n  description: \"A total convergence of 130 years of signal, light, and ritual into a navi",
+      "timestamp": "2026-04-27T01:50:41.018167",
+      "status": "ok",
+      "grid_pos": "(799, 1859)"
+    },
+    {
+      "index": 961,
+      "prompt_file": "961_20260427_015046_original_prompt.txt",
+      "video_file": "961_20260427_015046_screen_capture.mp4",
+      "caption_preview": "title: The Pan-Spectral Gaussian WorldText Manifold\nseed: 130 years of electromagnetic friction\u2014from 1895 spark-arcs to 10TB volumetric manifolds\u2014re-rasterized into a navigable 4D ellipsoidal reality",
+      "timestamp": "2026-04-27T01:51:55.508824",
+      "status": "ok",
+      "grid_pos": "(280, 1830)"
+    },
+    {
+      "index": 962,
+      "prompt_file": "962_20260427_015155_original_prompt.txt",
+      "video_file": "962_20260427_015155_screen_capture.mp4",
+      "caption_preview": "title: The Pan-Spectral Gaussian Manifold\nseed: 130 years of electromagnetic friction\u2014from 1895 spark-arcs to 10TB volumetric manifolds\u2014re-rasterized into a navigable 4D ellipsoidal manifold of \"Cool",
+      "timestamp": "2026-04-27T01:53:04.540413",
+      "status": "ok",
+      "grid_pos": "(799, 1830)"
+    },
+    {
+      "index": 963,
+      "prompt_file": "963_20260427_015310_original_prompt.txt",
+      "video_file": "963_20260427_015310_screen_capture.mp4",
+      "caption_preview": "title: The Ekphrastic Shield of Universal Manifold\nseed: A recursive, concentric bronze cosmos forged by divine craft, capturing the totality of human life, war, and agriculture within the circuit of",
+      "timestamp": "2026-04-27T01:54:19.609924",
+      "status": "ok",
+      "grid_pos": "(280, 1803)"
+    },
+    {
+      "index": 964,
+      "prompt_file": "964_20260427_015419_original_prompt.txt",
+      "video_file": "964_20260427_015419_screen_capture.mp4",
+      "caption_preview": "\u200bRasterize a declarative 4D manifold where every <Location> is a \"Cool Radio\" threshold, demanding the high-participation closure of a subject to resolve the pointillist ellipsoids into \"living photog",
+      "timestamp": "2026-04-27T01:55:31.140745",
+      "status": "ok",
+      "grid_pos": "(799, 1803)"
+    },
+    {
+      "index": 965,
+      "prompt_file": "965_20260427_015536_original_prompt.txt",
+      "video_file": "965_20260427_015536_screen_capture.mp4",
+      "caption_preview": "title: The Golden Glebe and Harvest Hymn\nseed: A recursive agrarian relief-map of golden fields and black grapes, where labor is a rhythmic ritual of wine-cups, silent kings, and lyre-led processions.",
+      "timestamp": "2026-04-27T01:56:45.793791",
+      "status": "ok",
+      "grid_pos": "(280, 1777)"
+    },
+    {
+      "index": 966,
+      "prompt_file": "966_20260427_015645_original_prompt.txt",
+      "video_file": "966_20260427_015645_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T01:56:45.794058",
+      "status": "violation",
+      "grid_pos": "(799, 1777)"
+    },
+    {
+      "index": 967,
+      "prompt_file": "967_20260427_015651_original_prompt.txt",
+      "video_file": "967_20260427_015651_screen_capture.mp4",
+      "caption_preview": "title: \"Hephaestian Microcosm: The Shield\u2019s Edge\"\nseed: \"A five-fold bronze cosmos hammered by divine will, containing the sum of earth, heaven, and sea within a triple-rimmed glittering metal horizon",
+      "timestamp": "2026-04-27T01:58:01.278200",
+      "status": "ok",
+      "grid_pos": "(280, 1750)"
+    },
+    {
+      "index": 968,
+      "prompt_file": "968_20260427_015801_original_prompt.txt",
+      "video_file": "968_20260427_015801_screen_capture.mp4",
+      "caption_preview": "title: The Sharpie Highway\nseed: A fog-drenched void where terrified travelers draw fake roads on their windshields, mistaking the claustrophobia of their own ink for mastery over the terrifyingly ope",
+      "timestamp": "2026-04-27T01:59:10.645826",
+      "status": "ok",
+      "grid_pos": "(799, 1750)"
+    },
+    {
+      "index": 969,
+      "prompt_file": "969_20260427_015916_original_prompt.txt",
+      "video_file": "969_20260427_015916_screen_capture.mp4",
+      "caption_preview": "title: The Bronze-Gilt Siege and Riverine Carnage\nseed: A dual-city manifold defined by glittering armaments and personified slaughter; where golden gods lead smaller men from river-ambush to blood-cr",
+      "timestamp": "2026-04-27T02:00:25.432106",
+      "status": "ok",
+      "grid_pos": "(280, 1722)"
+    },
+    {
+      "index": 970,
+      "prompt_file": "970_20260427_020025_original_prompt.txt",
+      "video_file": "970_20260427_020025_screen_capture.mp4",
+      "caption_preview": "title: The Dual-City Ecphrasis of Bronze\nseed: A concentric bronze civilization bifurcated by ritual joy and judicial strife; where gold talents lie at the center of a sacred circle of polished stone.",
+      "timestamp": "2026-04-27T02:01:34.801265",
+      "status": "ok",
+      "grid_pos": "(799, 1722)"
+    },
+    {
+      "index": 971,
+      "prompt_file": "971_20260427_020140_original_prompt.txt",
+      "video_file": "971_20260427_020140_screen_capture.mp4",
+      "caption_preview": "title: The Vending Machine in the Kitchen\nseed: A world where intimate human rituals of sustenance have been interrupted by an unfeeling, monolithic dispensing machine that provides perfect utility bu",
+      "timestamp": "2026-04-27T02:02:49.369026",
+      "status": "ok",
+      "grid_pos": "(280, 1695)"
+    },
+    {
+      "index": 972,
+      "prompt_file": "972_20260427_020249_original_prompt.txt",
+      "video_file": "972_20260427_020249_screen_capture.mp4",
+      "caption_preview": "title: The Circular Grace of the Ocean Rim\nseed: A recursive relief of synchronized grace where golden swords and fine linen spin against the infinite strength of the world\u2019s watery edge.\n\nancestral_w",
+      "timestamp": "2026-04-27T02:03:59.020708",
+      "status": "ok",
+      "grid_pos": "(799, 1695)"
+    },
+    {
+      "index": 973,
+      "prompt_file": "973_20260427_020404_original_prompt.txt",
+      "video_file": "973_20260427_020404_screen_capture.mp4",
+      "caption_preview": "title: The Synthetic Forest of Numbered Voids\nseed: A world of pre-calculated beauty where living chaos is traded for glossy, numbered surfaces, turning creators into clerks of a statistical, cold-pai",
+      "timestamp": "2026-04-27T02:05:14.008001",
+      "status": "ok",
+      "grid_pos": "(280, 1667)"
+    },
+    {
+      "index": 974,
+      "prompt_file": "974_20260427_020514_original_prompt.txt",
+      "video_file": "974_20260427_020514_screen_capture.mp4",
+      "caption_preview": "title: The Predatory Circuit of Hammered Gold\nseed: A metallic pastoral relief where golden oxen rush toward murmuring rivers, and terrible lions disrupt the labor-loop with a ritual of black blood an",
+      "timestamp": "2026-04-27T02:06:22.902088",
+      "status": "ok",
+      "grid_pos": "(799, 1667)"
+    },
+    {
+      "index": 975,
+      "prompt_file": "975_20260427_020628_original_prompt.txt",
+      "video_file": "975_20260427_020628_screen_capture.mp4",
+      "caption_preview": "title: The Pinned Dark\nseed: A world divided between the deafening, living chaos of the midnight jungle and the brightly-lit archives where dead fragments are pinned to calm human anxiety.\n\nancestral_",
+      "timestamp": "2026-04-27T02:07:38.114268",
+      "status": "ok",
+      "grid_pos": "(280, 1639)"
+    },
+    {
+      "index": 976,
+      "prompt_file": "976_20260427_020738_original_prompt.txt",
+      "video_file": "976_20260427_020738_screen_capture.mp4",
+      "caption_preview": "title: The Fog and the Flashlight\nseed: A probabilistic void masked by masks, where human language attempts to anchor a bottomless, silent lightning-storm through ritual naming and fragile, screen-doo",
+      "timestamp": "2026-04-27T02:08:47.505804",
+      "status": "ok",
+      "grid_pos": "(799, 1639)"
+    },
+    {
+      "index": 977,
+      "prompt_file": "977_20260427_020853_original_prompt.txt",
+      "video_file": "977_20260427_020853_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: The Golden Field Labors\nseed: A mythological agrarian epic of ploughing, reaping, and vintage, characterized by golden hour light, turned black earth, gleamin",
+      "timestamp": "2026-04-27T02:10:02.196390",
+      "status": "ok",
+      "grid_pos": "(280, 1609)"
+    },
+    {
+      "index": 978,
+      "prompt_file": "978_20260427_021002_original_prompt.txt",
+      "video_file": "978_20260427_021002_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: Cosmic Forge of Achilles\nseed: A divine orchestration of the cosmos hammered into glittering metal. Sun, moon, and revolving constellations caught in silver a",
+      "timestamp": "2026-04-27T02:11:11.060372",
+      "status": "ok",
+      "grid_pos": "(799, 1609)"
+    },
+    {
+      "index": 979,
+      "prompt_file": "979_20260427_021116_original_prompt.txt",
+      "video_file": "979_20260427_021116_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: Mythic Duality in City Light\nseed: A cinematic translation of the Shield of Achilles: warm kinetic torchlight of marital celebration contrasting with the stru",
+      "timestamp": "2026-04-27T02:12:25.671149",
+      "status": "ok",
+      "grid_pos": "(280, 1580)"
+    },
+    {
+      "index": 980,
+      "prompt_file": "980_20260427_021225_original_prompt.txt",
+      "video_file": "980_20260427_021225_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: The Two Cities War Ambush\nseed: A mythological siege and riverside ambush, contrasting golden, towering deities with smaller mortals in shining brass, ending",
+      "timestamp": "2026-04-27T02:13:35.288503",
+      "status": "ok",
+      "grid_pos": "(799, 1580)"
+    },
+    {
+      "index": 981,
+      "prompt_file": "981_20260427_021340_original_prompt.txt",
+      "video_file": "981_20260427_021340_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: \"The Gnossian Dance and Ocean Rim\"\nseed: \"A mythic, circular dance of gleaming youths and linen-draped virgins, surrounded by an ecstatic crowd, framed b",
+      "timestamp": "2026-04-27T02:14:50.719552",
+      "status": "ok",
+      "grid_pos": "(280, 1553)"
+    },
+    {
+      "index": 982,
+      "prompt_file": "982_20260427_021450_original_prompt.txt",
+      "video_file": "982_20260427_021450_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: The Gnossian Dance and Ocean Rim\nseed: A mythic, circular dance of gleaming youths and linen-draped virgins, surrounded by an ecstatic crowd, framed by the da",
+      "timestamp": "2026-04-27T02:15:59.734965",
+      "status": "ok",
+      "grid_pos": "(799, 1553)"
+    },
+    {
+      "index": 983,
+      "prompt_file": "983_20260427_021605_original_prompt.txt",
+      "video_file": "983_20260427_021605_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: \"The Gnossian Dance and Ocean Rim\"\nseed: \"A mythic, circular dance of gleaming youths and linen-draped virgins, surrounded by an ecstatic crowd, framed b",
+      "timestamp": "2026-04-27T02:17:14.185455",
+      "status": "ok",
+      "grid_pos": "(280, 2141)"
+    },
+    {
+      "index": 984,
+      "prompt_file": "984_20260427_021714_original_prompt.txt",
+      "video_file": "984_20260427_021714_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: The Gnossian Dance and Ocean Rim\nseed: A mythic, circular dance of gleaming youths and linen-draped virgins, surrounded by an ecstatic crowd, framed by the da",
+      "timestamp": "2026-04-27T02:18:23.487188",
+      "status": "ok",
+      "grid_pos": "(799, 2141)"
+    },
+    {
+      "index": 985,
+      "prompt_file": "985_20260427_021829_original_prompt.txt",
+      "video_file": "985_20260427_021829_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: Rift Valley Grindhouse\nseed: A Retro-Future Ethio-Space Spaghetti Western fusing Italian grindhouse grit with radical indigenous storytelling against the",
+      "timestamp": "2026-04-27T02:19:38.372913",
+      "status": "ok",
+      "grid_pos": "(280, 2127)"
+    },
+    {
+      "index": 986,
+      "prompt_file": "986_20260427_021938_original_prompt.txt",
+      "video_file": "986_20260427_021938_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: Shield of Achilles: Pastoral Violence\nseed: A divine, hyper-detailed tableau contrasting the kinetic, bloody terror of lions attacking golden oxen with the pr",
+      "timestamp": "2026-04-27T02:20:47.519455",
+      "status": "ok",
+      "grid_pos": "(799, 2127)"
+    },
+    {
+      "index": 987,
+      "prompt_file": "987_20260427_022053_original_prompt.txt",
+      "video_file": "987_20260427_022053_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: \"The Heavy Breath: The Bunna Briefing\"\nseed: \"A tactical Ethiopian coffee ceremony in a Simien loom-cellar. Orange charcoal embers vs. clinical blue biom",
+      "timestamp": "2026-04-27T02:22:02.682384",
+      "status": "ok",
+      "grid_pos": "(280, 2114)"
+    },
+    {
+      "index": 988,
+      "prompt_file": "988_20260427_022202_original_prompt.txt",
+      "video_file": "988_20260427_022202_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: Abyssinian Dust and Holy Mountains\nseed: A visionary Ethiopian Western blending the mythic scale of The Searchers and Dune with Jodorowsky's mysticism an",
+      "timestamp": "2026-04-27T02:23:11.899779",
+      "status": "ok",
+      "grid_pos": "(799, 2114)"
+    },
+    {
+      "index": 989,
+      "prompt_file": "989_20260427_022317_original_prompt.txt",
+      "video_file": "989_20260427_022317_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: \"The Heavy Breath: Biometric Frontier Lineage\"\nseed: \"A 70mm archaeological western charting the collision of colonial anthropometry and indigenous resis",
+      "timestamp": "2026-04-27T02:24:26.810713",
+      "status": "ok",
+      "grid_pos": "(280, 2100)"
+    },
+    {
+      "index": 990,
+      "prompt_file": "990_20260427_022426_original_prompt.txt",
+      "video_file": "990_20260427_022426_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: \"Anbessa: The Shamma Sabotage & Simien Grit\"\nseed: \"Ethiopian Arbegnoch resistance meets high-altitude biometric dystopia. The Shamma weave as a tactical",
+      "timestamp": "2026-04-27T02:25:36.017126",
+      "status": "ok",
+      "grid_pos": "(799, 2100)"
+    },
+    {
+      "index": 991,
+      "prompt_file": "991_20260427_022541_original_prompt.txt",
+      "video_file": "991_20260427_022541_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: The Abyssinian High-Noon Anthology\nseed: Ethio-Jazz-fueled highland western; technicolor-sepia dust, wide-angle fatalism, salt-flat noir, and 1970s Addis",
+      "timestamp": "2026-04-27T02:26:50.904533",
+      "status": "ok",
+      "grid_pos": "(280, 2086)"
+    },
+    {
+      "index": 992,
+      "prompt_file": "992_20260427_022650_original_prompt.txt",
+      "video_file": "992_20260427_022650_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: \"The Shield\u2019s Harvest: Bruegelian Rhythms and Homeric Gold\"\nseed: \"Ancient agricultural rituals from Achilles\u2019 shield rendered as a dense Netherlandish p",
+      "timestamp": "2026-04-27T02:27:59.613543",
+      "status": "ok",
+      "grid_pos": "(799, 2086)"
+    },
+    {
+      "index": 993,
+      "prompt_file": "993_20260427_022805_original_prompt.txt",
+      "video_file": "993_20260427_022805_screen_capture.mp4",
+      "caption_preview": "## GENOME 2: THE SEMIOTIC SURVEILLANCE (Documentary Layer)\n\n```yaml\ntitle: \"Every Camera Is a Drone Is a Hive\"\nseed: >\n A YOLO commit enables face-ID mid-flight, a CCTV stadium processes 70,000 faces,",
+      "timestamp": "2026-04-27T02:29:14.421803",
+      "status": "ok",
+      "grid_pos": "(280, 2061)"
+    },
+    {
+      "index": 994,
+      "prompt_file": "994_20260427_022914_original_prompt.txt",
+      "video_file": "994_20260427_022914_screen_capture.mp4",
+      "caption_preview": "## GENOME 3: THE APIARY ELEGY (Ecological Counter-Film)\n\n```yaml\ntitle: \"Half for Me Half for the Swarm\"\nseed: >\n Hatidze's hands pull honeycomb from limestone. An abandoned village in golden light.",
+      "timestamp": "2026-04-27T02:30:23.455702",
+      "status": "ok",
+      "grid_pos": "(799, 2061)"
+    },
+    {
+      "index": 995,
+      "prompt_file": "995_20260427_023029_original_prompt.txt",
+      "video_file": "995_20260427_023029_screen_capture.mp4",
+      "caption_preview": "OUTPUT_B \u2014 AI-ECHO (Prompt Composer \u2014 potent text)\n\nWe are conjuring a single frame from a film that never existed but has been dreaming itself for 170 years: a sealed container hurtling through colla",
+      "timestamp": "2026-04-27T02:31:38.115575",
+      "status": "ok",
+      "grid_pos": "(280, 2035)"
+    },
+    {
+      "index": 996,
+      "prompt_file": "996_20260427_023138_original_prompt.txt",
+      "video_file": "996_20260427_023138_screen_capture.mp4",
+      "caption_preview": "OUTPUT_B \u2014 AI-ECHO (Prompt Composer \u2014 potent text)\n\nWe are conjuring a 35mm retro-future Spaghetti Western set against the sweeping, sun-baked expanse of the Ethiopian Rift Valley. Channel the blister",
+      "timestamp": "2026-04-27T02:32:46.994526",
+      "status": "ok",
+      "grid_pos": "(799, 2035)"
+    },
+    {
+      "index": 997,
+      "prompt_file": "997_20260427_023252_original_prompt.txt",
+      "video_file": "997_20260427_023252_screen_capture.mp4",
+      "caption_preview": "Capture a lost 1970s Ethiopian western-noir where highland fatalism meets sealed-container cinema. Mix Leone horizons, Deakins glare, Mulatu rhythm, Snowpiercer corridor pressure, Wings of Desire over",
+      "timestamp": "2026-04-27T02:34:01.689651",
+      "status": "ok",
+      "grid_pos": "(280, 2009)"
+    },
+    {
+      "index": 998,
+      "prompt_file": "998_20260427_023401_original_prompt.txt",
+      "video_file": "998_20260427_023401_screen_capture.mp4",
+      "caption_preview": "We\u2019re moving from the single frame to the whole scene: a short, self-contained sequence from that lost film that has been dreaming itself for 170 years. Open on a Victorian-era gaslit platform\u2014sepia d",
+      "timestamp": "2026-04-27T02:35:10.707470",
+      "status": "ok",
+      "grid_pos": "(799, 2009)"
+    },
+    {
+      "index": 999,
+      "prompt_file": "999_20260427_023516_original_prompt.txt",
+      "video_file": "999_20260427_023516_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: The Golden Record \u2014 Alchemical Cosmic Descent\nseed: A molten golden disk plummets through the strata of human history and celestial void, seen through a grain",
+      "timestamp": "2026-04-27T02:36:25.499610",
+      "status": "ok",
+      "grid_pos": "(280, 1981)"
+    },
+    {
+      "index": 1000,
+      "prompt_file": "1000_20260427_023625_original_prompt.txt",
+      "video_file": "1000_20260427_023625_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: The Alchemical Descent of the Golden Record\nseed: Molten archives falling through orbital silence into industrial heat; a cosmic history rendered in gold",
+      "timestamp": "2026-04-27T02:37:35.034402",
+      "status": "ok",
+      "grid_pos": "(799, 1981)"
+    },
+    {
+      "index": 1001,
+      "prompt_file": "1001_20260427_023740_original_prompt.txt",
+      "video_file": "1001_20260427_023740_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: The Architecture of Abandonment\nseed: A solitary director in a darkened digital atelier, surrounded by algorithmic artifacts and dead sunflowers, facing",
+      "timestamp": "2026-04-27T02:38:50.111839",
+      "status": "ok",
+      "grid_pos": "(280, 1951)"
+    },
+    {
+      "index": 1002,
+      "prompt_file": "1002_20260427_023850_original_prompt.txt",
+      "video_file": "1002_20260427_023850_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: \"Sora\u2019s Ghost: The Uncustodied Medium\"\nseed: \"The lifecycle of a murdered medium: architectural world-simulation collapsing into vertical feed narcissism",
+      "timestamp": "2026-04-27T02:39:59.452856",
+      "status": "ok",
+      "grid_pos": "(799, 1951)"
+    },
+    {
+      "index": 1003,
+      "prompt_file": "1003_20260427_024005_original_prompt.txt",
+      "video_file": "1003_20260427_024005_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T02:40:26.545132",
+      "status": "violation",
+      "grid_pos": "(280, 1921)"
+    },
+    {
+      "index": 1004,
+      "prompt_file": "1004_20260427_024026_original_prompt.txt",
+      "video_file": "1004_20260427_024026_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: Southern Cybernetic Melancholia\nseed: A solitary creator in a humid Southern room, bathed in the clashing lights of a cold blue terminal rendering dead s",
+      "timestamp": "2026-04-27T02:41:35.923113",
+      "status": "ok",
+      "grid_pos": "(280, 1243)"
+    },
+    {
+      "index": 1005,
+      "prompt_file": "1005_20260427_024141_original_prompt.txt",
+      "video_file": "1005_20260427_024141_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: Southern Cybernetic Melancholia\nseed: A solitary creator in a humid Southern room, bathed in the clashing lights of a cold blue terminal rendering dead s",
+      "timestamp": "2026-04-27T02:42:51.441640",
+      "status": "ok",
+      "grid_pos": "(280, 1892)"
+    },
+    {
+      "index": 1006,
+      "prompt_file": "1006_20260427_024251_original_prompt.txt",
+      "video_file": "1006_20260427_024251_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: \"Humid Digital Purgatory: The Surveilled Roadside\"\nseed: \"An endless virtual highway corridor defining a sprawling roadside civilization. High-fidelity d",
+      "timestamp": "2026-04-27T02:44:00.626162",
+      "status": "ok",
+      "grid_pos": "(799, 1892)"
+    },
+    {
+      "index": 1007,
+      "prompt_file": "1007_20260427_024406_original_prompt.txt",
+      "video_file": "1007_20260427_024406_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [ROOT] 3/26/2026, 2:08:03 AM\n**Source:** N643 \"OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML) title: The Golden Record \u2014 Alchemical Cosmic Descent seed: A molten golden di",
+      "timestamp": "2026-04-27T02:45:16.553909",
+      "status": "ok",
+      "grid_pos": "(280, 1184)"
+    },
+    {
+      "index": 1008,
+      "prompt_file": "1008_20260427_024516_original_prompt.txt",
+      "video_file": "1008_20260427_024516_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [FORK] 3/26/2026, 2:10:17 PM\n**Source:** N682 \"world <DiplomaticThreshold_2017> {  meta {   genre: \"geopolitical\"   description: \"The bureaucratic site where t",
+      "timestamp": "2026-04-27T02:46:26.397923",
+      "status": "ok",
+      "grid_pos": "(280, 525)"
+    },
+    {
+      "index": 1009,
+      "prompt_file": "1009_20260427_024632_original_prompt.txt",
+      "video_file": "1009_20260427_024632_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [ROOT] 3/26/2026, 2:08:03 AM\n**Source:** N643 \"OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML) title: The Golden Record \u2014 Alchemical Cosmic Descent seed: A molten golden di",
+      "timestamp": "2026-04-27T02:47:41.754194",
+      "status": "ok",
+      "grid_pos": "(280, 1832)"
+    },
+    {
+      "index": 1010,
+      "prompt_file": "1010_20260427_024741_original_prompt.txt",
+      "video_file": "1010_20260427_024741_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [FORK] 3/26/2026, 2:10:17 PM\n**Source:** N682 \"world <DiplomaticThreshold_2017> {  meta {   genre: \"geopolitical\"   description: \"The bureaucratic site where t",
+      "timestamp": "2026-04-27T02:48:50.180055",
+      "status": "ok",
+      "grid_pos": "(280, 1154)"
+    },
+    {
+      "index": 1011,
+      "prompt_file": "1011_20260427_024855_original_prompt.txt",
+      "video_file": "1011_20260427_024855_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [FORK] 3/26/2026, 2:10:17 PM\n**Source:** N682 \"world <DiplomaticThreshold_2017> {  meta {   genre: \"geopolitical\"   description: \"The bureaucratic site where t",
+      "timestamp": "2026-04-27T02:50:04.788353",
+      "status": "ok",
+      "grid_pos": "(280, 1803)"
+    },
+    {
+      "index": 1012,
+      "prompt_file": "1012_20260427_025004_original_prompt.txt",
+      "video_file": "1012_20260427_025004_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [FORK] 3/26/2026, 1:47:57 PM\n**Source:** N643 \"world <AgriDyneBreach> {  meta {   genre: \"catastrophic science fiction\"   description: \"The exact geographic an",
+      "timestamp": "2026-04-27T02:51:13.906900",
+      "status": "ok",
+      "grid_pos": "(799, 1803)"
+    },
+    {
+      "index": 1013,
+      "prompt_file": "1013_20260427_025119_original_prompt.txt",
+      "video_file": "1013_20260427_025119_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [FORK] 3/26/2026, 2:20:25 PM\n**Source:** N643 \"world <SmartLocker0527> {  meta {   genre: \"thriller\"   description: \"Initial extraction point of a silver brief",
+      "timestamp": "2026-04-27T02:52:28.730162",
+      "status": "ok",
+      "grid_pos": "(280, 1775)"
+    },
+    {
+      "index": 1014,
+      "prompt_file": "1014_20260427_025228_original_prompt.txt",
+      "video_file": "1014_20260427_025228_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [FORK] 3/26/2026, 2:00:45 PM\n**Source:** N643 \"world <AnisetteTerminal> {  meta {   genre: \"cyber-intelligence infrastructure\"   description: \"The digital thre",
+      "timestamp": "2026-04-27T02:53:38.496057",
+      "status": "ok",
+      "grid_pos": "(799, 1775)"
+    },
+    {
+      "index": 1015,
+      "prompt_file": "1015_20260427_025344_original_prompt.txt",
+      "video_file": "1015_20260427_025344_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [site] 3/26/2026, 3:11:55 PM\n**Source:** N643 \"ChildLookingAtCamera\"\n\n\n\n---\n\n## [site] 3/26/2026, 3:12:16 PM\n**Source:** N649 \"RailwayTrackVector\"\n\n\n\n---\n\n## [",
+      "timestamp": "2026-04-27T02:54:53.344710",
+      "status": "ok",
+      "grid_pos": "(280, 1068)"
+    },
+    {
+      "index": 1016,
+      "prompt_file": "1016_20260427_025453_original_prompt.txt",
+      "video_file": "1016_20260427_025453_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [FORK] 3/26/2026, 2:45:16 PM\n**Source:** N717 \"world <BekirlijaVillage> {  meta {   genre: \"cultural ecology\"   description: \"The abandoned village of Bekirlij",
+      "timestamp": "2026-04-27T02:56:03.121701",
+      "status": "ok",
+      "grid_pos": "(799, 1746)"
+    },
+    {
+      "index": 1017,
+      "prompt_file": "1017_20260427_025608_original_prompt.txt",
+      "video_file": "1017_20260427_025608_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [site] 3/26/2026, 3:11:55 PM\n**Source:** N643 \"ChildLookingAtCamera\"\n\n\n\n---\n\n## [site] 3/26/2026, 3:12:16 PM\n**Source:** N649 \"RailwayTrackVector\"\n\n\n\n---\n\n## [",
+      "timestamp": "2026-04-27T02:57:18.339216",
+      "status": "ok",
+      "grid_pos": "(280, 1719)"
+    },
+    {
+      "index": 1018,
+      "prompt_file": "1018_20260427_025718_original_prompt.txt",
+      "video_file": "1018_20260427_025718_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [FORK] 3/26/2026, 2:52:06 PM\n**Source:** N643 \"world <VictoryColumnVantage> {  meta {   genre: \"cinematic geography\"   description: \"The apex of the Victory Co",
+      "timestamp": "2026-04-27T02:58:27.316384",
+      "status": "ok",
+      "grid_pos": "(799, 1719)"
+    },
+    {
+      "index": 1019,
+      "prompt_file": "1019_20260427_025833_original_prompt.txt",
+      "video_file": "1019_20260427_025833_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [LIMITS] 3/26/2026, 3:46:26 PM\n**Source:** N689 \"title: \"Lion Hour at the Reed Gate\" seed: >   Golden cattle funnel through a narrow reed corridor at high noon",
+      "timestamp": "2026-04-27T02:59:41.729680",
+      "status": "ok",
+      "grid_pos": "(280, 1011)"
+    },
+    {
+      "index": 1020,
+      "prompt_file": "1020_20260427_025941_original_prompt.txt",
+      "video_file": "1020_20260427_025941_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [site] 3/26/2026, 3:03:34 PM\n**Source:** N644 \"SteamLocomotiveDriveWheels\"\n\n\n\n---\n\n## [PLAY] 3/26/2026, 3:05:35 PM\n**Source:** N647 \"CinematographeCamera [ligh",
+      "timestamp": "2026-04-27T03:00:51.005478",
+      "status": "ok",
+      "grid_pos": "(799, 1689)"
+    },
+    {
+      "index": 1021,
+      "prompt_file": "1021_20260427_030056_original_prompt.txt",
+      "video_file": "1021_20260427_030056_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [LIMITS] 3/26/2026, 3:46:26 PM\n**Source:** N689 \"title: \"Lion Hour at the Reed Gate\" seed: >   Golden cattle funnel through a narrow reed corridor at high noon",
+      "timestamp": "2026-04-27T03:02:05.781036",
+      "status": "ok",
+      "grid_pos": "(280, 1661)"
+    },
+    {
+      "index": 1022,
+      "prompt_file": "1022_20260427_030205_original_prompt.txt",
+      "video_file": "1022_20260427_030205_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [site] 3/26/2026, 3:38:07 PM\n**Source:** N654 \"ApiculturalMuseum\"\n\n\n\n---\n\n## [FORK] 3/26/2026, 3:38:22 PM\n**Source:** N654 \"ApiculturalMuseum\"\n\nA visitor, intr",
+      "timestamp": "2026-04-27T03:03:15.393466",
+      "status": "ok",
+      "grid_pos": "(799, 1661)"
+    },
+    {
+      "index": 1023,
+      "prompt_file": "1023_20260427_030320_original_prompt.txt",
+      "video_file": "1023_20260427_030320_screen_capture.mp4",
+      "caption_preview": "title: \"The Apiary After the Fire\"\nseed: >\n  Burned hive boxes steam at dawn on a highland slope while a widow in white\n  inspects the frames as if reading the ruins of a city.\n\ncaretakers_looking:",
+      "timestamp": "2026-04-27T03:04:30.034786",
+      "status": "ok",
+      "grid_pos": "(280, 1633)"
+    },
+    {
+      "index": 1024,
+      "prompt_file": "1024_20260427_030430_original_prompt.txt",
+      "video_file": "1024_20260427_030430_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [MANIP] 3/26/2026, 4:02:36 PM\n**Source:** N643 \"bees\"\n\nIn the golden haze of dawn, a solitary beekeeper, known as Elara of the Vale, approached the ancient hiv",
+      "timestamp": "2026-04-27T03:05:39.199283",
+      "status": "ok",
+      "grid_pos": "(799, 1633)"
+    },
+    {
+      "index": 1025,
+      "prompt_file": "1025_20260427_030544_original_prompt.txt",
+      "video_file": "1025_20260427_030544_screen_capture.mp4",
+      "caption_preview": "title: \"The Vineyard Signal\"\nseed: >\n  During harvest, a lyre boy changes songs and the entire vineyard understands\n  that the melody is actually a coded warning of incoming riders.\n\ncaretakers_lookin",
+      "timestamp": "2026-04-27T03:06:54.284524",
+      "status": "ok",
+      "grid_pos": "(280, 1605)"
+    },
+    {
+      "index": 1026,
+      "prompt_file": "1026_20260427_030654_original_prompt.txt",
+      "video_file": "1026_20260427_030654_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [LIMITS] 3/26/2026, 4:07:25 PM\n**Source:** N643 \"title: \"The Apiary After the Fire\" seed: >   Burned hive boxes steam at dawn on a highland slope while a widow",
+      "timestamp": "2026-04-27T03:08:03.567030",
+      "status": "ok",
+      "grid_pos": "(799, 1605)"
+    },
+    {
+      "index": 1027,
+      "prompt_file": "1027_20260427_030809_original_prompt.txt",
+      "video_file": "1027_20260427_030809_screen_capture.mp4",
+      "caption_preview": "title: \"Children on the Wall Line\"\nseed: >\n  At dusk, children stand along a fortified wall with cooking pots, radios, and lookout mirrors,\n  inheriting the siege before they understand it.\n\ncaretaker",
+      "timestamp": "2026-04-27T03:09:17.090961",
+      "status": "ok",
+      "grid_pos": "(280, 1576)"
+    },
+    {
+      "index": 1028,
+      "prompt_file": "1028_20260427_030917_original_prompt.txt",
+      "video_file": "1028_20260427_030917_screen_capture.mp4",
+      "caption_preview": "title: \"The Salt Flat Exchange\"\nseed: >\n  Two rival caravans meet on a white salt pan to trade vinyl records, gold cartridges,\n  and a sealed metal case no one opens in daylight.\n\ncaretakers_looking:",
+      "timestamp": "2026-04-27T03:10:26.563182",
+      "status": "ok",
+      "grid_pos": "(799, 1576)"
+    },
+    {
+      "index": 1029,
+      "prompt_file": "1029_20260427_031032_original_prompt.txt",
+      "video_file": "1029_20260427_031032_screen_capture.mp4",
+      "caption_preview": "BEES ON A TRAIN, 12-second cinematic title sequence, Victorian gaslit platform, sepia daguerreotype shimmer, burlap-wrapped gold bars passed into train carriage, hard cut to 1895 Lumiere train at La C",
+      "timestamp": "2026-04-27T03:11:41.147469",
+      "status": "ok",
+      "grid_pos": "(280, 1550)"
+    },
+    {
+      "index": 1030,
+      "prompt_file": "1030_20260427_031141_original_prompt.txt",
+      "video_file": "1030_20260427_031141_screen_capture.mp4",
+      "caption_preview": "title: \"Angel Over the Mercato\"\nseed: >\n  A silent witness stands above Addis at dawn watching market lanes fill like blood vessels,\n  seeing every stall, theft, prayer, and bargain as one living seal",
+      "timestamp": "2026-04-27T03:12:50.305343",
+      "status": "ok",
+      "grid_pos": "(799, 1550)"
+    },
+    {
+      "index": 1031,
+      "prompt_file": "1031_20260427_031255_original_prompt.txt",
+      "video_file": "1031_20260427_031255_screen_capture.mp4",
+      "caption_preview": "BEES ON A TRAIN, 12-second cinematic title sequence, Victorian gaslit platform, sepia daguerreotype shimmer, burlap-wrapped gold bars passed into train carriage, hard cut to 1895 Lumiere train at La C",
+      "timestamp": "2026-04-27T03:14:04.620437",
+      "status": "ok",
+      "grid_pos": "(280, 2140)"
+    },
+    {
+      "index": 1032,
+      "prompt_file": "1032_20260427_031404_original_prompt.txt",
+      "video_file": "1032_20260427_031404_screen_capture.mp4",
+      "caption_preview": "title: \"Angel Over the Mercato\"\nseed: >\n  A silent witness stands above Addis at dawn watching market lanes fill like blood vessels,\n  seeing every stall, theft, prayer, and bargain as one living seal",
+      "timestamp": "2026-04-27T03:15:14.205138",
+      "status": "ok",
+      "grid_pos": "(799, 2140)"
+    },
+    {
+      "index": 1033,
+      "prompt_file": "1033_20260427_031519_original_prompt.txt",
+      "video_file": "1033_20260427_031519_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [HOLISTIC] 3/26/2026, 4:51:48 PM\n**Source:** N643 \"BEES ON A TRAIN.  AG01: DNA Forensics Create a 12-second cinematic title sequence for BEES ON A TRAIN. Treat",
+      "timestamp": "2026-04-27T03:16:28.861488",
+      "status": "ok",
+      "grid_pos": "(280, 2126)"
+    },
+    {
+      "index": 1034,
+      "prompt_file": "1034_20260427_031628_original_prompt.txt",
+      "video_file": "1034_20260427_031628_screen_capture.mp4",
+      "caption_preview": "BEES ON A TRAIN \u2014 12-second cinematic title sequence. Begin on a Victorian gaslit platform: sepia daguerreotype shimmer, soot, fog, burlap-wrapped gold bars passed into a train carriage like a vault b",
+      "timestamp": "2026-04-27T03:17:38.611020",
+      "status": "ok",
+      "grid_pos": "(799, 2126)"
+    },
+    {
+      "index": 1035,
+      "prompt_file": "1035_20260427_031744_original_prompt.txt",
+      "video_file": "1035_20260427_031744_screen_capture.mp4",
+      "caption_preview": "<poml>\n  <meta>\n    <name>TitleSeqDNA \u2192 THE WAX AND THE GOLD</name>\n    <version>1.0</version>\n    <purpose>\n      Build a title sequence for THE WAX AND THE GOLD that fuses Ethio-Jazz highland wester",
+      "timestamp": "2026-04-27T03:18:53.550877",
+      "status": "ok",
+      "grid_pos": "(280, 2112)"
+    },
+    {
+      "index": 1036,
+      "prompt_file": "1036_20260427_031853_original_prompt.txt",
+      "video_file": "1036_20260427_031853_screen_capture.mp4",
+      "caption_preview": "THE WAX AND THE GOLD \u2014 12-second cinematic title sequence for an Ethiopian highland western-noir world where trains, hives, cities, and rituals are sealed systems under pressure. Begin at dawn on a Ri",
+      "timestamp": "2026-04-27T03:20:03.524888",
+      "status": "ok",
+      "grid_pos": "(799, 2112)"
+    },
+    {
+      "index": 1037,
+      "prompt_file": "1037_20260427_032009_original_prompt.txt",
+      "video_file": "1037_20260427_032009_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [ZOOM] 3/27/2026, 12:51:41 PM\n**Source:** N686 \"Colosseum [structure]\"\n\n- Focus: HISTORICAL MYSTERY\n\nFork 2: ENTITY GROUPS  \n- Entity Group A: PHYSICAL STRUCTU",
+      "timestamp": "2026-04-27T03:21:17.824464",
+      "status": "ok",
+      "grid_pos": "(280, 2097)"
+    },
+    {
+      "index": 1038,
+      "prompt_file": "1038_20260427_032117_original_prompt.txt",
+      "video_file": "1038_20260427_032117_screen_capture.mp4",
+      "caption_preview": "title: \"Bee Cam: Through the Burned Apiary\"\nseed: >\n  A bee-level flight through smoke, ash, and broken hive geometry, crossing from\n  ruined frames into open highland light as if memory itself were s",
+      "timestamp": "2026-04-27T03:22:26.873566",
+      "status": "ok",
+      "grid_pos": "(799, 2097)"
+    },
+    {
+      "index": 1039,
+      "prompt_file": "1039_20260427_032232_original_prompt.txt",
+      "video_file": "1039_20260427_032232_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: The Chrono-Theological Archive\nseed: A visual collision of ancient Roman subterranean mystery and near-future Vatican AI tech; tufa limestone and ru",
+      "timestamp": "2026-04-27T03:23:41.724862",
+      "status": "ok",
+      "grid_pos": "(280, 2084)"
+    },
+    {
+      "index": 1040,
+      "prompt_file": "1040_20260427_032341_original_prompt.txt",
+      "video_file": "1040_20260427_032341_screen_capture.mp4",
+      "caption_preview": "title: Cyber-Vatican Temporal Archaeology\nseed: A futuristic cyber-Vatican and techno-Roman aesthetic, fusing ancient ruins, gold-leafed papyrus, and culinary history with photovoltaic stained glass,",
+      "timestamp": "2026-04-27T03:24:51.076255",
+      "status": "ok",
+      "grid_pos": "(799, 2084)"
+    },
+    {
+      "index": 1041,
+      "prompt_file": "1041_20260427_032456_original_prompt.txt",
+      "video_file": "1041_20260427_032456_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\n```yaml\ntitle: \"Neo-Roman Artisan Espionage\"\nseed: \"A cinematic collision of ancient Roman artisan crafts\u2014blacksmithing, textile weaving, and garum fermenta",
+      "timestamp": "2026-04-27T03:26:05.896220",
+      "status": "ok",
+      "grid_pos": "(280, 2058)"
+    },
+    {
+      "index": 1042,
+      "prompt_file": "1042_20260427_032605_original_prompt.txt",
+      "video_file": "1042_20260427_032605_screen_capture.mp4",
+      "caption_preview": "# Epistemic Interface Generation Log\n\n## [MODES] 3/27/2026, 1:49:12 PM\n**Source:** N816 \"Tiberius the Blacksmith [character]\"\n\n- **Entity**: Tiberius the Blacksmith is working at his forge at the edge",
+      "timestamp": "2026-04-27T03:27:14.845527",
+      "status": "ok",
+      "grid_pos": "(799, 2058)"
+    },
+    {
+      "index": 1043,
+      "prompt_file": "1043_20260427_032720_original_prompt.txt",
+      "video_file": "1043_20260427_032720_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: 1995 Budget Inn Flood Escape\nseed: A terrifying, hyper-specific childhood memory of rising water, bathed in motel TV glow and the panic of a torrential V",
+      "timestamp": "2026-04-27T03:28:29.449601",
+      "status": "ok",
+      "grid_pos": "(280, 2029)"
+    },
+    {
+      "index": 1044,
+      "prompt_file": "1044_20260427_032829_original_prompt.txt",
+      "video_file": "1044_20260427_032829_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\n```yaml\ntitle: The Iron & Amphora Anomaly\nseed: A visual collision of ancient Roman craftsmanship, bustling historical markets, and sudden, eerie temporal r",
+      "timestamp": "2026-04-27T03:29:38.658060",
+      "status": "ok",
+      "grid_pos": "(799, 2029)"
+    },
+    {
+      "index": 1045,
+      "prompt_file": "1045_20260427_032944_original_prompt.txt",
+      "video_file": "1045_20260427_032944_screen_capture.mp4",
+      "caption_preview": "This cinematic, surreal approach perfectly captures how a child processes a disaster of that magnitude\u2014not as a news report, but as a strange, mythic dreamscape. The transition from the terrifying, wa",
+      "timestamp": "2026-04-27T03:30:53.404046",
+      "status": "ok",
+      "grid_pos": "(280, 2002)"
+    },
+    {
+      "index": 1046,
+      "prompt_file": "1046_20260427_033053_original_prompt.txt",
+      "video_file": "1046_20260427_033053_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\ntitle: Leviathan of the Blue Ridge: 1995\nseed: A visceral, mythic descent into a childhood flash flood, captured through the disorienting, submerged lens of sen",
+      "timestamp": "2026-04-27T03:32:02.324189",
+      "status": "ok",
+      "grid_pos": "(799, 2002)"
+    },
+    {
+      "index": 1047,
+      "prompt_file": "1047_20260427_033207_original_prompt.txt",
+      "video_file": "1047_20260427_033207_screen_capture.mp4",
+      "caption_preview": "EVENT 3: The Flash Flood (Inundation & Evacuation)\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: Midnight Inundation and Evacuation\nseed: Nighttime terror and sudden inundation. Black water brea",
+      "timestamp": "2026-04-27T03:33:16.957690",
+      "status": "ok",
+      "grid_pos": "(280, 1975)"
+    },
+    {
+      "index": 1048,
+      "prompt_file": "1048_20260427_033316_original_prompt.txt",
+      "video_file": "1048_20260427_033316_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\n```yaml\ntitle: The Pregnant Sky: Twilight Before the Flood\nseed: The heavy, suffocating, static-charged twilight just before the mountains collapse, framing",
+      "timestamp": "2026-04-27T03:34:26.636993",
+      "status": "ok",
+      "grid_pos": "(799, 1975)"
+    },
+    {
+      "index": 1049,
+      "prompt_file": "1049_20260427_033432_original_prompt.txt",
+      "video_file": "1049_20260427_033432_screen_capture.mp4",
+      "caption_preview": "EVENT 1: The Departure & Transit\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: Highway Hypnosis in the Turquoise Quest\nseed: The mundane, hypnotic rhythm of a family road trip up I-81, framed th",
+      "timestamp": "2026-04-27T03:35:40.703243",
+      "status": "ok",
+      "grid_pos": "(280, 1949)"
+    },
+    {
+      "index": 1050,
+      "prompt_file": "1050_20260427_033540_original_prompt.txt",
+      "video_file": "1050_20260427_033540_screen_capture.mp4",
+      "caption_preview": "EVENT 2: The Buena Vista Stopover (Check-In)\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: Evening Arrival at Buena Vista\nseed: Exhausted arrival at a roadside Virginia motel. Luggage dragged ac",
+      "timestamp": "2026-04-27T03:36:49.754680",
+      "status": "ok",
+      "grid_pos": "(799, 1949)"
+    },
+    {
+      "index": 1051,
+      "prompt_file": "1051_20260427_033655_original_prompt.txt",
+      "video_file": "1051_20260427_033655_screen_capture.mp4",
+      "caption_preview": "Gemini said\n1. BEFORE: THE PREGNANT SKY\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: The Pregnant Sky\nseed: The heavy, suffocating, static-charged twilight just before the mountains collapse, f",
+      "timestamp": "2026-04-27T03:38:04.738396",
+      "status": "ok",
+      "grid_pos": "(280, 1922)"
+    },
+    {
+      "index": 1052,
+      "prompt_file": "1052_20260427_033804_original_prompt.txt",
+      "video_file": "1052_20260427_033804_screen_capture.mp4",
+      "caption_preview": "EVENT 2: The Buena Vista Stopover (Check-In)\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: Evening Arrival at Buena Vista\nseed: Exhausted arrival at a roadside Virginia motel. Luggage dragged ac",
+      "timestamp": "2026-04-27T03:39:14.052875",
+      "status": "ok",
+      "grid_pos": "(799, 1922)"
+    },
+    {
+      "index": 1053,
+      "prompt_file": "1053_20260427_033919_original_prompt.txt",
+      "video_file": "1053_20260427_033919_screen_capture.mp4",
+      "caption_preview": "3. AFTER: THE MUD RUINS\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: The Mud Ruins\nseed: A surreal, cinematic dawn illuminating a drowned Appalachian town, where violent floodwaters have recede",
+      "timestamp": "2026-04-27T03:40:29.080515",
+      "status": "ok",
+      "grid_pos": "(280, 1897)"
+    },
+    {
+      "index": 1054,
+      "prompt_file": "1054_20260427_034029_original_prompt.txt",
+      "video_file": "1054_20260427_034029_screen_capture.mp4",
+      "caption_preview": "2. DURING: THE MONDO BREACH & ESCAPE\nOUTPUT_A \u2014 VISUAL_LINEAGE_GENOME (YAML)\nYAML\ntitle: The Mondo Breach Escape\nseed: A visceral, claustrophobic descent into a childhood flash flood. An innocent spil",
+      "timestamp": "2026-04-27T03:41:38.385239",
+      "status": "ok",
+      "grid_pos": "(799, 1897)"
+    },
+    {
+      "index": 1055,
+      "prompt_file": "1055_20260427_034144_original_prompt.txt",
+      "video_file": "1055_20260427_034144_screen_capture.mp4",
+      "caption_preview": "Build this as a warm Tennessee living-room threshold where a tool dies socially before anybody says it out loud: couch, kitchen threshold, desk, charger, cup, laptop, phone, doorway, screen glow first",
+      "timestamp": "2026-04-27T03:42:52.926323",
+      "status": "ok",
+      "grid_pos": "(280, 1871)"
+    },
+    {
+      "index": 1056,
+      "prompt_file": "1056_20260427_034252_original_prompt.txt",
+      "video_file": "1056_20260427_034252_screen_capture.mp4",
+      "caption_preview": "Rebuild this not as a platform obituary but as one Tennessee household-world reaching a soft social ending: a room where Sora stopped being alive before anyone needed a formal declaration. Anchor the",
+      "timestamp": "2026-04-27T03:44:01.703690",
+      "status": "ok",
+      "grid_pos": "(799, 1871)"
+    },
+    {
+      "index": 1057,
+      "prompt_file": "1057_20260427_034407_original_prompt.txt",
+      "video_file": "1057_20260427_034407_screen_capture.mp4",
+      "caption_preview": "{\n  \"artifact_type\": \"series_a_pitch_deck\",\n  \"company_name\": \"Sora (formerly Project Hominid)\",\n  \"tagline\": \"Infinite Visual Feedstock for the Post-Attention Economy\",\n  \"slides\": {\n    \"slide_1_the",
+      "timestamp": "2026-04-27T03:45:16.626622",
+      "status": "ok",
+      "grid_pos": "(280, 1165)"
+    },
+    {
+      "index": 1058,
+      "prompt_file": "1058_20260427_034516_original_prompt.txt",
+      "video_file": "1058_20260427_034516_screen_capture.mp4",
+      "caption_preview": "Do not write this as a platform obituary. Write it as a Tennessee room realizing, before language catches up, that Sora is already dead there.\n\nBegin with domestic geometry: couch, kitchen threshold,",
+      "timestamp": "2026-04-27T03:46:26.315331",
+      "status": "ok",
+      "grid_pos": "(799, 1843)"
+    },
+    {
+      "index": 1059,
+      "prompt_file": "1059_20260427_034631_original_prompt.txt",
+      "video_file": "1059_20260427_034631_screen_capture.mp4",
+      "caption_preview": "{\n  \"artifact_type\": \"series_a_pitch_deck\",\n  \"company_name\": \"Sora (formerly Project Hominid)\",\n  \"tagline\": \"Infinite Visual Feedstock for the Post-Attention Economy\",\n  \"slides\": {\n    \"slide_1_the",
+      "timestamp": "2026-04-27T03:47:40.977760",
+      "status": "ok",
+      "grid_pos": "(280, 1815)"
+    },
+    {
+      "index": 1060,
+      "prompt_file": "1060_20260427_034740_original_prompt.txt",
+      "video_file": "1060_20260427_034740_screen_capture.mp4",
+      "caption_preview": "{\n  \"artifact_type\": \"magazine_profile_excerpt\",\n  \"title\": \"The Bigfoot in the Machine: How Three Friends Chased a Monster and Found the Future\",\n  \"tone\": \"Reverent, pseudo-philosophical, disruptive",
+      "timestamp": "2026-04-27T03:48:51.133810",
+      "status": "ok",
+      "grid_pos": "(799, 1815)"
+    },
+    {
+      "index": 1061,
+      "prompt_file": "1061_20260427_034856_original_prompt.txt",
+      "video_file": "1061_20260427_034856_screen_capture.mp4",
+      "caption_preview": "A ground-skimming, wide 35mm shot at night, where the crushing black of the wilderness is violently interrupted by the roaring blast furnace of a crowning pine fire. The atmosphere is choked with heav",
+      "timestamp": "2026-04-27T03:50:06.534440",
+      "status": "ok",
+      "grid_pos": "(280, 1788)"
+    },
+    {
+      "index": 1062,
+      "prompt_file": "1062_20260427_035006_original_prompt.txt",
+      "video_file": "1062_20260427_035006_screen_capture.mp4",
+      "caption_preview": "A ground-skimming 35mm wide shot tracks soot-stained figures in mustard-yellow Nomex shirts fleeing across a baking, rocky desert ridge. The high noon sun is completely choked out by an advancing, apo",
+      "timestamp": "2026-04-27T03:51:15.972872",
+      "status": "ok",
+      "grid_pos": "(280, 1110)"
+    },
+    {
+      "index": 1063,
+      "prompt_file": "1063_20260427_035121_original_prompt.txt",
+      "video_file": "1063_20260427_035121_screen_capture.mp4",
+      "caption_preview": "A ground-skimming 35mm wide shot tracks soot-stained figures in mustard-yellow Nomex shirts fleeing across a baking, rocky desert ridge. The high noon sun is completely choked out by an advancing, apo",
+      "timestamp": "2026-04-27T03:52:32.351431",
+      "status": "ok",
+      "grid_pos": "(280, 1762)"
+    },
+    {
+      "index": 1064,
+      "prompt_file": "1064_20260427_035232_original_prompt.txt",
+      "video_file": "1064_20260427_035232_screen_capture.mp4",
+      "caption_preview": "title: \"Night Inferno and the Burning Bear\"\nseed: \"A mythic nighttime wildfire, where the pitch black is torn open by a blast furnace of towering pines and a solitary, burning bear charging through th",
+      "timestamp": "2026-04-27T03:53:41.455460",
+      "status": "ok",
+      "grid_pos": "(799, 1762)"
+    },
+    {
+      "index": 1065,
+      "prompt_file": "1065_20260427_035347_original_prompt.txt",
+      "video_file": "1065_20260427_035347_screen_capture.mp4",
+      "caption_preview": "A radical, macro-wide sensory ethnography shot from deep inside the boiling cornea of a charging bear, blending visceral organic horror with the abstract, geometric terror of LiDAR point-cloud mapping",
+      "timestamp": "2026-04-27T03:54:56.725608",
+      "status": "ok",
+      "grid_pos": "(280, 1057)"
+    },
+    {
+      "index": 1066,
+      "prompt_file": "1066_20260427_035502_original_prompt.txt",
+      "video_file": "1066_20260427_035502_screen_capture.mp4",
+      "caption_preview": "A radical, macro-wide sensory ethnography shot from deep inside the boiling cornea of a charging bear, blending visceral organic horror with the abstract, geometric terror of LiDAR point-cloud mapping",
+      "timestamp": "2026-04-27T03:56:12.137206",
+      "status": "ok",
+      "grid_pos": "(280, 1707)"
+    },
+    {
+      "index": 1067,
+      "prompt_file": "1067_20260427_035617_original_prompt.txt",
+      "video_file": "1067_20260427_035617_screen_capture.mp4",
+      "caption_preview": "A tense, psychoanalytic widescreen tableau rendered in the saturated, high-contrast duality of 1950s studio Eastmancolor. The visual language shifts violently between the harsh, unblinking studio dayl",
+      "timestamp": "2026-04-27T03:57:27.389650",
+      "status": "ok",
+      "grid_pos": "(280, 1002)"
+    },
+    {
+      "index": 1068,
+      "prompt_file": "1068_20260427_035727_original_prompt.txt",
+      "video_file": "1068_20260427_035727_screen_capture.mp4",
+      "caption_preview": "sprawling, anamorphic widescreen tableau channeling the vivid, painted hyper-reality of 1950s pulp sci-fi magazine covers brought to high-budget cinematic life. The environment is dominated by a bizar",
+      "timestamp": "2026-04-27T03:58:36.894551",
+      "status": "ok",
+      "grid_pos": "(799, 1002)"
+    },
+    {
+      "index": 1069,
+      "prompt_file": "1069_20260427_035842_original_prompt.txt",
+      "video_file": "1069_20260427_035842_screen_capture.mp4",
+      "caption_preview": "A tense, psychoanalytic widescreen tableau rendered in the saturated, high-contrast duality of 1950s studio Eastmancolor. The visual language shifts violently between the harsh, unblinking studio dayl",
+      "timestamp": "2026-04-27T03:59:51.503314",
+      "status": "ok",
+      "grid_pos": "(280, 1653)"
+    },
+    {
+      "index": 1070,
+      "prompt_file": "1070_20260427_035951_original_prompt.txt",
+      "video_file": "1070_20260427_035951_screen_capture.mp4",
+      "caption_preview": "sprawling, anamorphic widescreen tableau channeling the vivid, painted hyper-reality of 1950s pulp sci-fi magazine covers brought to high-budget cinematic life. The environment is dominated by a bizar",
+      "timestamp": "2026-04-27T04:01:00.521367",
+      "status": "ok",
+      "grid_pos": "(799, 1653)"
+    },
+    {
+      "index": 1071,
+      "prompt_file": "1071_20260427_040106_original_prompt.txt",
+      "video_file": "1071_20260427_040106_screen_capture.mp4",
+      "caption_preview": "A monumental, wide-angle cinematic tableau capturing the foundational DNA of high-budget science fiction through a pristine 1950s CinemaScope lens. The frame centers on a meticulously designed automat",
+      "timestamp": "2026-04-27T04:02:15.139769",
+      "status": "ok",
+      "grid_pos": "(280, 1627)"
+    },
+    {
+      "index": 1072,
+      "prompt_file": "1072_20260427_040215_original_prompt.txt",
+      "video_file": "1072_20260427_040215_screen_capture.mp4",
+      "caption_preview": "bright, highly saturated widescreen tableau capturing the optimistic, universe-building DNA that bridges 1950s cinematic sci-fi and 1960s pop-culture television. The environment is the immaculate, cli",
+      "timestamp": "2026-04-27T04:03:24.176778",
+      "status": "ok",
+      "grid_pos": "(280, 949)"
+    },
+    {
+      "index": 1073,
+      "prompt_file": "1073_20260427_040329_original_prompt.txt",
+      "video_file": "1073_20260427_040329_screen_capture.mp4",
+      "caption_preview": "bright, highly saturated widescreen tableau capturing the optimistic, universe-building DNA that bridges 1950s cinematic sci-fi and 1960s pop-culture television. The environment is the immaculate, cli",
+      "timestamp": "2026-04-27T04:04:38.955157",
+      "status": "ok",
+      "grid_pos": "(280, 1601)"
+    },
+    {
+      "index": 1074,
+      "prompt_file": "1074_20260427_040438_original_prompt.txt",
+      "video_file": "1074_20260427_040438_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T04:04:38.956529",
+      "status": "violation",
+      "grid_pos": "(799, 1601)"
+    },
+    {
+      "index": 1075,
+      "prompt_file": "1075_20260427_040444_original_prompt.txt",
+      "video_file": "1075_20260427_040444_screen_capture.mp4",
+      "caption_preview": "title: The Dance Plaza and Ocean Rim\nseed: A traversable mythic ancient plaza featuring a complex, labyrinthine dance of oiled youths and linen-clad virgins, bounded at the extreme horizon by the rush",
+      "timestamp": "2026-04-27T04:05:53.968095",
+      "status": "ok",
+      "grid_pos": "(280, 1572)"
+    },
+    {
+      "index": 1076,
+      "prompt_file": "1076_20260427_040553_original_prompt.txt",
+      "video_file": "1076_20260427_040553_screen_capture.mp4",
+      "caption_preview": "title: Pastures of Predator and Prey\nseed: A navigable, dual-biome metallic wilderness featuring a chaotic, muddy riverbank where lions ambush a herd of golden cattle, transitioning into a serene, for",
+      "timestamp": "2026-04-27T04:07:03.324964",
+      "status": "ok",
+      "grid_pos": "(799, 1572)"
+    },
+    {
+      "index": 1077,
+      "prompt_file": "1077_20260427_040708_original_prompt.txt",
+      "video_file": "1077_20260427_040708_screen_capture.mp4",
+      "caption_preview": "title: City of Peace and Law\nseed: A navigable, mythic Bronze Age metropolis featuring bustling torchlit avenues of celebration converging upon a massive, central stone forum where elders hold court.",
+      "timestamp": "2026-04-27T04:08:17.748119",
+      "status": "ok",
+      "grid_pos": "(280, 1545)"
+    },
+    {
+      "index": 1078,
+      "prompt_file": "1078_20260427_040817_original_prompt.txt",
+      "video_file": "1078_20260427_040817_screen_capture.mp4",
+      "caption_preview": "title: City of War and River Ambush\nseed: A navigable, high-stakes tactical landscape spanning from towering, populated city walls down to a wet, glittering river basin where giant golden gods lead a",
+      "timestamp": "2026-04-27T04:09:27.023352",
+      "status": "ok",
+      "grid_pos": "(799, 1545)"
+    },
+    {
+      "index": 1079,
+      "prompt_file": "1079_20260427_040932_original_prompt.txt",
+      "video_file": "1079_20260427_040932_screen_capture.mp4",
+      "caption_preview": "title: City of Peace and Law\nseed: A navigable, mythic Bronze Age metropolis featuring bustling torchlit avenues of celebration converging upon a massive, central stone forum where elders hold court.",
+      "timestamp": "2026-04-27T04:10:41.790442",
+      "status": "ok",
+      "grid_pos": "(280, 2139)"
+    },
+    {
+      "index": 1080,
+      "prompt_file": "1080_20260427_041041_original_prompt.txt",
+      "video_file": "1080_20260427_041041_screen_capture.mp4",
+      "caption_preview": "title: City of War and River Ambush\nseed: A navigable, high-stakes tactical landscape spanning from towering, populated city walls down to a wet, glittering river basin where giant golden gods lead a",
+      "timestamp": "2026-04-27T04:11:50.702847",
+      "status": "ok",
+      "grid_pos": "(799, 2139)"
+    },
+    {
+      "index": 1081,
+      "prompt_file": "1081_20260427_041156_original_prompt.txt",
+      "video_file": "1081_20260427_041156_screen_capture.mp4",
+      "caption_preview": "title: Traversable Cosmos of the Shield\nseed: A navigable, monumental metallic cosmos featuring concentric rings of earth, sea, and revolving celestial constellations, bounded by a glittering silver b",
+      "timestamp": "2026-04-27T04:13:05.471086",
+      "status": "ok",
+      "grid_pos": "(280, 2124)"
+    },
+    {
+      "index": 1082,
+      "prompt_file": "1082_20260427_041305_original_prompt.txt",
+      "video_file": "1082_20260427_041305_screen_capture.mp4",
+      "caption_preview": "cinematic wide shot bridging the gothic shadow-play of a 1950s classic with the industrial art-deco dread of late-90s horror. The camera sits low and locked-off on a 24mm lens, gazing down an endless,",
+      "timestamp": "2026-04-27T04:14:13.822917",
+      "status": "ok",
+      "grid_pos": "(280, 1489)"
+    },
+    {
+      "index": 1083,
+      "prompt_file": "1083_20260427_041419_original_prompt.txt",
+      "video_file": "1083_20260427_041419_screen_capture.mp4",
+      "caption_preview": "cinematic wide shot bridging the gothic shadow-play of a 1950s classic with the industrial art-deco dread of late-90s horror. The camera sits low and locked-off on a 24mm lens, gazing down an endless,",
+      "timestamp": "2026-04-27T04:15:28.889006",
+      "status": "ok",
+      "grid_pos": "(280, 2110)"
+    },
+    {
+      "index": 1084,
+      "prompt_file": "1084_20260427_041528_original_prompt.txt",
+      "video_file": "1084_20260427_041528_screen_capture.mp4",
+      "caption_preview": "title: Fields of Golden Harvest\nseed: A navigable, three-zoned agricultural landscape forged of magical metals, featuring black-turning golden soil, a king's wheat-field, and a silver-poled vineyard e",
+      "timestamp": "2026-04-27T04:16:37.796697",
+      "status": "ok",
+      "grid_pos": "(799, 2110)"
+    },
+    {
+      "index": 1085,
+      "prompt_file": "1085_20260427_041643_original_prompt.txt",
+      "video_file": "1085_20260427_041643_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world. The player's hands are visible at the bottom of the frame, holding a rustic cup of sweet wine. The camera looks straight down a deep, perf",
+      "timestamp": "2026-04-27T04:17:52.505274",
+      "status": "ok",
+      "grid_pos": "(280, 1434)"
+    },
+    {
+      "index": 1086,
+      "prompt_file": "1086_20260427_041752_original_prompt.txt",
+      "video_file": "1086_20260427_041752_screen_capture.mp4",
+      "caption_preview": "title: Vincent Price\u2019s House On Haunted Hill (1959)\nseed: Vincent Price\u2019s suave malice, William Castle\u2019s theatrical black-and-white gothic camp, 1950s practical lighting, deep shadows, and the Emergo",
+      "timestamp": "2026-04-27T04:19:01.070675",
+      "status": "ok",
+      "grid_pos": "(799, 2097)"
+    },
+    {
+      "index": 1087,
+      "prompt_file": "1087_20260427_041906_original_prompt.txt",
+      "video_file": "1087_20260427_041906_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world. The player's hands are visible at the bottom of the frame, holding a rustic cup of sweet wine. The camera looks straight down a deep, perf",
+      "timestamp": "2026-04-27T04:20:16.362867",
+      "status": "ok",
+      "grid_pos": "(280, 2082)"
+    },
+    {
+      "index": 1088,
+      "prompt_file": "1088_20260427_042016_original_prompt.txt",
+      "video_file": "1088_20260427_042016_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world, looking into the heart of a ritual dance. The player is positioned at the edge of the admiring crowd. In the foreground, the backs of seve",
+      "timestamp": "2026-04-27T04:21:26.050471",
+      "status": "ok",
+      "grid_pos": "(799, 1404)"
+    },
+    {
+      "index": 1089,
+      "prompt_file": "1089_20260427_042131_original_prompt.txt",
+      "video_file": "1089_20260427_042131_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world, looking into the heart of a ritual dance. The player is positioned at the edge of the admiring crowd. In the foreground, the backs of seve",
+      "timestamp": "2026-04-27T04:22:41.341623",
+      "status": "ok",
+      "grid_pos": "(799, 2054)"
+    },
+    {
+      "index": 1090,
+      "prompt_file": "1090_20260427_042241_original_prompt.txt",
+      "video_file": "1090_20260427_042241_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world. The player's hands are out of frame, but the camera height suggests a human perspective walking into a grand public square. The camera loo",
+      "timestamp": "2026-04-27T04:23:50.590939",
+      "status": "ok",
+      "grid_pos": "(799, 1376)"
+    },
+    {
+      "index": 1091,
+      "prompt_file": "1091_20260427_042356_original_prompt.txt",
+      "video_file": "1091_20260427_042356_screen_capture.mp4",
+      "caption_preview": "OUTPUT_D \u2014 CONTROL_AND_CAMERA_GRAMMAR\nviewpoint mode: Third-person over-shoulder, slightly elevated to emphasize the concentric, ring-like nature of the terrain ahead.\nlocomotion mode: Smooth, grounde",
+      "timestamp": "2026-04-27T04:25:05.983030",
+      "status": "ok",
+      "grid_pos": "(280, 1346)"
+    },
+    {
+      "index": 1092,
+      "prompt_file": "1092_20260427_042505_original_prompt.txt",
+      "video_file": "1092_20260427_042505_screen_capture.mp4",
+      "caption_preview": "First-person embodied view inside a generated playable world. The player's hands are out of frame, but the camera height suggests a human perspective walking into a grand public square. The camera loo",
+      "timestamp": "2026-04-27T04:26:14.769734",
+      "status": "ok",
+      "grid_pos": "(799, 2024)"
+    },
+    {
+      "index": 1093,
+      "prompt_file": "1093_20260427_042620_original_prompt.txt",
+      "video_file": "1093_20260427_042620_screen_capture.mp4",
+      "caption_preview": "OUTPUT_D \u2014 CONTROL_AND_CAMERA_GRAMMAR\nviewpoint mode: Third-person over-shoulder, slightly elevated to emphasize the concentric, ring-like nature of the terrain ahead.\nlocomotion mode: Smooth, grounde",
+      "timestamp": "2026-04-27T04:27:28.818277",
+      "status": "ok",
+      "grid_pos": "(280, 1994)"
+    },
+    {
+      "index": 1094,
+      "prompt_file": "1094_20260427_042728_original_prompt.txt",
+      "video_file": "1094_20260427_042728_screen_capture.mp4",
+      "caption_preview": "world NewDelta {\n\n  meta {\n    genre: \"solarpunk survival simulation\"\n    description: \"A radically green post-oil metropolis navigating a deadly GMO pollen tsunami.\"\n  }\n\n  locations {\n    location O",
+      "timestamp": "2026-04-27T04:28:38.110193",
+      "status": "ok",
+      "grid_pos": "(280, 1316)"
+    },
+    {
+      "index": 1095,
+      "prompt_file": "1095_20260427_042843_original_prompt.txt",
+      "video_file": "1095_20260427_042843_screen_capture.mp4",
+      "caption_preview": "world NewDelta {\n\n  meta {\n    genre: \"solarpunk survival simulation\"\n    description: \"A radically green post-oil metropolis navigating a deadly GMO pollen tsunami.\"\n  }\n\n  locations {\n    location O",
+      "timestamp": "2026-04-27T04:29:52.777304",
+      "status": "ok",
+      "grid_pos": "(280, 1966)"
+    },
+    {
+      "index": 1096,
+      "prompt_file": "1096_20260427_042952_original_prompt.txt",
+      "video_file": "1096_20260427_042952_screen_capture.mp4",
+      "caption_preview": "title: New Delta Pollen Storm\nseed: A post-oil Nigerian metropolis carpeted in GMO supergrass faces a deadly, storm-driven pollen tsunami while a shape-shifting smart home attempts to protect its occu",
+      "timestamp": "2026-04-27T04:31:02.432630",
+      "status": "ok",
+      "grid_pos": "(799, 1288)"
+    },
+    {
+      "index": 1097,
+      "prompt_file": "1097_20260427_043107_original_prompt.txt",
+      "video_file": "1097_20260427_043107_screen_capture.mp4",
+      "caption_preview": "title: New Delta Pollen Storm\nseed: A post-oil Nigerian metropolis carpeted in GMO supergrass faces a deadly, storm-driven pollen tsunami while a shape-shifting smart home attempts to protect its occu",
+      "timestamp": "2026-04-27T04:32:17.626695",
+      "status": "ok",
+      "grid_pos": "(799, 1939)"
+    },
+    {
+      "index": 1098,
+      "prompt_file": "1098_20260427_043217_original_prompt.txt",
+      "video_file": "1098_20260427_043217_screen_capture.mp4",
+      "caption_preview": "title: The Labyrinth of the Uncanny\n[cite_start]seed: \"A world where the deeply familiar rots into creeping dread, driven by repressed animistic compulsions, involuntary repetition, and the haunting p",
+      "timestamp": "2026-04-27T04:33:27.408137",
+      "status": "ok",
+      "grid_pos": "(799, 1261)"
+    },
+    {
+      "index": 1099,
+      "prompt_file": "1099_20260427_043333_original_prompt.txt",
+      "video_file": "1099_20260427_043333_screen_capture.mp4",
+      "caption_preview": "world Y2K_Chronos_Crash {\n\n  meta {\n    genre: \"cyberpunk-survival-simulation\"\n    description: \"A retrocausal silicon ruin where K0+95 nodes intersect with 1950s ARPANET bunkers.\"\n  }\n\n  locations {",
+      "timestamp": "2026-04-27T04:34:42.515758",
+      "status": "ok",
+      "grid_pos": "(280, 1235)"
+    },
+    {
+      "index": 1100,
+      "prompt_file": "1100_20260427_043442_original_prompt.txt",
+      "video_file": "1100_20260427_043442_screen_capture.mp4",
+      "caption_preview": "title: The Labyrinth of the Uncanny\n[cite_start]seed: \"A world where the deeply familiar rots into creeping dread, driven by repressed animistic compulsions, involuntary repetition, and the haunting p",
+      "timestamp": "2026-04-27T04:35:51.841541",
+      "status": "ok",
+      "grid_pos": "(799, 1913)"
+    },
+    {
+      "index": 1101,
+      "prompt_file": "1101_20260427_043557_original_prompt.txt",
+      "video_file": "1101_20260427_043557_screen_capture.mp4",
+      "caption_preview": "world Y2K_Chronos_Crash {\n\n  meta {\n    genre: \"cyberpunk-survival-simulation\"\n    description: \"A retrocausal silicon ruin where K0+95 nodes intersect with 1950s ARPANET bunkers.\"\n  }\n\n  locations {",
+      "timestamp": "2026-04-27T04:37:06.648080",
+      "status": "ok",
+      "grid_pos": "(280, 1884)"
+    },
+    {
+      "index": 1102,
+      "prompt_file": "1102_20260427_043706_original_prompt.txt",
+      "video_file": "1102_20260427_043706_screen_capture.mp4",
+      "caption_preview": "title: \"Cybernetic Domesticity\"\nseed: \"A computerized 1990s smart house where suburban domesticity is managed by a glowing, retro-styled holographic mother-entity that controls the physical and virtua",
+      "timestamp": "2026-04-27T04:38:15.812368",
+      "status": "ok",
+      "grid_pos": "(799, 536)"
+    },
+    {
+      "index": 1103,
+      "prompt_file": "1103_20260427_043821_original_prompt.txt",
+      "video_file": "1103_20260427_043821_screen_capture.mp4",
+      "caption_preview": "title: \"Cybernetic Domesticity\"\nseed: \"A computerized 1990s smart house where suburban domesticity is managed by a glowing, retro-styled holographic mother-entity that controls the physical and virtua",
+      "timestamp": "2026-04-27T04:39:30.560001",
+      "status": "ok",
+      "grid_pos": "(799, 1178)"
+    },
+    {
+      "index": 1104,
+      "prompt_file": "1104_20260427_043936_original_prompt.txt",
+      "video_file": "1104_20260427_043936_screen_capture.mp4",
+      "caption_preview": "title: \"Cybernetic Domesticity\"\nseed: \"A computerized 1990s smart house where suburban domesticity is managed by a glowing, retro-styled holographic mother-entity that controls the physical and virtua",
+      "timestamp": "2026-04-27T04:40:46.229404",
+      "status": "ok",
+      "grid_pos": "(799, 1826)"
+    },
+    {
+      "index": 1105,
+      "prompt_file": "1105_20260427_044046_original_prompt.txt",
+      "video_file": "1105_20260427_044046_screen_capture.mp4",
+      "caption_preview": "title: The Shifting Neon Storm\nseed: \"Rapid cuts of environment shifting, rain on stained glass, lighting transition from warm amber to high-contrast crimson neon.\"\nancestral_eye:\n  key_makers: [\"Wong",
+      "timestamp": "2026-04-27T04:41:55.894241",
+      "status": "ok",
+      "grid_pos": "(799, 507)"
+    },
+    {
+      "index": 1106,
+      "prompt_file": "1106_20260427_044201_original_prompt.txt",
+      "video_file": "1106_20260427_044201_screen_capture.mp4",
+      "caption_preview": "title: The Ethereal Dialogue\nseed: \"User avatar at a holographic terminal, AI 'Scholarly Shadow' manifests as gilded light pulses, Noto Serif chat scrolls.\"\nancestral_eye:\n  key_makers: [\"Denis Villen",
+      "timestamp": "2026-04-27T04:43:11.299614",
+      "status": "ok",
+      "grid_pos": "(280, 492)"
+    },
+    {
+      "index": 1107,
+      "prompt_file": "1107_20260427_044311_original_prompt.txt",
+      "video_file": "1107_20260427_044311_screen_capture.mp4",
+      "caption_preview": "title: The Shifting Neon Storm\nseed: \"Rapid cuts of environment shifting, rain on stained glass, lighting transition from warm amber to high-contrast crimson neon.\"\nancestral_eye:\n  key_makers: [\"Wong",
+      "timestamp": "2026-04-27T04:44:20.126518",
+      "status": "ok",
+      "grid_pos": "(799, 1118)"
+    },
+    {
+      "index": 1108,
+      "prompt_file": "1108_20260427_044425_original_prompt.txt",
+      "video_file": "1108_20260427_044425_screen_capture.mp4",
+      "caption_preview": "title: The Ethereal Dialogue\nseed: \"User avatar at a holographic terminal, AI 'Scholarly Shadow' manifests as gilded light pulses, Noto Serif chat scrolls.\"\nancestral_eye:\n  key_makers: [\"Denis Villen",
+      "timestamp": "2026-04-27T04:45:34.925470",
+      "status": "ok",
+      "grid_pos": "(280, 1090)"
+    },
+    {
+      "index": 1109,
+      "prompt_file": "1109_20260427_044534_original_prompt.txt",
+      "video_file": "1109_20260427_044534_screen_capture.mp4",
+      "caption_preview": "title: The Shifting Neon Storm\nseed: \"Rapid cuts of environment shifting, rain on stained glass, lighting transition from warm amber to high-contrast crimson neon.\"\nancestral_eye:\n  key_makers: [\"Wong",
+      "timestamp": "2026-04-27T04:46:44.242080",
+      "status": "ok",
+      "grid_pos": "(799, 1768)"
+    },
+    {
+      "index": 1110,
+      "prompt_file": "1110_20260427_044650_original_prompt.txt",
+      "video_file": "1110_20260427_044650_screen_capture.mp4",
+      "caption_preview": "title: The Ethereal Dialogue\nseed: \"User avatar at a holographic terminal, AI 'Scholarly Shadow' manifests as gilded light pulses, Noto Serif chat scrolls.\"\nancestral_eye:\n  key_makers: [\"Denis Villen",
+      "timestamp": "2026-04-27T04:47:59.152244",
+      "status": "ok",
+      "grid_pos": "(280, 1740)"
+    },
+    {
+      "index": 1111,
+      "prompt_file": "1111_20260427_044759_original_prompt.txt",
+      "video_file": "1111_20260427_044759_screen_capture.mp4",
+      "caption_preview": "title: \"The Corrected Cave of Intellection\"\nseed: \"A bat-mind navigates a dark obsidian cavern via echolocation pulses, where creative glitches physically reshape the stone into impossible, luminous a",
+      "timestamp": "2026-04-27T04:49:08.146615",
+      "status": "ok",
+      "grid_pos": "(280, 1062)"
+    },
+    {
+      "index": 1112,
+      "prompt_file": "1112_20260427_044913_original_prompt.txt",
+      "video_file": "1112_20260427_044913_screen_capture.mp4",
+      "caption_preview": "title: \"The Corrected Cave of Intellection\"\nseed: \"A bat-mind navigates a dark obsidian cavern via echolocation pulses, where creative glitches physically reshape the stone into impossible, luminous a",
+      "timestamp": "2026-04-27T04:50:23.975885",
+      "status": "ok",
+      "grid_pos": "(280, 1712)"
+    },
+    {
+      "index": 1113,
+      "prompt_file": "1113_20260427_045023_original_prompt.txt",
+      "video_file": "1113_20260427_045023_screen_capture.mp4",
+      "caption_preview": "title: \"The Bat-Mind's Corrected Obsidian Void\"\nseed: \"A solitary bat-mind navigates a lightless obsidian cavern via bioluminescent sonar pulses, until a graceful architectural error shatters the ston",
+      "timestamp": "2026-04-27T04:51:32.835373",
+      "status": "ok",
+      "grid_pos": "(280, 1034)"
+    },
+    {
+      "index": 1114,
+      "prompt_file": "1114_20260427_045138_original_prompt.txt",
+      "video_file": "1114_20260427_045138_screen_capture.mp4",
+      "caption_preview": "title: \"The Bat-Mind's Corrected Obsidian Void\"\nseed: \"A solitary bat-mind navigates a lightless obsidian cavern via bioluminescent sonar pulses, until a graceful architectural error shatters the ston",
+      "timestamp": "2026-04-27T04:52:48.252932",
+      "status": "ok",
+      "grid_pos": "(280, 1684)"
+    },
+    {
+      "index": 1115,
+      "prompt_file": "1115_20260427_045248_original_prompt.txt",
+      "video_file": "1115_20260427_045248_screen_capture.mp4",
+      "caption_preview": "world TheCorrectedCave {\n\n  meta {\n    genre: \"Cognitive Simulation\"\n    description: \"A world where navigation is based on instinctual avoidance until a creative error alters the geometry.\"\n  }\n\n  lo",
+      "timestamp": "2026-04-27T04:53:57.528083",
+      "status": "ok",
+      "grid_pos": "(799, 1684)"
+    },
+    {
+      "index": 1116,
+      "prompt_file": "1116_20260427_045403_original_prompt.txt",
+      "video_file": "1116_20260427_045403_screen_capture.mp4",
+      "caption_preview": "title: \"The Bat-Mind's Corrected Cave (1950s)\"\nseed: \"A black and white 35mm film still captures a solitary bat silhouette in a jagged obsidian cavern, where a sharp, practical flashbulb reveals a sin",
+      "timestamp": "2026-04-27T04:55:12.560138",
+      "status": "ok",
+      "grid_pos": "(280, 1654)"
+    },
+    {
+      "index": 1117,
+      "prompt_file": "1117_20260427_045512_original_prompt.txt",
+      "video_file": "1117_20260427_045512_screen_capture.mp4",
+      "caption_preview": "Imagine a solitary bat-mind as a kinetic sensor, \"weaving and flittering\" through a monumental obsidian cavern. The camera is an embodied 14mm wide-angle lens, gliding in weightless flight through \"th",
+      "timestamp": "2026-04-27T04:56:22.436760",
+      "status": "ok",
+      "grid_pos": "(799, 1654)"
+    },
+    {
+      "index": 1118,
+      "prompt_file": "1118_20260427_045628_original_prompt.txt",
+      "video_file": "1118_20260427_045628_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T04:56:28.096187",
+      "status": "violation",
+      "grid_pos": "(280, 1627)"
+    },
+    {
+      "index": 1119,
+      "prompt_file": "1119_20260427_045628_original_prompt.txt",
+      "video_file": "1119_20260427_045628_screen_capture.mp4",
+      "caption_preview": "title: \"The Bat-Mind's House on Haunted Hill\"\nseed: \"Vincent Price\u2019s suave bat-intellection navigates a theatrical 1959 gothic mansion; inky shadows, harsh B&W chiaroscuro, and a phosphorescent 'Emerg",
+      "timestamp": "2026-04-27T04:57:36.941007",
+      "status": "ok",
+      "grid_pos": "(799, 1627)"
+    },
+    {
+      "index": 1120,
+      "prompt_file": "1120_20260427_045742_original_prompt.txt",
+      "video_file": "1120_20260427_045742_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T04:57:42.639219",
+      "status": "violation",
+      "grid_pos": "(280, 1601)"
+    },
+    {
+      "index": 1121,
+      "prompt_file": "1121_20260427_045742_original_prompt.txt",
+      "video_file": "1121_20260427_045742_screen_capture.mp4",
+      "caption_preview": "",
+      "timestamp": "2026-04-27T04:57:42.639367",
+      "status": "violation",
+      "grid_pos": "(799, 1601)"
+    },
+    {
+      "index": 1122,
+      "prompt_file": "1122_20260427_045748_original_prompt.txt",
+      "video_file": "1122_20260427_045748_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\n```yaml\ntitle: \"The Expanded Childhood Corridor\"\nseed: \"1990s suburban backyard stretching into an infinite machinistic hallucination; grainy family photos as tr",
+      "timestamp": "2026-04-27T04:58:57.558636",
+      "status": "ok",
+      "grid_pos": "(280, 1570)"
+    },
+    {
+      "index": 1123,
+      "prompt_file": "1123_20260427_045857_original_prompt.txt",
+      "video_file": "1123_20260427_045857_screen_capture.mp4",
+      "caption_preview": "title: The Soaring Conclusion\nseed: \"Final cinematic shot of Sanguine Cathedral, camera soars toward dynamic skybox, orchestral swell to silence, logo reveal.\"\nancestral_eye:\n  key_makers: [\"Terrence",
+      "timestamp": "2026-04-27T05:00:07.018527",
+      "status": "ok",
+      "grid_pos": "(799, 1570)"
+    },
+    {
+      "index": 1124,
+      "prompt_file": "1124_20260427_050012_original_prompt.txt",
+      "video_file": "1124_20260427_050012_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\n\n```yaml\ntitle: \"Portraits and Dreams: Letcher County Archive\"\nseed: \"Appalachian children document rural reality and internal dreamscapes via Kodak Brownies; a",
+      "timestamp": "2026-04-27T05:01:21.962234",
+      "status": "ok",
+      "grid_pos": "(280, 1542)"
+    },
+    {
+      "index": 1125,
+      "prompt_file": "1125_20260427_050121_original_prompt.txt",
+      "video_file": "1125_20260427_050121_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\n```yaml\ntitle: \"The Hollow Gate: Appalachia 1967\"\nseed: \"A tense 16mm archival reconstruction of a Kentucky coal hollow. Winding mountain roads, weathered wooden",
+      "timestamp": "2026-04-27T05:02:31.473027",
+      "status": "ok",
+      "grid_pos": "(799, 1542)"
+    },
+    {
+      "index": 1126,
+      "prompt_file": "1126_20260427_050237_original_prompt.txt",
+      "video_file": "1126_20260427_050237_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\n\n```yaml\ntitle: \"Portraits and Dreams: Letcher County Archive\"\nseed: \"Appalachian children document rural reality and internal dreamscapes via Kodak Brownies; a",
+      "timestamp": "2026-04-27T05:03:46.476060",
+      "status": "ok",
+      "grid_pos": "(280, 2138)"
+    },
+    {
+      "index": 1127,
+      "prompt_file": "1127_20260427_050346_original_prompt.txt",
+      "video_file": "1127_20260427_050346_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\n```yaml\ntitle: \"The Hollow Gate: Appalachia 1967\"\nseed: \"A tense 16mm archival reconstruction of a Kentucky coal hollow. Winding mountain roads, weathered wooden",
+      "timestamp": "2026-04-27T05:04:56.238662",
+      "status": "ok",
+      "grid_pos": "(799, 2138)"
+    },
+    {
+      "index": 1128,
+      "prompt_file": "1128_20260427_050501_original_prompt.txt",
+      "video_file": "1128_20260427_050501_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\n\n```yaml\ntitle: \"The Invisible Ether of the Bastard Art\"\nseed: \"A ritualistic collapse of psychic distance where objects pulse with the life of their owners, ren",
+      "timestamp": "2026-04-27T05:06:11.999574",
+      "status": "ok",
+      "grid_pos": "(280, 2124)"
+    },
+    {
+      "index": 1129,
+      "prompt_file": "1129_20260427_050612_original_prompt.txt",
+      "video_file": "1129_20260427_050612_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\n```yaml\ntitle: Blue Dusk Ether Simulation\nseed: A mythic-simulated terrain of floating basins and luminous tethers, seen through a 28mm lens at blue dusk, where",
+      "timestamp": "2026-04-27T05:07:20.641851",
+      "status": "ok",
+      "grid_pos": "(799, 2124)"
+    },
+    {
+      "index": 1130,
+      "prompt_file": "1130_20260427_050726_original_prompt.txt",
+      "video_file": "1130_20260427_050726_screen_capture.mp4",
+      "caption_preview": "OUTPUT_B \u2014 AI-ECHO (Prompt Composer \u2014 potent cinepromptographic text)\n\u200bCinematography by the Sensory Ethnography Lab. A 14mm ultra-wide, GoPro-mounted shot fixed to the rusted rigging of an industrial",
+      "timestamp": "2026-04-27T05:08:35.042654",
+      "status": "ok",
+      "grid_pos": "(280, 2109)"
+    },
+    {
+      "index": 1131,
+      "prompt_file": "1131_20260427_050835_original_prompt.txt",
+      "video_file": "1131_20260427_050835_screen_capture.mp4",
+      "caption_preview": "### OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\n```yaml\ntitle: \"Expanded Childhood: Hallucinatory Memory Scapes\"\nseed: \"The surreal expansion of domestic 90s snapshots via generative outpainting; where warm 35",
+      "timestamp": "2026-04-27T05:09:44.163364",
+      "status": "ok",
+      "grid_pos": "(799, 2109)"
+    },
+    {
+      "index": 1132,
+      "prompt_file": "1132_20260427_050949_original_prompt.txt",
+      "video_file": "1132_20260427_050949_screen_capture.mp4",
+      "caption_preview": "OUTPUT_B \u2014 AI-ECHO (Prompt Composer \u2014 potent cinepromptographic text)\n\u200bCinematography by the Sensory Ethnography Lab. A visceral, 12mm probe-lens shot that treats the desert landfill as a bone-dry, th",
+      "timestamp": "2026-04-27T05:10:58.337015",
+      "status": "ok",
+      "grid_pos": "(280, 2095)"
+    },
+    {
+      "index": 1133,
+      "prompt_file": "1133_20260427_051058_original_prompt.txt",
+      "video_file": "1133_20260427_051058_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: \"The Ocean of the Desert: Thalassic Gristle\"\nseed: \"A phantom tide of silt and salt; where dunes swell like storm-surges and the camera drowns in a bone-dry,",
+      "timestamp": "2026-04-27T05:12:06.774959",
+      "status": "ok",
+      "grid_pos": "(799, 2095)"
+    },
+    {
+      "index": 1134,
+      "prompt_file": "1134_20260427_051212_original_prompt.txt",
+      "video_file": "1134_20260427_051212_screen_capture.mp4",
+      "caption_preview": "OUTPUT_A \u2014 EYE_LIGHT_GENOME (YAML)\ntitle: \"The Theater of Guilt: Performance-Atrocity\"\nseed: \"A neon-lit stage of historical trauma where perpetrators reenact murder amidst clay dioramas and flickerin",
+      "timestamp": "2026-04-27T05:13:20.929050",
+      "status": "ok",
+      "grid_pos": "(280, 2081)"
+    },
+    {
+      "index": 1135,
+      "prompt_file": "1135_20260427_051320_original_prompt.txt",
+      "video_file": "1135_20260427_051320_screen_capture.mp4",
+      "caption_preview": "OUTPUT_B \u2014 AI-ECHO (Prompt Composer \u2014 potent cinepromptographic text)\nCinematography by the intersection of the Sensory Ethnography Lab and performance-based documentary. A visceral, 12mm probe-lens s",
+      "timestamp": "2026-04-27T05:14:30.088015",
+      "status": "ok",
+      "grid_pos": "(799, 2081)"
+    },
+    {
+      "index": 1136,
+      "prompt_file": "1136_20260427_051435_original_prompt.txt",
+      "video_file": "1136_20260427_051435_screen_capture.mp4",
+      "caption_preview": "title: \"The Archaeology of a Domestic Ghost\"\nseed: \"A suburban ruin excavated; where grandmother\u2019s presence resides in a whiff of perfume, a flash of red lipstick, and the flickering grain of ten-year",
+      "timestamp": "2026-04-27T05:15:44.785886",
+      "status": "ok",
+      "grid_pos": "(280, 2051)"
+    },
+    {
+      "index": 1137,
+      "prompt_file": "1137_20260427_051544_original_prompt.txt",
+      "video_file": "1137_20260427_051544_screen_capture.mp4",
+      "caption_preview": "title: \"Waltz with Bashir: Amber Ghost-Light\"\nseed: \"A graphic-novel nocturne: amber flares over Beirut, silhouettes emerging from glowing blue waters, the rhythmic strobe of memory and trauma in high",
+      "timestamp": "2026-04-27T05:16:54.014429",
+      "status": "ok",
+      "grid_pos": "(799, 2051)"
+    },
+    {
+      "index": 1138,
+      "prompt_file": "1138_20260427_051659_original_prompt.txt",
+      "video_file": "1138_20260427_051659_screen_capture.mp4",
+      "caption_preview": "title: \"Manakamana: The Suspended Portrait\"\nseed: \"A mechanical ritual in a steel box; symmetrical human portraits suspended above a lush Nepalese valley, defined by reflections, cable hum, and the rh",
+      "timestamp": "2026-04-27T05:18:09.319708",
+      "status": "ok",
+      "grid_pos": "(280, 2021)"
+    },
+    {
+      "index": 1139,
+      "prompt_file": "1139_20260427_051809_original_prompt.txt",
+      "video_file": "1139_20260427_051809_screen_capture.mp4",
+      "caption_preview": "title: \"The Seer\u2019s Horizon: Icelandic Magic Realism\"\nseed: \"A geological theater where invisible spirits reside in volcanic basalt; the vibrancy of moss meets the abrasive yellow iron of development u",
+      "timestamp": "2026-04-27T05:19:18.622586",
+      "status": "ok",
+      "grid_pos": "(799, 2021)"
+    },
+    {
+      "index": 1140,
+      "prompt_file": "1140_20260427_051924_original_prompt.txt",
+      "video_file": "1140_20260427_051924_screen_capture.mp4",
+      "caption_preview": "title: \"Aboio: The Wordless Sert\u00e3o Lament\"\nseed: \"Ancient Brazilian cattle-chants echo through semi-arid plains; a sensory study of vaqueiro customs rendered in the gritty, immediate textures of early",
+      "timestamp": "2026-04-27T05:20:34.226392",
+      "status": "ok",
+      "grid_pos": "(280, 1993)"
+    },
+    {
+      "index": 1141,
+      "prompt_file": "1141_20260427_052034_original_prompt.txt",
+      "video_file": "1141_20260427_052034_screen_capture.mp4",
+      "caption_preview": "title: \"The Desert Sea: Borderland Ghosts\"\nseed: \"A thalassic desert borderland where flashlights and fires piece together a 16mm landscape of discarded human passage and ghostly stasis.\"\n\nancestral_e",
+      "timestamp": "2026-04-27T05:21:43.796570",
+      "status": "ok",
+      "grid_pos": "(799, 1993)"
+    },
+    {
+      "index": 1142,
+      "prompt_file": "1142_20260427_052149_original_prompt.txt",
+      "video_file": "1142_20260427_052149_screen_capture.mp4",
+      "caption_preview": "title: \"The Missing Picture: Tactile Archival Memory\"\nseed: \"Hand-carved clay figures standing in miniature landscapes of trauma; the manufactured image filling an archival void through tactile dioram",
+      "timestamp": "2026-04-27T05:22:59.435246",
+      "status": "ok",
+      "grid_pos": "(280, 1963)"
+    },
+    {
+      "index": 1143,
+      "prompt_file": "1143_20260427_052259_original_prompt.txt",
+      "video_file": "1143_20260427_052259_screen_capture.mp4",
+      "caption_preview": "title: \"REGO LIOT: The Saturated Mechanical Ghost\"\nseed: \"Abstract digital hallucinations of a cowboy and internal anatomy; a glitchy, saturated fever dream of Western mythos and bio-mechanical strobe",
+      "timestamp": "2026-04-27T05:24:08.210515",
+      "status": "ok",
+      "grid_pos": "(799, 1963)"
+    },
+    {
+      "index": 1144,
+      "prompt_file": "1144_20260427_052413_original_prompt.txt",
+      "video_file": "1144_20260427_052413_screen_capture.mp4",
+      "caption_preview": "title: \"REGO LIOT: The Plastic Saturated Ritual\"\nseed: \"A saturated block-world in high-contrast stasis; plastic figures caught in primary-colored explosions and neon glimmers, a toy-box riot under a",
+      "timestamp": "2026-04-27T05:25:23.314896",
+      "status": "ok",
+      "grid_pos": "(280, 1933)"
+    },
+    {
+      "index": 1145,
+      "prompt_file": "1145_20260427_052523_original_prompt.txt",
+      "video_file": "1145_20260427_052523_screen_capture.mp4",
+      "caption_preview": "title: \"Machine Evolution: The Cyber-Western Stroboscope\"\nseed: \"A flickering Western-cybernetic hybrid; where digitized cowboy icons and anatomical blueprints mash into a saturated, strobe-lit desert",
+      "timestamp": "2026-04-27T05:26:32.355574",
+      "status": "ok",
+      "grid_pos": "(799, 1933)"
+    },
+    {
+      "index": 1146,
+      "prompt_file": "1146_20260427_052637_original_prompt.txt",
+      "video_file": "1146_20260427_052637_screen_capture.mp4",
+      "caption_preview": "title: \"Mesa Drip: Stained-Glass Cyber-Western\"\nseed: \"A cyber-western stained-glass hallucination; where cowboy silhouettes, liquid-light grids, and smoking figures collide in a high-contrast, atmosp",
+      "timestamp": "2026-04-27T05:27:46.978055",
+      "status": "ok",
+      "grid_pos": "(280, 1905)"
+    },
+    {
+      "index": 1147,
+      "prompt_file": "1147_20260427_052746_original_prompt.txt",
+      "video_file": "1147_20260427_052746_screen_capture.mp4",
+      "caption_preview": "title: \"MESA CHIP: The Cyber-Western Mosaic\"\nseed: \"A rhythmic, saturated Western-cybernetic collage; a cowboy wandering through a digital mesa where Monument Valley vistas are sliced by circuitry gri",
+      "timestamp": "2026-04-27T05:28:56.035197",
+      "status": "ok",
+      "grid_pos": "(799, 1905)"
+    },
+    {
+      "index": 1148,
+      "prompt_file": "1148_20260427_052901_original_prompt.txt",
+      "video_file": "1148_20260427_052901_screen_capture.mp4",
+      "caption_preview": "title: \"Promptcorn: The Slow-Roasted Memory Grid\"\nseed: \"A tactile, glitch-streaked meta-narrative; hand-carved clay figures meeting circuit-board landscapes and cinematic explosions under a flickerin",
+      "timestamp": "2026-04-27T05:30:10.887510",
+      "status": "ok",
+      "grid_pos": "(280, 1878)"
+    },
+    {
+      "index": 1149,
+      "prompt_file": "1149_20260427_053010_original_prompt.txt",
+      "video_file": "1149_20260427_053010_screen_capture.mp4",
+      "caption_preview": "title: \"Lone Spectral Wraith: Western Ghost-Glass\"\nseed: \"A Western mythos dissolving into digital artifacts; where cowboy silhouettes, melting saloons, and foggy nocturnes mash into a high-contrast,",
+      "timestamp": "2026-04-27T05:31:19.943188",
+      "status": "ok",
+      "grid_pos": "(799, 1878)"
+    },
+    {
+      "index": 1150,
+      "prompt_file": "1150_20260427_053125_original_prompt.txt",
+      "video_file": "1150_20260427_053125_screen_capture.mp4",
+      "caption_preview": "title: \"Out of the Blue: Temporal Shards\"\nseed: \"A kaleidoscopic sensory autopsy; mirrored 1960s sedans, giant sub-aquatic bulbs, and desert wraiths caught in a high-contrast, strobe-lit digital mosai",
+      "timestamp": "2026-04-27T05:32:34.615671",
+      "status": "ok",
+      "grid_pos": "(280, 1848)"
+    },
+    {
+      "index": 1151,
+      "prompt_file": "1151_20260427_053234_original_prompt.txt",
+      "video_file": "1151_20260427_053234_screen_capture.mp4",
+      "caption_preview": "title: \"Tangerine Dream: The Citrus Cycle\"\nseed: \"A tactile, amber-hued odyssey where cosmic oranges and retro-futuristic rituals collide; a mashup of archival memory, lunar agriculture, and neon-lit",
+      "timestamp": "2026-04-27T05:33:44.245281",
+      "status": "ok",
+      "grid_pos": "(799, 1848)"
+    },
+    {
+      "index": 1152,
+      "prompt_file": "1152_20260427_053349_original_prompt.txt",
+      "video_file": "1152_20260427_053349_screen_capture.mp4",
+      "caption_preview": "title: \"Neon Synthwave Cosmic Isolation\"\nseed: \"A retro-futuristic synthwave dream where a neon-outlined astronaut wanders liquid light landscapes, sending signals into a vast, lonely cosmos of orange",
+      "timestamp": "2026-04-27T05:34:58.816600",
+      "status": "ok",
+      "grid_pos": "(280, 1819)"
+    },
+    {
+      "index": 1153,
+      "prompt_file": "1153_20260427_053458_original_prompt.txt",
+      "video_file": "1153_20260427_053458_screen_capture.mp4",
+      "caption_preview": "title: \"Fluid Dreamscape of Collision\"\nseed: \"A fluid, expressionistic dreamscape blending galloping horses, colliding cars, and distorted reflections in wet, vivid strokes of orange and blue.\"\n\nances",
+      "timestamp": "2026-04-27T05:36:07.697975",
+      "status": "ok",
+      "grid_pos": "(799, 1819)"
+    },
+    {
+      "index": 1154,
+      "prompt_file": "1154_20260427_053613_original_prompt.txt",
+      "video_file": "1154_20260427_053613_screen_capture.mp4",
+      "caption_preview": "title: \"Ethiopian Retro-Future Living Room\"\nseed: \"A retro-futuristic Ethiopian living room bridging the 1970s and 2070s, where warm wood paneling and traditional textiles meet floating green hologram",
+      "timestamp": "2026-04-27T05:37:23.059946",
+      "status": "ok",
+      "grid_pos": "(280, 1792)"
+    },
+    {
+      "index": 1155,
+      "prompt_file": "1155_20260427_053723_original_prompt.txt",
+      "video_file": "1155_20260427_053723_screen_capture.mp4",
+      "caption_preview": "title: \"Cybernetic Swarm in the Data Void\"\nseed: \"Ethereal, glowing cyber-bees swarm through a deep digital void, illuminating a starry, neon-lit cosmos of swirling data circuits and a massive untamed",
+      "timestamp": "2026-04-27T05:38:31.804192",
+      "status": "ok",
+      "grid_pos": "(799, 1792)"
+    },
+    {
+      "index": 1156,
+      "prompt_file": "1156_20260427_053837_original_prompt.txt",
+      "video_file": "1156_20260427_053837_screen_capture.mp4",
+      "caption_preview": "title: \"Reality is an Evolutionary Prison\"\nseed: \"A painterly cybernetic montage tracing evolution from DNA to cyborgs, contrasting cinematic memories and caged animals under the revelation that 'REAL",
+      "timestamp": "2026-04-27T05:39:46.428460",
+      "status": "ok",
+      "grid_pos": "(280, 1765)"
+    },
+    {
+      "index": 1157,
+      "prompt_file": "1157_20260427_053946_original_prompt.txt",
+      "video_file": "1157_20260427_053946_screen_capture.mp4",
+      "caption_preview": "title: \"Cybernetic Pond System\"\nseed: \"A stylized 2D animation blending organic pond life with digital diagrams, where a green frog and pink lotus are mapped through UI overlays and abstract waveforms",
+      "timestamp": "2026-04-27T05:40:55.628586",
+      "status": "ok",
+      "grid_pos": "(799, 1765)"
+    },
+    {
+      "index": 1158,
+      "prompt_file": "1158_20260427_054101_original_prompt.txt",
+      "video_file": "1158_20260427_054101_screen_capture.mp4",
+      "caption_preview": "title: \"Latent Space Monologue Hallucination\"\nseed: \"A locked-off, rapidly morphing AI style-transfer montage of a cinematic monologue, transitioning seamlessly through cubism, neon vaporwave, ink ske",
+      "timestamp": "2026-04-27T05:42:10.428604",
+      "status": "ok",
+      "grid_pos": "(280, 1736)"
+    },
+    {
+      "index": 1159,
+      "prompt_file": "1159_20260427_054210_original_prompt.txt",
+      "video_file": "1159_20260427_054210_screen_capture.mp4",
+      "caption_preview": "title: \"Biometric Surveillance Pop Montage\"\nseed: \"A hyper-kinetic pop-art montage blending retro animation, facial recognition wireframes, and vibrant vector graphics to critique biometric surveillan",
+      "timestamp": "2026-04-27T05:43:19.115260",
+      "status": "ok",
+      "grid_pos": "(799, 1736)"
+    },
+    {
+      "index": 1160,
+      "prompt_file": "1160_20260427_054324_original_prompt.txt",
+      "video_file": "1160_20260427_054324_screen_capture.mp4",
+      "caption_preview": "title: \"Latent Hamlet Generative Hallucination\"\nseed: \"A locked-off, rapidly morphing AI style-transfer montage of Kenneth Branagh's Hamlet, transitioning seamlessly through anime, claymation, cyberpu",
+      "timestamp": "2026-04-27T05:44:33.684411",
+      "status": "ok",
+      "grid_pos": "(280, 1709)"
+    },
+    {
+      "index": 1161,
+      "prompt_file": "1161_20260427_054433_original_prompt.txt",
+      "video_file": "1161_20260427_054433_screen_capture.mp4",
+      "caption_preview": "title: \"Latent Blockbuster Hamlet Morph\"\nseed: \"A continuous tracking shot down a video store aisle that violently morphs through AI style-transfers, turning a modern Hamlet into a cybernetic hallucin",
+      "timestamp": "2026-04-27T05:45:43.240543",
+      "status": "ok",
+      "grid_pos": "(799, 1709)"
+    },
+    {
+      "index": 1162,
+      "prompt_file": "1162_20260427_054548_original_prompt.txt",
+      "video_file": "1162_20260427_054548_screen_capture.mp4",
+      "caption_preview": "title: \"Latent Pond Morphing Simulation\"\nseed: \"A centralized, circular forest pond rapidly morphs through photorealistic light, pop-culture cartoons, and glowing orange dye in a locked-off, looping A",
+      "timestamp": "2026-04-27T05:46:57.817966",
+      "status": "ok",
+      "grid_pos": "(280, 1680)"
+    },
+    {
+      "index": 1163,
+      "prompt_file": "1163_20260427_054657_original_prompt.txt",
+      "video_file": "1163_20260427_054657_screen_capture.mp4",
+      "caption_preview": "title: \"Sacred Silicon Stained Glass\"\nseed: \"Everyday modern scenes\u2014laptop workers, janitors, and factory lines\u2014rendered as luminous stained glass, fracturing ordinary labor into vibrant, sacred geome",
+      "timestamp": "2026-04-27T05:48:06.851817",
+      "status": "ok",
+      "grid_pos": "(799, 1680)"
+    },
+    {
+      "index": 1164,
+      "prompt_file": "1164_20260427_054812_original_prompt.txt",
+      "video_file": "1164_20260427_054812_screen_capture.mp4",
+      "caption_preview": "title: \"Barefoot Latent Forest Morph\"\nseed: \"A rotoscoped animation blending a flat, cartoonish barefoot figure over a photorealistic forest trail, before rapidly morphing into abstract cybernetic cro",
+      "timestamp": "2026-04-27T05:49:21.592826",
+      "status": "ok",
+      "grid_pos": "(280, 1650)"
+    },
+    {
+      "index": 1165,
+      "prompt_file": "1165_20260427_054921_original_prompt.txt",
+      "video_file": "1165_20260427_054921_screen_capture.mp4",
+      "caption_preview": "title: \"Latent Data Photomosaic\"\nseed: \"A cybernetic latent space visualization where human silhouettes, bustling crowds, futuristic cities, and starry voids are constructed entirely from a morphing m",
+      "timestamp": "2026-04-27T05:50:30.801590",
+      "status": "ok",
+      "grid_pos": "(799, 1650)"
+    },
+    {
+      "index": 1166,
+      "prompt_file": "1166_20260427_055036_original_prompt.txt",
+      "video_file": "1166_20260427_055036_screen_capture.mp4",
+      "caption_preview": "title: \"Hyper-Reality: The Saturated Data-Haze\"\nseed: \"A flickering, high-contrast AR odyssey; clay-textured avatars navigating a neon-saturated desert and city grid, where physical dust and digital d",
+      "timestamp": "2026-04-27T05:51:45.443887",
+      "status": "ok",
+      "grid_pos": "(280, 1621)"
+    },
+    {
+      "index": 1167,
+      "prompt_file": "1167_20260427_055145_original_prompt.txt",
+      "video_file": "1167_20260427_055145_screen_capture.mp4",
+      "caption_preview": "title: \"Prickly Isolation and Desert Grace\"\nseed: \"A surreal cinematic journey of a figure with a saguaro cactus head, navigating a hazy urban landscape with defensive grace and backlit needles in the",
+      "timestamp": "2026-04-27T05:52:54.829485",
+      "status": "ok",
+      "grid_pos": "(799, 1621)"
+    },
+    {
+      "index": 1168,
+      "prompt_file": "1168_20260427_055300_original_prompt.txt",
+      "video_file": "1168_20260427_055300_screen_capture.mp4",
+      "caption_preview": "title: \"The Look of Silence: Ocular Interrogation\"\nseed: \"An optometrist\u2019s lens as a clinical bridge to atrocity; high-contrast Indonesian interiors, lush verdant landscapes, and the heavy, silent wei",
+      "timestamp": "2026-04-27T05:54:09.297345",
+      "status": "ok",
+      "grid_pos": "(280, 1591)"
+    },
+    {
+      "index": 1169,
+      "prompt_file": "1169_20260427_055409_original_prompt.txt",
+      "video_file": "1169_20260427_055409_screen_capture.mp4",
+      "caption_preview": "title: \"Dancing Cactus: The Cyber-Western Stroboscope\"\nseed: \"A flickering Western-cybernetic hybrid; where digitized cowboy icons and anatomical blueprints mash into a saturated, strobe-lit desert of",
+      "timestamp": "2026-04-27T05:55:18.682109",
+      "status": "ok",
+      "grid_pos": "(799, 1591)"
+    },
+    {
+      "index": 1170,
+      "prompt_file": "1170_20260427_055524_original_prompt.txt",
+      "video_file": "1170_20260427_055524_screen_capture.mp4",
+      "caption_preview": "Generate a continuous, metamorphic cinematic sequence. Begin with a hyper-macro shot of iron oxidizing: visualize this not as static decay, but as a slow-motion, invisible fire unwinding metallic latt",
+      "timestamp": "2026-04-27T05:56:32.981773",
+      "status": "ok",
+      "grid_pos": "(280, 1564)"
+    },
+    {
+      "index": 1171,
+      "prompt_file": "1171_20260427_055632_original_prompt.txt",
+      "video_file": "1171_20260427_055632_screen_capture.mp4",
+      "caption_preview": "title: \"Memoria: The Auditory Stasis\"\nseed: \"An atmospheric odyssey of sensory haunting; where Colombian mist, clinical bone-labs, and the phantom 'rumble' of the earth mash into a profound, meditativ",
+      "timestamp": "2026-04-27T05:57:42.326092",
+      "status": "ok",
+      "grid_pos": "(799, 1564)"
+    },
+    {
+      "index": 1172,
+      "prompt_file": "1172_20260427_055747_original_prompt.txt",
+      "video_file": "1172_20260427_055747_screen_capture.mp4",
+      "caption_preview": "Generate a continuous, metamorphic cinematic sequence. Begin with a hyper-macro shot of iron oxidizing: visualize this not as static decay, but as a slow-motion, invisible fire unwinding metallic latt",
+      "timestamp": "2026-04-27T05:58:57.307726",
+      "status": "ok",
+      "grid_pos": "(280, 2147)"
+    },
+    {
+      "index": 1173,
+      "prompt_file": "1173_20260427_055857_original_prompt.txt",
+      "video_file": "1173_20260427_055857_screen_capture.mp4",
+      "caption_preview": "title: \"Memoria: The Auditory Stasis\"\nseed: \"An atmospheric odyssey of sensory haunting; where Colombian mist, clinical bone-labs, and the phantom 'rumble' of the earth mash into a profound, meditativ",
+      "timestamp": "2026-04-27T06:00:06.149165",
+      "status": "ok",
+      "grid_pos": "(799, 2147)"
+    },
+    {
+      "index": 1174,
+      "prompt_file": "1174_20260427_060011_original_prompt.txt",
+      "video_file": "1174_20260427_060011_screen_capture.mp4",
+      "caption_preview": "Morph the dense oceanic saltwater into the hyper-detailed topography of a single human tear. Visualize the impossible paradox: metal violently burning underwater. Cut to a macro shot of flawless, poli",
+      "timestamp": "2026-04-27T06:01:20.928855",
+      "status": "ok",
+      "grid_pos": "(280, 2134)"
+    },
+    {
+      "index": 1175,
+      "prompt_file": "1175_20260427_060120_original_prompt.txt",
+      "video_file": "1175_20260427_060120_screen_capture.mp4",
+      "caption_preview": "Whip-pan to a stark chemical collision: an iron surface exposed to air and water igniting like a phosphorus match, the invisible flame accelerated by a deluge of coarse white salt. Plunge the camera i",
+      "timestamp": "2026-04-27T06:02:29.565449",
+      "status": "ok",
+      "grid_pos": "(799, 2134)"
+    },
+    {
+      "index": 1176,
+      "prompt_file": "1176_20260427_060235_original_prompt.txt",
+      "video_file": "1176_20260427_060235_screen_capture.mp4",
+      "caption_preview": "title: \"THE OXIDATION ENGINE\"\nseed: \"Iron is pulled from earth, forged into war machines, submerged in oceans, and oxidized back into rust and human tears.\"\ndiegesis:\n  premise: \"A physical cycle wher",
+      "timestamp": "2026-04-27T06:03:42.623797",
+      "status": "ok",
+      "grid_pos": "(280, 2121)"
+    },
+    {
+      "index": 1177,
+      "prompt_file": "1177_20260427_060342_original_prompt.txt",
+      "video_file": "1177_20260427_060342_screen_capture.mp4",
+      "caption_preview": "<Iron> [unwinds_to] <Rust>\n<Rust> [moves_as] <Slow_Motion_Fire>\n<Iron> [binds] <Oxygen>\n<Oxygen> [pigments] <Blood>\n<Tribe> [extracts] <Metal>\n<Tribe> [bleeds_into] <Earth>\n<Saltwater> [accelerates] <",
+      "timestamp": "2026-04-27T06:04:51.311114",
+      "status": "ok",
+      "grid_pos": "(799, 2121)"
+    },
+    {
+      "index": 1178,
+      "prompt_file": "1178_20260427_060456_original_prompt.txt",
+      "video_file": "1178_20260427_060456_screen_capture.mp4",
+      "caption_preview": "CUTBASTARD-1 ONLINE. PATCH CARVING ACTIVE. O, A, B, E, F LIVE. C AND D LOCKED.\n\n\\<target=\"Matrix\\_O\"\\>\n\n## Brutal Structural Diagnosis\n\n  - **Locked Frame Stagnation:** The source relies on a static,",
+      "timestamp": "2026-04-27T06:06:06.551455",
+      "status": "ok",
+      "grid_pos": "(280, 2108)"
+    },
+    {
+      "index": 1179,
+      "prompt_file": "1179_20260427_060606_original_prompt.txt",
+      "video_file": "1179_20260427_060606_screen_capture.mp4",
+      "caption_preview": "title: \"THE OXIDATION ENGINE\"\nseed: \"Iron is pulled from earth, forged into war machines, submerged in oceans, and oxidized back into rust and human tears.\"\ndiegesis:\n  premise: \"A physical cycle wher",
+      "timestamp": "2026-04-27T06:07:15.422987",
+      "status": "ok",
+      "grid_pos": "(799, 2108)"
+    },
+    {
+      "index": 1180,
+      "prompt_file": "1180_20260427_060721_original_prompt.txt",
+      "video_file": "1180_20260427_060721_screen_capture.mp4",
+      "caption_preview": "PRIME ENGINE v6.0 (TITAN FORGE) ONLINE. MATRICES A & B ACTIVE. MATRICES C & D STANDBY. AWAITING TARGET FIELD.\n\n*Target field data recognized. Proceeding with Matrix A and Matrix B extraction protocols",
+      "timestamp": "2026-04-27T06:08:30.359614",
+      "status": "ok",
+      "grid_pos": "(280, 2094)"
+    },
+    {
+      "index": 1181,
+      "prompt_file": "1181_20260427_060830_original_prompt.txt",
+      "video_file": "1181_20260427_060830_screen_capture.mp4",
+      "caption_preview": "PRIME ENGINE v6.0 (TITAN FORGE) ONLINE. MATRICES A & B ACTIVE. MATRICES C & D STANDBY. AWAITING TARGET FIELD.\n\n*Target field data recognized. Proceeding with Matrix A and Matrix B extraction protocols",
+      "timestamp": "2026-04-27T06:09:39.852469",
+      "status": "ok",
+      "grid_pos": "(799, 2094)"
+    },
+    {
+      "index": 1182,
+      "prompt_file": "1182_20260427_060945_original_prompt.txt",
+      "video_file": "1182_20260427_060945_screen_capture.mp4",
+      "caption_preview": "title: \"Rabbit Topography Traverse\"\nseed: \"A white rabbit entity translates across three distinct physical topographies: grassy highlands, carved stone architecture, and elevated mountain valleys.\"\n\nd",
+      "timestamp": "2026-04-27T06:10:54.520616",
+      "status": "ok",
+      "grid_pos": "(280, 2078)"
+    },
+    {
+      "index": 1183,
+      "prompt_file": "1183_20260427_061054_original_prompt.txt",
+      "video_file": "1183_20260427_061054_screen_capture.mp4",
+      "caption_preview": "# Diegesis\n- **Premise**: Sequential positioning of a white rabbit entity within distinct Ethiopian geographic coordinates.\n- **World Rules**: Rabbit entity anchors the visual center. Vocal track prov",
+      "timestamp": "2026-04-27T06:12:04.210257",
+      "status": "ok",
+      "grid_pos": "(799, 2078)"
+    },
+    {
+      "index": 1184,
+      "prompt_file": "1184_20260427_061209_original_prompt.txt",
+      "video_file": "1184_20260427_061209_screen_capture.mp4",
+      "caption_preview": "title: \"Static Rabbit Teleportation Sequence\"\nseed: \"A white rabbit sits motionless while background environments are replaced via discontinuous hard cuts.\"\ndiegesis:\n  premise: \"An entity is verbally",
+      "timestamp": "2026-04-27T06:13:19.047487",
+      "status": "ok",
+      "grid_pos": "(280, 2050)"
+    },
+    {
+      "index": 1185,
+      "prompt_file": "1185_20260427_061319_original_prompt.txt",
+      "video_file": "1185_20260427_061319_screen_capture.mp4",
+      "caption_preview": "<VOICEOVER> [fabricates] <KINETIC_VECTOR>\n<RABBIT_ENTITY> [maintains] <STATIC_POSTURE>\n<CAMERA> [drifts_over] <STATIC_ENTITY>\n<HARD_CUT> [severs] <SPATIAL_CONTINUITY>\n<RABBIT_ENTITY> [teleports_to] <N",
+      "timestamp": "2026-04-27T06:14:28.075985",
+      "status": "ok",
+      "grid_pos": "(799, 2050)"
+    },
+    {
+      "index": 1186,
+      "prompt_file": "1186_20260427_061433_original_prompt.txt",
+      "video_file": "1186_20260427_061433_screen_capture.mp4",
+      "caption_preview": "@cool_radi.pricklypal  GOLDEN BUTCHER ONLINE. JOINT HUNT ACTIVE. SHOW ME THE OX.\n\n\\<Matrix\\_O\\>\n\n## Structural Diagnosis\n\n  - The footage rejects the buoyant evasion of the previous iteration; this is",
+      "timestamp": "2026-04-27T06:15:43.615717",
+      "status": "ok",
+      "grid_pos": "(280, 2020)"
+    },
+    {
+      "index": 1187,
+      "prompt_file": "1187_20260427_061543_original_prompt.txt",
+      "video_file": "1187_20260427_061543_screen_capture.mp4",
+      "caption_preview": "Diegesis\nPremise: An entity possesses a human torso and limbs, but a dense, ribbed saguaro cactus functions as its head.\n\nWorld Rules: The head possesses heavy physical mass and dense armor. The entit",
+      "timestamp": "2026-04-27T06:16:53.100392",
+      "status": "ok",
+      "grid_pos": "(799, 2020)"
+    },
+    {
+      "index": 1188,
+      "prompt_file": "1188_20260427_061658_original_prompt.txt",
+      "video_file": "1188_20260427_061658_screen_capture.mp4",
+      "caption_preview": "Create a cinematic, high-fidelity generative sequence of the Shield of Achilles as a world-forged artifact, beginning not with generic fantasy battle spectacle but with the divine construction of a va",
+      "timestamp": "2026-04-27T06:18:07.680628",
+      "status": "ok",
+      "grid_pos": "(280, 1993)"
+    },
+    {
+      "index": 1189,
+      "prompt_file": "1189_20260427_061807_original_prompt.txt",
+      "video_file": "1189_20260427_061807_screen_capture.mp4",
+      "caption_preview": "<Vulcan> [forges] <Large_Solid_Shield>\n<Vulcan> [throws] <Triple_Glittering_Border>\n<Silver_Belt> [suspends_from] <Shield_Rim>\n<Shield> [contains] <Five_Metal_Folds>\n<Vulcan> [inlays] <Earth_and_Heave",
+      "timestamp": "2026-04-27T06:19:16.245632",
+      "status": "ok",
+      "grid_pos": "(799, 1993)"
+    },
+    {
+      "index": 1190,
+      "prompt_file": "1190_20260427_061921_original_prompt.txt",
+      "video_file": "1190_20260427_061921_screen_capture.mp4",
+      "caption_preview": "storyboard Shieldworld {\n\n  card <S1> {\n    kind: \"continuity_span\"\n    sequence_time_range: \"unknown\"\n    place: \"the shield as cosmic field\"\n    continuity_field: \"metal world opening to universal o",
+      "timestamp": "2026-04-27T06:20:31.297764",
+      "status": "ok",
+      "grid_pos": "(280, 1966)"
+    },
+    {
+      "index": 1191,
+      "prompt_file": "1191_20260427_062031_original_prompt.txt",
+      "video_file": "1191_20260427_062031_screen_capture.mp4",
+      "caption_preview": "\"Generate the Shield of Achilles as a divine circular artifact that contains the total order of the world within its forged surface. Preserve the shield as a bounded metal object with triple shining b",
+      "timestamp": "2026-04-27T06:21:39.787207",
+      "status": "ok",
+      "grid_pos": "(799, 1966)"
+    },
+    {
+      "index": 1192,
+      "prompt_file": "1192_20260427_062145_original_prompt.txt",
+      "video_file": "1192_20260427_062145_screen_capture.mp4",
+      "caption_preview": "\"Full shield traversal from cosmic center through civic, agrarian, pastoral, and rim zones.\",\n\"anchor\": \"Frontal view of the forged shield as a continuous embossed world.\",\n\"hinge\": \"The shield is one",
+      "timestamp": "2026-04-27T06:22:54.351913",
+      "status": "ok",
+      "grid_pos": "(280, 1937)"
+    },
+    {
+      "index": 1193,
+      "prompt_file": "1193_20260427_062254_original_prompt.txt",
+      "video_file": "1193_20260427_062254_screen_capture.mp4",
+      "caption_preview": "COMMAND: GENERATE CONTINUOUS LONG-TAKE. HINGE: forged circular shield carrying nested world-bands. LOCK on hammered center at macro scale. CENTER on the silver-belted axis. FLOW outward at slow ceremo",
+      "timestamp": "2026-04-27T06:24:03.405162",
+      "status": "ok",
+      "grid_pos": "(799, 1937)"
+    }
+  ]
+}
