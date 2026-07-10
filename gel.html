@@ -1038,6 +1038,7 @@ function bandMenu(e,l,k,id){
       pushUndo();clipMarks[id]=hx;saveCMarks();build();flash('MARKED '+nm.toUpperCase());}}))
     .concat([{t:'CLEAR MARK',f:()=>{pushUndo();delete clipMarks[id];saveCMarks();build();}}]))});
   items.push({t:'DOWNLOAD VIDEO',f:()=>dlVideo(id)});
+  items.push({t:'CONTACT SHEET',f:()=>window.open('SHEETS/'+id+'_sheet.jpg','_blank')});
   items.push({t:'DELETE FROM LANE',f:()=>{removeBands(l,[k]);flash('DELETED #'+clips[id].index);}});
   openCtx(e.clientX,e.clientY,items);
 }
