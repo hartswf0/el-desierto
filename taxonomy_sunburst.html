@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TAXONOMIZER — SORA corpus</title>
+<style>
+:root{--bk:#000;--wh:#fff;--teal:#19e6c8;--amber:#ffd23f;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--wh);color:var(--bk);font-family:var(--mono);overflow:hidden}
+#app{display:grid;grid-template-columns:210px 1fr 340px;grid-template-rows:44px 1fr;height:100vh}
+#hdr{grid-column:1/4;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--bk);padding:0 12px}
+#hdr b{font-size:13px;letter-spacing:.1em}
+#q{flex:0 0 300px;font:inherit;font-size:12px;border:2px solid var(--bk);padding:5px 8px}
+#stat{font-size:10px;font-weight:700;margin-left:auto;white-space:nowrap}
+#facets{border-right:3px solid var(--bk);overflow-y:auto;padding:8px}
+#facets h3{font-size:9px;letter-spacing:.12em;color:#888;margin:8px 4px 3px}
+.fbtn{display:flex;justify-content:space-between;font-size:11px;font-weight:700;padding:5px 7px;border:2px solid transparent;cursor:pointer;text-transform:uppercase}
+.fbtn:hover{border-color:var(--bk)}
+.fbtn.on{background:var(--bk);color:var(--wh)}
+.fbtn i{font-style:normal;opacity:.6}
+#center{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#sun{max-width:100%;max-height:100%}
+#crumb{position:absolute;top:8px;left:12px;font-size:11px;font-weight:900}
+#hint{position:absolute;bottom:8px;left:12px;font-size:9px;color:#888}
+#detail{border-left:3px solid var(--bk);overflow-y:auto;padding:10px;font-size:11px}
+#detail h2{font-size:13px;border-bottom:2px solid var(--bk);padding-bottom:5px;margin-bottom:8px}
+#dvid{width:100%;aspect-ratio:9/13;background:#111;display:none;margin-bottom:8px}
+.crow{border:2px solid var(--bk);padding:5px 7px;margin-bottom:5px;cursor:pointer;line-height:1.35}
+.crow:hover{background:var(--bk);color:var(--wh)}
+.crow b{font-size:11px}
+.crow .ex{font-size:9px;opacity:.7;display:block;margin-top:2px;max-height:44px;overflow:hidden}
+.crow .tg{font-size:8px;color:var(--teal);display:block}
+.crow:hover .tg{color:var(--amber)}
+.arc{cursor:pointer;stroke:#fff;stroke-width:1.2}
+.arc:hover{stroke:#000;stroke-width:2}
+.alabel{font-size:10px;font-weight:700;pointer-events:none;fill:#000}
+.clbl{font-size:9px;fill:#000;pointer-events:none}
+</style></head>
+<body>
+<div id="app">
+ <div id="hdr"><b>TAXONOMIZER</b>
+  <input id="q" placeholder="search prompts, dialogue, worlds, films…">
+  <span id="stat"></span></div>
+ <div id="facets"></div>
+ <div id="center"><div id="crumb"></div><svg id="sun" viewBox="-320 -320 640 640"></svg>
+  <div id="hint">click a wedge to drill · center = back · clips list on the right</div></div>
+ <div id="detail"><h2>SELECT A FACET</h2><div id="dbody">Pick a layer at left, then a wedge.</div></div>
+</div>
+<script>
+(async () => {
+const $ = id => document.getElementById(id);
+const T = await fetch('taxonomy2.json').then(r => r.json());
+const clips = T.clips, facets = T.facets;
+const FACET_GROUPS = [
+  ['WHAT FILM', ['named_film', 'scene', 'world', 'domain']],
+  ['WHAT IS VISIBLE', ['objects', 'event']],
+  ['HOW SHOT', ['viewpoint', 'shot_scale', 'style', 'luminance', 'motion', 'palette']],
+  ['VOICE', ['speech_act', 'voice', 'mode']],
+  ['FILM USE', ['film_function', 'editorial']],
+  ['PROVENANCE', ['grammar', 'session']],
+];
+const PALETTE = ['#19e6c8','#ffd23f','#3b82f6','#ff2e2e','#7cfc00','#ff8c00','#b19cd9','#00ced1','#e6194b','#3cb44b','#911eb4','#f58231','#46f0f0','#bcf60c'];
+let facet = 'named_film', drill = null, query = '';
+
+// ---- facet rail ----
+function buildRail() {
+  const el = $('facets'); el.innerHTML = '';
+  for (const [grp, fs] of FACET_GROUPS) {
+    const h = document.createElement('h3'); h.textContent = grp; el.appendChild(h);
+    for (const f of fs) {
+      const cats = facets[f] || {};
+      const b = document.createElement('div');
+      b.className = 'fbtn' + (f === facet ? ' on' : '');
+      b.innerHTML = `<span>${f.replace('_', ' ')}</span><i>${Object.keys(cats).length}</i>`;
+      b.onclick = () => { facet = f; drill = null; render(); };
+      el.appendChild(b);
+    }
+  }
+}
+
+// ---- sunburst geometry ----
+function arc(r0, r1, a0, a1) {
+  const p = (r, a) => [r * Math.cos(a - Math.PI/2), r * Math.sin(a - Math.PI/2)];
+  const [x0, y0] = p(r1, a0), [x1, y1] = p(r1, a1), [x2, y2] = p(r0, a1), [x3, y3] = p(r0, a0);
+  const laf = (a1 - a0) > Math.PI ? 1 : 0;
+  return `M${x0} ${y0}A${r1} ${r1} 0 ${laf} 1 ${x1} ${y1}L${x2} ${y2}A${r0} ${r0} 0 ${laf} 0 ${x3} ${y3}Z`;
+}
+function matchQ(idx) {
+  if (!query) return true;
+  const c = clips[idx];
+  return (c.title + ' ' + (c.prompt_excerpt||'') + ' ' + (c.transcript||'') + ' ' +
+          (c.world||'') + ' ' + (c.named_films||[]).join(' ') + ' ' + (c.environment||[]).join(' ')).toLowerCase().includes(query);
+}
+
+function render() {
+  buildRail();
+  const svg = $('sun'); svg.innerHTML = '';
+  const cats = facets[facet] || {};
+  // entries filtered by query
+  let entries = Object.entries(cats).map(([k, ix]) => [k, ix.filter(matchQ)]).filter(([, ix]) => ix.length);
+  entries.sort((a, b) => b[1].length - a[1].length);
+  const total = entries.reduce((s, [, ix]) => s + ix.length, 0) || 1;
+  $('stat').textContent = `${T.clip_count} clips · ${facet} · ${entries.length} categories`;
+  $('crumb').textContent = drill ? `${facet} ▸ ${drill}` : facet.toUpperCase();
+
+  if (drill) {
+    // drilled: show clips of one category as outer wedges
+    const ix = (cats[drill] || []).filter(matchQ);
+    drawClipRing(svg, ix, drill);
+    showCat(drill, ix);
+    return;
+  }
+  // ring of categories
+  let a = 0;
+  entries.forEach(([k, ix], i) => {
+    const frac = ix.length / total, a1 = a + frac * 2 * Math.PI;
+    const col = PALETTE[i % PALETTE.length];
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', arc(90, 230, a, a1));
+    path.setAttribute('fill', col); path.setAttribute('class', 'arc');
+    path.onclick = () => { drill = k; render(); };
+    path.appendChild(mkTitle(k + ' — ' + ix.length));
+    svg.appendChild(path);
+    if (frac > 0.03) {
+      const mid = (a + a1) / 2, r = 160;
+      const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      t.setAttribute('x', r * Math.cos(mid - Math.PI/2));
+      t.setAttribute('y', r * Math.sin(mid - Math.PI/2));
+      t.setAttribute('text-anchor', 'middle'); t.setAttribute('class', 'alabel');
+      t.setAttribute('transform', `rotate(${mid*180/Math.PI + (mid>Math.PI?90:-90)} ${r*Math.cos(mid-Math.PI/2)} ${r*Math.sin(mid-Math.PI/2)})`);
+      t.textContent = k.length > 16 ? k.slice(0, 15) + '…' : k;
+      svg.appendChild(t);
+    }
+    a = a1;
+  });
+  centerHub(svg, facet.toUpperCase(), () => { drill = null; render(); });
+  $('#detail'); $('dbody').innerHTML = 'Click a wedge to open its clips.';
+  $('detail').querySelector('h2').textContent = facet.replace('_',' ').toUpperCase();
+  $('dvid').style.display = 'none';
+}
+
+function drawClipRing(svg, ix, label) {
+  const n = ix.length;
+  ix.forEach((clipIdx, i) => {
+    const a0 = i / n * 2 * Math.PI, a1 = (i + 1) / n * 2 * Math.PI;
+    const c = clips[clipIdx];
+    const col = colorOf(c);
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', arc(110, 250, a0, a1));
+    path.setAttribute('fill', col); path.setAttribute('class', 'arc');
+    path.onclick = () => showClip(clipIdx);
+    path.appendChild(mkTitle('#' + c.index + ' ' + (c.title||'')));
+    svg.appendChild(path);
+  });
+  centerHub(svg, '◀ ' + (label.length>12?label.slice(0,11)+'…':label), () => { drill = null; render(); });
+}
+function colorOf(c) {
+  const m = { dark:'#26324a', twilight:'#6b7a99', luminous:'#ffe9a8' }[c.luminance] || '#888';
+  return m;
+}
+function centerHub(svg, text, onclick) {
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  const circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circ.setAttribute('r', 88); circ.setAttribute('fill', '#000'); circ.setAttribute('cursor','pointer');
+  circ.onclick = onclick;
+  g.appendChild(circ);
+  const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  t.setAttribute('text-anchor', 'middle'); t.setAttribute('fill', '#fff');
+  t.setAttribute('font-size', '12'); t.setAttribute('font-weight', '900'); t.setAttribute('y', 4);
+  t.setAttribute('pointer-events','none');
+  t.textContent = text.length > 15 ? text.slice(0, 14) + '…' : text;
+  g.appendChild(t);
+  svg.appendChild(g);
+}
+function mkTitle(s) { const t = document.createElementNS('http://www.w3.org/2000/svg', 'title'); t.textContent = s; return t; }
+
+function showCat(cat, ix) {
+  const d = $('detail'); d.querySelector('h2').textContent = cat + ' · ' + ix.length;
+  const body = $('dbody'); body.innerHTML = '';
+  $('dvid').style.display = 'none';
+  ix.slice(0, 120).forEach(i => {
+    const c = clips[i];
+    const row = document.createElement('div'); row.className = 'crow';
+    row.innerHTML = `<b>#${c.index} ${(c.title||'').slice(0,34)}</b>
+      <span class="tg">${(c.named_films||[]).join(' · ') || c.domain||''} ${c.camera?'· '+c.camera.join(','):''}</span>
+      <span class="ex">${(c.transcript||c.prompt_excerpt||'').slice(0,120)}</span>`;
+    row.onclick = () => showClip(i);
+    body.appendChild(row);
+  });
+}
+function showClip(i) {
+  const c = clips[i];
+  const d = $('detail'); d.querySelector('h2').textContent = '#' + c.index + ' ' + (c.title||'');
+  const v = $('dvid');
+  if (c.media_url) { v.src = c.media_url; v.style.display = 'block'; v.loop = true; v.muted = false; v.play().catch(()=>{}); }
+  else v.style.display = 'none';
+  $('dbody').innerHTML =
+    `<div class="tg" style="color:#0a8">FILMS: ${(c.named_films||[]).join(' · ')||'—'}</div>
+     <p style="margin:5px 0"><b>world</b> ${c.world||'—'} · <b>domain</b> ${c.domain} · <b>mode</b> ${c.mode}</p>
+     <p style="margin:5px 0"><b>camera</b> ${(c.camera||[]).join(', ')} · <b>env</b> ${(c.environment||[]).join(', ')}</p>
+     <p style="margin:5px 0"><b>form</b> ${c.luminance}/${c.motion}/${c.palette} · <b>voice</b> ${c.voice}</p>
+     ${c.transcript ? '<p style="margin:6px 0;background:#000;color:#19e6c8;padding:5px">SAYS: ' + c.transcript + '</p>' : ''}
+     <p style="margin:6px 0;font-size:10px;color:#555"><b>PROMPT</b> ${c.prompt_excerpt||'—'}</p>`;
+}
+function ensureDvid() {
+  if (!$('dvid')) { const v = document.createElement('video'); v.id = 'dvid'; v.playsInline = true;
+    $('detail').insertBefore(v, $('dbody')); }
+}
+// detail needs a video element + dbody container
+$('detail').innerHTML = '<h2>SELECT A FACET</h2><video id="dvid" playsinline></video><div id="dbody">Pick a layer at left, then a wedge.</div>';
+
+$('q').addEventListener('input', e => { query = e.target.value.trim().toLowerCase(); drill = null; render(); });
+render();
+})();
+</script>
+</body></html>

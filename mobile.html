@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+<title>Taxonomizer</title>
+<script>window.addEventListener('unhandledrejection',function(e){console.error('unhandled:',(e.reason&&e.reason.stack)||e.reason);});</script>
+<style>
+  :root{--bg:#fff;--ink:#111;--dim:#777;--line:#111;--soft:#eee;--pad:14px}
+  #statusBar{position:fixed;top:0;left:0;right:0;z-index:200;height:26px;background:var(--ink);color:#fff;
+    display:flex;align-items:center;gap:10px;padding:0 12px;font-size:10px;font-weight:700;letter-spacing:.04em}
+  #statusBar #stMid{flex:1;text-align:center;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #statusBar #stNet{opacity:.9}
+  #statusBar.busy #stNet::after{content:'LOADING';animation:blink 1s steps(2) infinite}
+  @keyframes blink{50%{opacity:.25}}
+  #app{padding-top:26px}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0}
+  html,body{height:100%;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,'SF Pro Text',Helvetica,Arial,sans-serif;overflow:hidden}
+  #app{position:fixed;inset:0;display:grid;grid-template-rows:1fr auto}
+  .screen{overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;padding-bottom:20px}
+  .screen.on{display:block}
+  h1{font-size:22px;font-weight:800;text-align:center;padding:14px 0 6px;letter-spacing:.02em}
+  .screen{padding-top:2px}
+  .hrow{display:flex;align-items:center;gap:8px;padding:0 var(--pad)}
+  .back{font-size:26px;padding:4px 10px;cursor:pointer;border:none;background:none}
+  /* search + chips */
+  .search{margin:8px var(--pad);display:flex;align-items:center;gap:8px;border:2px solid var(--line);
+    border-radius:14px;padding:10px 12px}
+  .search input{border:none;outline:none;font-size:15px;flex:1;background:none}
+  .chiprow{display:flex;gap:8px;overflow-x:auto;padding:6px var(--pad) 10px;scrollbar-width:none}
+  .fchip{flex:0 0 auto;border:2px solid var(--line);border-radius:12px;padding:8px 12px;
+    font-size:11px;font-weight:700;letter-spacing:.03em;display:flex;flex-direction:column;
+    align-items:center;gap:2px;min-width:72px;cursor:pointer;background:#fff}
+  .fchip.on{background:var(--ink);color:#fff}
+  .fchip span{font-size:16px}
+  /* family cards */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:6px var(--pad)}
+  .fcard{border:2px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;background:#fff}
+  .fcard img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;border-bottom:2px solid var(--line)}
+  .fcard .nm{font-weight:800;font-size:14px;padding:8px 10px 2px}
+  .fcard .ct{font-size:12px;color:var(--dim);padding:0 10px 10px}
+  .sect{font-size:13px;font-weight:800;letter-spacing:.05em;padding:14px var(--pad) 6px}
+  .plrows{padding:0 var(--pad)}
+  .plrow{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:12px;
+    padding:12px;margin-bottom:8px;font-weight:700;font-size:14px;cursor:pointer;background:#fff}
+  .plrow .ar{margin-left:auto;color:var(--dim)}
+  /* family detail */
+  .hero{display:flex;gap:12px;border:2px solid var(--line);border-radius:16px;margin:8px var(--pad);
+    overflow:hidden;background:#fff}
+  .hero img{width:42%;aspect-ratio:9/10;object-fit:cover;border-right:2px solid var(--line)}
+  .hero .hin{padding:12px 12px 12px 0;flex:1;display:flex;flex-direction:column;gap:8px}
+  .hero h2{font-size:18px;font-weight:800}
+  .hero .ct{font-size:12px;color:var(--dim)}
+  .btn{border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:800;
+    font-size:13px;background:#fff;cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center}
+  .btn.primary{background:var(--ink);color:#fff}
+  .cliprows{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:8px var(--pad) 90px}
+  .clip{border:2px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;position:relative}
+  .clip img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;border-bottom:2px solid var(--line);cursor:pointer}
+  .clip .nm{font-weight:700;font-size:12px;padding:7px 40px 2px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .clip .ct{font-size:11px;color:var(--dim);padding:0 10px 9px}
+  .clip .add{position:absolute;right:8px;bottom:8px;width:34px;height:34px;border-radius:50%;
+    border:2px solid var(--line);background:#fff;font-size:20px;line-height:30px;text-align:center;cursor:pointer}
+  .clip.sel .add{background:var(--ink);color:#fff}
+  #selbar{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom));
+    display:none;align-items:center;gap:10px;padding:10px var(--pad);background:#fff;border-top:2px solid var(--line)}
+  #selbar.on{display:flex}
+  #selbar b{font-size:16px}
+  #selbar .btn{flex:1}
+  /* watch */
+  #wplayer{background:#000;position:relative}
+  #wvid{width:100%;max-height:52vh;display:block}
+  .loadTag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    background:rgba(0,0,0,.7);color:#fff;font-size:11px;font-weight:800;letter-spacing:.06em;
+    padding:6px 12px;border-radius:8px;pointer-events:none;display:none}
+  .loadTag.on{display:block}
+  .hdTag{position:absolute;right:8px;top:8px;background:rgba(0,0,0,.6);color:#fff;border:1px solid #fff;
+    border-radius:6px;font-size:10px;font-weight:800;padding:4px 8px;cursor:pointer}
+  .hdTag.on{background:#fff;color:#000}
+  .errTag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#fff;font-size:12px;
+    font-weight:700;text-align:center;display:none;background:rgba(150,0,0,.75);padding:8px 14px;border-radius:8px}
+  .errTag.on{display:block}
+  .wtitle{font-size:19px;font-weight:800;padding:10px var(--pad) 2px}
+  .wsub{font-size:13px;color:var(--dim);padding:0 var(--pad) 8px}
+  .wsub b{color:var(--ink);cursor:pointer}
+  .thumbrow{display:flex;gap:8px;overflow-x:auto;padding:4px var(--pad) 8px;scrollbar-width:none}
+  .thumbrow .t{flex:0 0 auto;width:96px;cursor:pointer}
+  .thumbrow img{width:96px;aspect-ratio:16/10;object-fit:cover;border:2px solid var(--line);border-radius:10px;display:block}
+  .thumbrow .d{font-size:10px;color:var(--dim);text-align:center;padding-top:2px}
+  .actionrow{display:flex;gap:10px;padding:10px var(--pad) 16px}
+  .actionrow .btn{flex:1}
+  .says{margin:4px var(--pad);font-size:13px;background:var(--soft);border-radius:10px;padding:10px;color:#333}
+  /* playlist detail */
+  .psec{border:2px solid var(--line);border-radius:14px;margin:10px var(--pad);overflow:hidden}
+  .psec .ph{display:flex;align-items:center;gap:8px;padding:10px 12px;font-weight:800;font-size:14px;border-bottom:2px solid var(--line)}
+  .psec .ph i{font-style:normal;color:var(--dim);font-weight:400;margin-left:auto;font-size:12px}
+  .psec .pgrid{display:flex;gap:8px;overflow-x:auto;padding:10px;scrollbar-width:none}
+  .pclip{flex:0 0 auto;width:104px;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+  .pclip img{width:100%;aspect-ratio:16/11;object-fit:cover;display:block;border-bottom:2px solid var(--line);cursor:pointer}
+  .pclip .nm{font-size:9px;font-weight:600;padding:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+  .pclip .mv{display:flex;border-top:1px solid var(--soft)}
+  .pclip .mv span{flex:1;text-align:center;font-size:12px;padding:4px 0;cursor:pointer;color:var(--dim)}
+  .pclip .mv span:active{color:var(--ink)}
+  /* dig */
+  #digCard{margin:10px var(--pad);border:2px solid var(--line);border-radius:18px;overflow:hidden;background:#000;position:relative}
+  #digVid{width:100%;max-height:56vh;display:block}
+  #digMeta{padding:10px var(--pad) 4px;font-size:13px;color:var(--dim)}
+  #digMeta b{color:var(--ink);font-size:15px}
+  .digrow{display:flex;gap:10px;padding:12px var(--pad)}
+  .digrow .btn{flex:1;font-size:15px;padding:14px}
+  /* tab bar */
+  nav{display:flex;border-top:2px solid var(--line);background:#fff;
+    padding-bottom:env(safe-area-inset-bottom)}
+  nav button{flex:1;border:none;background:none;padding:10px 0 8px;font-size:11px;font-weight:700;
+    letter-spacing:.04em;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+  nav button.on{color:var(--ink)}
+  nav button span{font-size:20px}
+  dialog{border:2px solid var(--line);border-radius:16px;padding:14px;width:86%;max-width:340px;font-family:inherit}
+  dialog .btn{margin-top:8px;width:100%}
+  ::backdrop{background:rgba(0,0,0,.35)}
+  .plcheck{display:flex;align-items:center;gap:10px;padding:9px 4px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px solid var(--soft)}
+  .plcheck .box{width:22px;height:22px;border:2px solid var(--line);border-radius:7px;text-align:center;line-height:19px;font-size:14px;color:transparent}
+  .plcheck.on .box{background:var(--ink);color:#fff}
+  .plcheck i{font-style:normal;color:var(--dim);margin-left:auto;font-size:11px}
+  .swapcell{border:2px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer}
+  .swapcell img{width:100%;aspect-ratio:16/11;object-fit:cover;display:block}
+  .swapcell .nm{font-size:9px;padding:3px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ctxItem{padding:11px 16px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px solid var(--soft);
+    display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .ctxItem:last-child{border-bottom:none}
+  .ctxItem:active{background:var(--soft)}
+  .ctxItem.danger{color:#c0392b}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="statusBar"><span id="stLoc">FAMILIES</span><span id="stMid"></span><span id="stNet"></span></div>
+  <!-- FAMILIES -->
+  <section class="screen on" id="s-families">
+    <h1>TAXONOMIZER</h1>
+    <div class="search"><b>FIND</b><input id="q" placeholder="Search clips, families, playlists"></div>
+    <div class="chiprow" id="chips"></div>
+    <div class="sect">BROWSE FAMILIES</div>
+    <div class="cards" id="famCards"></div>
+    <div class="sect">RECENT PLAYLISTS</div>
+    <div class="plrows" id="recentPls"></div>
+  </section>
+
+  <!-- FAMILY DETAIL -->
+  <section class="screen" id="s-family">
+    <div class="hrow"><button class="back" onclick="show('s-families')">‹</button><h1 style="flex:1;padding:10px 44px 6px 0">FAMILY</h1></div>
+    <div class="hero" id="famHero"></div>
+    <div class="sect" id="relLabel">CLIPS</div>
+    <div class="cliprows" id="famClips"></div>
+  </section>
+
+  <!-- WATCH -->
+  <section class="screen" id="s-watch">
+    <h1>WATCH</h1>
+    <div id="wplayer">
+      <video id="wvid" playsinline controls></video>
+      <div id="wLoad" class="loadTag">LOADING…</div>
+      <button id="wHd" class="hdTag">HD</button>
+    </div>
+    <div class="wtitle" id="wTitle">—</div>
+    <div class="wsub" id="wSub"></div>
+    <div class="says" id="wSays" style="display:none"></div>
+    <div class="sect">MORE LIKE THIS</div>
+    <div class="thumbrow" id="wMore"></div>
+    <div class="sect">NEARBY FAMILIES</div>
+    <div class="cards" id="wNearby" style="grid-template-columns:1fr 1fr"></div>
+    <div class="actionrow">
+      <button class="btn" id="wKeep">KEEP</button>
+      <button class="btn" id="wSimilar">SIMILAR</button>
+      <button class="btn" id="wAddPl">+ PLAYLIST</button>
+    </div>
+  </section>
+
+  <!-- PLAYLISTS -->
+  <section class="screen" id="s-playlists">
+    <h1>PLAYLISTS</h1>
+    <div class="plrows" id="plList"></div>
+    <div class="actionrow">
+      <button class="btn" id="plNew">+ NEW PLAYLIST</button>
+    </div>
+  </section>
+
+  <!-- PLAYLIST DETAIL -->
+  <section class="screen" id="s-playlist">
+    <div class="hrow"><button class="back" onclick="show('s-playlists')">‹</button><h1 style="flex:1;padding:10px 44px 6px 0">PLAYLIST</h1></div>
+    <div class="hero" id="plHero"></div>
+    <div id="plSecs"></div>
+    <div class="actionrow">
+      <button class="btn" id="plDup">DUPLICATE</button>
+      <button class="btn" id="plExportJson">{ } EXPORT JSON</button>
+      <button class="btn" id="plExport">EXPORT EDL</button>
+    </div>
+  </section>
+
+  <!-- DIG -->
+  <section class="screen" id="s-dig">
+    <h1>DIG</h1>
+    <div id="digCard">
+      <video id="digVid" playsinline autoplay loop></video>
+      <div id="digLoad" class="loadTag">LOADING…</div>
+    </div>
+    <div id="digMeta"></div>
+    <div class="digrow">
+      <button class="btn" id="digKill">KILL</button>
+      <button class="btn" id="digSkip">→ SKIP</button>
+      <button class="btn primary" id="digKeep">KEEP</button>
+    </div>
+  </section>
+
+  <div id="selbar"><b id="selN">0</b> selected <button class="btn primary" id="selAdd">ADD TO PLAYLIST</button></div>
+
+  <nav>
+    <button data-s="s-dig"><span>[D]</span>DIG</button>
+    <button data-s="s-families" class="on"><span>[F]</span>FAMILIES</button>
+    <button data-s="s-playlists"><span>[P]</span>PLAYLISTS</button>
+    <button data-s="s-watch"><span>[W]</span>WATCH</button>
+  </nav>
+</div>
+
+<dialog id="pickPl"><b>Add to playlist</b><div id="pickList"></div>
+  <button class="btn" id="pickNew">+ new playlist</button>
+  <button class="btn" onclick="document.getElementById('pickPl').close()">cancel</button></dialog>
+
+<dialog id="clipSheet">
+  <div style="display:flex;gap:10px;align-items:center">
+    <img id="csImg" style="width:74px;aspect-ratio:16/11;object-fit:cover;border:2px solid var(--line);border-radius:10px">
+    <div><b id="csTitle" style="font-size:14px"></b><div id="csMeta" style="font-size:11px;color:var(--dim)"></div></div>
+  </div>
+  <div style="font-size:11px;font-weight:800;letter-spacing:.05em;margin:12px 0 4px">IN PLAYLISTS</div>
+  <div id="csPls" style="max-height:180px;overflow-y:auto"></div>
+  <button class="btn primary" id="csPlay">PLAY</button>
+  <button class="btn" id="csSwap" style="display:none">SWAP WITH SIMILAR</button>
+  <button class="btn" id="csRemove" style="display:none">REMOVE FROM THIS PLAYLIST</button>
+  <button class="btn" onclick="document.getElementById('clipSheet').close()">done</button>
+</dialog>
+
+<div id="ctxMenu" style="position:fixed;z-index:999;display:none;background:#fff;
+  border:2px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.25);
+  min-width:200px"></div>
+<dialog id="swapSheet" style="max-width:380px">
+  <b>Swap with…</b>
+  <div id="swapGrid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-height:340px;overflow-y:auto;margin-top:10px"></div>
+  <button class="btn" onclick="document.getElementById('swapSheet').close()">cancel</button>
+</dialog>
+
+<script>
+(async () => {
+const $=id=>document.getElementById(id);
+const T=await fetch('taxonomy2.json').then(r=>r.json());
+const clips=T.clips, facets=T.facets;
+const posterOf=id=>'POSTERS/'+id+'.jpg';
+const previewOf=id=>'PREVIEWS/'+id+'.mp4';
+function setStatus(loc, mid){
+  $('stLoc').textContent=loc;
+  if(mid!==undefined)$('stMid').textContent=mid;
+}
+function setBusy(b){document.getElementById('statusBar').classList.toggle('busy',b);}
+function wireVideo(v, loadEl, errEl){
+  v.addEventListener('loadstart',()=>{loadEl.classList.add('on');loadEl.textContent='LOADING…';if(errEl)errEl.classList.remove('on');setBusy(true);});
+  v.addEventListener('canplay',()=>{loadEl.classList.remove('on');setBusy(false);});
+  v.addEventListener('waiting',()=>{loadEl.classList.add('on');loadEl.textContent='BUFFERING…';setBusy(true);});
+  v.addEventListener('playing',()=>{loadEl.classList.remove('on');setBusy(false);});
+  v.addEventListener('error',()=>{
+    loadEl.classList.remove('on'); setBusy(false);
+    if(errEl){errEl.textContent='COULD NOT LOAD VIDEO — CHECK CONNECTION';errEl.classList.add('on');}
+  });
+}
+const S={fam:null, sel:new Set(), watch:null, queue:[], qi:0, pl:null, digQ:[], chip:'named_film',
+  hdWatch:false, /* default: fast low-quality preview; tap HD for full final */
+  pls:JSON.parse(localStorage.getItem('mobilePls')||'{}'),
+  keeps:JSON.parse(localStorage.getItem('mobileKeeps')||'{}')};
+const SECTIONS=['OPENING','MIDDLE','ENDING'];
+const CHIPS=[['named_film','FI','FILMS'],['event','AC','ACTION'],['objects','OB','OBJECTS'],
+  ['environment','PL','PLACES'],['scene','SC','SCENES'],['world','WD','WORLDS'],['speech_act','VC','VOICE']];
+function famsOf(facet){
+  return Object.entries(facets[facet]||{}).filter(([k])=>!k.startsWith('(')).slice(0,24);
+}
+function chrono(ids){return ids.slice().sort((a,b)=>(clips[a].timestamp||'')<(clips[b].timestamp||'')?-1:1);}
+function mins(ids){let s=0;for(const id of ids)s+=clips[id].duration||10;return (s/60).toFixed(1);}
+const SCREEN_NAMES={'s-families':'FAMILIES','s-family':'FAMILY','s-watch':'WATCH',
+  's-playlists':'PLAYLISTS','s-playlist':'PLAYLIST','s-dig':'DIG'};
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===id||
+    (id==='s-family'&&b.dataset.s==='s-families')||(id==='s-playlist'&&b.dataset.s==='s-playlists')));
+  setStatus(SCREEN_NAMES[id]||id, id==='s-watch'?(clips[S.watch]?('#'+clips[S.watch].index+' '+(clips[S.watch].title||'')):'') : '');
+  window.show=show;
+}
+window.show=show;
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{show(b.dataset.s);
+  if(b.dataset.s==='s-dig')digNext(false);});
+
+// ---------- FAMILIES ----------
+function buildChips(){
+  const c=$('chips'); c.innerHTML='';
+  for(const [f,icon,label] of CHIPS){
+    const d=document.createElement('div');
+    d.className='fchip'+(S.chip===f?' on':'');
+    d.innerHTML=`<span>${icon}</span>${label}`;
+    d.onclick=()=>{S.chip=f;buildChips();buildFamCards();};
+    c.appendChild(d);
+  }
+}
+function buildFamCards(filter){
+  const holder=$('famCards'); holder.innerHTML='';
+  let fams=famsOf(S.chip);
+  if(filter)fams=fams.filter(([k])=>k.toLowerCase().includes(filter));
+  for(const [name,ids] of fams){
+    const cover=chrono(ids)[Math.floor(ids.length/3)];
+    const card=document.createElement('div'); card.className='fcard';
+    card.innerHTML=`<img loading="lazy" src="${posterOf(cover)}" onerror="this.style.opacity=.15">
+      <div class="nm">${name.toUpperCase()}</div><div class="ct">${ids.length} clips</div>`;
+    card.onclick=()=>openFamily(name,ids);
+    holder.appendChild(card);
+  }
+}
+function buildRecentPls(){
+  const r=$('recentPls'); r.innerHTML='';
+  Object.keys(S.pls).slice(-4).reverse().forEach(n=>{
+    const row=document.createElement('div'); row.className='plrow';
+    row.innerHTML=`${n} <span class="ar">&gt;</span>`;
+    row.onclick=()=>openPlaylist(n);
+    r.appendChild(row);
+  });
+}
+$('q').addEventListener('input',e=>buildFamCards(e.target.value.trim().toLowerCase()));
+
+// ---------- FAMILY DETAIL ----------
+function openFamily(name,ids){
+  S.fam={name,ids:chrono(ids)}; S.sel=new Set();
+  const cover=S.fam.ids[Math.floor(ids.length/3)];
+  $('famHero').innerHTML=`<img src="${posterOf(cover)}" onerror="this.style.opacity=.15">
+    <div class="hin"><h2>${name.toUpperCase()}</h2>
+    <div class="ct">${ids.length} clips · ${mins(ids)} min</div>
+    <button class="btn primary" id="famPlay">PLAY FAMILY</button>
+    <button class="btn" id="famAddAll">+ ADD ALL TO PLAYLIST</button></div>`;
+  $('famPlay').onclick=()=>{S.queue=S.fam.ids;S.qi=0;watch(S.queue[0]);};
+  $('famAddAll').onclick=()=>{S.sel=new Set(S.fam.ids);updateSelbar();pickPlaylist();};
+  const g=$('famClips'); g.innerHTML='';
+  S.fam.ids.forEach(id=>{
+    const c=clips[id];
+    const d=document.createElement('div'); d.className='clip'+(S.sel.has(id)?' sel':'');
+    d.innerHTML=`<img loading="lazy" src="${posterOf(id)}" onerror="this.style.opacity=.15">
+      <div class="nm">${(c.title||'#'+c.index)}</div>
+      <div class="ct">${Math.round(c.duration||10)}s</div><div class="add">+</div>`;
+    d.querySelector('img').onclick=()=>{S.queue=S.fam.ids;S.qi=S.fam.ids.indexOf(id);watch(id);};
+    d.querySelector('.nm').onclick=()=>clipSheet(id);
+    bindCtx(d, id, null);
+    d.querySelector('.add').onclick=()=>{
+      S.sel.has(id)?S.sel.delete(id):S.sel.add(id);
+      d.classList.toggle('sel',S.sel.has(id));updateSelbar();};
+    g.appendChild(d);
+  });
+  show('s-family'); setStatus('FAMILY', name.toUpperCase()+' — '+ids.length+' clips');
+}
+function updateSelbar(){
+  $('selN').textContent=S.sel.size;
+  $('selbar').classList.toggle('on',S.sel.size>0);
+}
+$('selAdd').onclick=()=>pickPlaylist();
+
+// ---------- WATCH ----------
+function playSrc(v, id, hd){
+  const c=clips[id];
+  v.src = hd ? (c.media_url||'') : (previewOf(id));
+  v.load(); v.play().catch(()=>{});
+}
+function watch(id){
+  S.watch=id;
+  const c=clips[id];
+  const v=$('wvid');
+  if(!v.dataset.wired){wireVideo(v,$('wLoad'),null);v.dataset.wired='1';
+    v.addEventListener('error',()=>{ if(v.src.includes('PREVIEWS/')){playSrc(v,S.watch,true);} });}
+  $('wHd').classList.toggle('on',S.hdWatch);
+  $('wHd').textContent=S.hdWatch?'HD':'FAST';
+  $('wHd').onclick=()=>{S.hdWatch=!S.hdWatch;const t=v.currentTime;playSrc(v,S.watch,S.hdWatch);
+    v.addEventListener('loadedmetadata',()=>{v.currentTime=t;},{once:true});
+    $('wHd').classList.toggle('on',S.hdWatch);$('wHd').textContent=S.hdWatch?'HD':'FAST';};
+  playSrc(v, id, S.hdWatch);
+  v.onended=()=>{ if(S.queue.length){S.qi=(S.qi+1)%S.queue.length;watch(S.queue[S.qi]);} };
+  $('wTitle').textContent=(c.title||'#'+c.index).toUpperCase();
+  setStatus('WATCH','#'+c.index+' '+(c.title||''));
+  const fams=c.named_films||[];
+  $('wSub').innerHTML='Family: <b onclick="window.jumpFam(0)">'+(fams[0]||c.domain||'—')+'</b>'+
+    (fams[1]?' · Related: <b onclick="window.jumpFam(1)">'+fams[1]+'</b>':'');
+  window.jumpFam=i=>{const f=fams[i];if(f&&facets.named_film[f])openFamily(f,facets.named_film[f]);};
+  if(c.transcript){$('wSays').style.display='block';$('wSays').textContent='“'+c.transcript.slice(0,160)+'”';}
+  else $('wSays').style.display='none';
+  // more like this = same primary family, nearest by time
+  const fam=fams[0]&&facets.named_film[fams[0]]?facets.named_film[fams[0]]:(facets.domain[c.domain]||[]);
+  const more=chrono(fam.filter(x=>x!==id)).slice(0,12);
+  const mr=$('wMore'); mr.innerHTML='';
+  more.forEach(mid=>{
+    const t=document.createElement('div'); t.className='t';
+    t.innerHTML=`<img loading="lazy" src="${posterOf(mid)}" onerror="this.style.opacity=.15">
+      <div class="d">${Math.round(clips[mid].duration||10)}s</div>`;
+    t.onclick=()=>{S.queue=more;S.qi=more.indexOf(mid);watch(mid);};
+    mr.appendChild(t);
+  });
+  // nearby families = other films sharing this clip + families sharing objects
+  const near=new Set(fams.slice(1));
+  for(const o of (c.objects||[]).slice(0,4))
+    for(const [fn,ix] of Object.entries(facets.named_film))
+      if(!fn.startsWith('(')&&fn!==fams[0]&&ix.some(x=>(clips[x].objects||[]).includes(o))) near.add(fn);
+  const nb=$('wNearby'); nb.innerHTML='';
+  [...near].slice(0,4).forEach(fn=>{
+    const ix=facets.named_film[fn]||[]; if(!ix.length)return;
+    const card=document.createElement('div'); card.className='fcard';
+    card.innerHTML=`<img loading="lazy" src="${posterOf(ix[0])}" onerror="this.style.opacity=.15">
+      <div class="nm">${fn.toUpperCase()}</div><div class="ct">${ix.length} clips</div>`;
+    card.onclick=()=>openFamily(fn,ix);
+    nb.appendChild(card);
+  });
+  show('s-watch');
+}
+$('wKeep').onclick=()=>{S.keeps[S.watch]=5;localStorage.setItem('mobileKeeps',JSON.stringify(S.keeps));
+  $('wKeep').textContent='KEPT';setTimeout(()=>$('wKeep').textContent='KEEP',900);};
+$('wSimilar').onclick=()=>{const c=clips[S.watch];const f=(c.named_films||[])[0];
+  if(f&&facets.named_film[f])openFamily(f,facets.named_film[f]);};
+$('wAddPl').onclick=()=>clipSheet(S.watch);
+
+// ---------- PLAYLISTS ----------
+function savePls(){localStorage.setItem('mobilePls',JSON.stringify(S.pls));}
+function buildPlList(){
+  const l=$('plList'); l.innerHTML='';
+  for(const n in S.pls){
+    const p=S.pls[n];
+    const total=SECTIONS.reduce((s,k)=>s+(p[k]||[]).length,0);
+    const row=document.createElement('div'); row.className='plrow';
+    row.innerHTML=`${n} <span style="color:var(--dim);font-weight:400">&middot; ${total} clips</span><span class="ar">&gt;</span>`;
+    row.onclick=()=>openPlaylist(n);
+    l.appendChild(row);
+  }
+  buildRecentPls();
+}
+function newPlaylist(preIds){
+  const n=prompt('playlist name'); if(!n)return null;
+  S.pls[n]=S.pls[n]||{OPENING:[],MIDDLE:[],ENDING:[]};
+  if(preIds&&preIds.length)S.pls[n].MIDDLE.push(...preIds.filter(id=>!S.pls[n].MIDDLE.includes(id)));
+  savePls();buildPlList();return n;
+}
+$('plNew').onclick=()=>{const n=newPlaylist();if(n)openPlaylist(n);};
+function pickPlaylist(){
+  const d=$('pickPl'); const l=$('pickList'); l.innerHTML='';
+  for(const n in S.pls){
+    const b=document.createElement('button'); b.className='btn'; b.textContent=n;
+    b.onclick=()=>{S.pls[n].MIDDLE.push(...[...S.sel].filter(id=>!S.pls[n].MIDDLE.includes(id)));
+      savePls();buildPlList();d.close();S.sel=new Set();updateSelbar();};
+    l.appendChild(b);
+  }
+  $('pickNew').onclick=()=>{const n=newPlaylist([...S.sel]);if(n){d.close();S.sel=new Set();updateSelbar();openPlaylist(n);}};
+  d.showModal();
+}
+function openPlaylist(n){
+  S.pl=n; const p=S.pls[n];
+  const all=SECTIONS.flatMap(k=>p[k]||[]);
+  const cover=all[0];
+  $('plHero').innerHTML=`${cover?'<img src="'+posterOf(cover)+'" onerror="this.style.opacity=.15">':''}
+    <div class="hin"><h2>${n.toUpperCase()}</h2>
+    <div class="ct">${all.length} clips · ${mins(all)} min</div>
+    <button class="btn primary" id="plPlayAll">PLAY ALL</button></div>`;
+  $('plPlayAll').onclick=()=>{S.queue=all;S.qi=0;if(all.length)watch(all[0]);};
+  const holder=$('plSecs'); holder.innerHTML='';
+  SECTIONS.forEach((sec,si)=>{
+    const ids=p[sec]||[];
+    const box=document.createElement('div'); box.className='psec';
+    box.innerHTML=`<div class="ph">${si+1} ${sec}<i>${ids.length} clips</i></div><div class="pgrid"></div>`;
+    const gridEl=box.querySelector('.pgrid');
+    ids.forEach((id,i)=>{
+      const c=clips[id];
+      const d=document.createElement('div'); d.className='pclip';
+      d.innerHTML=`<img loading="lazy" src="${posterOf(id)}" onerror="this.style.opacity=.15">
+        <div class="nm">${(c.title||'#'+c.index).slice(0,16)}</div>
+        <div class="mv"><span>&lt;</span><span>^</span><span>v</span><span>X</span></div>`;
+      d.querySelector('img').onclick=()=>{S.queue=all;S.qi=all.indexOf(id);watch(id);};
+      d.querySelector('.nm').onclick=()=>clipSheet(id,{pl:n,sec,idx:i});
+      bindCtx(d, id, {pl:n,sec,idx:i});
+      const [left,up,down,x]=d.querySelectorAll('.mv span');
+      left.onclick=()=>{ // move left within section
+        if(i>0){[ids[i-1],ids[i]]=[ids[i],ids[i-1]];savePls();openPlaylist(n);} };
+      up.onclick=()=>{ // previous section
+        if(si>0){ids.splice(i,1);(p[SECTIONS[si-1]]=p[SECTIONS[si-1]]||[]).push(id);savePls();openPlaylist(n);} };
+      down.onclick=()=>{ // next section
+        if(si<2){ids.splice(i,1);(p[SECTIONS[si+1]]=p[SECTIONS[si+1]]||[]).push(id);savePls();openPlaylist(n);} };
+      x.onclick=()=>{ids.splice(i,1);savePls();openPlaylist(n);};
+      gridEl.appendChild(d);
+    });
+    holder.appendChild(box);
+  });
+  $('plDup').onclick=()=>{const m=n+' copy';S.pls[m]=JSON.parse(JSON.stringify(p));savePls();openPlaylist(m);};
+  $('plExportJson').onclick=()=>{
+    const doc={playlist:n,exported:new Date().toISOString(),clip_count:all.length,
+      duration_s:Math.round(all.reduce((s,id)=>s+(clips[id].duration||10),0)*10)/10,
+      sections:SECTIONS.map(sec=>({
+        section:sec,
+        clips:(p[sec]||[]).map((id,i)=>{
+          const c=clips[id];
+          return {order:i, clip_id:id, index:c.index, title:c.title,
+            video_file:c.video_file, media_url:c.media_url,
+            final_file:c.final_file, loop_file:c.loop_file,
+            timestamp:c.timestamp, duration:c.duration,
+            named_films:c.named_films, world:c.world, domain:c.domain,
+            mode:c.mode, voice:c.voice, objects:c.objects, events:c.events,
+            viewpoint:c.viewpoint, shot_scale:c.shot_scale, style:c.style_terms,
+            scenes:c.scenes, film_function:c.film_function,
+            luminance:c.luminance, motion:c.motion, palette:c.palette,
+            rating:c.rating, editorial:c.editorial,
+            transcript:c.transcript, prompt_excerpt:c.prompt_excerpt};
+        })}))};
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([JSON.stringify(doc,null,1)],{type:'application/json'}));
+    a.download=n.replace(/\W+/g,'_')+'.json'; a.click();
+  };
+  $('plExport').onclick=()=>{
+    let out='TITLE: '+n+'\nFCM: NON-DROP FRAME\n\n'; let rec=0;
+    all.forEach((id,i)=>{
+      const dur=clips[id].duration||10;
+      const tc=s=>{s=Math.round(s*30);const f=s%30,x=(s-f)/30;
+        return [Math.floor(x/3600),Math.floor(x/60)%60,x%60,f].map(v=>String(v).padStart(2,'0')).join(':');};
+      out+=String(i+1).padStart(3,'0')+'  AX  V  C  '+tc(0)+' '+tc(dur)+' '+tc(rec)+' '+tc(rec+dur)+'\n';
+      out+='* FROM CLIP NAME: '+clips[id].video_file+'\n\n'; rec+=dur;
+    });
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([out],{type:'text/plain'}));
+    a.download=n.replace(/\W+/g,'_')+'.edl'; a.click();
+  };
+  show('s-playlist'); setStatus('PLAYLIST', n.toUpperCase()+' — '+all.length+' clips');
+}
+
+// ---------- CONTEXT MENU: long-press or right-click on any clip ----------
+function ctxItems(id, ctx){
+  const items=[
+    {label:'Play', run:()=>{S.queue=[id];S.qi=0;watch(id);}},
+    {label:'+ Add to playlist…', run:()=>{S.sel=new Set([id]);pickPlaylist();}},
+    {label:'✎ Manage playlists…', run:()=>clipSheet(id,ctx)},
+  ];
+  if(ctx){
+    items.push({label:'SWAP with similar', run:()=>openSwap(id,ctx)});
+    if(ctx.sec!=='OPENING') items.push({label:'▲ Move to '+SECTIONS[SECTIONS.indexOf(ctx.sec)-1], run:()=>{
+      S.pls[ctx.pl][ctx.sec].splice(ctx.idx,1);
+      (S.pls[ctx.pl][SECTIONS[SECTIONS.indexOf(ctx.sec)-1]]=S.pls[ctx.pl][SECTIONS[SECTIONS.indexOf(ctx.sec)-1]]||[]).push(id);
+      savePls();openPlaylist(ctx.pl);}});
+    if(ctx.sec!=='ENDING') items.push({label:'▼ Move to '+SECTIONS[SECTIONS.indexOf(ctx.sec)+1], run:()=>{
+      S.pls[ctx.pl][ctx.sec].splice(ctx.idx,1);
+      (S.pls[ctx.pl][SECTIONS[SECTIONS.indexOf(ctx.sec)+1]]=S.pls[ctx.pl][SECTIONS[SECTIONS.indexOf(ctx.sec)+1]]||[]).push(id);
+      savePls();openPlaylist(ctx.pl);}});
+    items.push({label:'Remove from playlist', danger:true, run:()=>{
+      S.pls[ctx.pl][ctx.sec].splice(ctx.idx,1);savePls();openPlaylist(ctx.pl);}});
+  }
+  const kept=S.keeps[id];
+  items.push({label:kept===5?'Kept':'Keep (rate 5)', run:()=>{S.keeps[id]=5;localStorage.setItem('mobileKeeps',JSON.stringify(S.keeps));}});
+  return items;
+}
+function showCtx(id, ctx, x, y){
+  const m=$('ctxMenu'); m.innerHTML='';
+  ctxItems(id,ctx).forEach(it=>{
+    const row=document.createElement('div');
+    row.className='ctxItem'+(it.danger?' danger':'');
+    row.textContent=it.label;
+    row.onclick=()=>{hideCtx();it.run();};
+    m.appendChild(row);
+  });
+  m.style.display='block';
+  const mw=220, mh=m.offsetHeight||300;
+  m.style.left=Math.min(x, innerWidth-mw-8)+'px';
+  m.style.top=Math.min(y, innerHeight-mh-8)+'px';
+}
+function hideCtx(){$('ctxMenu').style.display='none';}
+document.addEventListener('click',e=>{if(!e.target.closest('#ctxMenu'))hideCtx();});
+document.addEventListener('scroll',hideCtx,true);
+function bindCtx(el, id, ctx){
+  el.addEventListener('contextmenu',e=>{e.preventDefault();showCtx(id,ctx,e.clientX,e.clientY);});
+  let timer=null, moved=false, sx=0, sy=0;
+  el.addEventListener('touchstart',e=>{
+    moved=false; const t=e.touches[0]; sx=t.clientX; sy=t.clientY;
+    timer=setTimeout(()=>{ if(!moved){
+      if(navigator.vibrate)navigator.vibrate(12);
+      showCtx(id,ctx,Math.min(sx,innerWidth-228),sy);
+    } },430);
+  },{passive:true});
+  el.addEventListener('touchmove',e=>{
+    const t=e.touches[0];
+    if(Math.abs(t.clientX-sx)>10||Math.abs(t.clientY-sy)>10)moved=true;
+  },{passive:true});
+  el.addEventListener('touchend',()=>clearTimeout(timer));
+  el.addEventListener('touchcancel',()=>clearTimeout(timer));
+}
+
+// ---------- CLIP ACTION SHEET: add / remove / switch across playlists ----------
+function plsContaining(id){
+  const out=[];
+  for(const n in S.pls) for(const sec of SECTIONS)
+    if((S.pls[n][sec]||[]).includes(id)){out.push(n);break;}
+  return out;
+}
+function clipSheet(id, ctx){
+  // ctx = {pl, sec, idx} when opened from a playlist slot
+  const c=clips[id];
+  $('csImg').src=posterOf(id);
+  $('csTitle').textContent=c.title||'#'+c.index;
+  $('csMeta').textContent=((c.named_films||[])[0]||c.domain||'')+' · '+Math.round(c.duration||10)+'s';
+  const box=$('csPls'); box.innerHTML='';
+  const names=Object.keys(S.pls);
+  if(!names.length){const d=document.createElement('div');d.style.cssText='font-size:12px;color:var(--dim);padding:6px 0';d.textContent='no playlists yet';box.appendChild(d);}
+  names.forEach(n=>{
+    const inPl=plsContaining(id).includes(n);
+    const row=document.createElement('div');
+    row.className='plcheck'+(inPl?' on':'');
+    const total=SECTIONS.reduce((s,k)=>s+(S.pls[n][k]||[]).length,0);
+    row.innerHTML=`<span class="box">X</span>${n}<i>${total}</i>`;
+    row.onclick=()=>{
+      if(row.classList.contains('on')){   // remove from every section of n
+        for(const sec of SECTIONS)
+          S.pls[n][sec]=(S.pls[n][sec]||[]).filter(x=>x!==id);
+      } else {
+        (S.pls[n].MIDDLE=S.pls[n].MIDDLE||[]).push(id);
+      }
+      row.classList.toggle('on');savePls();buildPlList();
+      if(S.pl&&document.querySelector('#s-playlist.on'))openPlaylist(S.pl);
+    };
+    box.appendChild(row);
+  });
+  $('csPlay').onclick=()=>{$('clipSheet').close();S.queue=[id];S.qi=0;watch(id);};
+  const inSlot=!!ctx;
+  $('csSwap').style.display=inSlot?'flex':'none';
+  $('csRemove').style.display=inSlot?'flex':'none';
+  if(inSlot){
+    $('csRemove').onclick=()=>{
+      S.pls[ctx.pl][ctx.sec].splice(ctx.idx,1);
+      savePls();$('clipSheet').close();openPlaylist(ctx.pl);
+    };
+    $('csSwap').onclick=()=>{$('clipSheet').close();openSwap(id,ctx);};
+  }
+  $('clipSheet').showModal();
+}
+function openSwap(id, ctx){
+  const c=clips[id];
+  const fam=(c.named_films||[])[0];
+  let pool=fam&&facets.named_film[fam]?facets.named_film[fam]:(facets.domain[c.domain]||[]);
+  const inPl=new Set(SECTIONS.flatMap(k=>S.pls[ctx.pl][k]||[]));
+  pool=chrono(pool.filter(x=>x!==id&&!inPl.has(x))).slice(0,60);
+  const g=$('swapGrid'); g.innerHTML='';
+  pool.forEach(cand=>{
+    const d=document.createElement('div'); d.className='swapcell';
+    d.innerHTML=`<img loading="lazy" src="${posterOf(cand)}" onerror="this.style.opacity=.15">
+      <div class="nm">${(clips[cand].title||'#'+clips[cand].index).slice(0,16)}</div>`;
+    d.onclick=()=>{
+      S.pls[ctx.pl][ctx.sec][ctx.idx]=cand;   // swap in place — structure kept
+      savePls();$('swapSheet').close();openPlaylist(ctx.pl);
+    };
+    g.appendChild(d);
+  });
+  $('swapSheet').showModal();
+}
+
+// ---------- DIG ----------
+function digNext(advance){
+  if(!S.digQ.length){
+    S.digQ=Object.keys(clips).filter(id=>clips[id].media_url&&!S.keeps[id]);
+    for(let i=S.digQ.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[S.digQ[i],S.digQ[j]]=[S.digQ[j],S.digQ[i]];}
+  }
+  if(advance)S.digQ.shift();
+  const id=S.digQ[0];
+  if(!id){$('digMeta').innerHTML='<b>ALL CLIPS REVIEWED</b>';return;}
+  const c=clips[id];
+  const v=$('digVid');
+  if(!v.dataset.wired){wireVideo(v,$('digLoad'),null);v.dataset.wired='1';
+    v.addEventListener('error',()=>{ if(v.src.includes('PREVIEWS/')){v.src=c.media_url||'';v.load();v.play().catch(()=>{});} });}
+  v.src=previewOf(id); v.load(); v.play().catch(()=>{});
+  $('digMeta').innerHTML=`<b>${c.title||'#'+c.index}</b><br>
+    ${(c.named_films||[]).join(' &middot; ')||c.domain||''} &middot; ${(c.objects||[]).slice(0,5).join(', ')}
+    ${c.transcript?'<br>&ldquo;'+c.transcript.slice(0,90)+'&rdquo;':''}`;
+  setStatus('DIG', (S.digQ.length)+' left · #'+c.index);
+}
+$('digKeep').onclick=()=>{const id=S.digQ[0];S.keeps[id]=5;
+  localStorage.setItem('mobileKeeps',JSON.stringify(S.keeps));digNext(true);};
+$('digKill').onclick=()=>{const id=S.digQ[0];S.keeps[id]=1;
+  localStorage.setItem('mobileKeeps',JSON.stringify(S.keeps));digNext(true);};
+$('digSkip').onclick=()=>digNext(true);
+
+// network hint (rough — connection API is coarse but better than nothing)
+if(navigator.connection){
+  const c=navigator.connection;
+  $('stNet').textContent=(c.effectiveType||'').toUpperCase();
+  if(c.effectiveType&&/2g|3g/.test(c.effectiveType))S.hdWatch=false;
+  c.addEventListener&&c.addEventListener('change',()=>{$('stNet').textContent=(c.effectiveType||'').toUpperCase();});
+} else { $('stNet').textContent=''; }
+
+// boot
+buildChips();buildFamCards();buildPlList();
+setStatus('FAMILIES', Object.keys(clips).length+' clips indexed');
+})();
+</script>
+</body>
+</html>

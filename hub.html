@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>EL DESIERTO — Hub</title>
+<style>
+  :root{--bg:#0a0a0c;--ink:#f2f2ee;--dim:rgba(242,242,238,.5);--line:rgba(242,242,238,.22);--hot:#9fe7ff}
+  *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--bg);color:var(--ink);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  body{padding:max(14px,env(safe-area-inset-top)) 14px max(24px,env(safe-area-inset-bottom))}
+  header{padding:10px 2px 16px}
+  header b{font-size:18px;letter-spacing:.06em}
+  header i{display:block;font-style:normal;color:var(--dim);font-size:11px;margin-top:4px}
+  #stats{display:flex;gap:14px;padding:0 2px 14px;font-size:10px;color:var(--dim);flex-wrap:wrap}
+  #stats b{color:var(--hot);font-size:14px;display:block}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  a.card{display:block;border:1px solid var(--line);border-radius:14px;padding:14px 12px;
+    color:var(--ink);text-decoration:none;background:#0e0e12;min-height:96px;position:relative}
+  a.card:active{background:#16161c}
+  .card b{font-size:13px;letter-spacing:.05em;display:block}
+  .card i{font-style:normal;color:var(--dim);font-size:9.5px;line-height:1.5;display:block;margin-top:5px}
+  .card .k{position:absolute;top:10px;right:10px;font-size:9px;color:var(--hot);
+    border:1px solid rgba(159,231,255,.4);border-radius:5px;padding:1px 6px}
+  .sec{font-size:9px;letter-spacing:.14em;color:var(--dim);padding:18px 2px 8px}
+  .wide{grid-column:1/-1}
+  @media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}.wide{grid-column:auto}}
+</style>
+</head>
+<body>
+<header>
+  <b>EL DESIERTO</b>
+  <i id="sub">1,104 clips · one archive · every instrument</i>
+</header>
+<div id="stats">
+  <span><b id="stClips">—</b>CLIPS</span>
+  <span><b id="stFilms">—</b>FILMS</span>
+  <span><b id="stKeeps">—</b>KEEPS</span>
+  <span><b id="stMarks">—</b>MARKS</span>
+</div>
+
+<div class="sec">EDIT</div>
+<div class="grid">
+  <a class="card" href="gel.html"><span class="k">DESKTOP+PHONE</span><b>GEL</b>
+    <i>the mixing wall — rain all channels, brush marks, drag stacks, NORM, TEXT genome, export</i></a>
+  <a class="card" href="board.html"><span class="k">PHONE</span><b>BOARD</b>
+    <i>cutting board — film columns, scrub cards, filmstrip, 3D map</i></a>
+  <a class="card" href="splines.html"><span class="k">DESKTOP</span><b>SPLINES</b>
+    <i>spatial table — nebula map, periodic table of film, reaction chamber, chain builder</i></a>
+</div>
+
+<div class="sec">WATCH + TRIAGE</div>
+<div class="grid">
+  <a class="card" href="mobile.html"><span class="k">PHONE</span><b>POCKET</b>
+    <i>dig, rate, playlists with opening/middle/ending, swap-with-similar, JSON export</i></a>
+  <a class="card" href="fleet.html"><span class="k">DESKTOP</span><b>FLEET</b>
+    <i>tube deck — channels, multiview, theater, TV guide, star cuts, ratings</i></a>
+  <a class="card" href="taxonomizer.html"><span class="k">DESKTOP</span><b>TAXONOMIZER</b>
+    <i>facet tree, sunburst-to-timeline morph, bags of clips, saved films, EDL export</i></a>
+</div>
+
+<div class="sec">TOOLS</div>
+<div class="grid">
+  <a class="card" href="crop_tuner.html"><b>CROP TUNER</b><i>manual crop confirmation interface</i></a>
+  <a class="card" href="crop_classes.html"><b>CROP CLASSES</b><i>portrait / landscape family crops</i></a>
+  <a class="card" href="taxonomy_sunburst.html"><b>SUNBURST</b><i>the whole taxonomy as one ring</i></a>
+</div>
+
+<div class="sec">STORAGE</div>
+<div id="stor" style="font-size:10px;color:var(--dim)"></div>
+
+<script>
+function renderStor(){
+  const el=document.getElementById('stor');
+  const rows=[];let tot=0;
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    const n=(localStorage.getItem(k)||'').length; tot+=n;
+    rows.push([k,n]);
+  }
+  rows.sort((a,b)=>b[1]-a[1]);
+  el.innerHTML='<div style="padding:4px 2px 8px">'+(tot/1e6).toFixed(2)
+    +' MB of ~5 MB used — clearing a key deletes that app data on this device only</div>'
+    +rows.map(([k,n])=>'<div style="display:flex;align-items:center;gap:10px;'
+      +'border:1px solid var(--line);border-radius:9px;padding:8px 10px;margin-bottom:6px">'
+      +'<b style="color:var(--ink);flex:1;word-break:break-all">'+k+'</b>'
+      +'<span>'+(n>=1024?Math.round(n/1024)+' KB':n+' B')+'</span>'
+      +'<button data-k="'+k.replace(/"/g,'&quot;')+'" style="border:1px solid var(--line);'
+      +'border-radius:6px;background:transparent;color:#ff8c8c;font:inherit;font-size:9px;'
+      +'font-weight:700;padding:4px 9px;cursor:pointer">CLEAR</button></div>').join('');
+  el.querySelectorAll('button[data-k]').forEach(b=>{
+    b.onclick=()=>{
+      const k=b.dataset.k;
+      if(!confirm('Delete "'+k+'" from this device? This cannot be undone.'))return;
+      localStorage.removeItem(k); renderStor();
+    };
+  });
+}
+renderStor();
+(async()=>{
+  try{
+    const pls=JSON.parse(localStorage.getItem('mobilePls')||'{}');
+    const keeps=JSON.parse(localStorage.getItem('mobileKeeps')||'{}');
+    const marks=JSON.parse(localStorage.getItem('clipMarks')||'{}');
+    document.getElementById('stFilms').textContent=Object.keys(pls).length;
+    document.getElementById('stKeeps').textContent=Object.keys(keeps).length;
+    document.getElementById('stMarks').textContent=Object.keys(marks).length;
+    const t=await fetch('taxonomy2.json').then(r=>r.json());
+    document.getElementById('stClips').textContent=Object.keys(t.clips).length.toLocaleString();
+  }catch(e){document.getElementById('stClips').textContent='?';}
+})();
+</script>
+</body>
+</html>
