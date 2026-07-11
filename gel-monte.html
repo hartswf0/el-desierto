@@ -1893,21 +1893,54 @@ setInterval(()=>{
   const target=(speaking?0.28:1)*S.songG;
   A.volume+=(target-A.volume)*0.35;
 },110);
-// ---------- THEATRE + CASCADE ----------
+// ---------- THEATRE: a deterministic PROGRAM of parts ----------
+// part := {frame:<bootClipId>} | {lane:<song obj>, ids:[clipIds]}
 const thv=$('thv');
 function laneQueue(l){return laneIds(l).slice();}
-function thShow(){
-  if(TH.i>=TH.queue.length){
-    if(TH.cascade){thNextLane();return;}
-    if(TH.frame!==false&&!TH.epiDone&&FRAME.epilogue.length){
-      TH.epiDone=true;TH.queue=[FRAME.epilogue[0]];TH.i=0;$('songA').pause();
-    } else {thExit();return;}
+function cutIdsForEra(sg){
+  // the chapter plays its CUT (song-length film, boot in OPENING) — never the raw pool
+  const cuts=Object.keys(S.pls).filter(n=>n.startsWith(sg.eraTitle+' CUT')).sort();
+  let nm=cuts[cuts.length-1];
+  if(!nm){const r=rollEra(sg.eraTitle); if(r){savePls();saveLanes();saveUsage();nm=r.nm;}}
+  if(!nm)return [];
+  const ids=SECTIONS.flatMap(k=>S.pls[nm][k]||[]);
+  // guarantee the boot at the head
+  if(!(ids[0]&&(clips[ids[0]]||{}).era==='boot')){
+    const bs=BOOTS_BY_ERA[sg.n]||[];
+    if(bs.length)ids.unshift(bs[Math.floor(Math.random()*bs.length)]);
   }
+  return ids;
+}
+function thRun(parts){
+  if(!parts.length)return;
+  TH.on=true;TH.parts=parts;TH.pi=-1;
+  $('theatre').classList.add('on');
+  if($('theatre').requestFullscreen)$('theatre').requestFullscreen().catch(()=>{});
+  thNextPart();
+}
+function thNextPart(){
+  TH.pi++;
+  const A=$('songA');
+  if(!TH.parts||TH.pi>=TH.parts.length){thExit();return;}
+  const part=TH.parts[TH.pi];
+  if(part.frame){
+    TH.sg=null;TH.queue=[part.frame];TH.i=0;
+    A.pause();                                   // the machine speaks alone
+  } else {
+    TH.sg=part.lane;TH.queue=part.ids.slice();TH.i=0;
+    if(!A.src.endsWith(encodeURI(part.lane.url).split('/').pop()))A.src=part.lane.url;
+    A.loop=false;A.currentTime=0;A.volume=S.songG;A.play().catch(()=>{});
+  }
+  thShow();
+}
+function thShow(){
+  if(TH.i>=TH.queue.length){thNextPart();return;}
   const id=TH.queue[TH.i];
   thv.src=(clips[id]||{}).media_url||'';
   thv.muted=false; thv.volume=S.clipG; thv.play().catch(()=>{});
-  $('thHud').textContent=(TH.sg?TH.sg.eraTitle+' · ':'')+(TH.i+1)+' / '+TH.queue.length
-    +' · '+((clips[id]||{}).title||'').slice(0,60);
+  const pn=TH.parts?('PART '+(TH.pi+1)+'/'+TH.parts.length+' · '):'';
+  $('thHud').textContent=pn+(TH.sg?TH.sg.eraTitle+' · ':'')+(TH.i+1)+' / '+TH.queue.length
+    +' · '+((clips[id]||{}).title||'').slice(0,56);
 }
 thv.addEventListener('ended',()=>{TH.i++;thShow();});
 setInterval(()=>{
@@ -1919,62 +1952,56 @@ setInterval(()=>{
   const target=(cur?0.28:1)*S.songG;
   if(!A.paused)A.volume+=(target-A.volume)*0.35;
 },110);
-function actFor(name){const sg=eraForLane(name);return sg?(sg.n<=5?1:sg.n<=10?2:3):0;}
-function thStart(l,cascade){
-  let q=laneQueue(l); if(!q.length)return false;
-  if(TH.frame!==false){
-    // the chapter boots itself — unless the cut already opens with a boot
-    const sg0=eraForLane(l.name);
-    const startsBooted=q[0]&&(clips[q[0]]||{}).era==='boot';
-    if(sg0&&!startsBooted&&(BOOTS_BY_ERA[sg0.n]||[]).length){
-      q=[BOOTS_BY_ERA[sg0.n][Math.floor(Math.random()*BOOTS_BY_ERA[sg0.n].length)]].concat(q);
-    }
-    // acts announce themselves as the border is crossed
-    const a=actFor(l.name);
-    if(a&&TH.actPlayed!==a&&(FRAME.act[a]||[]).length){
-      q=[FRAME.act[a][0]].concat(q); TH.actPlayed=a;
-    }
-  }
-  TH.on=true;TH.queue=q;TH.i=0;TH.cascade=!!cascade;TH.laneIdx=S.lanes.indexOf(l);
-  TH.sg=eraForLane(l.name);
-  $('theatre').classList.add('on');
-  const A=$('songA');
-  if(TH.sg){ if(!A.src.endsWith(encodeURI(TH.sg.url).split('/').pop()))A.src=TH.sg.url;
-    A.loop=true;A.currentTime=0;A.volume=S.songG;A.play().catch(()=>{}); } else A.pause();
-  if($('theatre').requestFullscreen)$('theatre').requestFullscreen().catch(()=>{});
-  thShow(); return true;
+function buildProgram(eras){
+  // THE RHYTHM: TITLE -> PROLOGUE -> [ACT at borders -> chapter CUT] -> EPILOGUE
+  const parts=[]; const F=TH.frame!==false;
+  if(F&&FRAME.title.length)parts.push({frame:FRAME.title[0]});
+  if(F&&FRAME.prologue.length)parts.push({frame:FRAME.prologue[0]});
+  let act=0;
+  eras.forEach(sg=>{
+    const a=sg.n<=5?1:sg.n<=10?2:3;
+    if(F&&a!==act&&(FRAME.act[a]||[]).length){parts.push({frame:FRAME.act[a][0]});act=a;}
+    const ids=cutIdsForEra(sg);
+    if(ids.length)parts.push({lane:sg,ids});
+  });
+  if(F&&FRAME.epilogue.length)parts.push({frame:FRAME.epilogue[0]});
+  return parts;
 }
-function thNextLane(){
-  for(let i=TH.laneIdx+1;i<S.lanes.length;i++){
-    if(S.lanes[i].off)continue;
-    if(thStart(S.lanes[i],true))return;
-  }
-  if(TH.frame!==false&&!TH.epiDone&&FRAME.epilogue.length){
-    TH.epiDone=true;TH.cascade=false;TH.queue=[FRAME.epilogue[0]];TH.i=0;
-    $('songA').pause();thShow();return;
+function thStart(l){
+  // single-channel screening: its cut, framed with its act and the epilogue
+  const sg=eraForLane(l.name); if(!sg)return false;
+  const F=TH.frame!==false;
+  const parts=[];
+  const a=sg.n<=5?1:sg.n<=10?2:3;
+  if(F&&(FRAME.act[a]||[]).length)parts.push({frame:FRAME.act[a][0]});
+  const ids=l.kind==='film'?(function(){const q=laneQueue(l);
+    if(!(q[0]&&(clips[q[0]]||{}).era==='boot')){
+      const bs=BOOTS_BY_ERA[sg.n]||[]; if(bs.length)q.unshift(bs[0]);}
+    return q;})():cutIdsForEra(sg);
+  if(!ids.length)return false;
+  parts.push({lane:sg,ids});
+  if(F&&FRAME.epilogue.length)parts.push({frame:FRAME.epilogue[0]});
+  thRun(parts); return true;
+}
+function thNextPart_skipLane(){ // NEXT LANE control: jump to the next lane part
+  if(!TH.parts)return;
+  for(let i=TH.pi+1;i<TH.parts.length;i++){
+    if(TH.parts[i].lane){TH.pi=i-1;thNextPart();return;}
   }
   thExit();
 }
 function thExit(){
-  TH.on=false;TH.cascade=false;TH.epiDone=false;TH.actPlayed=0;
+  TH.on=false;TH.parts=null;TH.pi=0;
   $('theatre').classList.remove('on','ctl');
   thv.pause();$('songA').pause();
   if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
 }
 $('thX').onclick=thExit;
-$('thBtn').onclick=()=>{const l=S.lanes.find(x=>x.name===S.focus)||S.lanes[0];if(l)thStart(l,false);};
+$('thBtn').onclick=()=>{const l=S.lanes.find(x=>x.name===S.focus)||S.lanes.find(x=>eraForLane(x.name));if(l)thStart(l);};
 $('cascBtn').onclick=()=>{
-  const l=S.lanes.find(x=>!x.off); if(!l)return;
-  TH.epiDone=false;TH.actPlayed=0;
-  // FRAME: the session opens with the main title and the prologue
-  if(TH.frame!==false&&(FRAME.title.length||FRAME.prologue.length)){
-    TH.on=true;TH.cascade=true;TH.laneIdx=S.lanes.indexOf(l)-1;TH.sg=null;
-    TH.queue=FRAME.title.slice(0,1).concat(FRAME.prologue.slice(0,1));TH.i=0;
-    $('theatre').classList.add('on');$('songA').pause();
-    if($('theatre').requestFullscreen)$('theatre').requestFullscreen().catch(()=>{});
-    thShow();return;
-  }
-  TH.laneIdx=S.lanes.indexOf(l)-1;thNextLane();};
+  const eras=Object.values(SONGS).sort((a,b)=>a.n-b.n);
+  thRun(buildProgram(eras));
+};
 // subtle collapsible controls: appear on touch/move, fade after idle
 let thIdle=null;
 function thWake(){
@@ -1990,7 +2017,7 @@ document.querySelectorAll('#thCtl button').forEach(b=>{
     const c=b.dataset.c;
     if(c==='prev'){TH.i=Math.max(0,TH.i-1);thShow();}
     if(c==='next'){TH.i++;thShow();}
-    if(c==='lane'){TH.cascade=true;thNextLane();}
+    if(c==='lane'){thNextPart_skipLane();}
     if(c==='pp'){
       if(thv.paused){thv.play().catch(()=>{});const A=$('songA');if(TH.sg)A.play().catch(()=>{});b.innerHTML='&#9646;&#9646;';}
       else{thv.pause();$('songA').pause();b.innerHTML='&#9654;';}
@@ -1998,26 +2025,14 @@ document.querySelectorAll('#thCtl button').forEach(b=>{
     if(c==='frame'){TH.frame=TH.frame===false?true:false;
       b.classList.toggle('on',TH.frame!==false);}
     if(c==='film'){
-      // the complete program: frame + every ON lane with boots, as one film plan
-      const parts=[];
-      if(FRAME.title.length)parts.push({kind:'frame',file:(clips[FRAME.title[0]]||{}).media_url});
-      if(FRAME.prologue.length)parts.push({kind:'frame',file:(clips[FRAME.prologue[0]]||{}).media_url});
-      let actDone=0;
-      S.lanes.forEach(l2=>{
-        if(l2.off)return;
-        const sg2=eraForLane(l2.name); if(!sg2)return;
-        const a2=actFor(l2.name);
-        if(a2&&a2!==actDone&&(FRAME.act[a2]||[]).length){
-          parts.push({kind:'frame',file:(clips[FRAME.act[a2][0]]||{}).media_url});actDone=a2;
-        }
-        const ids=laneQueue(l2);
-        const booted=ids[0]&&(clips[ids[0]]||{}).era==='boot';
-        const q2=(booted?[]:[(BOOTS_BY_ERA[sg2.n]||[])[0]]).filter(Boolean).concat(ids);
-        parts.push({kind:'lane',name:l2.name,era:sg2.n,song:sg2.url,songDur:sg2.dur,
-          clips:q2.map(id2=>({id:id2,media_url:(clips[id2]||{}).media_url,
+      // export EXACTLY the program on screen — projectionist == renderer
+      const prog=TH.parts||buildProgram(Object.values(SONGS).sort((x,y)=>x.n-y.n));
+      const parts=prog.map(pt=>pt.frame
+        ?{kind:'frame',file:(clips[pt.frame]||{}).media_url}
+        :{kind:'lane',name:pt.lane.eraTitle,era:pt.lane.n,song:pt.lane.url,
+          songDur:pt.lane.dur,clips:pt.ids.map(id2=>({id:id2,
+            media_url:(clips[id2]||{}).media_url,
             duration:(clips[id2]||{}).duration||8}))});
-      });
-      if(FRAME.epilogue.length)parts.push({kind:'frame',file:(clips[FRAME.epilogue[0]]||{}).media_url});
       const a3=document.createElement('a');
       a3.href=URL.createObjectURL(new Blob([JSON.stringify({format:'monte-program',parts},null,1)],
         {type:'application/json'}));
@@ -2041,7 +2056,7 @@ $('spinBtn').onclick=()=>{
     pushUndo(); const r=rollEra(t);
     savePls();saveLanes();saveUsage();S.focus=r.nm;build();
     $('mainstat').textContent='SPUN: '+r.nm+' on '+SONGS[t].songTitle.toUpperCase();
-    const l=S.lanes.find(x=>x.name===r.nm); if(l)thStart(l,false);
+    const l=S.lanes.find(x=>x.name===r.nm); if(l)thStart(l);
   },420);
 };
 $('moreBtn').onclick=()=>{document.querySelector('header').classList.toggle('more');
