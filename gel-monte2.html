@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>GEL MONTE II — Monte-Carlo Documentary Compiler</title>
+<style>
+  :root{--bg:#070709;--ink:#f2f2ee;--dim:rgba(242,242,238,.5);--line:rgba(242,242,238,.2);
+    --hot:#9fe7ff;--lock:#7cfc00;--rej:#ff2e2e;--amber:#e6a23c}
+  *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent;
+    scrollbar-width:thin;scrollbar-color:rgba(159,231,255,.45) #070709}
+  ::-webkit-scrollbar{width:9px;height:9px}
+  ::-webkit-scrollbar-thumb{background:rgba(159,231,255,.3);border-radius:5px}
+  html,body{height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  #app{position:fixed;inset:0;display:grid;grid-template-rows:46px 1fr 96px 34px}
+  /* channel strip */
+  #chstrip{display:flex;gap:5px;align-items:center;padding:0 10px;border-bottom:1px solid var(--line);overflow-x:auto}
+  #chstrip b{font-size:13px;letter-spacing:.08em;margin-right:8px;white-space:nowrap}
+  .chbtn{position:relative;min-width:40px;border:1px solid var(--line);border-radius:7px;
+    background:transparent;color:var(--ink);font:inherit;font-size:11px;font-weight:700;
+    padding:6px 0 8px;cursor:pointer;text-align:center;flex:0 0 auto}
+  .chbtn.on{border-color:var(--hot);color:var(--hot)}
+  .chbtn .cov{position:absolute;left:3px;right:3px;bottom:2px;height:2px;background:rgba(255,255,255,.12)}
+  .chbtn .cov i{display:block;height:100%;background:var(--hot)}
+  #chstrip .sp{flex:1}
+  #chstrip button.mode{border:1px solid var(--line);border-radius:7px;background:transparent;
+    color:var(--ink);font:inherit;font-size:10px;font-weight:700;padding:6px 10px;cursor:pointer}
+  #chstrip button.mode.on{border-color:var(--hot);color:var(--hot)}
+  /* film */
+  #stage{position:relative;background:#000;overflow:hidden}
+  #stage video,#stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none;
+    transition:opacity .16s linear;opacity:1}
+  #subtitle{position:absolute;left:8%;right:8%;bottom:7%;text-align:center;font-size:15px;
+    line-height:1.6;color:#fff;text-shadow:0 2px 6px #000,0 0 2px #000;pointer-events:none;
+    letter-spacing:.02em;opacity:0;transition:opacity .2s}
+  #subtitle.on{opacity:1}
+  #stage img{transition:transform 6s linear}
+  #card{position:absolute;inset:0;background:#000;display:none;place-items:center;text-align:center;padding:6vw}
+  #card.on{display:grid}
+  #card i{display:block;font-style:normal;color:var(--dim);font-size:13px;letter-spacing:.34em}
+  #card b{display:block;font-size:min(44px,5.2vw);letter-spacing:.1em;margin:16px 0 10px;line-height:1.3}
+  #card span{color:var(--hot);font-size:13px;letter-spacing:.12em;line-height:1.6;display:block;max-width:56ch;margin:0 auto}
+  #recon{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--amber);display:none}
+  #reconTag{position:absolute;top:10px;right:12px;color:var(--amber);font-size:10px;font-weight:800;
+    letter-spacing:.14em;display:none;border:1px solid var(--amber);border-radius:4px;padding:2px 6px}
+  #hud{position:absolute;left:12px;top:10px;font-size:10px;color:var(--dim);text-shadow:0 1px 2px #000}
+  /* the wall: variants as gel lanes, NORM'd to the song, one shared playhead */
+  #wall{position:absolute;inset:0;background:rgba(7,7,9,.96);display:none;padding:14px;z-index:5}
+  #wall.on{display:flex;gap:10px}
+  .vlane{flex:1;position:relative;border:1px solid var(--line);border-radius:9px;overflow:hidden;min-width:0}
+  .vlane h4{font-size:9px;color:var(--dim);padding:5px 8px;letter-spacing:.1em;white-space:nowrap;
+    overflow:hidden;border-bottom:1px solid var(--line);height:24px}
+  .vlane.master{border-color:var(--hot)}
+  .vband{position:absolute;left:2px;right:2px;border-radius:3px;overflow:hidden;cursor:pointer;background:#111}
+  .vband img{width:100%;height:100%;object-fit:cover;opacity:.85;pointer-events:none}
+  .vband.card{background:#000;border:1px dashed var(--line)}
+  .vband.locked{outline:2px solid var(--lock)}
+  .vband:hover{outline:1px solid var(--hot)}
+  .vband .fn{position:absolute;left:3px;bottom:1px;font-size:7px;color:#fff;text-shadow:0 1px 2px #000}
+  #wallhead{position:absolute;left:14px;right:14px;height:0;border-top:1px solid var(--hot);z-index:6;
+    pointer-events:none;box-shadow:0 0 8px rgba(159,231,255,.7)}
+  /* edl strip */
+  #strip{position:relative;border-top:1px solid var(--line);background:#0b0b0e}
+  .sblock{position:absolute;top:6px;bottom:22px;border-radius:4px;overflow:hidden;cursor:pointer;background:#15151a}
+  .sblock img{width:100%;height:100%;object-fit:cover;opacity:.8;pointer-events:none}
+  .sblock.card{background:#000;border:1px dashed rgba(242,242,238,.4)}
+  .sblock.active{outline:2px solid var(--hot)}
+  .sblock.locked{outline:2px solid var(--lock)}
+  .sblock.recon::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--amber)}
+  #playhead{position:absolute;top:0;bottom:18px;width:1px;background:var(--hot);z-index:3;pointer-events:none}
+  #striplab{position:absolute;left:8px;bottom:3px;font-size:9px;color:var(--dim)}
+  #striplab b{color:var(--ink)}
+  /* transport */
+  #bar{display:flex;gap:7px;align-items:center;padding:0 10px;border-top:1px solid var(--line);font-size:10px}
+  #bar button{border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--ink);
+    font:inherit;font-size:10px;font-weight:700;padding:5px 11px;cursor:pointer;letter-spacing:.05em}
+  #bar button.pri{background:var(--ink);color:#000}
+  #bar button.on{border-color:var(--hot);color:var(--hot)}
+  #bar .stat{flex:1;color:var(--dim);white-space:nowrap;overflow:hidden;text-align:center}
+  #bar select,#bar input[type=number]{background:transparent;border:1px solid var(--line);border-radius:6px;
+    color:var(--ink);font:inherit;font-size:10px;padding:4px 5px}
+  #bar input[type=number]{width:74px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="chstrip"><b>GEL·MONTE II</b></div>
+  <div id="stage">
+    <video id="vA" playsinline preload="auto"></video>
+    <video id="vB" playsinline preload="auto"></video>
+    <img id="stillEl" alt="">
+    <div id="recon"></div><div id="reconTag">RECONSTRUCTION</div>
+    <div id="card"></div>
+    <div id="hud"></div>
+    <div id="subtitle"></div>
+    <div id="wall"><div id="wallhead"></div></div>
+  </div>
+  <div id="strip"><div id="playhead"></div><div id="striplab"></div></div>
+  <div id="bar">
+    <button id="bPlay" class="pri">PLAY</button>
+    <button id="bGen">GENERATE</button>
+    <button id="bVar">VARIANT</button>
+    <button id="bAcross" title="one film across all 14 chapters, chronological, on this channel's song">ACROSS</button>
+    <button id="bWall">WALL</button>
+    <select id="bProfile">
+      <option value="curtis">CURTIS</option>
+      <option value="chronicle">CHRONICLE</option>
+      <option value="lyric">LYRIC</option>
+    </select>
+    <input id="bSeed" type="number" value="451" title="seed">
+    <span class="stat" id="stat">loading…</span>
+    <button id="bWorld">WORLD</button>
+    <button id="bEDL">EDL</button>
+  </div>
+</div>
+<audio id="song"></audio>
+<video id="voxEl" playsinline preload="auto" style="display:none"></video>
+<input type="file" id="twinFile" accept=".json" style="display:none">
+
+<script id="sampler">
+/* ============================================================
+   THE SAMPLER — pure. Same code runs in node for the renderer.
+   EDL = f(manifest, audiomap, transcript, seed, profile, locks,
+           rejects, ledger). Cuts live on the lattice. The ending
+   is placed before the middle. Source intervals never have to
+   start at zero, and speech snaps to sentence boundaries.
+   ============================================================ */
+(function(root){
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;
+  var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
+  return((t^t>>>14)>>>0)/4294967296;}}
+const PROFILES={
+  curtis:  {pace:1.0, cards:1.0, narration:.75, actuality:.26, wFunc:{promotional:1.2,human:1.4,institution:1.2,failure:1.3,canonical:1.1,afterlife:1.0,periphery:.9}, wDoc:.5, still:.14},
+  chronicle:{pace:1.15,cards:.6, narration:.55, actuality:.34, wFunc:{canonical:1.5,institution:1.2,human:1.0,promotional:.9,failure:1.0,afterlife:.8,periphery:.8}, wDoc:.9, still:.10},
+  lyric:   {pace:.8,  cards:.4, narration:.35, actuality:.20, wFunc:{human:1.5,periphery:1.3,afterlife:1.2,failure:1.1,promotional:.8,institution:.7,canonical:.8}, wDoc:.2, still:.22},
+};
+function segsFor(tr,clipId){return tr.filter(s=>s.clip===clipId);}
+function shotLenAt(am,t,prof,rng){
+  const i=Math.min(am.energy.length-1,Math.max(0,Math.floor(t/am.hop)));
+  const e=(am.energy[i]+am.flux[i])/2;
+  const base=(1-e)*4.6+1.7;             // busy music -> short shots
+  return Math.max(1.0,(base/(prof.pace))*(0.75+rng()*0.5));
+}
+function nextLattice(am,t,lo,hi){
+  const c=am.cut_windows;
+  let best=null;
+  for(const p of c){ if(p>=t+lo&&p<=t+hi){best=p;break;} if(p>t+hi)break; }
+  return best;
+}
+function buildEDL(inp){
+  const {channel,manifest,audiomap:am,transcript:tr,seed,profile,locks=[],rejects=[],ledger={}}=inp;
+  const O=inp.opts||{};
+  const prof=Object.assign({},PROFILES[profile]||PROFILES.curtis,O.prof||{});
+  const rng=mulberry32(seed>>>0);
+  const D=am.duration;
+  const ch=manifest.channels.find(c=>c.channel===channel);
+  const crossEra=!!inp.crossEra;
+  let pool;
+  if(O.bootsAsPool){
+    // the machine film: loading screens ARE the footage
+    pool=((inp.loading&&inp.loading.screens)||[]).map(s2=>({id:s2.file,channel:s2.ch||1,
+      kind:'video',file:s2.file,duration:(s2.static||s2.dur||8)+0.3,tags:[s2.kind],
+      historicalStatus:'interstitial',functions:['canonical'],pid:s2.pid||'',useCount:0}));
+  } else {
+    pool=manifest.clips.filter(c=>(crossEra||c.channel===channel)&&rejects.indexOf(c.id)<0);
+    if(O.filter){
+      const F=O.filter;
+      pool=pool.filter(c=>(!F.status||F.status.indexOf(c.historicalStatus)>=0)
+        &&(!F.func||(c.functions||[]).some(f=>F.func.indexOf(f)>=0))
+        &&(!F.tag||new RegExp(F.tag,'i').test((c.file||'')+' '+(c.tags||[]).join(' '))));
+    }
+  }
+  const TALKERSET=new Set(inp.talkers||[]);
+  const TALK=/presenter|interview|speak|talking|explain|address|testimon|anchor|reporter|host|lecture|panel|conversation|tells|discuss|narrat.*camera|to_camera/i;
+  pool.forEach(c=>{c.talker=c.kind==='video'&&(TALKERSET.has(c.id)
+    ||TALK.test((c.file||'')+' '+(c.tags||[]).join(' ')));});
+  const ERAS_LIST=O.eras||manifest.channels.map(c=>c.channel);
+  const eraAt=t=>{
+    const k=Math.min(ERAS_LIST.length-1,Math.max(0,Math.floor(t/D*ERAS_LIST.length)));
+    return O.reverse?ERAS_LIST[ERAS_LIST.length-1-k]:ERAS_LIST[k];
+  };
+  const LOADING=(inp.loading&&inp.loading.screens)||[];
+  const bootsFor=n2=>LOADING.filter(s2=>s2.ch===n2&&(s2.kind==='ch'||s2.kind==='act'));
+  function placeBoot(n2,t,maxLen){
+    const cands=bootsFor(n2).slice(); if(!cands.length)return null;
+    // coverage-weighted: the least-used boot of this chapter comes up first
+    cands.sort((a,b)=>((ledger[a.file]&&ledger[a.file].useCount||0)+rng()*0.9)
+                     -((ledger[b.file]&&ledger[b.file].useCount||0)+rng()*0.9));
+    const b2=cands[0];
+    // full play, cut ON the static: ride 0.3s into the burst, then cut
+    const toStatic=(b2.static||((b2.dur||3)-0.3))+0.3;
+    const len=Math.min(toStatic,b2.dur||toStatic,maxLen);
+    if(len<1.4||overlaps(t,len))return null;
+    const iv={t:+t.toFixed(2),len:+len.toFixed(2),kind:'shot',clip:b2.file,file:b2.file,
+      in:0,policy:'BOOT',ch:n2,func:'TITLE',status:'interstitial',still:false,
+      pid:b2.pid||'',pan:null,boot:true};
+    place(iv); return iv;
+  }
+  const vids=pool.filter(c=>c.kind==='video'), stills=pool.filter(c=>c.kind==='image');
+  const usedFilm=new Set(); const edl=[];
+  const place=(iv)=>{edl.push(iv);};
+  const overlaps=(t,len)=>edl.some(iv=>t<iv.t+iv.len-0.05&&iv.t+0.05<t+len);
+  // locked intervals are law
+  locks.forEach(l=>{place(Object.assign({},l,{locked:true}));if(l.clip)usedFilm.add(l.clip);});
+  // 1 opening — the chapter's own loading screen when one exists, else the card
+  if(!crossEra&&!overlaps(0,2.5)){
+    const t0=nextLattice(am,0,2.4,7.5)||3.0;
+    const b0=placeBoot(channel,0,11.0);   // the chapter takes its time booting
+    if(!b0)place({t:0,len:t0,kind:'card',text:['№ '+String(channel).padStart(2,'0'),
+      ch.title,ch.songTitle],func:'TITLE'});
+  }
+  // 2 the ending, before the middle
+  const lastCut=(()=>{const c=am.cut_windows.filter(p=>p<=D-2.2);return c.length?c[c.length-1]:D-3;})();
+  // 3 phrase title cards (argument turns)
+  const mil=inp.milestone||{};
+  const clauses=String(mil.one_line||ch.songTitle).split(/[.;—]| but | and /i)
+    .map(s=>s.trim()).filter(s=>s.length>8);
+  let ci=0;
+  if(crossEra&&!O.noBoots&&!O.bootsAsPool){
+    const NE=ERAS_LIST.length;
+    for(let k2=0;k2<NE;k2++){
+      const e2=O.reverse?ERAS_LIST[NE-1-k2]:ERAS_LIST[k2];
+      const w0=k2/NE*D, w1=(k2+1)/NE*D;
+      placeBoot(e2, k2===0?0:w0, (w1-w0)*0.35);   // sting; full boots belong to the feature
+    }
+  }
+  (am.phrases||[]).forEach((p,k)=>{
+    if(crossEra)return;   // the cross carries no cards — chronology is felt, not captioned
+    if(rng()>prof.cards*0.8)return;
+    if(p<8||p>D-10)return;
+    const end=nextLattice(am,p,1.6,3.4)||p+2.2;
+    if(overlaps(p,end-p))return;
+    let txt=['',clauses[ci++%clauses.length]||ch.songTitle,''];
+    if(crossEra){
+      const eraN=Math.max(1,Math.min(14,1+Math.floor(p/D*manifest.channels.length)));
+      const ec=manifest.channels.find(c=>c.channel===eraN)||ch;
+      txt=['№ '+String(eraN).padStart(2,'0'),ec.title,''];
+    }
+    place({t:p,len:end-p,kind:'card',text:txt,func:'TITLE'});
+  });
+  // scoring: coverage + profile + theme + transcript window + ARGUMENT ORDER
+  const themeWords=new Set();
+  String(ch.songTitle+' '+(mil.one_line||'')).toLowerCase().split(/\W+/)
+    .forEach(w=>{if(w.length>3)themeWords.add(w);});
+  // the rhetorical arc: sections of the song want different shot functions, in order
+  const ARC={curtis:['promotional','human','institution','periphery','failure','afterlife'],
+             chronicle:['canonical','institution','human','periphery','failure','afterlife'],
+             lyric:['human','periphery','human','afterlife','failure','afterlife']};
+  const arc=O.arc||ARC[inp.profile]||ARC.curtis;
+  const funcAt=t=>arc[Math.min(arc.length-1,Math.floor(t/D*arc.length))];
+  let lastKw=null;   // narration chain: the next sentence should answer the last
+  function score(c,t){
+    let s=1/(1+(ledger[c.id]?ledger[c.id].useCount||0:0));          // ensemble coverage
+    (c.functions||[]).forEach(f=>{s+=(prof.wFunc[f]||0)*0.4;});
+    if((c.functions||[]).indexOf(funcAt(t))>=0)s+=0.9;              // argument order
+    if(crossEra){                                                    // chronological sweep 01->14
+      const want=eraAt(t);
+      if(c.channel===want)s+=2.2;
+      else if(Math.abs(c.channel-want)===1)s+=0.8;
+      else s-=0.6;
+    }
+    if(c.historicalStatus==='documented')s+=prof.wDoc*0.5;
+    let hits=0; (c.tags||[]).forEach(w=>{if(themeWords.has(w))hits++;});
+    s+=Math.min(1,hits*0.35);
+    const v=voiceAt(t); if(v){
+      const wk=new Set(v.kw);
+      let h2=0; (c.tags||[]).forEach(w=>{if(wk.has(w))h2++;});
+      if(c.id===v.clip)h2+=2;          // sync moment: cut to the speaker, then drift away
+      s+=Math.min(1.6,h2*0.4);
+      if(c.talker&&c.id!==v.clip)s-=2.6;   // no silent moving lips under another voice
+      if(crossEra){ s+=(c.channel===v.ch)?1.6:-1.4; }   // the image stays with the speaking era
+    }
+    if(lastKw){                                                      // narration chaining
+      let h3=0;
+      segsFor(tr,c.id).forEach(sg=>(sg.keywords||[]).forEach(k2=>{if(lastKw.has(k2))h3++;}));
+      s+=Math.min(0.9,h3*0.3);
+    }
+    return s+rng()*0.25;                                            // seeded tiebreak
+  }
+  function pick(t,wantStill){
+    const base=(wantStill&&stills.length?stills:vids.length?vids:stills);
+    // film coverage law: no reuse until the eligible pool is exhausted
+    let cand=base.filter(c=>!usedFilm.has(c.id));
+    if(!cand.length)cand=base;
+    let best=null,bs=-1e9;
+    cand.forEach(c=>{const s=score(c,t); if(s>bs){bs=s;best=c;}});
+    return best;
+  }
+  function mkShot(t,slot){
+    // slot is law; speech lives on the voice track, actuality can bleed through
+    const wantStill=!crossEra&&rng()<prof.still;   // the cross is moving images only
+    const c=pick(t,wantStill); if(!c)return null;
+    usedFilm.add(c.id);
+    let inn=0,policy='MUTE';
+    if(c.kind==='video'){
+      const slack=Math.max(0,(c.duration||slot)-slot);
+      inn=slack>0?rng()*slack:0;                                    // never frame zero by law
+      const clear=!voice.some(v2=>v2.t<t+slot&&v2.t+v2.dur>t);      // no one is speaking here
+      if(clear&&rng()<(c.talker?0.8:(prof.actuality||0.22))){
+        policy='ACTUALITY';                                          // let the world sound
+        if(c.talker){
+          // and if a face is talking, open on their sentence so the words play
+          const fits2=segsFor(tr,c.id).filter(sg=>(sg.end-sg.start)<=slot+0.5);
+          if(fits2.length){
+            const sg=fits2[Math.floor(rng()*fits2.length)];
+            inn=Math.max(0,Math.min(sg.start-0.1,Math.max(0,(c.duration||slot)-slot)));
+          }
+        }
+      }
+    }
+    return {t,len:slot,kind:'shot',clip:c.id,file:c.file,in:+inn.toFixed(2),
+      policy,ch:c.channel,func:(c.functions||['periphery'])[0],status:c.historicalStatus,
+      still:c.kind==='image',pid:c.pid||'',
+      pan:c.kind==='image'?{x:(rng()*2-1)*6,y:(rng()*2-1)*4,z:1.06+rng()*0.08}:null};
+  }
+  // ---- THE VOICE TRACK: an independent audio collage ----
+  // Whole sentences from ANY clip, laid over any images, spanning cuts.
+  // Maximum speech: fill the timeline up to the profile's narration appetite.
+  const sents=[];
+  pool.forEach(c=>{ if(c.kind!=='video')return;
+    segsFor(tr,c.id).forEach(sg=>{
+      const d2=sg.end-sg.start;
+      const words=String(sg.text||'').trim().split(/\s+/).length;
+      if(d2<0.8||d2>16||words<3)return;
+      if(O.voiceText&&!new RegExp(O.voiceText,'i').test(sg.text||''))return;
+      sents.push({clip:c.id,file:c.file,ch:c.channel,in:sg.start,dur:+d2.toFixed(2),
+        text:sg.text,kw:sg.keywords||[],whole:/[.!?]$/.test(sg.text||'')});
+    });
+  });
+  const voice=[];
+  if(crossEra&&prof.narration>0.05){
+    // ONE LINE PER ERA: the best whole thought each chapter owns,
+    // spoken inside its own chapter's window — voice and image stay married
+    const NE=ERAS_LIST.length;
+    for(let k2=0;k2<NE;k2++){
+      const e2=O.reverse?ERAS_LIST[NE-1-k2]:ERAS_LIST[k2];
+      const w0=k2/NE*D, w1=(k2+1)/NE*D;
+      let best=null,bs=-1e9;
+      sents.forEach(sg=>{
+        if(sg.ch!==e2)return;
+        if(sg.dur<2.0||sg.dur>(w1-w0)-0.6)return;
+        const words=String(sg.text||'').trim().split(/\s+/).length;
+        const srcRec=pool.find(c=>c.id===sg.clip);
+        let s2=(sg.whole?1.6:0)+Math.min(2.0,words*0.09)+Math.min(1.3,sg.dur*0.15);
+        if(srcRec&&srcRec.talker)s2+=0.9;                 // a face saying it beats a voice alone
+        if(lastKw){let h=0;sg.kw.forEach(k2=>{if(lastKw.has(k2))h++;});s2+=Math.min(1.4,h*0.5);}
+        s2+=rng()*0.3;
+        if(s2>bs){bs=s2;best=sg;}
+      });
+      if(!best)continue;
+      let vt=w0+0.6;
+      const bt=edl.find(iv=>iv.boot&&iv.t>=w0-0.15&&iv.t<w1);
+      if(bt)vt=Math.max(vt,bt.t+bt.len+0.15);
+      const lat=(am.cut_windows||[]).find(pp=>pp>=vt-0.2&&pp+best.dur<=w1+1.2);
+      if(lat)vt=lat;
+      const vin=+Math.max(0,best.in-0.12).toFixed(2);
+      voice.push({t:+vt.toFixed(2),dur:best.dur,clip:best.clip,file:best.file,
+        in:vin,text:best.text,kw:best.kw,ch:best.ch});
+      lastKw=new Set(best.kw);
+      // LIP-SYNC LAW: if the speaker is on camera, show them saying it —
+      // image aligned to the voice event = lips move AND the sound comes out
+      const rec=pool.find(c=>c.id===best.clip);
+      if(rec&&rec.talker){
+        const syncLen=Math.min(best.dur+0.7,(rec.duration||best.dur)-vin,D-vt-0.2);
+        if(syncLen>1.2&&!overlaps(vt,syncLen)){
+          usedFilm.add(rec.id);
+          place({t:+vt.toFixed(2),len:+syncLen.toFixed(2),kind:'shot',clip:rec.id,
+            file:rec.file,in:vin,policy:'SYNC',ch:rec.channel,func:'human',
+            status:rec.historicalStatus,still:false,pid:rec.pid||'',pan:null});
+        }
+      }
+    }
+  } else {
+    const usedSent=new Set();
+    const firstCard=edl.find(iv=>iv.kind==='card');
+    const firstBoot=edl.find(iv=>iv.boot);
+    let vt=firstBoot?firstBoot.t+firstBoot.len+0.25
+      :(firstCard?firstCard.t+firstCard.len*0.6:2.5);   // speak after the machine settles
+    while(vt<D-2.5&&sents.length){
+      const i2=Math.min(am.energy.length-1,Math.max(0,Math.floor(vt/am.hop)));
+      const e2=am.energy[i2];
+      if(rng()>prof.narration*(1.15-e2*0.5)){vt+=1.2+rng()*2.2;continue;}  // let the song breathe
+      let best=null,bs=-1e9;
+      sents.forEach((sg,si)=>{
+        if(usedSent.has(si))return;
+        if(vt+sg.dur>D-0.8)return;
+        let s2=sg.whole?1.2:0;
+        s2+=Math.min(1.2,sg.dur*0.12);                    // let long thoughts happen whole
+        if(lastKw){let h=0;sg.kw.forEach(k2=>{if(lastKw.has(k2))h++;});s2+=Math.min(1.5,h*0.5);}
+        if(crossEra){const want=eraAt(vt);
+          if(sg.ch===want)s2+=1.8; else if(Math.abs(sg.ch-want)<=1)s2+=0.6; else s2-=1.2;}
+        s2+=rng()*0.4;
+        if(s2>bs){bs=s2;best={sg,si};}
+      });
+      if(!best)break;
+      usedSent.add(best.si);
+      const vin2=+Math.max(0,best.sg.in-0.12).toFixed(2);
+      voice.push({t:+vt.toFixed(2),dur:best.sg.dur,clip:best.sg.clip,file:best.sg.file,
+        in:vin2,text:best.sg.text,kw:best.sg.kw,ch:best.sg.ch});
+      lastKw=new Set(best.sg.kw);
+      const rec2=pool.find(c=>c.id===best.sg.clip);
+      if(rec2&&rec2.talker){
+        const syncLen=Math.min(best.sg.dur+0.7,(rec2.duration||best.sg.dur)-vin2,D-vt-0.2);
+        if(syncLen>1.2&&!overlaps(vt,syncLen)){
+          usedFilm.add(rec2.id);
+          place({t:+vt.toFixed(2),len:+syncLen.toFixed(2),kind:'shot',clip:rec2.id,
+            file:rec2.file,in:vin2,policy:'SYNC',ch:rec2.channel,func:'human',
+            status:rec2.historicalStatus,still:false,pid:rec2.pid||'',pan:null});
+        }
+      }
+      vt+=best.sg.dur+(0.7+rng()*1.9)*(O.breath||1.25);   // room to breathe between thoughts
+    }
+  }
+  const voiceAt=t=>voice.find(v=>t>=v.t&&t<v.t+v.dur);
+  // ending shot
+  if(!overlaps(lastCut,D-lastCut)){
+    const e=mkShot(lastCut,D-lastCut); if(e){e.ending=true;place(e);}
+  }
+  // 4 fill the gaps on the lattice
+  edl.sort((a,b)=>a.t-b.t);
+  const gaps=[]; let cur=0;
+  edl.slice().sort((a,b)=>a.t-b.t).forEach(iv=>{
+    if(iv.t-cur>0.9)gaps.push([cur,iv.t]); cur=Math.max(cur,iv.t+iv.len);});
+  if(D-cur>0.9)gaps.push([cur,D]);
+  gaps.forEach(([g0,g1])=>{
+    let t=g0;
+    while(g1-t>0.9){
+      const want=shotLenAt(am,t,prof,rng);
+      let end=nextLattice(am,t,want*0.7,want*1.4)||t+want;
+      if(g1-end<0.9)end=g1;                                          // land exactly on the wall
+      const sh=mkShot(t,+(end-t).toFixed(2));                        // slot is law: no post-shrink
+      if(!sh)break;
+      place(sh); t=sh.t+sh.len;
+    }
+  });
+  edl.sort((a,b)=>a.t-b.t);
+  // exact ending: stretch/trim final interval to D
+  if(edl.length){const last=edl[edl.length-1]; last.len=+(D-last.t).toFixed(2);}
+  // duck envelope for the song (precomputed, renderer-identical)
+  const duck=voice.map(v=>[+v.t.toFixed(2),+(v.t+v.dur+0.25).toFixed(2),0.28]);
+  edl.forEach(iv=>{ if(iv.policy==='ACTUALITY'||iv.policy==='BOOT')
+    duck.push([+iv.t.toFixed(2),+(iv.t+iv.len).toFixed(2),0.55]); });
+  duck.sort((a,b)=>a[0]-b[0]);
+  const cov=usedFilm.size/Math.max(1,pool.length);
+  const eras=new Set(); edl.forEach(iv=>{if(iv.ch)eras.add(iv.ch);});
+  const spoken=voice.reduce((s2,v)=>s2+v.dur,0);
+  return {channel,seed,profile,crossEra,duration:D,song:ch.song,songTitle:ch.songTitle,
+    edl,voice,duck,coverage:+cov.toFixed(3),used:usedFilm.size,pool:pool.length,
+    speech:+(spoken/D).toFixed(3),
+    eras:[...eras].sort((a,b)=>a-b)};
+}
+root.MonteSampler={buildEDL,PROFILES,mulberry32};
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+
+<script>
+(async()=>{
+const $=id=>document.getElementById(id);
+function safeSet(k,v){try{localStorage.setItem(k,v);return true;}catch(e){console.warn('storage full',k);return false;}}
+const MAN=await fetch('MONTE/manifest2.json').then(r=>r.json());
+const MILS=await fetch('MONTE/milestones.json').then(r=>r.json());
+const AM={},TR={};
+for(const ch of MAN.channels){
+  AM[ch.channel]=await fetch('MONTE/audiomaps/ch'+String(ch.channel).padStart(2,'0')+'.json').then(r=>r.json());
+  TR[ch.channel]=await fetch('MONTE/transcripts/ch'+String(ch.channel).padStart(2,'0')+'.json').then(r=>r.json()).catch(()=>[]);
+}
+const LOADINGJ=await fetch('MONTE/loading.json').then(r=>r.json()).catch(()=>({screens:[]}));
+const LEDGER=JSON.parse(localStorage.getItem('monteLedger2')||'{}');
+const SAVED=JSON.parse(localStorage.getItem('monteFilms2')||'{}');
+const S={ch:1,master:null,variants:{},locks:{},rejects:{},playing:false,world:null,worldIdx:0};
+Object.assign(S,{variants:SAVED.variants||{},locks:SAVED.locks||{},rejects:SAVED.rejects||{}});
+const masters=SAVED.masters||{};
+const song=$('song'),vA=$('vA'),vB=$('vB'),still=$('stillEl'),cardEl=$('card');
+let curV=vA, actIdx=-1;
+
+function persist(){safeSet('monteFilms2',JSON.stringify({masters,variants:S.variants,locks:S.locks,rejects:S.rejects}));
+  safeSet('monteLedger2',JSON.stringify(LEDGER));}
+function chMeta(n){return MAN.channels.find(c=>c.channel===n);}
+function milFor(n){const ch=chMeta(n);return (MILS.milestones||{})[ch.milestone]||{};}
+function assetUrl(f){return 'MONTE/'+f;}
+function posterUrl(iv){return iv.pid?('MONTE/POSTERS/'+iv.pid+'.jpg'):'';}
+
+// ---------- generate ----------
+function generate(seed){
+  const n=S.ch;
+  const out=MonteSampler.buildEDL({channel:n,manifest:MAN,audiomap:AM[n],
+    transcript:TR[n]||[],seed:seed>>>0,profile:$('bProfile').value,
+    locks:S.locks[n]||[],rejects:S.rejects[n]||[],ledger:LEDGER,milestone:milFor(n),loading:LOADINGJ});
+  out.edl.forEach(iv=>{if(iv.clip){(LEDGER[iv.clip]=LEDGER[iv.clip]||{useCount:0}).useCount++;
+    LEDGER[iv.clip].lastSeed=seed;LEDGER[iv.clip].lastPosition=iv.t;}});
+  S.master=out; masters[n]=out;
+  (S.variants[n]=S.variants[n]||[]).push(out);
+  if(S.variants[n].length>6)S.variants[n].shift();
+  persist(); drawStrip(); drawChannels(); updateStat();
+  return out;
+}
+function updateStat(msg){
+  const m=S.master, ch=chMeta(S.ch);
+  $('stat').textContent=msg||(m?
+    `CH ${String(S.ch).padStart(2,'0')} · ${ch.songTitle.toUpperCase()} · seed ${m.seed} · `+
+    `${m.edl.filter(i=>i.kind==='shot').length} shots · ${m.used}/${m.pool} clips (${Math.round(m.coverage*100)}%) · `+
+    `${(m.voice||[]).length} voice lines (${Math.round((m.speech||0)*100)}% spoken) · ${m.duration.toFixed(0)}s`
+    :`CH ${String(S.ch).padStart(2,'0')} · ${ch.songTitle.toUpperCase()} · press GENERATE`);
+}
+// ---------- channel strip ----------
+function corpusCoverage(n){
+  const pool=MAN.clips.filter(c=>c.channel===n);
+  const used=pool.filter(c=>LEDGER[c.id]&&LEDGER[c.id].useCount>0).length;
+  return pool.length?used/pool.length:0;
+}
+function drawChannels(){
+  const host=$('chstrip');
+  host.querySelectorAll('.chbtn,.sp,.mode').forEach(x=>x.remove());
+  MAN.channels.forEach(ch=>{
+    const b=document.createElement('button');
+    b.className='chbtn'+(ch.channel===S.ch?' on':'');
+    b.innerHTML=String(ch.channel).padStart(2,'0')+
+      '<span class="cov"><i style="width:'+Math.round(corpusCoverage(ch.channel)*100)+'%"></i></span>';
+    b.title=ch.title+' · '+ch.songTitle+' · '+Math.round(ch.songDuration)+'s';
+    b.onclick=()=>{stop();S.ch=ch.channel;S.master=masters[ch.channel]||null;
+      drawChannels();drawStrip();updateStat();};
+    host.appendChild(b);
+  });
+  const sp=document.createElement('span');sp.className='sp';host.appendChild(sp);
+}
+// ---------- edl strip ----------
+function drawStrip(){
+  const st=$('strip');
+  st.querySelectorAll('.sblock').forEach(x=>x.remove());
+  const m=S.master; const lab=$('striplab');
+  if(!m){lab.innerHTML='no cut yet — <b>GENERATE</b> deals one against the song';return;}
+  const W=st.clientWidth;
+  m.edl.forEach((iv,i)=>{
+    const d=document.createElement('div');
+    d.className='sblock'+(iv.kind==='card'?' card':'')+(iv.locked?' locked':'')
+      +(iv.status==='reconstruction'?' recon':'');
+    d.style.left=(iv.t/m.duration*W)+'px';
+    d.style.width=Math.max(3,iv.len/m.duration*W-1)+'px';
+    if(iv.kind==='shot'&&posterUrl(iv))d.innerHTML='<img src="'+posterUrl(iv)+'">';
+    d.title=(iv.kind==='card'?'TITLE: '+(iv.text||[]).join(' '):iv.clip)+
+      ' · '+iv.len.toFixed(1)+'s · '+(iv.policy||'')+' · '+(iv.func||'');
+    d.onclick=()=>{ toggleLock(i); };
+    d.oncontextmenu=e=>{e.preventDefault(); rejectShot(i); };
+    d.dataset.i=i;
+    st.appendChild(d);
+  });
+  lab.innerHTML='click a shot to <b>LOCK</b> it · right-click to <b>REJECT</b> the clip · locks survive VARIANT';
+}
+function toggleLock(i){
+  const m=S.master; if(!m)return;
+  const iv=m.edl[i]; if(iv.kind!=='shot')return;
+  const L=(S.locks[S.ch]=S.locks[S.ch]||[]);
+  const at=L.findIndex(l=>Math.abs(l.t-iv.t)<0.05);
+  if(at>=0){L.splice(at,1);iv.locked=false;}
+  else{L.push(JSON.parse(JSON.stringify(iv)));iv.locked=true;}
+  persist(); drawStrip();
+}
+function rejectShot(i){
+  const m=S.master; if(!m)return;
+  const iv=m.edl[i]; if(iv.kind!=='shot')return;
+  (S.rejects[S.ch]=S.rejects[S.ch]||[]).push(iv.clip);
+  persist(); updateStat('REJECTED '+iv.clip.split('/').pop().slice(0,40)+' — VARIANT to re-deal');
+}
+// ---------- playback: the song is the master clock ----------
+function duckGain(t){
+  const m=S.master; if(!m)return 1;
+  let g=1;
+  for(const w of m.duck){
+    const a=w[0],b=w[1],lv=w.length>2?w[2]:0.28;
+    if(t>=a-0.15&&t<=b+0.4){
+      const ain=Math.min(1,Math.max(0,(t-(a-0.15))/0.15));
+      const aout=Math.min(1,Math.max(0,((b+0.4)-t)/0.4));
+      g=Math.min(g,1-(1-lv)*Math.min(ain,aout));
+    }
+  }
+  return g;
+}
+function showInterval(iv,tLocal){
+  vA.style.display=vB.style.display=still.style.display='none';
+  cardEl.classList.remove('on');
+  $('recon').style.display=$('reconTag').style.display='none';
+  if(iv.kind==='card'){
+    cardEl.innerHTML='<div><i>'+(iv.text[0]||'')+'</i><b>'+(iv.text[1]||'')+'</b><span>'+(iv.text[2]||'')+'</span></div>';
+    cardEl.classList.add('on'); return;
+  }
+  if(iv.status==='reconstruction'){$('recon').style.display='block';$('reconTag').style.display='block';}
+  if(iv.still){
+    still.src=assetUrl(iv.file); still.style.display='block';
+    still.style.transform='scale('+iv.pan.z+') translate('+iv.pan.x+'%,'+iv.pan.y+'%)';
+    requestAnimationFrame(()=>{still.style.transform='scale(1) translate(0,0)';});
+    return;
+  }
+  const v=curV;
+  const want=assetUrl(iv.file);
+  if(!v.src.endsWith(encodeURI(want).split('/').pop())){v.src=want;}
+  const act=iv.policy==='ACTUALITY'||iv.policy==='BOOT';
+  v.muted=!act; v.volume=act?0.9:0;               // actuality and boots let the world sound
+  const target=iv.in+tLocal;
+  if(v.readyState>=1&&Math.abs(v.currentTime-target)>0.35)v.currentTime=target;
+  if(v.paused&&S.playing)v.play().catch(()=>{});
+  v.style.opacity=0; v.style.display='block';
+  requestAnimationFrame(()=>{v.style.opacity=1;});  // soft cut
+}
+const voxEl=$('voxEl');
+let curVe=null;
+function voiceTick(t,m){
+  const ve=(m.voice||[]).find(v=>t>=v.t-0.05&&t<v.t+v.dur+0.3);
+  const sub=$('subtitle');
+  if(!ve){
+    if(!voxEl.paused)voxEl.pause();
+    curVe=null; sub.classList.remove('on');
+    return;
+  }
+  if(ve!==curVe){
+    curVe=ve;
+    const want=assetUrl(ve.file);
+    if(!voxEl.src.endsWith(encodeURI(want).split('/').pop()))voxEl.src=want;
+    const tgt=ve.in+Math.max(0,t-ve.t);
+    voxEl.addEventListener('loadedmetadata',()=>{try{voxEl.currentTime=tgt;}catch(e){}},{once:true});
+    if(voxEl.readyState>=1){try{voxEl.currentTime=tgt;}catch(e){}}
+    sub.textContent=ve.text; sub.classList.add('on');
+  }
+  voxEl.muted=false;
+  // engineered edges: fade the voice in and out
+  const ain=Math.min(1,Math.max(0,(t-(ve.t-0.05))/0.18));
+  const aout=Math.min(1,Math.max(0,((ve.t+ve.dur+0.3)-t)/0.3));
+  voxEl.volume=Math.max(0,Math.min(1,Math.min(ain,aout)));
+  const drift=Math.abs(voxEl.currentTime-(ve.in+(t-ve.t)));
+  if(voxEl.readyState>=2&&drift>0.45){try{voxEl.currentTime=ve.in+Math.max(0,t-ve.t);}catch(e){}}
+  if(voxEl.paused&&S.playing)voxEl.play().catch(()=>{});
+}
+function tick(){
+  if(!S.playing||!S.master)return;
+  const t=song.currentTime, m=S.master;
+  song.volume=duckGain(t);
+  voiceTick(t,m);
+  let idx=m.edl.findIndex(iv=>t>=iv.t&&t<iv.t+iv.len);
+  if(idx<0)idx=m.edl.length-1;
+  if(idx!==actIdx){
+    actIdx=idx;
+    curV=(curV===vA)?vB:vA;
+    const prev=(curV===vA)?vB:vA;
+    setTimeout(()=>{prev.pause();},200);           // dissolve tail
+    showInterval(m.edl[idx],t-m.edl[idx].t);
+    document.querySelectorAll('.sblock').forEach(b=>b.classList.toggle('active',+b.dataset.i===idx));
+    // preload the interval after next
+    const nx=m.edl[idx+1];
+    if(nx&&nx.kind==='shot'&&!nx.still){
+      const pv=(curV===vA)?vB:vA;
+      pv.src=assetUrl(nx.file);
+      pv.addEventListener('loadedmetadata',()=>{try{pv.currentTime=nx.in;}catch(e){}},{once:true});
+    }
+  } else if(m.edl[idx].kind==='shot'&&!m.edl[idx].still){
+    const v=curV, target=m.edl[idx].in+(t-m.edl[idx].t);
+    if(v.readyState>=2&&Math.abs(v.currentTime-target)>0.6)v.currentTime=target;
+  }
+  $('playhead').style.left=(t/m.duration*$('strip').clientWidth)+'px';
+  $('hud').textContent=t.toFixed(1)+' / '+m.duration.toFixed(0)+'s';
+  if($('wall').classList.contains('on'))$('wallhead').style.top=(38+(t/m.duration)*($('wall').clientHeight-52))+'px';
+  if(t>=m.duration-0.05){
+    if(S.world){nextChapter();return;}
+    stop();
+  }
+}
+setInterval(tick,60);
+function play(){
+  if(!S.master){generate(+$('bSeed').value||451);}
+  const ch=chMeta(S.ch);
+  const want='MONTE/'+ch.song;
+  if(!song.src.endsWith(encodeURI(want).split('/').pop()))song.src=want;
+  S.playing=true; actIdx=-1;
+  song.play().catch(()=>{});
+  $('bPlay').textContent='STOP';
+}
+function stop(){
+  S.playing=false; song.pause(); vA.pause(); vB.pause();
+  voxEl.pause(); $('subtitle').classList.remove('on'); curVe=null;
+  $('bPlay').textContent='PLAY';
+}
+$('bPlay').onclick=()=>{S.playing?stop():play();};
+$('bGen').onclick=()=>{stop();S.world=null;generate(+$('bSeed').value||451);};
+$('bVar').onclick=()=>{stop();S.world=null;
+  const s=(+$('bSeed').value||451)+1+Math.floor(Math.random()*8999);
+  $('bSeed').value=s; generate(s);};
+$('bAcross').onclick=()=>{stop();S.world=null;
+  const n=S.ch;
+  const out=MonteSampler.buildEDL({channel:n,manifest:MAN,audiomap:AM[n],
+    transcript:[].concat(...MAN.channels.map(c=>TR[c.channel]||[])),
+    seed:(+$('bSeed').value||451)>>>0,profile:$('bProfile').value,crossEra:true,
+    locks:[],rejects:[],ledger:LEDGER,milestone:milFor(n),loading:LOADINGJ});
+  out.edl.forEach(iv=>{if(iv.clip){(LEDGER[iv.clip]=LEDGER[iv.clip]||{useCount:0}).useCount++;}});
+  S.master=out; masters[n]=out;
+  (S.variants[n]=S.variants[n]||[]).push(out);
+  persist(); drawStrip(); drawChannels();
+  updateStat('ACROSS ALL CHAPTERS · '+out.eras.length+'/14 ERAS · '
+    +out.edl.filter(i=>i.kind==='shot').length+' shots on '+out.songTitle.toUpperCase());};
+// ---------- the wall: variants as NORM'd gel lanes ----------
+$('bWall').onclick=()=>{
+  const w=$('wall'); const on=!w.classList.contains('on');
+  w.classList.toggle('on',on);
+  if(!on)return;
+  w.querySelectorAll('.vlane').forEach(x=>x.remove());
+  const vs=(S.variants[S.ch]||[]).slice(-6);
+  const H=w.clientHeight-16;
+  vs.forEach((v,vi)=>{
+    const lane=document.createElement('div');
+    lane.className='vlane'+(v===S.master?' master':'');
+    lane.innerHTML='<h4>seed '+v.seed+' · '+v.used+'/'+v.pool+' · '+Math.round(v.coverage*100)+'%</h4>';
+    v.edl.forEach(iv=>{
+      const b=document.createElement('div');
+      b.className='vband'+(iv.kind==='card'?' card':'')+(iv.locked?' locked':'');
+      b.style.top=(24+iv.t/v.duration*(H-24))+'px';
+      b.style.height=Math.max(3,iv.len/v.duration*(H-24)-1)+'px';
+      if(iv.kind==='shot'&&posterUrl(iv))b.innerHTML='<img src="'+posterUrl(iv)+'">';
+      b.innerHTML+='<span class="fn">'+(iv.kind==='card'?'TITLE':(iv.func||''))+'</span>';
+      b.title=(iv.clip||'card')+' @'+iv.t.toFixed(1)+'s · click to COMP into master';
+      b.onclick=()=>{ // comping: this interval becomes law, master re-deals around it
+        if(iv.kind!=='shot')return;
+        (S.locks[S.ch]=S.locks[S.ch]||[]).push(JSON.parse(JSON.stringify(iv)));
+        persist();
+        generate((+$('bSeed').value||451)+vi+7);
+        $('bWall').click(); $('bWall').click();   // redraw wall
+      };
+      lane.appendChild(b);
+    });
+    w.appendChild(lane);
+  });
+  if(!vs.length){const d=document.createElement('div');d.className='vlane';
+    d.innerHTML='<h4>no variants yet — GENERATE, then VARIANT a few times</h4>';w.appendChild(d);}
+};
+// ---------- EDL export ----------
+$('bEDL').onclick=()=>{
+  if(!S.master)return;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(S.master,null,1)],{type:'application/json'}));
+  a.download='monte_ch'+String(S.ch).padStart(2,'0')+'_seed'+S.master.seed+'.edl.json';
+  a.click();
+  updateStat('EDL EXPORTED — render with: python3 monte_render2.py <file>');
+};
+// ---------- WORLD: a sampled path becomes a chaptered film ----------
+$('bWorld').onclick=()=>$('twinFile').click();
+$('twinFile').onchange=e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const w=JSON.parse(rd.result);
+      const chain=w.chain||w.steps||w.milestones||[];
+      const order=[];
+      chain.forEach(st=>{
+        const s2=String((st&&(st.id||st.milestone||st.slug||st.key))||st).toLowerCase();
+        const hit=MAN.channels.find(c=>s2.includes(c.milestone));
+        if(hit&&order.indexOf(hit.channel)<0)order.push(hit.channel);
+      });
+      if(!order.length){updateStat('TWIN: no recognizable milestones');return;}
+      S.world={order,id:w.id||'X'}; S.worldIdx=0;
+      startChapter();
+    }catch(err){updateStat('TWIN PARSE FAILED');}
+  };
+  rd.readAsText(f); e.target.value='';
+};
+function startChapter(){
+  const n=S.world.order[S.worldIdx];
+  S.ch=n; drawChannels();
+  S.master=masters[n]||null;
+  if(!S.master)generate((+$('bSeed').value||451)+n);
+  else{drawStrip();updateStat();}
+  play();
+  updateStat('WORLD '+S.world.id+' · CHAPTER '+(S.worldIdx+1)+'/'+S.world.order.length+' · CH '+n);
+}
+function nextChapter(){
+  stop();
+  S.worldIdx++;
+  if(S.worldIdx>=S.world.order.length){updateStat('WORLD '+S.world.id+' COMPLETE');S.world=null;return;}
+  startChapter();
+}
+// keys
+document.addEventListener('keydown',e=>{
+  if(e.key===' '){e.preventDefault();$('bPlay').click();}
+  if(e.key.toLowerCase()==='w')$('bWall').click();
+  if(e.key.toLowerCase()==='g')$('bGen').click();
+  if(e.key.toLowerCase()==='v')$('bVar').click();
+});
+window.addEventListener('resize',drawStrip);
+// boot — ?edl=<url> loads a filed cut (the CUTBASTARD round-trip)
+const qs=new URLSearchParams(location.search);
+if(qs.get('edl')){
+  try{
+    const filed=await fetch(qs.get('edl')).then(r=>r.json());
+    S.ch=filed.channel; S.master=filed; masters[filed.channel]=filed;
+    (S.variants[filed.channel]=S.variants[filed.channel]||[]).push(filed);
+  }catch(e){console.warn('edl load failed',e);}
+}
+drawChannels();
+S.master=S.master||masters[S.ch]||null;
+drawStrip(); updateStat();
+if(qs.get('edl')&&S.master)updateStat('FILED CUT LOADED · seed '+S.master.seed+' · '
+  +(S.master.crossEra?'ACROSS ALL ERAS · ':'')+S.master.edl.length+' intervals — lock the spine, then VARIANT');
+// ?demo=1 — perform the CUTBASTARD round-trip: lock the four spine gaps,
+// re-deal around them, open the wall. The conform notes, enacted.
+if(qs.get('demo')&&S.master){
+  const SPINE=['User_explores_wireframe_space','Researcher_wearing_head-mounted',
+    'People_waiting_outside_technolog','People_collaborating_in_maker'];
+  const L=(S.locks[S.ch]=S.locks[S.ch]||[]);
+  let n=0;
+  S.master.edl.forEach(iv=>{
+    if(iv.clip&&SPINE.some(s2=>iv.clip.indexOf(s2)>=0)&&!iv.locked){
+      iv.locked=true; L.push(JSON.parse(JSON.stringify(iv))); n++;
+    }
+  });
+  persist(); drawStrip();
+  updateStat('CONFORM: LOCKED '+n+' SPINE SHOTS (P021 cage/freedom · P032 dream/work · P051 freedom/queue · P052 power/grassroots)');
+  setTimeout(()=>{
+    $('bSeed').value=452;
+    const out=MonteSampler.buildEDL({channel:S.ch,manifest:MAN,audiomap:AM[S.ch],
+      transcript:[].concat(...MAN.channels.map(c=>TR[c.channel]||[])),
+      seed:452,profile:$('bProfile').value,crossEra:true,
+      locks:S.locks[S.ch]||[],rejects:S.rejects[S.ch]||[],ledger:LEDGER,milestone:milFor(S.ch),loading:LOADINGJ});
+    S.master=out; masters[S.ch]=out;
+    (S.variants[S.ch]=S.variants[S.ch]||[]).push(out);
+    persist(); drawStrip();
+    updateStat('RE-DEALT seed 452 AROUND THE SPINE · '+out.eras.length+'/14 eras · locks held green below');
+    setTimeout(()=>$('bWall').click(),1200);
+  },1800);
+}
+})();
+</script>
+</body>
+</html>
