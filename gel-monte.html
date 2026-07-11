@@ -313,6 +313,7 @@
     <button data-c="next" title="next clip">&#9654;&#9654;</button>
     <button data-c="lane" title="jump to the next channel">NEXT LANE</button>
     <button data-c="frame" class="on" title="title + prologue open, acts between, epilogue closes">FRAME</button>
+    <button data-c="film" title="export this whole program as a renderable film">FILM</button>
   </div></div>
 <div id="titleCard"></div>
 <input type="file" id="twinFile" accept=".json" style="display:none">
@@ -1921,8 +1922,14 @@ setInterval(()=>{
 function actFor(name){const sg=eraForLane(name);return sg?(sg.n<=5?1:sg.n<=10?2:3):0;}
 function thStart(l,cascade){
   let q=laneQueue(l); if(!q.length)return false;
-  // FRAME: acts announce themselves as the cascade crosses their border
   if(TH.frame!==false){
+    // the chapter boots itself — unless the cut already opens with a boot
+    const sg0=eraForLane(l.name);
+    const startsBooted=q[0]&&(clips[q[0]]||{}).era==='boot';
+    if(sg0&&!startsBooted&&(BOOTS_BY_ERA[sg0.n]||[]).length){
+      q=[BOOTS_BY_ERA[sg0.n][Math.floor(Math.random()*BOOTS_BY_ERA[sg0.n].length)]].concat(q);
+    }
+    // acts announce themselves as the border is crossed
     const a=actFor(l.name);
     if(a&&TH.actPlayed!==a&&(FRAME.act[a]||[]).length){
       q=[FRAME.act[a][0]].concat(q); TH.actPlayed=a;
@@ -1990,6 +1997,32 @@ document.querySelectorAll('#thCtl button').forEach(b=>{
     }
     if(c==='frame'){TH.frame=TH.frame===false?true:false;
       b.classList.toggle('on',TH.frame!==false);}
+    if(c==='film'){
+      // the complete program: frame + every ON lane with boots, as one film plan
+      const parts=[];
+      if(FRAME.title.length)parts.push({kind:'frame',file:(clips[FRAME.title[0]]||{}).media_url});
+      if(FRAME.prologue.length)parts.push({kind:'frame',file:(clips[FRAME.prologue[0]]||{}).media_url});
+      let actDone=0;
+      S.lanes.forEach(l2=>{
+        if(l2.off)return;
+        const sg2=eraForLane(l2.name); if(!sg2)return;
+        const a2=actFor(l2.name);
+        if(a2&&a2!==actDone&&(FRAME.act[a2]||[]).length){
+          parts.push({kind:'frame',file:(clips[FRAME.act[a2][0]]||{}).media_url});actDone=a2;
+        }
+        const ids=laneQueue(l2);
+        const booted=ids[0]&&(clips[ids[0]]||{}).era==='boot';
+        const q2=(booted?[]:[(BOOTS_BY_ERA[sg2.n]||[])[0]]).filter(Boolean).concat(ids);
+        parts.push({kind:'lane',name:l2.name,era:sg2.n,song:sg2.url,songDur:sg2.dur,
+          clips:q2.map(id2=>({id:id2,media_url:(clips[id2]||{}).media_url,
+            duration:(clips[id2]||{}).duration||8}))});
+      });
+      if(FRAME.epilogue.length)parts.push({kind:'frame',file:(clips[FRAME.epilogue[0]]||{}).media_url});
+      const a3=document.createElement('a');
+      a3.href=URL.createObjectURL(new Blob([JSON.stringify({format:'monte-program',parts},null,1)],
+        {type:'application/json'}));
+      a3.download='theatre_program.json'; a3.click();
+    }
   };
 });
 document.addEventListener('keydown',e=>{
