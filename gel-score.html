@@ -87,6 +87,33 @@
   #detail{position:fixed;right:12px;bottom:12px;width:330px;background:#0c0e10;border:1px solid var(--hot);
     border-radius:10px;padding:10px 12px;font-size:10px;line-height:1.6;display:none;z-index:20}
   #detail b{color:var(--hot)}
+  #reader{position:fixed;inset:5%;z-index:30;background:#0a0c0ef2;border:1px solid var(--hot);
+    border-radius:12px;display:none;flex-direction:column;overflow:hidden}
+  #reader.on{display:flex}
+  #reader h4{padding:10px 14px;font-size:11px;letter-spacing:.1em;border-bottom:1px solid var(--line)}
+  #reader h4 button{float:right;border:1px solid var(--line);border-radius:6px;background:transparent;
+    color:var(--ink);font:inherit;font-size:10px;padding:3px 10px;cursor:pointer}
+  #rbody{flex:1;overflow-y:auto;padding:12px 16px 40px;overscroll-behavior:contain}
+  .rline{display:flex;gap:12px;padding:9px 4px;border-bottom:1px solid rgba(255,255,255,.06);
+    cursor:pointer;font-size:14px;line-height:1.65}
+  .rline:hover{background:rgba(159,231,255,.07)}
+  .rline .rt{flex:0 0 84px;font-size:10px;color:var(--dim);padding-top:3px}
+  .rline .rt b{display:block;font-size:11px}
+  .rline.talk .rt b{color:var(--sync)}
+  @media(max-width:760px){
+    #app{grid-template-columns:1fr;grid-template-rows:auto 132px 1fr}
+    header{flex-wrap:wrap;height:auto;padding:6px 8px;gap:6px}
+    header .stat{display:none}
+    #cands{display:flex;overflow-x:auto;overflow-y:hidden;border-right:none;
+      border-bottom:1px solid var(--line)}
+    #covbar{min-width:170px}
+    #punnett{min-width:150px}
+    .cand{min-width:220px;border-right:1px solid rgba(255,255,255,.08)}
+    #lanes{grid-template-columns:36px 34px 1fr 1fr}
+    .blk .cap{display:none}
+    #mon{left:8px;right:8px;width:auto;bottom:8px}
+    .rline{font-size:15px}
+  }
   #detail .cmd{margin-top:6px;padding:6px;background:#000;border-radius:6px;font-size:9px;
     word-break:break-all;color:#9f9;cursor:pointer}
 </style>
@@ -96,6 +123,9 @@
   <header>
     <b>GEL·SCORE</b>
     <button id="bPlay">PLAY SONG</button>
+    <button id="bClip" title="hear the clips' own sound in the monitor">CLIP AUDIO</button>
+    <span style="font-size:9px;color:var(--dim)">MIX</span><input id="mix" type="range" min="0" max="100" value="35" title="song ↔ clips blend">
+    <button id="bText" title="read the whole transcript of this cut">TEXT</button>
     <span style="font-size:9px;color:var(--dim)">ZOOM</span><input id="zoom" type="range" min="4" max="26" value="9">
     <span class="stat" id="stat">pick a candidate</span>
     <span style="font-size:9px;color:var(--dim)">click a shot = talker tag · click voice = jump · block = detail</span>
@@ -112,6 +142,7 @@
   </div>
 </div>
 <div id="detail"></div>
+<div id="reader"><h4>TRANSCRIPT <button id="rClose">CLOSE</button></h4><div id="rbody"></div></div>
 <div id="mon"><video id="monV" muted playsinline preload="auto"></video><div class="mc" id="monC"></div></div>
 <audio id="song"></audio>
 <script>
@@ -125,7 +156,7 @@ const MAN=await fetch('MONTE/manifest2.json').then(r=>r.json());
 const CLIP=Object.fromEntries(MAN.clips.map(c=>[c.id,c]));
 const BOOT=Object.fromEntries(LOAD.screens.map(s=>[s.file,s]));
 const TALKERS=new Set(JSON.parse(localStorage.getItem('monteTalkers')||'[]'));
-const S={cand:null,edl:null,am:null,pps:9,playing:false};
+const S={cand:null,edl:null,am:null,pps:9,playing:false,clipAudio:false,mix:0.35};
 const song=$('song');
 const HUE=ch=>ch?('hsl('+((ch-1)*25.7)+',72%,58%)'):'rgba(255,255,255,.25)';
 const monV=$('monV'), mon=$('mon'), monC=$('monC');
@@ -145,6 +176,8 @@ function monitor(iv,tLocal,voiceText){
       +(iv.clip||'').split('/').pop().slice(0,40)+'</b>'
       +(voiceText?('<br>'+voiceText.slice(0,90)):'');
   }
+  monV.muted=!S.clipAudio;
+  monV.volume=Math.min(1,S.mix*1.6);
   if(monV.paused)monV.play().catch(()=>{});
   if(monV.readyState>=2){
     const tgt=(iv.in||0)+Math.max(0,tLocal||0);
@@ -282,20 +315,55 @@ function drawScore(){
   });
 }
 function scrollTo(t){$('score').scrollTop=Math.max(0,t*S.pps-160);}
-function detail(iv){
+async function detail(iv){
   const el=$('detail');
   const src=BOOT[iv.clip]||CLIP[iv.clip]||{};
+  if(!TRJ){try{TRJ=await fetch('MONTE/monte_transcripts.json').then(r=>r.json());}catch(e){TRJ={};}}
+  const said=((TRJ[iv.clip]||{}).text||'').slice(0,220);
   el.style.display='block';
   el.innerHTML='<b>'+(iv.clip||'card')+'</b><br>'
     +'t '+iv.t.toFixed(2)+'s · len '+iv.len.toFixed(2)+'s · in '+(iv.in||0)+'s · '
     +(iv.policy||iv.kind)+' · '+(iv.status||'')+'<br>'
     +(src.static?('static @ '+src.static+'s · '):'')
-    +'shift-click block to toggle TALKER (feeds every future deal)'
+    +(said?('<br>SAYS: “'+said+'”<br>'):'<br>')
+    +'shift-click (long-press on touch) = TALKER tag'
     +'<div class="cmd" onclick="navigator.clipboard.writeText(this.textContent)">python3 monte_render2.py MONTE/'
     +(S.cand?S.cand.file:'')+'</div>';
   clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',9000);
 }
 $('zoom').addEventListener('input',e=>{S.pps=+e.target.value;if(S.edl)drawScore();});
+$('bClip').onclick=()=>{S.clipAudio=!S.clipAudio;$('bClip').classList.toggle('on',S.clipAudio);};
+$('mix').addEventListener('input',e=>{S.mix=e.target.value/100;});
+// THE READER: the transcript, big enough to actually read
+let TRJ=null;
+$('bText').onclick=async()=>{
+  if(!S.edl)return;
+  const rb=$('rbody'); rb.innerHTML='';
+  (S.edl.voice||[]).forEach(v=>{
+    const talk=TALKERS.has(v.clip)||S.edl.edl.some(iv=>iv.policy==='SYNC'&&iv.clip===v.clip);
+    const d=document.createElement('div');
+    d.className='rline'+(talk?' talk':'');
+    const mm=Math.floor(v.t/60), ss=String(Math.round(v.t%60)).padStart(2,'0');
+    d.innerHTML='<span class="rt"><b>'+mm+':'+ss+'</b>CH '+String(v.ch||'').padStart(2,'0')
+      +(talk?'<br>ON CAM':'')+'</span><span>'+(v.text||'')+'</span>';
+    d.onclick=()=>{song.currentTime=Math.max(0,v.t-0.5);scrollTo(v.t);
+      $('reader').classList.remove('on');};
+    rb.appendChild(d);
+  });
+  if(!(S.edl.voice||[]).length)rb.innerHTML='<div class="rline"><span>this cut is silent — no voice lines</span></div>';
+  $('reader').classList.add('on');
+};
+$('rClose').onclick=()=>$('reader').classList.remove('on');
+// long-press = talker tag on touch (shift-click stays for mouse)
+let lpT=null;
+document.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse')return;
+  const b=e.target.closest('.blk'); if(!b)return;
+  lpT=setTimeout(()=>{ b.dispatchEvent(new MouseEvent('click',{bubbles:true,shiftKey:true}));
+    if(navigator.vibrate)navigator.vibrate(10); },480);
+},{passive:true});
+['pointerup','pointermove','pointercancel'].forEach(t=>document.addEventListener(t,()=>{
+  if(lpT){clearTimeout(lpT);lpT=null;}},{passive:true}));
 function stop(){S.playing=false;song.pause();$('bPlay').textContent='PLAY SONG';
   $('playhead').style.display='none';mon.style.display='none';monV.pause();monIv=null;}
 $('bPlay').onclick=()=>{
@@ -306,6 +374,7 @@ $('bPlay').onclick=()=>{
 };
 setInterval(()=>{
   if(!S.playing)return;
+  song.volume=S.clipAudio?Math.max(0.08,1-S.mix):1;
   const t=song.currentTime;
   const iv=(S.edl?S.edl.edl:[]).find(x=>t>=x.t&&t<x.t+x.len);
   const ve=(S.edl?S.edl.voice||[]:[]).find(v=>t>=v.t&&t<v.t+v.dur);

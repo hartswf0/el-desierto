@@ -81,6 +81,25 @@
   #bar select,#bar input[type=number]{background:transparent;border:1px solid var(--line);border-radius:6px;
     color:var(--ink);font:inherit;font-size:10px;padding:4px 5px}
   #bar input[type=number]{width:74px}
+  #reader{position:fixed;inset:6%;z-index:130;background:#0a0c0ef2;border:1px solid var(--hot);
+    border-radius:12px;display:none;flex-direction:column;overflow:hidden}
+  #reader.on{display:flex}
+  #reader h4{padding:10px 14px;font-size:11px;letter-spacing:.1em;border-bottom:1px solid var(--line)}
+  #reader h4 button{float:right;border:1px solid var(--line);border-radius:6px;background:transparent;
+    color:var(--ink);font:inherit;font-size:10px;padding:3px 10px;cursor:pointer}
+  #rbody{flex:1;overflow-y:auto;padding:12px 16px 40px;overscroll-behavior:contain}
+  .rline{display:flex;gap:12px;padding:9px 4px;border-bottom:1px solid rgba(255,255,255,.06);
+    cursor:pointer;font-size:14px;line-height:1.65}
+  .rline .rt{flex:0 0 84px;font-size:10px;color:var(--dim);padding-top:3px}
+  .rline .rt b{display:block;font-size:11px;color:var(--hot)}
+  @media(max-width:760px){
+    #app{grid-template-rows:auto 1fr 74px auto}
+    #chstrip{padding:4px 6px}
+    #bar{flex-wrap:wrap;height:auto;padding:6px 8px;gap:5px}
+    #bar .stat{order:9;flex-basis:100%;text-align:left;font-size:9px}
+    #subtitle{font-size:13px;bottom:10%}
+    .sblock .cap{display:none}
+  }
 </style>
 </head>
 <body>
@@ -110,6 +129,9 @@
     </select>
     <input id="bSeed" type="number" value="451" title="seed">
     <span class="stat" id="stat">loading…</span>
+    <button id="bSong" class="on" title="song on/off">SONG</button>
+    <button id="bClips" title="force the clips' own sound on">CLIPS</button>
+    <button id="bTxt" title="read this cut's transcript">TXT</button>
     <button id="bWorld">WORLD</button>
     <button id="bEDL">EDL</button>
   </div>
@@ -117,6 +139,7 @@
 <audio id="song"></audio>
 <video id="voxEl" playsinline preload="auto" style="display:none"></video>
 <input type="file" id="twinFile" accept=".json" style="display:none">
+<div id="reader"><h4>TRANSCRIPT <button id="rClose">CLOSE</button></h4><div id="rbody"></div></div>
 
 <script id="sampler">
 /* ============================================================
@@ -468,7 +491,8 @@ for(const ch of MAN.channels){
 const LOADINGJ=await fetch('MONTE/loading.json').then(r=>r.json()).catch(()=>({screens:[]}));
 const LEDGER=JSON.parse(localStorage.getItem('monteLedger2')||'{}');
 const SAVED=JSON.parse(localStorage.getItem('monteFilms2')||'{}');
-const S={ch:1,master:null,variants:{},locks:{},rejects:{},playing:false,world:null,worldIdx:0};
+const S={ch:1,master:null,variants:{},locks:{},rejects:{},playing:false,world:null,worldIdx:0,
+  songOn:true,clipsOn:false};
 Object.assign(S,{variants:SAVED.variants||{},locks:SAVED.locks||{},rejects:SAVED.rejects||{}});
 const masters=SAVED.masters||{};
 const song=$('song'),vA=$('vA'),vB=$('vB'),still=$('stillEl'),cardEl=$('card');
@@ -594,8 +618,8 @@ function showInterval(iv,tLocal){
   const v=curV;
   const want=assetUrl(iv.file);
   if(!v.src.endsWith(encodeURI(want).split('/').pop())){v.src=want;}
-  const act=iv.policy==='ACTUALITY'||iv.policy==='BOOT';
-  v.muted=!act; v.volume=act?0.9:0;               // actuality and boots let the world sound
+  const act=iv.policy==='ACTUALITY'||iv.policy==='BOOT'||S.clipsOn;
+  v.muted=!act; v.volume=act?(S.clipsOn?0.75:0.9):0;   // CLIPS forces the world's sound on
   const target=iv.in+tLocal;
   if(v.readyState>=1&&Math.abs(v.currentTime-target)>0.35)v.currentTime=target;
   if(v.paused&&S.playing)v.play().catch(()=>{});
@@ -633,7 +657,7 @@ function voiceTick(t,m){
 function tick(){
   if(!S.playing||!S.master)return;
   const t=song.currentTime, m=S.master;
-  song.volume=duckGain(t);
+  song.volume=S.songOn?duckGain(t):0;
   voiceTick(t,m);
   let idx=m.edl.findIndex(iv=>t>=iv.t&&t<iv.t+iv.len);
   if(idx<0)idx=m.edl.length-1;
@@ -730,6 +754,26 @@ $('bWall').onclick=()=>{
     d.innerHTML='<h4>no variants yet — GENERATE, then VARIANT a few times</h4>';w.appendChild(d);}
 };
 // ---------- EDL export ----------
+$('bSong').onclick=()=>{S.songOn=!S.songOn;$('bSong').classList.toggle('on',S.songOn);};
+$('bClips').onclick=()=>{S.clipsOn=!S.clipsOn;$('bClips').classList.toggle('on',S.clipsOn);
+  if(S.playing&&actIdx>=0){actIdx=-1;}};
+$('rClose').onclick=()=>document.getElementById('reader').classList.remove('on');
+$('bTxt').onclick=()=>{
+  if(!S.master)return;
+  const rb=$('rbody'); rb.innerHTML='';
+  (S.master.voice||[]).forEach(v=>{
+    const d=document.createElement('div'); d.className='rline';
+    const mm=Math.floor(v.t/60), ss=String(Math.round(v.t%60)).padStart(2,'0');
+    d.innerHTML='<span class="rt"><b>'+mm+':'+ss+'</b>CH '+String(v.ch||'').padStart(2,'0')
+      +'</span><span>'+(v.text||'')+'</span>';
+    d.onclick=()=>{song.currentTime=Math.max(0,v.t-0.5);
+      document.getElementById('reader').classList.remove('on');};
+    rb.appendChild(d);
+  });
+  if(!(S.master.voice||[]).length)
+    rb.innerHTML='<div class="rline"><span>silent cut — no voice lines</span></div>';
+  document.getElementById('reader').classList.add('on');
+};
 $('bEDL').onclick=()=>{
   if(!S.master)return;
   const a=document.createElement('a');
