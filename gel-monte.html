@@ -234,6 +234,14 @@
   #thX{position:absolute;top:10px;right:12px;z-index:2;border:1px solid rgba(255,255,255,.4);
     border-radius:7px;background:rgba(0,0,0,.55);color:#fff;font:inherit;font-size:11px;
     font-weight:700;padding:6px 12px;cursor:pointer}
+  #thCtl{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);display:flex;gap:7px;
+    z-index:3;opacity:0;transition:opacity .35s;pointer-events:none}
+  #theatre.ctl #thCtl{opacity:1;pointer-events:auto}
+  #theatre.ctl #thX{opacity:1}
+  #theatre #thX{opacity:0;transition:opacity .35s}
+  #thCtl button{border:1px solid rgba(255,255,255,.35);border-radius:8px;background:rgba(0,0,0,.6);
+    color:#fff;font:inherit;font-size:11px;font-weight:700;padding:8px 13px;cursor:pointer}
+  #thCtl button.on{border-color:#9fe7ff;color:#9fe7ff}
 </style>
 </head>
 <body>
@@ -298,7 +306,14 @@
 </div>
 <audio id="songA"></audio>
 <div id="theatre"><video id="thv" playsinline preload="auto"></video>
-  <div id="thSub"></div><div id="thHud"></div><button id="thX">EXIT</button></div>
+  <div id="thSub"></div><div id="thHud"></div><button id="thX">EXIT</button>
+  <div id="thCtl">
+    <button data-c="prev" title="previous clip">&#9664;&#9664;</button>
+    <button data-c="pp" title="pause / play">&#9646;&#9646;</button>
+    <button data-c="next" title="next clip">&#9654;&#9654;</button>
+    <button data-c="lane" title="jump to the next channel">NEXT LANE</button>
+    <button data-c="frame" class="on" title="title + prologue open, acts between, epilogue closes">FRAME</button>
+  </div></div>
 <div id="titleCard"></div>
 <input type="file" id="twinFile" accept=".json" style="display:none">
 <dialog id="pick"><b>Add lane</b><div id="pickBody" style="max-height:62vh;overflow-y:auto;margin-top:6px"></div>
@@ -356,10 +371,10 @@ try{
 }catch(e){}
 // boot screens join the deck: they open every roll and seam every twin
 const BOOTS_BY_ERA={};
+const FRAME={title:[],prologue:[],epilogue:[],act:{}};
 try{
   const LJ=await fetch('MONTE/loading.json').then(r=>r.json());
   LJ.screens.forEach(s=>{
-    if(!(s.kind==='ch'||s.kind==='act'))return;
     const id=s.file;
     clips[id]={clip_id:id,index:'B'+s.ch,title:id.split('/').pop().replace(/\.mp4$/,''),
       duration:+(((s.static||s.dur||8))+0.3).toFixed(2),
@@ -368,7 +383,12 @@ try{
       scenes:[],film_function:[],style_terms:[],prompt_excerpt:'boot screen',
       transcript:'',luminance:'',motion:'',palette:'',rating:'',editorial:'',
       mode:'',voice:''};
-    (BOOTS_BY_ERA[s.ch]=BOOTS_BY_ERA[s.ch]||[]).push(id);
+    if(s.kind==='ch'||s.kind==='act')
+      (BOOTS_BY_ERA[s.ch]=BOOTS_BY_ERA[s.ch]||[]).push(id);
+    if(s.kind==='title'){FRAME.title.push(id); if(s.role==='main')FRAME.title.unshift(id);}
+    if(s.kind==='prologue')FRAME.prologue.push(id);
+    if(s.kind==='epilogue'){FRAME.epilogue.push(id); if(s.role==='end')FRAME.epilogue.unshift(id);}
+    if(s.kind==='act'){const a={1:1,6:2,11:3}[s.ch]; if(a)(FRAME.act[a]=FRAME.act[a]||[]).push(id);}
   });
   for(const n in BOOTS_BY_ERA)
     facets.named_film['BOOTS '+String(n).padStart(2,'0')]=BOOTS_BY_ERA[n];
@@ -1876,7 +1896,12 @@ setInterval(()=>{
 const thv=$('thv');
 function laneQueue(l){return laneIds(l).slice();}
 function thShow(){
-  if(TH.i>=TH.queue.length){ if(TH.cascade){thNextLane();return;} thExit();return; }
+  if(TH.i>=TH.queue.length){
+    if(TH.cascade){thNextLane();return;}
+    if(TH.frame!==false&&!TH.epiDone&&FRAME.epilogue.length){
+      TH.epiDone=true;TH.queue=[FRAME.epilogue[0]];TH.i=0;$('songA').pause();
+    } else {thExit();return;}
+  }
   const id=TH.queue[TH.i];
   thv.src=(clips[id]||{}).media_url||'';
   thv.muted=false; thv.volume=S.clipG; thv.play().catch(()=>{});
@@ -1893,8 +1918,16 @@ setInterval(()=>{
   const target=(cur?0.28:1)*S.songG;
   if(!A.paused)A.volume+=(target-A.volume)*0.35;
 },110);
+function actFor(name){const sg=eraForLane(name);return sg?(sg.n<=5?1:sg.n<=10?2:3):0;}
 function thStart(l,cascade){
-  const q=laneQueue(l); if(!q.length)return false;
+  let q=laneQueue(l); if(!q.length)return false;
+  // FRAME: acts announce themselves as the cascade crosses their border
+  if(TH.frame!==false){
+    const a=actFor(l.name);
+    if(a&&TH.actPlayed!==a&&(FRAME.act[a]||[]).length){
+      q=[FRAME.act[a][0]].concat(q); TH.actPlayed=a;
+    }
+  }
   TH.on=true;TH.queue=q;TH.i=0;TH.cascade=!!cascade;TH.laneIdx=S.lanes.indexOf(l);
   TH.sg=eraForLane(l.name);
   $('theatre').classList.add('on');
@@ -1909,17 +1942,64 @@ function thNextLane(){
     if(S.lanes[i].off)continue;
     if(thStart(S.lanes[i],true))return;
   }
+  if(TH.frame!==false&&!TH.epiDone&&FRAME.epilogue.length){
+    TH.epiDone=true;TH.cascade=false;TH.queue=[FRAME.epilogue[0]];TH.i=0;
+    $('songA').pause();thShow();return;
+  }
   thExit();
 }
 function thExit(){
-  TH.on=false;TH.cascade=false;$('theatre').classList.remove('on');
+  TH.on=false;TH.cascade=false;TH.epiDone=false;TH.actPlayed=0;
+  $('theatre').classList.remove('on','ctl');
   thv.pause();$('songA').pause();
   if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
 }
 $('thX').onclick=thExit;
 $('thBtn').onclick=()=>{const l=S.lanes.find(x=>x.name===S.focus)||S.lanes[0];if(l)thStart(l,false);};
-$('cascBtn').onclick=()=>{const l=S.lanes.find(x=>!x.off);
-  if(l){TH.laneIdx=S.lanes.indexOf(l)-1;thNextLane();}};
+$('cascBtn').onclick=()=>{
+  const l=S.lanes.find(x=>!x.off); if(!l)return;
+  TH.epiDone=false;TH.actPlayed=0;
+  // FRAME: the session opens with the main title and the prologue
+  if(TH.frame!==false&&(FRAME.title.length||FRAME.prologue.length)){
+    TH.on=true;TH.cascade=true;TH.laneIdx=S.lanes.indexOf(l)-1;TH.sg=null;
+    TH.queue=FRAME.title.slice(0,1).concat(FRAME.prologue.slice(0,1));TH.i=0;
+    $('theatre').classList.add('on');$('songA').pause();
+    if($('theatre').requestFullscreen)$('theatre').requestFullscreen().catch(()=>{});
+    thShow();return;
+  }
+  TH.laneIdx=S.lanes.indexOf(l)-1;thNextLane();};
+// subtle collapsible controls: appear on touch/move, fade after idle
+let thIdle=null;
+function thWake(){
+  $('theatre').classList.add('ctl');
+  clearTimeout(thIdle);
+  thIdle=setTimeout(()=>$('theatre').classList.remove('ctl'),2600);
+}
+['pointermove','pointerdown'].forEach(ev=>
+  $('theatre').addEventListener(ev,thWake,{passive:true}));
+document.querySelectorAll('#thCtl button').forEach(b=>{
+  b.onclick=e=>{
+    e.stopPropagation(); thWake();
+    const c=b.dataset.c;
+    if(c==='prev'){TH.i=Math.max(0,TH.i-1);thShow();}
+    if(c==='next'){TH.i++;thShow();}
+    if(c==='lane'){TH.cascade=true;thNextLane();}
+    if(c==='pp'){
+      if(thv.paused){thv.play().catch(()=>{});const A=$('songA');if(TH.sg)A.play().catch(()=>{});b.innerHTML='&#9646;&#9646;';}
+      else{thv.pause();$('songA').pause();b.innerHTML='&#9654;';}
+    }
+    if(c==='frame'){TH.frame=TH.frame===false?true:false;
+      b.classList.toggle('on',TH.frame!==false);}
+  };
+});
+document.addEventListener('keydown',e=>{
+  if(!TH.on)return;
+  if(e.key==='ArrowRight'){TH.i++;thShow();}
+  if(e.key==='ArrowLeft'){TH.i=Math.max(0,TH.i-1);thShow();}
+  if(e.key===' '){e.preventDefault();document.querySelector('#thCtl [data-c=pp]').click();}
+  if(e.key==='Escape')thExit();
+  thWake();
+});
 $('spinBtn').onclick=()=>{
   $('mainstat').textContent='SPINNING…';
   setTimeout(()=>{
