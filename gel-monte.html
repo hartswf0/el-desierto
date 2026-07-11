@@ -297,12 +297,33 @@ M.eras.forEach(e=>{
     dur:e.song_dur,songTitle:e.song_title};
   ERAS.push({key:e.slug.replace(/^\d+_/,''),title:eraTitle,n:e.n});
 });
+const SEGS={};
 try{
   const TR=await fetch('MONTE/monte_transcripts.json').then(r=>r.ok?r.json():null);
   if(TR){let n=0;
-    for(const id in TR){ if(clips[id]&&TR[id].text){clips[id].transcript=TR[id].text;n++;} }
+    for(const id in TR){
+      if(TR[id].segments)SEGS[id]=TR[id].segments;
+      if(clips[id]&&TR[id].text){clips[id].transcript=TR[id].text;n++;}
+    }
     console.log('monte transcripts merged:',n);
   }
+}catch(e){}
+// boot screens join the deck: they open every roll and seam every twin
+const BOOTS_BY_ERA={};
+try{
+  const LJ=await fetch('MONTE/loading.json').then(r=>r.json());
+  LJ.screens.forEach(s=>{
+    if(!(s.kind==='ch'||s.kind==='act'))return;
+    const id=s.file;
+    clips[id]={clip_id:id,index:'B'+s.ch,title:id.split('/').pop().replace(/\.mp4$/,''),
+      duration:+(((s.static||s.dur||8))+0.3).toFixed(2),
+      media_url:'MONTE/'+s.file,pid:s.pid||'',era:'boot',world:'BOOT',
+      timestamp:'0000'+id,named_films:[],named_films_l:'',objects:[],events:[],
+      scenes:[],film_function:[],style_terms:[],prompt_excerpt:'boot screen',
+      transcript:'',luminance:'',motion:'',palette:'',rating:'',editorial:'',
+      mode:'',voice:''};
+    (BOOTS_BY_ERA[s.ch]=BOOTS_BY_ERA[s.ch]||[]).push(id);
+  });
 }catch(e){}
 const posterOf=id=>{const c=clips[id];return c&&c.pid?('MONTE/POSTERS/'+c.pid+'.jpg'):'';};
 const previewOf=id=>(clips[id]||{}).media_url||'';
@@ -1663,7 +1684,9 @@ function rollEra(eraTitle){
   }
   let k=1; while(S.pls[eraTitle+' CUT '+k])k++;
   const nm=eraTitle+' CUT '+k;
-  S.pls[nm]={OPENING:[],MIDDLE:ids,ENDING:[]};
+  const bs=BOOTS_BY_ERA[sg.n]||[];
+  const opening=bs.length?[bs[Math.floor(Math.random()*bs.length)]]:[];
+  S.pls[nm]={OPENING:opening,MIDDLE:ids,ENDING:[]};
   ids.forEach(id=>USAGE[id]=(USAGE[id]||0)+1);
   const li=S.lanes.findIndex(l=>l.name===eraTitle);
   S.lanes.splice(li>=0?li+1:S.lanes.length,0,{kind:'film',name:nm});
@@ -1704,6 +1727,8 @@ $('twinFile').onchange=e=>{
       pushUndo();
       const ids=[];
       order.forEach(t=>{
+        const bs=BOOTS_BY_ERA[(SONGS[t]||{}).n]||[];
+        if(bs.length)ids.push(bs[Math.floor(Math.random()*bs.length)]);
         let cut=Object.keys(S.pls).filter(n2=>n2.startsWith(t+' CUT')).sort().pop();
         if(!cut){const r=rollEra(t); cut=r&&r.nm;}
         if(cut)SECTIONS.forEach(k2=>ids.push(...(S.pls[cut][k2]||[])));
@@ -1744,6 +1769,18 @@ function syncSong(){
   const _playH=$('playBtn').onclick;
   $('playBtn').onclick=()=>{_playH();syncSong();};
 }
+setInterval(()=>{
+  const A=$('songA');
+  if(A.paused||!S.focus)return;
+  const r=laneEls.find(x=>x.l.name===S.focus);
+  if(!r||!r.curClip){A.volume+= (1-A.volume)*0.3;return;}
+  r.vid.muted=false; r.vid.volume=1;          // the archive speaks for itself
+  const local=r.vid.currentTime||0;
+  const segs=SEGS[r.curClip]||[];
+  const speaking=segs.some(s2=>local>=s2.start-0.1&&local<=s2.end+0.35);
+  const target=speaking?0.28:1;               // the song bows to the spoken line
+  A.volume+= (target-A.volume)*0.35;
+},110);
 build();
 })();
 </script>
