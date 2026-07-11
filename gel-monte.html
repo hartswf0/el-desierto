@@ -97,6 +97,7 @@
     border:1px solid #000;z-index:2;pointer-events:none}
   @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.14)}100%{transform:scale(1)}}
   .band.popped{animation:pop .18s ease-out}
+  @media(pointer:coarse){#dropline{min-height:6px;min-width:6px}}
   #dropline{position:fixed;z-index:65;background:var(--r5);display:none;pointer-events:none;
     border-radius:2px;box-shadow:0 0 8px rgba(124,252,0,.8)}
   .band.txt{background:#0c0e0c}
@@ -250,6 +251,7 @@
     </div>
     <span id="mainstat" style="flex:1;text-align:center;color:var(--dim);
       white-space:nowrap;overflow:hidden;font-size:10px"></span>
+    <button id="autoBtn" title="rules for generating more cuts">AUTO</button>
     <button id="moreBtn" title="the full gel control surface">MORE</button>
   </div>
   <header>
@@ -1024,10 +1026,11 @@ function openLoupe(b,l,k,id){
     <div class="lp"><b>#${c.index} ${(c.title||'').slice(0,64)}</b>
     <i>${c.domain||'raw'} · ${c.luminance||''} · ${c.motion||''} · R${c.rating||'-'} · ${Math.round(dur(id))}s · ${l.name}</i><br>
     ${((c.transcript||c.prompt_excerpt||'').slice(0,120))}</div>
-    <div class="lbtns"><button data-a="jump">TO LINE</button>
+    <div class="lbtns">${l.kind==='film'
+      ?'<button data-a="mvl" title="move earlier">&#9664;</button><button data-a="mvr" title="move later">&#9654;</button>'
+      :''}<button data-a="jump">TO LINE</button>
     <button data-a="add">ADD TO</button>
     <button data-a="off">ON/OFF</button>
-    <button data-a="txt">TXT</button>
     <button data-a="dl">DL</button>
     <button data-a="cl">CLOSE</button></div>
     <div class="lcode"></div>`;
@@ -1041,6 +1044,36 @@ function openLoupe(b,l,k,id){
   const y=Math.min(Math.max(8,r.top),innerHeight-lh-8);
   loupe.style.left=x+'px'; loupe.style.top=y+'px';
   loupe.querySelector('[data-a=cl]').onclick=closeLoupe;
+  const mvl=loupe.querySelector('[data-a=mvl]');
+  if(mvl){
+    const nudge=dir=>{
+      if(!loupeCtx)return;
+      const l2=loupeCtx.l, id2=loupeCtx.id;
+      pushUndo();
+      // find the occurrence and swap with its neighbor (crossing sections at edges)
+      const secs=SECTIONS.map(s2=>S.pls[l2.name][s2]=S.pls[l2.name][s2]||[]);
+      outer:
+      for(let si=0;si<secs.length;si++){
+        const a=secs[si], i=a.indexOf(id2);
+        if(i<0)continue;
+        const j=i+dir;
+        if(j>=0&&j<a.length){ [a[i],a[j]]=[a[j],a[i]]; }
+        else if(dir<0&&si>0){ a.splice(i,1); secs[si-1].push(id2); }
+        else if(dir>0&&si<secs.length-1){ a.splice(i,1); secs[si+1].unshift(id2); }
+        break outer;
+      }
+      savePls(); build();
+      // keep the loupe on the moved clip at its new slot
+      const rec=laneEls.find(z=>z.l===l2);
+      if(rec){const k2=rec.offsets.findIndex(o=>o.id===id2);
+        if(k2>=0){loupeCtx.k=k2;S.sel={id:id2,lane:l2,k:k2};
+          const nb=rec.el.querySelector('.band[data-k="'+k2+'"]');
+          if(nb)nb.classList.add('selected');}}
+      flash('MOVED '+(dir<0?'EARLIER':'LATER'));
+    };
+    mvl.onclick=()=>nudge(-1);
+    loupe.querySelector('[data-a=mvr]').onclick=()=>nudge(1);
+  }
   loupe.querySelector('[data-a=dl]').onclick=()=>dlVideo(loupeCtx?loupeCtx.id:id);
   const codeBox=loupe.querySelector('.lcode');
   loupe.querySelector('[data-a=txt]').onclick=()=>{
@@ -1555,7 +1588,7 @@ document.addEventListener('pointermove',e=>{
   if(!dragB)return;
   if(Math.hypot(e.clientX-dragB.x,e.clientY-dragB.y)>10)dragB.moved=true;
   if(!dragB.active){
-    if(Math.hypot(e.clientX-dragB.x,e.clientY-dragB.y)<6)return;
+    if(Math.hypot(e.clientX-dragB.x,e.clientY-dragB.y)<5)return;
     dragB.active=true;dragB.moved=true;
     ghost.querySelector('img').src=dragB.img||'';
     ghost.querySelector('.gn').textContent=dragB.seg?('x'+(dragB.seg.to-dragB.seg.from+1)):'';
@@ -1564,7 +1597,8 @@ document.addEventListener('pointermove',e=>{
   }
   ghost.style.left=(e.clientX+12)+'px';ghost.style.top=(e.clientY+12)+'px';
   const holder=$('lanes');
-  if(e.clientX<60)holder.scrollLeft-=18; else if(e.clientX>innerWidth-60)holder.scrollLeft+=18;
+  const edge=matchMedia('(pointer:coarse)').matches?90:60, step=matchMedia('(pointer:coarse)').matches?26:18;
+  if(e.clientX<edge)holder.scrollLeft-=step; else if(e.clientX>innerWidth-edge)holder.scrollLeft+=step;
   document.querySelectorAll('.lane.droptgt').forEach(x=>x.classList.remove('droptgt'));
   dropline.style.display='none'; dropIdx=null; dropLane=null;
   const under=document.elementFromPoint(e.clientX,e.clientY);
@@ -1672,7 +1706,7 @@ document.addEventListener('pointerdown',e=>{
       const laneEl=h.parentElement;const li2=laneEls.findIndex(r=>r.el===laneEl);
       if(li2>=0)laneMenu(ev,laneEls[li2].l,li2);
     }
-  },450);
+  },340);
 // while a touch drag is armed, the finger moves the ghost, not the scroll
 document.addEventListener('touchmove',e=>{
   if(dragB&&dragB.touch)e.preventDefault();
@@ -1899,6 +1933,47 @@ $('spinBtn').onclick=()=>{
 };
 $('moreBtn').onclick=()=>{document.querySelector('header').classList.toggle('more');
   $('moreBtn').classList.toggle('on');};
+// ---------- AUTO: generation rules ----------
+function rollBatch(mode){
+  pushUndo(); let n=0;
+  if(mode==='perEra'){
+    Object.keys(SONGS).forEach(t=>{
+      const has=Object.keys(S.pls).some(nm=>nm.startsWith(t+' CUT'));
+      if(!has&&rollEra(t))n++;
+    });
+  } else if(mode==='allEras'){
+    Object.keys(SONGS).forEach(t=>{if(rollEra(t))n++;});
+  } else if(mode==='variants'){
+    const sg=eraForLane(S.focus||''); if(!sg){flash('FOCUS A CHANNEL FIRST',false);return;}
+    for(let i=0;i<3;i++){if(rollEra(sg.eraTitle))n++;}
+  } else if(mode==='random5'){
+    const eras=Object.keys(SONGS);
+    for(let i=0;i<5;i++){if(rollEra(eras[Math.floor(Math.random()*eras.length)]))n++;}
+  }
+  savePls();saveLanes();saveUsage();build();
+  flash('AUTO: '+n+' NEW CUTS DEALT');
+}
+$('autoBtn').onclick=e=>{
+  openCtx(e.clientX||300,e.clientY||60,[
+    {t:'FILL: ONE CUT PER EMPTY ERA',f:()=>rollBatch('perEra')},
+    {t:'DEAL: ONE PER ERA (ALL 14)',f:()=>rollBatch('allEras')},
+    {t:'3 VARIANTS OF FOCUSED CHANNEL',f:()=>rollBatch('variants')},
+    {t:'5 RANDOM SPINS (NO THEATRE)',f:()=>rollBatch('random5')},
+    {t:(localStorage.getItem('monteAutoLaunch')==='1'?'DISABLE':'ENABLE')+' AUTO-FILL ON LAUNCH',
+     f:()=>{const v=localStorage.getItem('monteAutoLaunch')==='1'?'0':'1';
+       safeSet('monteAutoLaunch',v);
+       flash('AUTO-FILL ON LAUNCH '+(v==='1'?'ON':'OFF'),false);}},
+    {t:'CANCEL',dim:true}]);
+};
+// the launch rule: every era wakes up with at least one cut
+if(localStorage.getItem('monteAutoLaunch')==='1'){
+  let n=0;
+  Object.keys(SONGS).forEach(t=>{
+    const has=Object.keys(S.pls).some(nm=>nm.startsWith(t+' CUT'));
+    if(!has&&rollEra(t))n++;
+  });
+  if(n){savePls();saveLanes();saveUsage();build();flash('AUTO-FILLED '+n+' ERAS',false);}
+}
 build();
 })();
 </script>
