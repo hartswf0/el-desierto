@@ -206,10 +206,52 @@
   #titleCard i{display:block;font-style:normal;color:rgba(242,242,238,.55);font-size:14px;letter-spacing:.34em}
   #titleCard b{display:block;font-size:min(34px,6vw);letter-spacing:.14em;margin:14px 0 10px}
   #titleCard span{color:var(--hot);font-size:12px;letter-spacing:.14em}
+  /* slot-machine control surface */
+  #app{display:flex!important;flex-direction:column}
+  #space{flex:1;min-height:0}
+  #mainbar{display:flex;gap:6px;align-items:center;padding:6px 10px;
+    border-bottom:1px solid var(--line);font-size:11px;flex-wrap:wrap}
+  #mainbar b{font-size:12px;letter-spacing:.08em;margin-right:4px}
+  #mainbar .grp{display:flex;gap:5px;align-items:center;padding:0 8px;
+    border-left:1px solid rgba(255,255,255,.12)}
+  #mainbar button{border:1px solid var(--line);border-radius:8px;background:transparent;
+    color:var(--ink);font:inherit;font-size:10px;font-weight:700;padding:6px 11px;
+    cursor:pointer;letter-spacing:.04em}
+  #mainbar button.pri{background:var(--ink);color:#000}
+  #mainbar button.on{border-color:var(--hot);color:var(--hot)}
+  #mainbar .fader{display:flex;flex-direction:column;align-items:center;font-size:8px;color:var(--dim)}
+  #mainbar .fader input{width:74px;height:14px}
+  header{display:none!important}
+  header.more{display:flex!important}
+  #theatre{position:fixed;inset:0;z-index:200;background:#000;display:none}
+  #theatre.on{display:block}
+  #theatre video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  #thSub{position:absolute;left:8%;right:8%;bottom:9%;text-align:center;font-size:17px;
+    line-height:1.6;color:#fff;text-shadow:0 2px 8px #000,0 0 2px #000;pointer-events:none}
+  #thHud{position:absolute;top:12px;left:14px;font-size:10px;color:rgba(255,255,255,.55);
+    text-shadow:0 1px 2px #000}
+  #thX{position:absolute;top:10px;right:12px;z-index:2;border:1px solid rgba(255,255,255,.4);
+    border-radius:7px;background:rgba(0,0,0,.55);color:#fff;font:inherit;font-size:11px;
+    font-weight:700;padding:6px 12px;cursor:pointer}
 </style>
 </head>
 <body>
 <div id="app">
+  <div id="mainbar">
+    <b>MONTE</b>
+    <button id="spinBtn" class="pri" title="the lever: random era, fresh cut, straight to theatre">SPIN</button>
+    <div class="grp">
+      <button id="thBtn" title="focused channel, full screen, subtitles">THEATRE</button>
+      <button id="cascBtn" title="autoplay every channel left to right">CASCADE</button>
+    </div>
+    <div class="grp">
+      <div class="fader">SONG<input id="fSong" type="range" min="0" max="100" value="100"></div>
+      <div class="fader">CLIPS<input id="fClip" type="range" min="0" max="100" value="100"></div>
+    </div>
+    <span id="mainstat" style="flex:1;text-align:center;color:var(--dim);
+      white-space:nowrap;overflow:hidden;font-size:10px"></span>
+    <button id="moreBtn" title="the full gel control surface">MORE</button>
+  </div>
   <header>
     <b>MONTE</b>
     <button id="rollBtn" title="monte-carlo: deal a film fitted to the focused era's song (no focus = all 14)">ROLL</button>
@@ -253,6 +295,8 @@
   </div>
 </div>
 <audio id="songA"></audio>
+<div id="theatre"><video id="thv" playsinline preload="auto"></video>
+  <div id="thSub"></div><div id="thHud"></div><button id="thX">EXIT</button></div>
 <div id="titleCard"></div>
 <input type="file" id="twinFile" accept=".json" style="display:none">
 <dialog id="pick"><b>Add lane</b><div id="pickBody" style="max-height:62vh;overflow-y:auto;margin-top:6px"></div>
@@ -324,6 +368,8 @@ try{
       mode:'',voice:''};
     (BOOTS_BY_ERA[s.ch]=BOOTS_BY_ERA[s.ch]||[]).push(id);
   });
+  for(const n in BOOTS_BY_ERA)
+    facets.named_film['BOOTS '+String(n).padStart(2,'0')]=BOOTS_BY_ERA[n];
 }catch(e){}
 const posterOf=id=>{const c=clips[id];return c&&c.pid?('MONTE/POSTERS/'+c.pid+'.jpg'):'';};
 const previewOf=id=>(clips[id]||{}).media_url||'';
@@ -732,7 +778,7 @@ $('rainBtn').onclick=()=>{
   const all=[];
   Object.keys(S.pls).forEach(n=>all.push({kind:'film',name:n}));
   Object.entries(facets.named_film).filter(([k])=>!k.startsWith('(')).forEach(([k])=>all.push({kind:'family',name:k}));
-  S.lanes=all; S.laneW=96; $('groupBy').value='films'; saveLanes(); build();
+  S.lanes=all.filter(x=>!/^BOOTS /.test(x.name)); S.laneW=96; $('groupBy').value='films'; saveLanes(); build();
 };
 $('groupBy').onchange=e=>{
   const f=e.target.value;
@@ -816,6 +862,13 @@ function openPicker(){
     const row=document.createElement('div');row.className='row';
     row.innerHTML=`${n}<i>${ids.length}</i>`;
     row.onclick=()=>{S.lanes.push({kind:'film',name:n});saveLanes();d.close();build();};
+    body.appendChild(row);
+  });
+  const gb=document.createElement('div');gb.className='grp';gb.textContent='BOOT CHANNELS';body.appendChild(gb);
+  Object.entries(facets.named_film).filter(([k])=>k.startsWith('BOOTS ')).forEach(([k,ix])=>{
+    const row=document.createElement('div');row.className='row';
+    row.innerHTML=`${k}<i>${ix.length}</i>`;
+    row.onclick=()=>{S.lanes.push({kind:'family',name:k});saveLanes();d.close();build();};
     body.appendChild(row);
   });
   const g2=document.createElement('div');g2.className='grp';g2.textContent='FAMILIES';body.appendChild(g2);
@@ -1769,18 +1822,83 @@ function syncSong(){
   const _playH=$('playBtn').onclick;
   $('playBtn').onclick=()=>{_playH();syncSong();};
 }
+S.songG=1; S.clipG=1;
+$('fSong').addEventListener('input',e=>{S.songG=e.target.value/100;});
+$('fClip').addEventListener('input',e=>{S.clipG=e.target.value/100;});
+const TH={on:false,queue:[],i:0,sg:null,laneIdx:0,cascade:false};
 setInterval(()=>{
   const A=$('songA');
-  if(A.paused||!S.focus)return;
+  if(A.paused||!S.focus||TH.on)return;
   const r=laneEls.find(x=>x.l.name===S.focus);
-  if(!r||!r.curClip){A.volume+= (1-A.volume)*0.3;return;}
-  r.vid.muted=false; r.vid.volume=1;          // the archive speaks for itself
+  if(!r||!r.curClip){A.volume+=(S.songG-A.volume)*0.3;return;}
+  r.vid.muted=false; r.vid.volume=S.clipG;
   const local=r.vid.currentTime||0;
   const segs=SEGS[r.curClip]||[];
   const speaking=segs.some(s2=>local>=s2.start-0.1&&local<=s2.end+0.35);
-  const target=speaking?0.28:1;               // the song bows to the spoken line
-  A.volume+= (target-A.volume)*0.35;
+  const target=(speaking?0.28:1)*S.songG;
+  A.volume+=(target-A.volume)*0.35;
 },110);
+// ---------- THEATRE + CASCADE ----------
+const thv=$('thv');
+function laneQueue(l){return laneIds(l).slice();}
+function thShow(){
+  if(TH.i>=TH.queue.length){ if(TH.cascade){thNextLane();return;} thExit();return; }
+  const id=TH.queue[TH.i];
+  thv.src=(clips[id]||{}).media_url||'';
+  thv.muted=false; thv.volume=S.clipG; thv.play().catch(()=>{});
+  $('thHud').textContent=(TH.sg?TH.sg.eraTitle+' · ':'')+(TH.i+1)+' / '+TH.queue.length
+    +' · '+((clips[id]||{}).title||'').slice(0,60);
+}
+thv.addEventListener('ended',()=>{TH.i++;thShow();});
+setInterval(()=>{
+  if(!TH.on)return;
+  const A=$('songA'); const id=TH.queue[TH.i]; if(!id)return;
+  const local=thv.currentTime||0;
+  const cur=(SEGS[id]||[]).find(s2=>local>=s2.start-0.1&&local<=s2.end+0.3);
+  $('thSub').textContent=cur?cur.text:'';
+  const target=(cur?0.28:1)*S.songG;
+  if(!A.paused)A.volume+=(target-A.volume)*0.35;
+},110);
+function thStart(l,cascade){
+  const q=laneQueue(l); if(!q.length)return false;
+  TH.on=true;TH.queue=q;TH.i=0;TH.cascade=!!cascade;TH.laneIdx=S.lanes.indexOf(l);
+  TH.sg=eraForLane(l.name);
+  $('theatre').classList.add('on');
+  const A=$('songA');
+  if(TH.sg){ if(!A.src.endsWith(encodeURI(TH.sg.url).split('/').pop()))A.src=TH.sg.url;
+    A.loop=true;A.currentTime=0;A.volume=S.songG;A.play().catch(()=>{}); } else A.pause();
+  if($('theatre').requestFullscreen)$('theatre').requestFullscreen().catch(()=>{});
+  thShow(); return true;
+}
+function thNextLane(){
+  for(let i=TH.laneIdx+1;i<S.lanes.length;i++){
+    if(S.lanes[i].off)continue;
+    if(thStart(S.lanes[i],true))return;
+  }
+  thExit();
+}
+function thExit(){
+  TH.on=false;TH.cascade=false;$('theatre').classList.remove('on');
+  thv.pause();$('songA').pause();
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+}
+$('thX').onclick=thExit;
+$('thBtn').onclick=()=>{const l=S.lanes.find(x=>x.name===S.focus)||S.lanes[0];if(l)thStart(l,false);};
+$('cascBtn').onclick=()=>{const l=S.lanes.find(x=>!x.off);
+  if(l){TH.laneIdx=S.lanes.indexOf(l)-1;thNextLane();}};
+$('spinBtn').onclick=()=>{
+  $('mainstat').textContent='SPINNING…';
+  setTimeout(()=>{
+    const eras=Object.keys(SONGS);
+    const t=eras[Math.floor(Math.random()*eras.length)];
+    pushUndo(); const r=rollEra(t);
+    savePls();saveLanes();saveUsage();S.focus=r.nm;build();
+    $('mainstat').textContent='SPUN: '+r.nm+' on '+SONGS[t].songTitle.toUpperCase();
+    const l=S.lanes.find(x=>x.name===r.nm); if(l)thStart(l,false);
+  },420);
+};
+$('moreBtn').onclick=()=>{document.querySelector('header').classList.toggle('more');
+  $('moreBtn').classList.toggle('on');};
 build();
 })();
 </script>
