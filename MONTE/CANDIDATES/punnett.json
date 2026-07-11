@@ -10,8 +10,9 @@
  "totalBoots": 113,
  "totalClips": 562,
  "bootsUsed": 113,
- "clipsUsed": 349,
+ "clipsUsed": 562,
  "bootsCompleteAtCross": 18,
+ "clipsCompleteAtCross": 130,
  "curve": [
   {
    "k": 1,
@@ -292,6 +293,376 @@
    "k": 56,
    "bootsUsed": 113,
    "clipsUsed": 349
+  },
+  {
+   "k": 57,
+   "bootsUsed": 113,
+   "clipsUsed": 349
+  },
+  {
+   "k": 58,
+   "bootsUsed": 113,
+   "clipsUsed": 349
+  },
+  {
+   "k": 59,
+   "bootsUsed": 113,
+   "clipsUsed": 362
+  },
+  {
+   "k": 60,
+   "bootsUsed": 113,
+   "clipsUsed": 363
+  },
+  {
+   "k": 61,
+   "bootsUsed": 113,
+   "clipsUsed": 363
+  },
+  {
+   "k": 62,
+   "bootsUsed": 113,
+   "clipsUsed": 377
+  },
+  {
+   "k": 63,
+   "bootsUsed": 113,
+   "clipsUsed": 377
+  },
+  {
+   "k": 64,
+   "bootsUsed": 113,
+   "clipsUsed": 378
+  },
+  {
+   "k": 65,
+   "bootsUsed": 113,
+   "clipsUsed": 391
+  },
+  {
+   "k": 66,
+   "bootsUsed": 113,
+   "clipsUsed": 392
+  },
+  {
+   "k": 67,
+   "bootsUsed": 113,
+   "clipsUsed": 392
+  },
+  {
+   "k": 68,
+   "bootsUsed": 113,
+   "clipsUsed": 396
+  },
+  {
+   "k": 69,
+   "bootsUsed": 113,
+   "clipsUsed": 396
+  },
+  {
+   "k": 70,
+   "bootsUsed": 113,
+   "clipsUsed": 396
+  },
+  {
+   "k": 71,
+   "bootsUsed": 113,
+   "clipsUsed": 402
+  },
+  {
+   "k": 72,
+   "bootsUsed": 113,
+   "clipsUsed": 402
+  },
+  {
+   "k": 73,
+   "bootsUsed": 113,
+   "clipsUsed": 402
+  },
+  {
+   "k": 74,
+   "bootsUsed": 113,
+   "clipsUsed": 423
+  },
+  {
+   "k": 75,
+   "bootsUsed": 113,
+   "clipsUsed": 423
+  },
+  {
+   "k": 76,
+   "bootsUsed": 113,
+   "clipsUsed": 423
+  },
+  {
+   "k": 77,
+   "bootsUsed": 113,
+   "clipsUsed": 439
+  },
+  {
+   "k": 78,
+   "bootsUsed": 113,
+   "clipsUsed": 439
+  },
+  {
+   "k": 79,
+   "bootsUsed": 113,
+   "clipsUsed": 439
+  },
+  {
+   "k": 80,
+   "bootsUsed": 113,
+   "clipsUsed": 446
+  },
+  {
+   "k": 81,
+   "bootsUsed": 113,
+   "clipsUsed": 446
+  },
+  {
+   "k": 82,
+   "bootsUsed": 113,
+   "clipsUsed": 446
+  },
+  {
+   "k": 83,
+   "bootsUsed": 113,
+   "clipsUsed": 460
+  },
+  {
+   "k": 84,
+   "bootsUsed": 113,
+   "clipsUsed": 460
+  },
+  {
+   "k": 85,
+   "bootsUsed": 113,
+   "clipsUsed": 460
+  },
+  {
+   "k": 86,
+   "bootsUsed": 113,
+   "clipsUsed": 461
+  },
+  {
+   "k": 87,
+   "bootsUsed": 113,
+   "clipsUsed": 461
+  },
+  {
+   "k": 88,
+   "bootsUsed": 113,
+   "clipsUsed": 462
+  },
+  {
+   "k": 89,
+   "bootsUsed": 113,
+   "clipsUsed": 478
+  },
+  {
+   "k": 90,
+   "bootsUsed": 113,
+   "clipsUsed": 478
+  },
+  {
+   "k": 91,
+   "bootsUsed": 113,
+   "clipsUsed": 478
+  },
+  {
+   "k": 92,
+   "bootsUsed": 113,
+   "clipsUsed": 482
+  },
+  {
+   "k": 93,
+   "bootsUsed": 113,
+   "clipsUsed": 482
+  },
+  {
+   "k": 94,
+   "bootsUsed": 113,
+   "clipsUsed": 483
+  },
+  {
+   "k": 95,
+   "bootsUsed": 113,
+   "clipsUsed": 493
+  },
+  {
+   "k": 96,
+   "bootsUsed": 113,
+   "clipsUsed": 493
+  },
+  {
+   "k": 97,
+   "bootsUsed": 113,
+   "clipsUsed": 493
+  },
+  {
+   "k": 98,
+   "bootsUsed": 113,
+   "clipsUsed": 509
+  },
+  {
+   "k": 99,
+   "bootsUsed": 113,
+   "clipsUsed": 510
+  },
+  {
+   "k": 100,
+   "bootsUsed": 113,
+   "clipsUsed": 510
+  },
+  {
+   "k": 101,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 102,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 103,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 104,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 105,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 106,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 107,
+   "bootsUsed": 113,
+   "clipsUsed": 512
+  },
+  {
+   "k": 108,
+   "bootsUsed": 113,
+   "clipsUsed": 512
+  },
+  {
+   "k": 109,
+   "bootsUsed": 113,
+   "clipsUsed": 512
+  },
+  {
+   "k": 110,
+   "bootsUsed": 113,
+   "clipsUsed": 516
+  },
+  {
+   "k": 111,
+   "bootsUsed": 113,
+   "clipsUsed": 516
+  },
+  {
+   "k": 112,
+   "bootsUsed": 113,
+   "clipsUsed": 516
+  },
+  {
+   "k": 113,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 114,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 115,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 116,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 117,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 118,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 119,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 120,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 121,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 122,
+   "bootsUsed": 113,
+   "clipsUsed": 522
+  },
+  {
+   "k": 123,
+   "bootsUsed": 113,
+   "clipsUsed": 527
+  },
+  {
+   "k": 124,
+   "bootsUsed": 113,
+   "clipsUsed": 530
+  },
+  {
+   "k": 125,
+   "bootsUsed": 113,
+   "clipsUsed": 537
+  },
+  {
+   "k": 126,
+   "bootsUsed": 113,
+   "clipsUsed": 544
+  },
+  {
+   "k": 127,
+   "bootsUsed": 113,
+   "clipsUsed": 549
+  },
+  {
+   "k": 128,
+   "bootsUsed": 113,
+   "clipsUsed": 556
+  },
+  {
+   "k": 129,
+   "bootsUsed": 113,
+   "clipsUsed": 559
+  },
+  {
+   "k": 130,
+   "bootsUsed": 113,
+   "clipsUsed": 562
   }
  ],
  "grid": [
@@ -966,6 +1337,894 @@
    "voice": 7,
    "bootsUsed": 113,
    "clipsUsed": 349
+  },
+  {
+   "k": 57,
+   "row": 1,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_000_x01.edl.json",
+   "seed": 8000,
+   "duration": 67.1,
+   "shots": 29,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 349
+  },
+  {
+   "k": 58,
+   "row": 2,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_001_x02.edl.json",
+   "seed": 8001,
+   "duration": 33.9,
+   "shots": 7,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 349
+  },
+  {
+   "k": 59,
+   "row": 3,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_002_f03.edl.json",
+   "seed": 8002,
+   "duration": 141.6,
+   "shots": 28,
+   "voice": 19,
+   "bootsUsed": 113,
+   "clipsUsed": 362
+  },
+  {
+   "k": 60,
+   "row": 4,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_003_x04.edl.json",
+   "seed": 8003,
+   "duration": 172.2,
+   "shots": 45,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 363
+  },
+  {
+   "k": 61,
+   "row": 5,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_004_x05.edl.json",
+   "seed": 8004,
+   "duration": 125.9,
+   "shots": 38,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 363
+  },
+  {
+   "k": 62,
+   "row": 6,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_005_f06.edl.json",
+   "seed": 8005,
+   "duration": 136.5,
+   "shots": 31,
+   "voice": 15,
+   "bootsUsed": 113,
+   "clipsUsed": 377
+  },
+  {
+   "k": 63,
+   "row": 7,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_006_x07.edl.json",
+   "seed": 8006,
+   "duration": 193.5,
+   "shots": 50,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 377
+  },
+  {
+   "k": 64,
+   "row": 8,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_007_x08.edl.json",
+   "seed": 8007,
+   "duration": 44.8,
+   "shots": 14,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 378
+  },
+  {
+   "k": 65,
+   "row": 9,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_008_f09.edl.json",
+   "seed": 8008,
+   "duration": 143.6,
+   "shots": 34,
+   "voice": 16,
+   "bootsUsed": 113,
+   "clipsUsed": 391
+  },
+  {
+   "k": 66,
+   "row": 10,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_009_x10.edl.json",
+   "seed": 8009,
+   "duration": 103.8,
+   "shots": 34,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 392
+  },
+  {
+   "k": 67,
+   "row": 11,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_010_x11.edl.json",
+   "seed": 8010,
+   "duration": 113,
+   "shots": 35,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 392
+  },
+  {
+   "k": 68,
+   "row": 12,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_011_f12.edl.json",
+   "seed": 8011,
+   "duration": 45.2,
+   "shots": 10,
+   "voice": 4,
+   "bootsUsed": 113,
+   "clipsUsed": 396
+  },
+  {
+   "k": 69,
+   "row": 13,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_012_x13.edl.json",
+   "seed": 8012,
+   "duration": 158,
+   "shots": 42,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 396
+  },
+  {
+   "k": 70,
+   "row": 14,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_013_x14.edl.json",
+   "seed": 8013,
+   "duration": 227.4,
+   "shots": 51,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 396
+  },
+  {
+   "k": 71,
+   "row": 1,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_014_f01.edl.json",
+   "seed": 8014,
+   "duration": 67.1,
+   "shots": 14,
+   "voice": 7,
+   "bootsUsed": 113,
+   "clipsUsed": 402
+  },
+  {
+   "k": 72,
+   "row": 2,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_015_x02.edl.json",
+   "seed": 8015,
+   "duration": 33.9,
+   "shots": 7,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 402
+  },
+  {
+   "k": 73,
+   "row": 3,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_016_x03.edl.json",
+   "seed": 8016,
+   "duration": 141.6,
+   "shots": 42,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 402
+  },
+  {
+   "k": 74,
+   "row": 4,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_017_f04.edl.json",
+   "seed": 8017,
+   "duration": 172.2,
+   "shots": 43,
+   "voice": 19,
+   "bootsUsed": 113,
+   "clipsUsed": 423
+  },
+  {
+   "k": 75,
+   "row": 5,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_018_x05.edl.json",
+   "seed": 8018,
+   "duration": 125.9,
+   "shots": 39,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 423
+  },
+  {
+   "k": 76,
+   "row": 6,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_019_x06.edl.json",
+   "seed": 8019,
+   "duration": 136.5,
+   "shots": 38,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 423
+  },
+  {
+   "k": 77,
+   "row": 7,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_020_f07.edl.json",
+   "seed": 8020,
+   "duration": 193.5,
+   "shots": 45,
+   "voice": 20,
+   "bootsUsed": 113,
+   "clipsUsed": 439
+  },
+  {
+   "k": 78,
+   "row": 8,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_021_x08.edl.json",
+   "seed": 8021,
+   "duration": 44.8,
+   "shots": 15,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 439
+  },
+  {
+   "k": 79,
+   "row": 9,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_022_x09.edl.json",
+   "seed": 8022,
+   "duration": 143.6,
+   "shots": 41,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 439
+  },
+  {
+   "k": 80,
+   "row": 10,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_023_f10.edl.json",
+   "seed": 8023,
+   "duration": 103.8,
+   "shots": 20,
+   "voice": 12,
+   "bootsUsed": 113,
+   "clipsUsed": 446
+  },
+  {
+   "k": 81,
+   "row": 11,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_024_x11.edl.json",
+   "seed": 8024,
+   "duration": 113,
+   "shots": 37,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 446
+  },
+  {
+   "k": 82,
+   "row": 12,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_025_x12.edl.json",
+   "seed": 8025,
+   "duration": 45.2,
+   "shots": 14,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 446
+  },
+  {
+   "k": 83,
+   "row": 13,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_026_f13.edl.json",
+   "seed": 8026,
+   "duration": 158,
+   "shots": 35,
+   "voice": 17,
+   "bootsUsed": 113,
+   "clipsUsed": 460
+  },
+  {
+   "k": 84,
+   "row": 14,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_027_x14.edl.json",
+   "seed": 8027,
+   "duration": 227.4,
+   "shots": 51,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 460
+  },
+  {
+   "k": 85,
+   "row": 1,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_028_x01.edl.json",
+   "seed": 8028,
+   "duration": 67.1,
+   "shots": 28,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 460
+  },
+  {
+   "k": 86,
+   "row": 2,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_029_f02.edl.json",
+   "seed": 8029,
+   "duration": 33.9,
+   "shots": 7,
+   "voice": 2,
+   "bootsUsed": 113,
+   "clipsUsed": 461
+  },
+  {
+   "k": 87,
+   "row": 3,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_030_x03.edl.json",
+   "seed": 8030,
+   "duration": 141.6,
+   "shots": 41,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 461
+  },
+  {
+   "k": 88,
+   "row": 4,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_031_x04.edl.json",
+   "seed": 8031,
+   "duration": 172.2,
+   "shots": 43,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 462
+  },
+  {
+   "k": 89,
+   "row": 5,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_032_f05.edl.json",
+   "seed": 8032,
+   "duration": 125.9,
+   "shots": 32,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 478
+  },
+  {
+   "k": 90,
+   "row": 6,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_033_x06.edl.json",
+   "seed": 8033,
+   "duration": 136.5,
+   "shots": 38,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 478
+  },
+  {
+   "k": 91,
+   "row": 7,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_034_x07.edl.json",
+   "seed": 8034,
+   "duration": 193.5,
+   "shots": 49,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 478
+  },
+  {
+   "k": 92,
+   "row": 8,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_035_f08.edl.json",
+   "seed": 8035,
+   "duration": 44.8,
+   "shots": 9,
+   "voice": 3,
+   "bootsUsed": 113,
+   "clipsUsed": 482
+  },
+  {
+   "k": 93,
+   "row": 9,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_036_x09.edl.json",
+   "seed": 8036,
+   "duration": 143.6,
+   "shots": 42,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 482
+  },
+  {
+   "k": 94,
+   "row": 10,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_037_x10.edl.json",
+   "seed": 8037,
+   "duration": 103.8,
+   "shots": 34,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 483
+  },
+  {
+   "k": 95,
+   "row": 11,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_038_f11.edl.json",
+   "seed": 8038,
+   "duration": 113,
+   "shots": 23,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 493
+  },
+  {
+   "k": 96,
+   "row": 12,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_039_x12.edl.json",
+   "seed": 8039,
+   "duration": 45.2,
+   "shots": 13,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 493
+  },
+  {
+   "k": 97,
+   "row": 13,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_040_x13.edl.json",
+   "seed": 8040,
+   "duration": 158,
+   "shots": 43,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 493
+  },
+  {
+   "k": 98,
+   "row": 14,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_041_f14.edl.json",
+   "seed": 8041,
+   "duration": 227.4,
+   "shots": 47,
+   "voice": 30,
+   "bootsUsed": 113,
+   "clipsUsed": 509
+  },
+  {
+   "k": 99,
+   "row": 1,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_042_x01.edl.json",
+   "seed": 8042,
+   "duration": 67.1,
+   "shots": 28,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 510
+  },
+  {
+   "k": 100,
+   "row": 2,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_043_x02.edl.json",
+   "seed": 8043,
+   "duration": 33.9,
+   "shots": 8,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 510
+  },
+  {
+   "k": 101,
+   "row": 3,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_044_f03.edl.json",
+   "seed": 8044,
+   "duration": 141.6,
+   "shots": 30,
+   "voice": 16,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 102,
+   "row": 4,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_045_x04.edl.json",
+   "seed": 8045,
+   "duration": 172.2,
+   "shots": 43,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 103,
+   "row": 5,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_046_x05.edl.json",
+   "seed": 8046,
+   "duration": 125.9,
+   "shots": 38,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 104,
+   "row": 6,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_047_f06.edl.json",
+   "seed": 8047,
+   "duration": 136.5,
+   "shots": 35,
+   "voice": 13,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 105,
+   "row": 7,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_048_x07.edl.json",
+   "seed": 8048,
+   "duration": 193.5,
+   "shots": 51,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 106,
+   "row": 8,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_049_x08.edl.json",
+   "seed": 8049,
+   "duration": 44.8,
+   "shots": 14,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 511
+  },
+  {
+   "k": 107,
+   "row": 9,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_050_f09.edl.json",
+   "seed": 8050,
+   "duration": 143.6,
+   "shots": 33,
+   "voice": 18,
+   "bootsUsed": 113,
+   "clipsUsed": 512
+  },
+  {
+   "k": 108,
+   "row": 10,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_051_x10.edl.json",
+   "seed": 8051,
+   "duration": 103.8,
+   "shots": 34,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 512
+  },
+  {
+   "k": 109,
+   "row": 11,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_052_x11.edl.json",
+   "seed": 8052,
+   "duration": 113,
+   "shots": 38,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 512
+  },
+  {
+   "k": 110,
+   "row": 12,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_053_f12.edl.json",
+   "seed": 8053,
+   "duration": 45.2,
+   "shots": 9,
+   "voice": 4,
+   "bootsUsed": 113,
+   "clipsUsed": 516
+  },
+  {
+   "k": 111,
+   "row": 13,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_054_x13.edl.json",
+   "seed": 8054,
+   "duration": 158,
+   "shots": 44,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 516
+  },
+  {
+   "k": 112,
+   "row": 14,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_055_x14.edl.json",
+   "seed": 8055,
+   "duration": 227.4,
+   "shots": 50,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 516
+  },
+  {
+   "k": 113,
+   "row": 1,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_056_f01.edl.json",
+   "seed": 8056,
+   "duration": 67.1,
+   "shots": 15,
+   "voice": 6,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 114,
+   "row": 2,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_057_x02.edl.json",
+   "seed": 8057,
+   "duration": 33.9,
+   "shots": 7,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 115,
+   "row": 3,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_058_x03.edl.json",
+   "seed": 8058,
+   "duration": 141.6,
+   "shots": 39,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 116,
+   "row": 4,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_059_f04.edl.json",
+   "seed": 8059,
+   "duration": 172.2,
+   "shots": 38,
+   "voice": 19,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 117,
+   "row": 5,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_060_x05.edl.json",
+   "seed": 8060,
+   "duration": 125.9,
+   "shots": 38,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 118,
+   "row": 6,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_061_x06.edl.json",
+   "seed": 8061,
+   "duration": 136.5,
+   "shots": 37,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 119,
+   "row": 7,
+   "col": "FLM",
+   "file": "CANDIDATES/PUNNETT/sw_062_f07.edl.json",
+   "seed": 8062,
+   "duration": 193.5,
+   "shots": 44,
+   "voice": 22,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 120,
+   "row": 8,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_063_x08.edl.json",
+   "seed": 8063,
+   "duration": 44.8,
+   "shots": 14,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 121,
+   "row": 9,
+   "col": "SWP",
+   "file": "CANDIDATES/PUNNETT/sw_064_x09.edl.json",
+   "seed": 8064,
+   "duration": 143.6,
+   "shots": 40,
+   "voice": 14,
+   "bootsUsed": 113,
+   "clipsUsed": 517
+  },
+  {
+   "k": 122,
+   "row": 2,
+   "col": "REM",
+   "file": "CANDIDATES/PUNNETT/rr_00_ch02.edl.json",
+   "seed": 12000,
+   "duration": 33.9,
+   "shots": 6,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 522
+  },
+  {
+   "k": 123,
+   "row": 2,
+   "col": "REM",
+   "file": "CANDIDATES/PUNNETT/rr_01_ch02.edl.json",
+   "seed": 12001,
+   "duration": 33.9,
+   "shots": 6,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 527
+  },
+  {
+   "k": 124,
+   "row": 2,
+   "col": "REM",
+   "file": "CANDIDATES/PUNNETT/rr_02_ch02.edl.json",
+   "seed": 12002,
+   "duration": 33.9,
+   "shots": 6,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 530
+  },
+  {
+   "k": 125,
+   "row": 8,
+   "col": "REM",
+   "file": "CANDIDATES/PUNNETT/rr_03_ch08.edl.json",
+   "seed": 12003,
+   "duration": 44.8,
+   "shots": 8,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 537
+  },
+  {
+   "k": 126,
+   "row": 10,
+   "col": "REM",
+   "file": "CANDIDATES/PUNNETT/rr_04_ch10.edl.json",
+   "seed": 12004,
+   "duration": 103.8,
+   "shots": 18,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 544
+  },
+  {
+   "k": 127,
+   "row": 11,
+   "col": "REM",
+   "file": "CANDIDATES/PUNNETT/rr_05_ch11.edl.json",
+   "seed": 12005,
+   "duration": 113,
+   "shots": 20,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 549
+  },
+  {
+   "k": 128,
+   "row": 12,
+   "col": "REM",
+   "file": "CANDIDATES/PUNNETT/rr_06_ch12.edl.json",
+   "seed": 12006,
+   "duration": 45.2,
+   "shots": 10,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 556
+  },
+  {
+   "k": 129,
+   "row": 8,
+   "col": "REM",
+   "file": "CANDIDATES/PUNNETT/rr_07_ch08.edl.json",
+   "seed": 12007,
+   "duration": 44.8,
+   "shots": 9,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 559
+  },
+  {
+   "k": 130,
+   "row": 12,
+   "col": "REM",
+   "file": "CANDIDATES/PUNNETT/rr_08_ch12.edl.json",
+   "seed": 12008,
+   "duration": 45.2,
+   "shots": 9,
+   "voice": 0,
+   "bootsUsed": 113,
+   "clipsUsed": 562
   }
  ]
 }

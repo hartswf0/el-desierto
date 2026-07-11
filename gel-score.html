@@ -81,6 +81,21 @@
   .pcell.on{outline:2px solid var(--hot)}
   #mon{position:fixed;left:312px;bottom:12px;width:300px;background:#000;border:2px solid var(--hot);
     border-radius:10px;overflow:hidden;z-index:19;display:none}
+  #mon.full{left:0!important;right:0!important;top:0;bottom:0;width:auto;border-radius:0;z-index:50}
+  #mon.full video{height:calc(100% - 30px);aspect-ratio:auto}
+  #mon .mbtns{position:absolute;top:6px;right:6px;display:flex;gap:5px;z-index:3}
+  #mon .mbtns button{border:1px solid rgba(255,255,255,.35);border-radius:5px;background:rgba(0,0,0,.6);
+    color:#fff;font:inherit;font-size:9px;font-weight:700;padding:3px 8px;cursor:pointer}
+  #mixer{position:fixed;right:12px;top:56px;width:210px;background:#0c0e10f0;border:1px solid var(--line);
+    border-radius:10px;z-index:25;display:none;font-size:9px}
+  #mixer.on{display:block}
+  #mixer h5{padding:7px 10px;letter-spacing:.12em;color:var(--dim);border-bottom:1px solid var(--line)}
+  .mstrip{display:flex;gap:7px;align-items:center;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.05)}
+  .mstrip b{flex:0 0 44px;font-size:9px}
+  .mstrip button{border:1px solid var(--line);border-radius:4px;background:transparent;color:var(--ink);
+    font:inherit;font-size:8px;font-weight:800;padding:2px 6px;cursor:pointer}
+  .mstrip button.off{color:var(--rej,#ff2e2e);border-color:#ff2e2e}
+  .mstrip input{flex:1;height:14px}
   #mon video{width:100%;aspect-ratio:16/9;object-fit:contain;display:block;background:#000}
   #mon .mc{padding:4px 8px;font-size:9px;color:var(--dim);background:#0b0d0f;line-height:1.5}
   #mon .mc b{color:#fff;font-weight:400}
@@ -126,6 +141,8 @@
     <button id="bClip" title="hear the clips' own sound in the monitor">CLIP AUDIO</button>
     <span style="font-size:9px;color:var(--dim)">MIX</span><input id="mix" type="range" min="0" max="100" value="35" title="song ↔ clips blend">
     <button id="bText" title="read the whole transcript of this cut">TEXT</button>
+    <button id="bMix" title="channel strips: song / voice / clips">MIXER</button>
+    <button id="bExp" title="download the finalized EDL with your mix baked in">EXPORT</button>
     <span style="font-size:9px;color:var(--dim)">ZOOM</span><input id="zoom" type="range" min="4" max="26" value="9">
     <span class="stat" id="stat">pick a candidate</span>
     <span style="font-size:9px;color:var(--dim)">click a shot = talker tag · click voice = jump · block = detail</span>
@@ -143,7 +160,14 @@
 </div>
 <div id="detail"></div>
 <div id="reader"><h4>TRANSCRIPT <button id="rClose">CLOSE</button></h4><div id="rbody"></div></div>
-<div id="mon"><video id="monV" muted playsinline preload="auto"></video><div class="mc" id="monC"></div></div>
+<div id="mon"><div class="mbtns"><button id="mFull">FULL</button></div>
+<video id="monV" muted playsinline preload="auto"></video><div class="mc" id="monC"></div></div>
+<div id="mixer"><h5>CHANNELS — one clock, synced</h5>
+  <div class="mstrip"><b>SONG</b><button data-t="song">ON</button><input data-t="song" type="range" min="0" max="100" value="100"></div>
+  <div class="mstrip"><b>VOICE</b><button data-t="voice">ON</button><input data-t="voice" type="range" min="0" max="100" value="100"></div>
+  <div class="mstrip"><b>CLIPS</b><button data-t="clip">ON</button><input data-t="clip" type="range" min="0" max="100" value="40"></div>
+</div>
+<video id="voxS" playsinline preload="auto" style="display:none"></video>
 <audio id="song"></audio>
 <script>
 (async()=>{
@@ -156,7 +180,37 @@ const MAN=await fetch('MONTE/manifest2.json').then(r=>r.json());
 const CLIP=Object.fromEntries(MAN.clips.map(c=>[c.id,c]));
 const BOOT=Object.fromEntries(LOAD.screens.map(s=>[s.file,s]));
 const TALKERS=new Set(JSON.parse(localStorage.getItem('monteTalkers')||'[]'));
-const S={cand:null,edl:null,am:null,pps:9,playing:false,clipAudio:false,mix:0.35};
+const S={cand:null,edl:null,am:null,pps:9,playing:false,clipAudio:false,mix:0.35,
+  mx:{song:{on:true,g:1},voice:{on:true,g:1},clip:{on:false,g:0.4}}};
+const voxS=$('voxS'); let curVe=null;
+function voiceBus(t){
+  const E=S.edl; if(!E)return;
+  const ve=(E.voice||[]).find(v=>t>=v.t-0.05&&t<v.t+v.dur+0.3);
+  if(!ve||!S.mx.voice.on){ if(!voxS.paused)voxS.pause(); curVe=null; return; }
+  if(ve!==curVe){
+    curVe=ve;
+    const want='MONTE/'+ve.file;
+    if(!voxS.src.endsWith(encodeURI(want).split('/').pop()))voxS.src=want;
+    const tgt=ve.in+Math.max(0,t-ve.t);
+    voxS.addEventListener('loadedmetadata',()=>{try{voxS.currentTime=tgt;}catch(e){}},{once:true});
+    if(voxS.readyState>=1){try{voxS.currentTime=tgt;}catch(e){}}
+  }
+  voxS.muted=false;
+  const ain=Math.min(1,Math.max(0,(t-(ve.t-0.05))/0.18));
+  const aout=Math.min(1,Math.max(0,((ve.t+ve.dur+0.3)-t)/0.3));
+  voxS.volume=Math.max(0,Math.min(1,Math.min(ain,aout)))*S.mx.voice.g;
+  const drift=Math.abs(voxS.currentTime-(ve.in+(t-ve.t)));
+  if(voxS.readyState>=2&&drift>0.45){try{voxS.currentTime=ve.in+Math.max(0,t-ve.t);}catch(e){}}
+  if(voxS.paused&&S.playing)voxS.play().catch(()=>{});
+}
+function duckAt(t){
+  const E=S.edl; if(!E||!S.mx.voice.on)return 1;
+  for(const w of (E.duck||[])){
+    const a=w[0],b=w[1],lv=w.length>2?w[2]:0.28;
+    if(t>=a-0.15&&t<=b+0.4)return lv;
+  }
+  return 1;
+}
 const song=$('song');
 const HUE=ch=>ch?('hsl('+((ch-1)*25.7)+',72%,58%)'):'rgba(255,255,255,.25)';
 const monV=$('monV'), mon=$('mon'), monC=$('monC');
@@ -176,8 +230,8 @@ function monitor(iv,tLocal,voiceText){
       +(iv.clip||'').split('/').pop().slice(0,40)+'</b>'
       +(voiceText?('<br>'+voiceText.slice(0,90)):'');
   }
-  monV.muted=!S.clipAudio;
-  monV.volume=Math.min(1,S.mix*1.6);
+  monV.muted=!S.mx.clip.on;
+  monV.volume=Math.min(1,S.mx.clip.g);
   if(monV.paused)monV.play().catch(()=>{});
   if(monV.readyState>=2){
     const tgt=(iv.in||0)+Math.max(0,tLocal||0);
@@ -332,8 +386,33 @@ async function detail(iv){
   clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',9000);
 }
 $('zoom').addEventListener('input',e=>{S.pps=+e.target.value;if(S.edl)drawScore();});
-$('bClip').onclick=()=>{S.clipAudio=!S.clipAudio;$('bClip').classList.toggle('on',S.clipAudio);};
-$('mix').addEventListener('input',e=>{S.mix=e.target.value/100;});
+$('bClip').onclick=()=>{S.mx.clip.on=!S.mx.clip.on;$('bClip').classList.toggle('on',S.mx.clip.on);};
+$('mix').addEventListener('input',e=>{S.mx.clip.g=e.target.value/100;});
+$('bMix').onclick=()=>{document.getElementById('mixer').classList.toggle('on');};
+document.querySelectorAll('#mixer button[data-t]').forEach(b=>{
+  b.onclick=()=>{const T=S.mx[b.dataset.t];T.on=!T.on;
+    b.textContent=T.on?'ON':'OFF';b.classList.toggle('off',!T.on);};
+});
+document.querySelectorAll('#mixer input[data-t]').forEach(r=>{
+  r.addEventListener('input',e=>{S.mx[r.dataset.t].g=e.target.value/100;});
+});
+$('mFull').onclick=()=>{
+  mon.classList.toggle('full');
+  $('mFull').textContent=mon.classList.contains('full')?'EXIT':'FULL';
+  if(mon.classList.contains('full')&&mon.requestFullscreen)
+    mon.requestFullscreen().catch(()=>{});
+  else if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+};
+$('bExp').onclick=()=>{
+  if(!S.edl)return;
+  const fin=Object.assign({},S.edl,{mix:{song:S.mx.song.on?S.mx.song.g:0,
+    voice:S.mx.voice.on?S.mx.voice.g:0,act:S.mx.clip.on?S.mx.clip.g:0},
+    finalized:true});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(fin,null,1)],{type:'application/json'}));
+  a.download=(S.cand?S.cand.id:'cut')+'_final.edl.json'; a.click();
+  $('stat').textContent='FINALIZED — render: python3 monte_render2.py '+a.download;
+};
 // THE READER: the transcript, big enough to actually read
 let TRJ=null;
 $('bText').onclick=async()=>{
@@ -364,8 +443,10 @@ document.addEventListener('pointerdown',e=>{
 },{passive:true});
 ['pointerup','pointermove','pointercancel'].forEach(t=>document.addEventListener(t,()=>{
   if(lpT){clearTimeout(lpT);lpT=null;}},{passive:true}));
-function stop(){S.playing=false;song.pause();$('bPlay').textContent='PLAY SONG';
-  $('playhead').style.display='none';mon.style.display='none';monV.pause();monIv=null;}
+function stop(){S.playing=false;song.pause();voxS.pause();curVe=null;
+  $('bPlay').textContent='PLAY SONG';
+  $('playhead').style.display='none';mon.classList.remove('full');
+  mon.style.display='none';monV.pause();monIv=null;}
 $('bPlay').onclick=()=>{
   if(!S.edl)return;
   if(S.playing){stop();return;}
@@ -374,8 +455,10 @@ $('bPlay').onclick=()=>{
 };
 setInterval(()=>{
   if(!S.playing)return;
-  song.volume=S.clipAudio?Math.max(0.08,1-S.mix):1;
   const t=song.currentTime;
+  voiceBus(t);
+  song.volume=(S.mx.song.on?S.mx.song.g:0)*duckAt(t)
+    *(S.mx.clip.on?Math.max(0.15,1-S.mx.clip.g*0.8):1);
   const iv=(S.edl?S.edl.edl:[]).find(x=>t>=x.t&&t<x.t+x.len);
   const ve=(S.edl?S.edl.voice||[]:[]).find(v=>t>=v.t&&t<v.t+v.dur);
   monitor(iv,iv?t-iv.t:0,ve?ve.text:null);
