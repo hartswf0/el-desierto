@@ -2207,7 +2207,7 @@ document.querySelectorAll('#thCtl button').forEach(b=>{
             return (b?[b]:[]).concat(pt.baseIds||[]);})()).map((id2,ix)=>({id:id2,
             media_url:(clips[id2]||{}).media_url,
             weave:!!(pt.flash&&pt.flash.has(ix)),
-            duration:(pt.flash&&pt.flash.has(ix))?1.1:((clips[id2]||{}).duration||8)}))});
+            duration:(pt.flash&&pt.flash.has(ix))?4.0:((clips[id2]||{}).duration||8)}))});
       const a3=document.createElement('a');
       a3.href=URL.createObjectURL(new Blob([JSON.stringify({format:'monte-program',parts},null,1)],
         {type:'application/json'}));
