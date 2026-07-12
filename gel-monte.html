@@ -461,14 +461,14 @@ function branchOrder(baseIds,bootId){
   for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return [bootId].concat(a);
 }
-// interleave boot flashes into a lane's clip ids; returns {ids, flash:Set}
+// weave HELD boots into a lane — sparse (every ~3-4 clips), each holds (thShow)
 function weaveIds(ids,sg){
   const out=[],flash=new Set(); let sinceLast=99;
   ids.forEach((id,i)=>{
     out.push(id);
     const isBoot=(clips[id]||{}).era==='boot';
     sinceLast++;
-    if(i<ids.length-1 && !isBoot && sinceLast>=2 && Math.random()<0.6){
+    if(i<ids.length-1 && !isBoot && sinceLast>=3 && Math.random()<0.4){
       const b=pickBoot(id,ids[i+1],sg);
       if(b){out.push(b);flash.add(out.length-1);sinceLast=0;}
     }
@@ -2086,10 +2086,10 @@ function thShow(){
   if(!isFlash&&(clips[id]||{}).era==='boot'&&TH.progBoots)TH.progBoots.add(id);
   thv.src=(clips[id]||{}).media_url||'';
   // a woven boot flashes SHORT, its machine sound a soft bleed under the song
-  thv.muted=false; thv.volume=(isFlash?0.14:1)*S.clipG; thv.play().catch(()=>{});
+  thv.muted=false; thv.volume=(isFlash?0.2:1)*S.clipG; thv.play().catch(()=>{});
   if(isFlash){
-    const cap=(clips[id]||{}).duration||1.2;              // stay before the static
-    const ms=Math.min(cap,0.7+Math.random()*1.1)*1000;
+    const cap=(clips[id]||{}).duration||6;               // stay before the static
+    const ms=Math.min(cap-0.3,3.0+Math.random()*2.5)*1000;   // a boot you can read
     TH.flashT=setTimeout(()=>{TH.i++;thShow();},ms);
   }
   const part=TH.parts&&TH.parts[TH.pi];
@@ -2177,8 +2177,8 @@ document.querySelectorAll('#thCtl button').forEach(b=>{
     if(c==='lane'){thNextPart_skipLane();}
     if(c==='pp'){
       if(thv.paused){thv.play().catch(()=>{});const A=$('songA');if(TH.sg)A.play().catch(()=>{});b.innerHTML='&#9646;&#9646;';
-        if(TH.flash&&TH.flash.has(TH.i)){const cap=(clips[TH.queue[TH.i]]||{}).duration||1.2;
-          clearTimeout(TH.flashT);TH.flashT=setTimeout(()=>{TH.i++;thShow();},Math.min(cap,0.9)*1000);}}
+        if(TH.flash&&TH.flash.has(TH.i)){const cap=(clips[TH.queue[TH.i]]||{}).duration||6;
+          clearTimeout(TH.flashT);TH.flashT=setTimeout(()=>{TH.i++;thShow();},Math.min(cap-0.3,3.5)*1000);}}
       else{thv.pause();$('songA').pause();clearTimeout(TH.flashT);b.innerHTML='&#9654;';}
     }
     if(c==='frame'){TH.frame=TH.frame===false?true:false;
