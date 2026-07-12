@@ -313,6 +313,7 @@
     <button data-c="next" title="next clip">&#9654;&#9654;</button>
     <button data-c="lane" title="jump to the next channel">NEXT LANE</button>
     <button data-c="frame" class="on" title="title + prologue open, acts between, epilogue closes">FRAME</button>
+    <button data-c="weave" title="boot loaders flash in the seams between spoken lines">WEAVE</button>
     <button data-c="film" title="export this whole program as a renderable film">FILM</button>
   </div></div>
 <div id="titleCard"></div>
@@ -373,6 +374,7 @@ try{
 // boot screens join the deck: they open every roll and seam every twin
 const BOOTS_BY_ERA={};
 const FRAME={title:[],prologue:[],epilogue:[],act:{}};
+const GLOBAL_BOOTS=[];  const weaveLedger={};
 try{
   const LJ=await fetch('MONTE/loading.json').then(r=>r.json());
   LJ.screens.forEach(s=>{
@@ -393,7 +395,51 @@ try{
   });
   for(const n in BOOTS_BY_ERA)
     facets.named_film['BOOTS '+String(n).padStart(2,'0')]=BOOTS_BY_ERA[n];
+  // every 'ch' loader, for the WEAVE spice pool (boots as connective tissue)
+  LJ.screens.forEach(s=>{ if(s.kind==='ch') GLOBAL_BOOTS.push(s.file); });
 }catch(e){}
+// ---- THE WEAVE (live) : boots flash in the seams between spoken lines ----
+// the render twin is monte_weave.py (music-exact). here we approximate: after
+// most clips, splice a SHORT boot flash chosen by texture-affinity + freshness.
+function bootTex(id){const s=(id||'').toLowerCase();
+  if(/crt|monitor|screen|terminal|_boot|data/.test(s))return'screen';
+  if(/eye|ascii|asci|system|world/.test(s))return'eye';
+  if(/run|animation|sequence|montage|gameplay/.test(s))return'motion';
+  if(/vr|headset/.test(s))return'vr'; if(/empty/.test(s))return'empty'; return'screen';}
+function shotPull(id){const c=clips[id]||{}; const tg=(c.objects||[]).concat(c.style_terms||[])
+    .join(' ').toLowerCase()+' '+(c.title||'').toLowerCase(); const p={};
+  const add=(k,w)=>p[k]=(p[k]||0)+w;
+  if(/comput|page|screen|termin|system|apple|nasa/.test(tg)){add('screen',3);add('eye',1);}
+  if(/headset|oculus|glass|virtual|telesphere/.test(tg)){add('vr',3);add('eye',1);}
+  if(/reconstr|generat|sensorama|hand|run/.test(tg)){add('motion',2);add('eye',1);}
+  return p;}
+function pickBoot(prev,next,sg){
+  const pull=shotPull(prev); const np=shotPull(next);
+  for(const k in np)pull[k]=(pull[k]||0)+np[k]*0.6;
+  let best=null,bs=-1e9;
+  for(const id of GLOBAL_BOOTS){
+    const era=+((id.match(/ch(\d\d)/)||[])[1]||0);
+    const near=1-Math.min(1,Math.abs(era-(sg?sg.n:0))/14);
+    const sc=(pull[bootTex(id)]||0)+near*0.5-1.4*(weaveLedger[id]||0)+Math.random()*0.7;
+    if(sc>bs){bs=sc;best=id;}
+  }
+  if(best)weaveLedger[best]=(weaveLedger[best]||0)+1;
+  return best;
+}
+// interleave boot flashes into a lane's clip ids; returns {ids, flash:Set}
+function weaveIds(ids,sg){
+  const out=[],flash=new Set(); let sinceLast=99;
+  ids.forEach((id,i)=>{
+    out.push(id);
+    const isBoot=(clips[id]||{}).era==='boot';
+    sinceLast++;
+    if(i<ids.length-1 && !isBoot && sinceLast>=2 && Math.random()<0.6){
+      const b=pickBoot(id,ids[i+1],sg);
+      if(b){out.push(b);flash.add(out.length-1);sinceLast=0;}
+    }
+  });
+  return {ids:out,flash};
+}
 const posterOf=id=>{const c=clips[id];return c&&c.pid?('MONTE/POSTERS/'+c.pid+'.jpg'):'';};
 const previewOf=id=>(clips[id]||{}).media_url||'';
 const SECTIONS=['OPENING','MIDDLE','ENDING'];
@@ -1927,22 +1973,30 @@ function thNextPart(){
     TH.sg=null;TH.queue=[part.frame];TH.i=0;
     A.pause();                                   // the machine speaks alone
   } else {
-    TH.sg=part.lane;TH.queue=part.ids.slice();TH.i=0;
+    TH.sg=part.lane;TH.queue=part.ids.slice();TH.flash=part.flash||new Set();TH.i=0;
     if(!A.src.endsWith(encodeURI(part.lane.url).split('/').pop()))A.src=part.lane.url;
     A.loop=false;A.currentTime=0;A.volume=S.songG;A.play().catch(()=>{});
   }
   thShow();
 }
 function thShow(){
+  clearTimeout(TH.flashT);
   if(TH.i>=TH.queue.length){thNextPart();return;}
   const id=TH.queue[TH.i];
+  const isFlash=TH.flash&&TH.flash.has(TH.i);
   thv.src=(clips[id]||{}).media_url||'';
-  thv.muted=false; thv.volume=S.clipG; thv.play().catch(()=>{});
+  // a woven boot flashes SHORT, its machine sound a soft bleed under the song
+  thv.muted=false; thv.volume=(isFlash?0.14:1)*S.clipG; thv.play().catch(()=>{});
+  if(isFlash){
+    const cap=(clips[id]||{}).duration||1.2;              // stay before the static
+    const ms=Math.min(cap,0.7+Math.random()*1.1)*1000;
+    TH.flashT=setTimeout(()=>{TH.i++;thShow();},ms);
+  }
   const pn=TH.parts?('PART '+(TH.pi+1)+'/'+TH.parts.length+' · '):'';
-  $('thHud').textContent=pn+(TH.sg?TH.sg.eraTitle+' · ':'')+(TH.i+1)+' / '+TH.queue.length
-    +' · '+((clips[id]||{}).title||'').slice(0,56);
+  $('thHud').textContent=pn+(isFlash?'▣ ':'')+(TH.sg?TH.sg.eraTitle+' · ':'')
+    +(TH.i+1)+' / '+TH.queue.length+' · '+((clips[id]||{}).title||'').slice(0,56);
 }
-thv.addEventListener('ended',()=>{TH.i++;thShow();});
+thv.addEventListener('ended',()=>{clearTimeout(TH.flashT);TH.i++;thShow();});
 setInterval(()=>{
   if(!TH.on)return;
   const A=$('songA'); const id=TH.queue[TH.i]; if(!id)return;
@@ -1962,7 +2016,8 @@ function buildProgram(eras){
     const a=sg.n<=5?1:sg.n<=10?2:3;
     if(F&&a!==act&&(FRAME.act[a]||[]).length){parts.push({frame:FRAME.act[a][0]});act=a;}
     const ids=cutIdsForEra(sg);
-    if(ids.length)parts.push({lane:sg,ids});
+    if(ids.length){const w=TH.weave?weaveIds(ids,sg):{ids,flash:new Set()};
+      parts.push({lane:sg,ids:w.ids,flash:w.flash});}
   });
   if(F&&FRAME.epilogue.length)parts.push({frame:FRAME.epilogue[0]});
   return parts;
@@ -1979,7 +2034,8 @@ function thStart(l){
       const bs=BOOTS_BY_ERA[sg.n]||[]; if(bs.length)q.unshift(bs[0]);}
     return q;})():cutIdsForEra(sg);
   if(!ids.length)return false;
-  parts.push({lane:sg,ids});
+  const w=TH.weave?weaveIds(ids,sg):{ids,flash:new Set()};
+  parts.push({lane:sg,ids:w.ids,flash:w.flash});
   if(F&&FRAME.epilogue.length)parts.push({frame:FRAME.epilogue[0]});
   thRun(parts); return true;
 }
@@ -2019,20 +2075,30 @@ document.querySelectorAll('#thCtl button').forEach(b=>{
     if(c==='next'){TH.i++;thShow();}
     if(c==='lane'){thNextPart_skipLane();}
     if(c==='pp'){
-      if(thv.paused){thv.play().catch(()=>{});const A=$('songA');if(TH.sg)A.play().catch(()=>{});b.innerHTML='&#9646;&#9646;';}
-      else{thv.pause();$('songA').pause();b.innerHTML='&#9654;';}
+      if(thv.paused){thv.play().catch(()=>{});const A=$('songA');if(TH.sg)A.play().catch(()=>{});b.innerHTML='&#9646;&#9646;';
+        if(TH.flash&&TH.flash.has(TH.i)){const cap=(clips[TH.queue[TH.i]]||{}).duration||1.2;
+          clearTimeout(TH.flashT);TH.flashT=setTimeout(()=>{TH.i++;thShow();},Math.min(cap,0.9)*1000);}}
+      else{thv.pause();$('songA').pause();clearTimeout(TH.flashT);b.innerHTML='&#9654;';}
     }
     if(c==='frame'){TH.frame=TH.frame===false?true:false;
       b.classList.toggle('on',TH.frame!==false);}
+    if(c==='weave'){TH.weave=!TH.weave; b.classList.toggle('on',TH.weave);
+      // re-weave the current lane in place so the change is felt immediately
+      if(TH.on&&TH.sg){const w=TH.weave?weaveIds(cutIdsForEra(TH.sg),TH.sg)
+        :{ids:cutIdsForEra(TH.sg),flash:new Set()};
+        TH.queue=w.ids;TH.flash=w.flash;
+        if(TH.parts&&TH.parts[TH.pi]){TH.parts[TH.pi].ids=w.ids;TH.parts[TH.pi].flash=w.flash;}
+        TH.i=Math.min(TH.i,TH.queue.length-1);thShow();}}
     if(c==='film'){
       // export EXACTLY the program on screen — projectionist == renderer
       const prog=TH.parts||buildProgram(Object.values(SONGS).sort((x,y)=>x.n-y.n));
       const parts=prog.map(pt=>pt.frame
         ?{kind:'frame',file:(clips[pt.frame]||{}).media_url}
         :{kind:'lane',name:pt.lane.eraTitle,era:pt.lane.n,song:pt.lane.url,
-          songDur:pt.lane.dur,clips:pt.ids.map(id2=>({id:id2,
+          songDur:pt.lane.dur,clips:pt.ids.map((id2,ix)=>({id:id2,
             media_url:(clips[id2]||{}).media_url,
-            duration:(clips[id2]||{}).duration||8}))});
+            weave:!!(pt.flash&&pt.flash.has(ix)),
+            duration:(pt.flash&&pt.flash.has(ix))?1.1:((clips[id2]||{}).duration||8)}))});
       const a3=document.createElement('a');
       a3.href=URL.createObjectURL(new Blob([JSON.stringify({format:'monte-program',parts},null,1)],
         {type:'application/json'}));
