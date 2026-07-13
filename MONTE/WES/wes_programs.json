@@ -1,0 +1,1623 @@
+{
+"system": "WORLD EYE SYSTEM 14.3",
+"programs": {
+"boot_ch01_01_chapter_01_opening_sequence": {
+"pid": "boot_ch01_01_chapter_01_opening_sequence",
+"file": "BOOTS/ch01_01_chapter_01_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [
+{
+"t": 0.33,
+"op": "LOAD",
+"text": "LOAD BOOT",
+"votes": 2
+},
+{
+"t": 0.33,
+"op": "LOAD",
+"text": "LOAD BOOT LOADING",
+"votes": 5
+},
+{
+"t": 4.0,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 2
+}
+],
+"lines": 3
+},
+"boot_ch01_02_chapter_01": {
+"pid": "boot_ch01_02_chapter_01",
+"file": "BOOTS/ch01_02_chapter_01.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch01_03_chapter_01": {
+"pid": "boot_ch01_03_chapter_01",
+"file": "BOOTS/ch01_03_chapter_01.mp4",
+"filed_ch": null,
+"ran_chapter": 1,
+"statements": [
+{
+"t": 2.0,
+"op": "RUN",
+"text": "RUN CHAPTER 1",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch01_04_audience_beco": {
+"pid": "boot_ch01_04_audience_beco",
+"file": "BOOTS/ch01_04_audience_beco.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [
+{
+"t": 2.67,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 13
+},
+{
+"t": 3.67,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 6
+}
+],
+"lines": 2
+},
+"boot_ch01_05_loading_prehi": {
+"pid": "boot_ch01_05_loading_prehi",
+"file": "BOOTS/ch01_05_loading_prehi.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch02_01_crt_monitor_boot": {
+"pid": "boot_ch02_01_crt_monitor_boot",
+"file": "BOOTS/ch02_01_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 2,
+"statements": [
+{
+"t": 0.33,
+"op": "RUN",
+"text": "RUN CHAPTER 2",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch02_02_chapter_02": {
+"pid": "boot_ch02_02_chapter_02",
+"file": "BOOTS/ch02_02_chapter_02.mp4",
+"filed_ch": null,
+"ran_chapter": 2,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 2",
+"votes": 11
+},
+{
+"t": 5.67,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 4
+}
+],
+"lines": 2
+},
+"boot_ch02_03_chapter_02": {
+"pid": "boot_ch02_03_chapter_02",
+"file": "BOOTS/ch02_03_chapter_02.mp4",
+"filed_ch": null,
+"ran_chapter": 2,
+"statements": [
+{
+"t": 1.33,
+"op": "RUN",
+"text": "RUN CHAPTER 2",
+"votes": 2
+},
+{
+"t": 5.0,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 3
+}
+],
+"lines": 2
+},
+"boot_ch02_04_run_chapter_02": {
+"pid": "boot_ch02_04_run_chapter_02",
+"file": "BOOTS/ch02_04_run_chapter_02.mp4",
+"filed_ch": null,
+"ran_chapter": 2,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 2",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch02_05_run_chapter_02": {
+"pid": "boot_ch02_05_run_chapter_02",
+"file": "BOOTS/ch02_05_run_chapter_02.mp4",
+"filed_ch": null,
+"ran_chapter": 2,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 2",
+"votes": 6
+}
+],
+"lines": 1
+},
+"boot_ch02_06_screen_boot": {
+"pid": "boot_ch02_06_screen_boot",
+"file": "BOOTS/ch02_06_screen_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 10,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 10",
+"votes": 7
+}
+],
+"lines": 1
+},
+"boot_ch02_07_screen_boot": {
+"pid": "boot_ch02_07_screen_boot",
+"file": "BOOTS/ch02_07_screen_boot.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [
+{
+"t": 1.0,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 21
+},
+{
+"t": 2.67,
+"op": "MOVE",
+"text": "MOVE TO",
+"votes": 9
+},
+{
+"t": 5.0,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 6
+}
+],
+"lines": 3
+},
+"boot_ch02_08_screen_boot": {
+"pid": "boot_ch02_08_screen_boot",
+"file": "BOOTS/ch02_08_screen_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 2,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 2",
+"votes": 2
+},
+{
+"t": 1.33,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 5
+},
+{
+"t": 3.0,
+"op": "MOVE",
+"text": "MOVE TO",
+"votes": 2
+}
+],
+"lines": 3
+},
+"boot_ch02_09_world_eye_system_14_3_animatio": {
+"pid": "boot_ch02_09_world_eye_system_14_3_animatio",
+"file": "BOOTS/ch02_09_world_eye_system_14_3_animatio.mp4",
+"filed_ch": null,
+"ran_chapter": 2,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 2",
+"votes": 4
+},
+{
+"t": 1.0,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 5
+}
+],
+"lines": 2
+},
+"boot_ch03_01_chapter_03_opening_sequence": {
+"pid": "boot_ch03_01_chapter_03_opening_sequence",
+"file": "BOOTS/ch03_01_chapter_03_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": 3,
+"statements": [
+{
+"t": 1.33,
+"op": "RUN",
+"text": "RUN CHAPTER 3",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch03_02_red_machine_at_future": {
+"pid": "boot_ch03_02_red_machine_at_future",
+"file": "BOOTS/ch03_02_red_machine_at_future.mp4",
+"filed_ch": null,
+"ran_chapter": 16,
+"statements": [
+{
+"t": 2.0,
+"op": "RUN",
+"text": "RUN CHAPTER 16",
+"votes": 4
+}
+],
+"lines": 1
+},
+"boot_ch03_03_chapter_03": {
+"pid": "boot_ch03_03_chapter_03",
+"file": "BOOTS/ch03_03_chapter_03.mp4",
+"filed_ch": null,
+"ran_chapter": 3,
+"statements": [
+{
+"t": 2.33,
+"op": "RUN",
+"text": "RUN CHAPTER 3",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch03_04_chapter_03": {
+"pid": "boot_ch03_04_chapter_03",
+"file": "BOOTS/ch03_04_chapter_03.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch03_05_run_chapter_03": {
+"pid": "boot_ch03_05_run_chapter_03",
+"file": "BOOTS/ch03_05_run_chapter_03.mp4",
+"filed_ch": null,
+"ran_chapter": 3,
+"statements": [
+{
+"t": 0.33,
+"op": "RUN",
+"text": "RUN CHAPTER 3",
+"votes": 5
+},
+{
+"t": 3.67,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 3
+}
+],
+"lines": 2
+},
+"boot_ch03_06_run_chapter_03": {
+"pid": "boot_ch03_06_run_chapter_03",
+"file": "BOOTS/ch03_06_run_chapter_03.mp4",
+"filed_ch": null,
+"ran_chapter": 3,
+"statements": [
+{
+"t": 1.33,
+"op": "RUN",
+"text": "RUN CHAPTER 3",
+"votes": 5
+},
+{
+"t": 1.67,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 2
+},
+{
+"t": 2.33,
+"op": "DEFINE",
+"text": "DEFINE [] = MOVE",
+"votes": 3
+}
+],
+"lines": 3
+},
+"boot_ch03_07_of_system_boot": {
+"pid": "boot_ch03_07_of_system_boot",
+"file": "BOOTS/ch03_07_of_system_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 3,
+"statements": [
+{
+"t": 2.0,
+"op": "RUN",
+"text": "RUN CHAPTER 3",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch03_08_world_eye_system_14_3_run": {
+"pid": "boot_ch03_08_world_eye_system_14_3_run",
+"file": "BOOTS/ch03_08_world_eye_system_14_3_run.mp4",
+"filed_ch": null,
+"ran_chapter": 3,
+"statements": [
+{
+"t": 0.0,
+"op": "RUN",
+"text": "RUN CHAPTER 3",
+"votes": 6
+},
+{
+"t": 1.33,
+"op": "FOR",
+"from": 1,
+"to": 4,
+"text": "FOR k = 1..4: ADD MEASUREMENT POINT k",
+"votes": 16
+},
+{
+"t": 3.0,
+"op": "EXPAND",
+"text": "EXPAND [] TO INCLUDE ALL POINTS",
+"votes": 5
+}
+],
+"lines": 3
+},
+"boot_ch04_01_displays_system_anim": {
+"pid": "boot_ch04_01_displays_system_anim",
+"file": "BOOTS/ch04_01_displays_system_anim.mp4",
+"filed_ch": null,
+"ran_chapter": 4,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 4",
+"votes": 6
+},
+{
+"t": 1.67,
+"op": "DEFINE",
+"text": "DEFINE [] = ONLINE",
+"votes": 2
+}
+],
+"lines": 2
+},
+"boot_ch04_02_shows_physics_editing": {
+"pid": "boot_ch04_02_shows_physics_editing",
+"file": "BOOTS/ch04_02_shows_physics_editing.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [
+{
+"t": 1.0,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 6
+}
+],
+"lines": 1
+},
+"boot_ch04_03_chapter_04_opening_sequence": {
+"pid": "boot_ch04_03_chapter_04_opening_sequence",
+"file": "BOOTS/ch04_03_chapter_04_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": 4,
+"statements": [
+{
+"t": 2.67,
+"op": "RUN",
+"text": "RUN CHAPTER 4",
+"votes": 2
+},
+{
+"t": 5.67,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 3
+}
+],
+"lines": 2
+},
+"boot_ch04_04_chapter_opening_world_eye_syst": {
+"pid": "boot_ch04_04_chapter_opening_world_eye_syst",
+"file": "BOOTS/ch04_04_chapter_opening_world_eye_syst.mp4",
+"filed_ch": null,
+"ran_chapter": 4,
+"statements": [
+{
+"t": 1.33,
+"op": "RUN",
+"text": "RUN CHAPTER 4",
+"votes": 4
+},
+{
+"t": 2.0,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 29
+},
+{
+"t": 3.33,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 10
+}
+],
+"lines": 3
+},
+"boot_ch04_05_define_private_field_move_circ": {
+"pid": "boot_ch04_05_define_private_field_move_circ",
+"file": "BOOTS/ch04_05_define_private_field_move_circ.mp4",
+"filed_ch": null,
+"ran_chapter": 9,
+"statements": [
+{
+"t": 0.33,
+"op": "RUN",
+"text": "RUN CHAPTER 9",
+"votes": 2
+},
+{
+"t": 2.0,
+"op": "DEFINE",
+"text": "DEFINE [] = PRIVATE",
+"votes": 7
+},
+{
+"t": 2.0,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 3
+},
+{
+"t": 7.0,
+"op": "RELATION",
+"text": "RELATION UPDATED",
+"votes": 5
+}
+],
+"lines": 4
+},
+"boot_ch04_06_crt_monitor_boot": {
+"pid": "boot_ch04_06_crt_monitor_boot",
+"file": "BOOTS/ch04_06_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 4,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 4",
+"votes": 5
+},
+{
+"t": 1.67,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 2
+}
+],
+"lines": 2
+},
+"boot_ch04_07_crt_monitor_boot": {
+"pid": "boot_ch04_07_crt_monitor_boot",
+"file": "BOOTS/ch04_07_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 4,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 4",
+"votes": 5
+}
+],
+"lines": 1
+},
+"boot_ch04_08_chapter_04": {
+"pid": "boot_ch04_08_chapter_04",
+"file": "BOOTS/ch04_08_chapter_04.mp4",
+"filed_ch": null,
+"ran_chapter": 4,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 4",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch04_09_chapter_04": {
+"pid": "boot_ch04_09_chapter_04",
+"file": "BOOTS/ch04_09_chapter_04.mp4",
+"filed_ch": null,
+"ran_chapter": 4,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 4",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch04_10_screen_boot": {
+"pid": "boot_ch04_10_screen_boot",
+"file": "BOOTS/ch04_10_screen_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 14,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 14",
+"votes": 5
+}
+],
+"lines": 1
+},
+"boot_ch05_01_chapter_05_opening_sequence": {
+"pid": "boot_ch05_01_chapter_05_opening_sequence",
+"file": "BOOTS/ch05_01_chapter_05_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": 5,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 5",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch05_02_chapter_opening_world_eye_syst": {
+"pid": "boot_ch05_02_chapter_opening_world_eye_syst",
+"file": "BOOTS/ch05_02_chapter_opening_world_eye_syst.mp4",
+"filed_ch": null,
+"ran_chapter": 1,
+"statements": [
+{
+"t": 0.0,
+"op": "RUN",
+"text": "RUN CHAPTER 1",
+"votes": 2
+},
+{
+"t": 3.0,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 3
+}
+],
+"lines": 2
+},
+"boot_ch05_03_1968_historic": {
+"pid": "boot_ch05_03_1968_historic",
+"file": "BOOTS/ch05_03_1968_historic.mp4",
+"filed_ch": null,
+"ran_chapter": 5,
+"statements": [
+{
+"t": 0.33,
+"op": "RUN",
+"text": "RUN CHAPTER 5",
+"votes": 9
+},
+{
+"t": 1.33,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 5
+}
+],
+"lines": 2
+},
+"boot_ch05_04_crt_monitor_boot": {
+"pid": "boot_ch05_04_crt_monitor_boot",
+"file": "BOOTS/ch05_04_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 8,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 8",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch05_05_crt_monitor_boot": {
+"pid": "boot_ch05_05_crt_monitor_boot",
+"file": "BOOTS/ch05_05_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 8,
+"statements": [
+{
+"t": 0.0,
+"op": "RUN",
+"text": "RUN CHAPTER 8",
+"votes": 7
+}
+],
+"lines": 1
+},
+"boot_ch05_06_chapter_05": {
+"pid": "boot_ch05_06_chapter_05",
+"file": "BOOTS/ch05_06_chapter_05.mp4",
+"filed_ch": null,
+"ran_chapter": 5,
+"statements": [
+{
+"t": 1.33,
+"op": "RUN",
+"text": "RUN CHAPTER 5",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch05_07_chapter_05": {
+"pid": "boot_ch05_07_chapter_05",
+"file": "BOOTS/ch05_07_chapter_05.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch05_08_run_chapter_05": {
+"pid": "boot_ch05_08_run_chapter_05",
+"file": "BOOTS/ch05_08_run_chapter_05.mp4",
+"filed_ch": null,
+"ran_chapter": 65,
+"statements": [
+{
+"t": 0.33,
+"op": "RUN",
+"text": "RUN CHAPTER 65",
+"votes": 2
+},
+{
+"t": 1.0,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 2
+}
+],
+"lines": 2
+},
+"boot_ch05_09_run_chapter_05": {
+"pid": "boot_ch05_09_run_chapter_05",
+"file": "BOOTS/ch05_09_run_chapter_05.mp4",
+"filed_ch": null,
+"ran_chapter": 5,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 5",
+"votes": 6
+}
+],
+"lines": 1
+},
+"boot_ch05_10_screen_boot": {
+"pid": "boot_ch05_10_screen_boot",
+"file": "BOOTS/ch05_10_screen_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 5,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 5",
+"votes": 7
+},
+{
+"t": 2.33,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 4
+},
+{
+"t": 3.33,
+"op": "MOVE",
+"text": "MOVE TO",
+"votes": 6
+}
+],
+"lines": 3
+},
+"boot_ch05_11_screen_boot": {
+"pid": "boot_ch05_11_screen_boot",
+"file": "BOOTS/ch05_11_screen_boot.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch05_12_world_eye_system_14_3_chapter": {
+"pid": "boot_ch05_12_world_eye_system_14_3_chapter",
+"file": "BOOTS/ch05_12_world_eye_system_14_3_chapter.mp4",
+"filed_ch": null,
+"ran_chapter": 5,
+"statements": [
+{
+"t": 0.0,
+"op": "RUN",
+"text": "RUN CHAPTER 5",
+"votes": 6
+}
+],
+"lines": 1
+},
+"boot_ch06_01_chapter_06_opening_sequence": {
+"pid": "boot_ch06_01_chapter_06_opening_sequence",
+"file": "BOOTS/ch06_01_chapter_06_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": 6,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 6",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch06_02_chapter_06": {
+"pid": "boot_ch06_02_chapter_06",
+"file": "BOOTS/ch06_02_chapter_06.mp4",
+"filed_ch": null,
+"ran_chapter": 6,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 6",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch06_03_chapter_06": {
+"pid": "boot_ch06_03_chapter_06",
+"file": "BOOTS/ch06_03_chapter_06.mp4",
+"filed_ch": null,
+"ran_chapter": 6,
+"statements": [
+{
+"t": 2.0,
+"op": "RUN",
+"text": "RUN CHAPTER 6",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch06_04_deploy_percep": {
+"pid": "boot_ch06_04_deploy_percep",
+"file": "BOOTS/ch06_04_deploy_percep.mp4",
+"filed_ch": null,
+"ran_chapter": 7,
+"statements": [
+{
+"t": 0.33,
+"op": "RUN",
+"text": "RUN CHAPTER 7",
+"votes": 9
+}
+],
+"lines": 1
+},
+"boot_ch06_05_screen_boot": {
+"pid": "boot_ch06_05_screen_boot",
+"file": "BOOTS/ch06_05_screen_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 6,
+"statements": [
+{
+"t": 1.33,
+"op": "RUN",
+"text": "RUN CHAPTER 6",
+"votes": 5
+}
+],
+"lines": 1
+},
+"boot_ch06_06_virtual_stree": {
+"pid": "boot_ch06_06_virtual_stree",
+"file": "BOOTS/ch06_06_virtual_stree.mp4",
+"filed_ch": null,
+"ran_chapter": 2,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 2",
+"votes": 2
+},
+{
+"t": 2.67,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 3
+}
+],
+"lines": 2
+},
+"boot_ch06_07_world_eye_system_14_3_animatio": {
+"pid": "boot_ch06_07_world_eye_system_14_3_animatio",
+"file": "BOOTS/ch06_07_world_eye_system_14_3_animatio.mp4",
+"filed_ch": null,
+"ran_chapter": 7,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 7",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch07_01_chapter_07_opening_sequence": {
+"pid": "boot_ch07_01_chapter_07_opening_sequence",
+"file": "BOOTS/ch07_01_chapter_07_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": 7,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 7",
+"votes": 4
+}
+],
+"lines": 1
+},
+"boot_ch07_02_crt_monitor_boot": {
+"pid": "boot_ch07_02_crt_monitor_boot",
+"file": "BOOTS/ch07_02_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 12,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 12",
+"votes": 2
+},
+{
+"t": 3.33,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 32
+}
+],
+"lines": 2
+},
+"boot_ch07_03_crt_monitor_boot": {
+"pid": "boot_ch07_03_crt_monitor_boot",
+"file": "BOOTS/ch07_03_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch07_04_chapter_07": {
+"pid": "boot_ch07_04_chapter_07",
+"file": "BOOTS/ch07_04_chapter_07.mp4",
+"filed_ch": null,
+"ran_chapter": 67,
+"statements": [
+{
+"t": 0.33,
+"op": "RUN",
+"text": "RUN CHAPTER 67",
+"votes": 4
+}
+],
+"lines": 1
+},
+"boot_ch07_05_nasa_ascii_art": {
+"pid": "boot_ch07_05_nasa_ascii_art",
+"file": "BOOTS/ch07_05_nasa_ascii_art.mp4",
+"filed_ch": null,
+"ran_chapter": 7,
+"statements": [
+{
+"t": 1.33,
+"op": "RUN",
+"text": "RUN CHAPTER 7",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch07_06_run_chapter_07": {
+"pid": "boot_ch07_06_run_chapter_07",
+"file": "BOOTS/ch07_06_run_chapter_07.mp4",
+"filed_ch": null,
+"ran_chapter": 7,
+"statements": [
+{
+"t": 1.33,
+"op": "RUN",
+"text": "RUN CHAPTER 7",
+"votes": 4
+},
+{
+"t": 2.67,
+"op": "DEFINE",
+"text": "DEFINE [] = MEASUREMENT",
+"votes": 2
+}
+],
+"lines": 2
+},
+"boot_ch07_07_run_chapter_07": {
+"pid": "boot_ch07_07_run_chapter_07",
+"file": "BOOTS/ch07_07_run_chapter_07.mp4",
+"filed_ch": null,
+"ran_chapter": 7,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 7",
+"votes": 9
+}
+],
+"lines": 1
+},
+"boot_ch07_08_boot_screen": {
+"pid": "boot_ch07_08_boot_screen",
+"file": "BOOTS/ch07_08_boot_screen.mp4",
+"filed_ch": null,
+"ran_chapter": 14,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 14",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch07_09_institution_m": {
+"pid": "boot_ch07_09_institution_m",
+"file": "BOOTS/ch07_09_institution_m.mp4",
+"filed_ch": null,
+"ran_chapter": 7,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 7",
+"votes": 3
+},
+{
+"t": 1.33,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 2
+}
+],
+"lines": 2
+},
+"boot_ch08_01_chapter_08": {
+"pid": "boot_ch08_01_chapter_08",
+"file": "BOOTS/ch08_01_chapter_08.mp4",
+"filed_ch": null,
+"ran_chapter": 8,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 8",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch08_02_chapter_08": {
+"pid": "boot_ch08_02_chapter_08",
+"file": "BOOTS/ch08_02_chapter_08.mp4",
+"filed_ch": null,
+"ran_chapter": 68,
+"statements": [
+{
+"t": 1.67,
+"op": "MOVE",
+"text": "MOVE INIT",
+"votes": 2
+},
+{
+"t": 2.33,
+"op": "RUN",
+"text": "RUN CHAPTER 68",
+"votes": 2
+}
+],
+"lines": 2
+},
+"boot_ch08_04_world_eye_system_14_3_run": {
+"pid": "boot_ch08_04_world_eye_system_14_3_run",
+"file": "BOOTS/ch08_04_world_eye_system_14_3_run.mp4",
+"filed_ch": null,
+"ran_chapter": 8,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 8",
+"votes": 5
+},
+{
+"t": 2.0,
+"op": "MOVE",
+"text": "MOVE POINTS",
+"votes": 2
+},
+{
+"t": 3.0,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 8
+},
+{
+"t": 6.67,
+"op": "RELATION",
+"text": "RELATION UPDATED",
+"votes": 5
+}
+],
+"lines": 4
+},
+"boot_ch09_01_chapter_09_opening_sequence": {
+"pid": "boot_ch09_01_chapter_09_opening_sequence",
+"file": "BOOTS/ch09_01_chapter_09_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": 9,
+"statements": [
+{
+"t": 0.67,
+"op": "REPORT",
+"text": "SYSTEM REPORT",
+"votes": 3
+},
+{
+"t": 2.33,
+"op": "RUN",
+"text": "RUN CHAPTER 9",
+"votes": 5
+}
+],
+"lines": 2
+},
+"boot_ch09_02_crt_monitor_boot": {
+"pid": "boot_ch09_02_crt_monitor_boot",
+"file": "BOOTS/ch09_02_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 9,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 9",
+"votes": 17
+},
+{
+"t": 1.33,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 10
+},
+{
+"t": 2.33,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 9
+},
+{
+"t": 4.67,
+"op": "DEFINE",
+"text": "DEFINE [] = ACT",
+"votes": 2
+}
+],
+"lines": 4
+},
+"boot_ch09_03_chapter_09": {
+"pid": "boot_ch09_03_chapter_09",
+"file": "BOOTS/ch09_03_chapter_09.mp4",
+"filed_ch": null,
+"ran_chapter": 9,
+"statements": [
+{
+"t": 2.33,
+"op": "RUN",
+"text": "RUN CHAPTER 9",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch09_04_chapter_09": {
+"pid": "boot_ch09_04_chapter_09",
+"file": "BOOTS/ch09_04_chapter_09.mp4",
+"filed_ch": null,
+"ran_chapter": 69,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 69",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch09_05_run_chapter_09": {
+"pid": "boot_ch09_05_run_chapter_09",
+"file": "BOOTS/ch09_05_run_chapter_09.mp4",
+"filed_ch": null,
+"ran_chapter": 9,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 9",
+"votes": 5
+},
+{
+"t": 1.67,
+"op": "DEFINE",
+"text": "DEFINE [] = PUBLIC",
+"votes": 3
+}
+],
+"lines": 2
+},
+"boot_ch09_06_run_chapter_09": {
+"pid": "boot_ch09_06_run_chapter_09",
+"file": "BOOTS/ch09_06_run_chapter_09.mp4",
+"filed_ch": null,
+"ran_chapter": 9,
+"statements": [
+{
+"t": 1.33,
+"op": "RUN",
+"text": "RUN CHAPTER 9",
+"votes": 2
+},
+{
+"t": 2.33,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 3
+}
+],
+"lines": 2
+},
+"boot_ch09_07_vr_gameplay": {
+"pid": "boot_ch09_07_vr_gameplay",
+"file": "BOOTS/ch09_07_vr_gameplay.mp4",
+"filed_ch": null,
+"ran_chapter": 12,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 12",
+"votes": 4
+},
+{
+"t": 1.0,
+"op": "DEFINE",
+"text": "DEFINE [] = FIELD",
+"votes": 12
+}
+],
+"lines": 2
+},
+"boot_ch09_08_gameplay_montage": {
+"pid": "boot_ch09_08_gameplay_montage",
+"file": "BOOTS/ch09_08_gameplay_montage.mp4",
+"filed_ch": null,
+"ran_chapter": 9,
+"statements": [
+{
+"t": 0.33,
+"op": "RUN",
+"text": "RUN CHAPTER 9",
+"votes": 4
+},
+{
+"t": 1.33,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 5
+}
+],
+"lines": 2
+},
+"boot_ch09_09_screen_boot": {
+"pid": "boot_ch09_09_screen_boot",
+"file": "BOOTS/ch09_09_screen_boot.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [
+{
+"t": 1.33,
+"op": "LOAD",
+"text": "LOAD PRIVATE",
+"votes": 10
+},
+{
+"t": 4.0,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 2
+}
+],
+"lines": 2
+},
+"boot_ch10_01_chapter_10_opening_sequence": {
+"pid": "boot_ch10_01_chapter_10_opening_sequence",
+"file": "BOOTS/ch10_01_chapter_10_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch10_02_crt_monitor_boot": {
+"pid": "boot_ch10_02_crt_monitor_boot",
+"file": "BOOTS/ch10_02_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 11,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 11",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch10_03_chapter_10": {
+"pid": "boot_ch10_03_chapter_10",
+"file": "BOOTS/ch10_03_chapter_10.mp4",
+"filed_ch": null,
+"ran_chapter": 10,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 10",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch10_04_chapter_10": {
+"pid": "boot_ch10_04_chapter_10",
+"file": "BOOTS/ch10_04_chapter_10.mp4",
+"filed_ch": null,
+"ran_chapter": 14,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 14",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch10_05_run_chapter_10": {
+"pid": "boot_ch10_05_run_chapter_10",
+"file": "BOOTS/ch10_05_run_chapter_10.mp4",
+"filed_ch": null,
+"ran_chapter": 1,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 1",
+"votes": 4
+},
+{
+"t": 1.67,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 2
+}
+],
+"lines": 2
+},
+"boot_ch10_06_run_chapter_10": {
+"pid": "boot_ch10_06_run_chapter_10",
+"file": "BOOTS/ch10_06_run_chapter_10.mp4",
+"filed_ch": null,
+"ran_chapter": 1,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 1",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch10_07_run_chapter_10": {
+"pid": "boot_ch10_07_run_chapter_10",
+"file": "BOOTS/ch10_07_run_chapter_10.mp4",
+"filed_ch": null,
+"ran_chapter": 1,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 1",
+"votes": 7
+},
+{
+"t": 1.67,
+"op": "MOVE",
+"text": "MOVE ",
+"votes": 11
+}
+],
+"lines": 2
+},
+"boot_ch10_08_empty_laborat": {
+"pid": "boot_ch10_08_empty_laborat",
+"file": "BOOTS/ch10_08_empty_laborat.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch11_01_chapter_11_opening_sequence": {
+"pid": "boot_ch11_01_chapter_11_opening_sequence",
+"file": "BOOTS/ch11_01_chapter_11_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": 11,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 11",
+"votes": 5
+}
+],
+"lines": 1
+},
+"boot_ch11_02_crt_monitor_boot": {
+"pid": "boot_ch11_02_crt_monitor_boot",
+"file": "BOOTS/ch11_02_crt_monitor_boot.mp4",
+"filed_ch": null,
+"ran_chapter": 5,
+"statements": [
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 5",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch11_03_chapter_11": {
+"pid": "boot_ch11_03_chapter_11",
+"file": "BOOTS/ch11_03_chapter_11.mp4",
+"filed_ch": null,
+"ran_chapter": 11,
+"statements": [
+{
+"t": 2.67,
+"op": "RUN",
+"text": "RUN CHAPTER 11",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch11_04_chapter_11": {
+"pid": "boot_ch11_04_chapter_11",
+"file": "BOOTS/ch11_04_chapter_11.mp4",
+"filed_ch": null,
+"ran_chapter": 11,
+"statements": [
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 11",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch11_05_run_chapter_11": {
+"pid": "boot_ch11_05_run_chapter_11",
+"file": "BOOTS/ch11_05_run_chapter_11.mp4",
+"filed_ch": null,
+"ran_chapter": 11,
+"statements": [
+{
+"t": 1.0,
+"op": "RUN",
+"text": "RUN CHAPTER 11",
+"votes": 3
+}
+],
+"lines": 1
+},
+"boot_ch11_06_vr_montage": {
+"pid": "boot_ch11_06_vr_montage",
+"file": "BOOTS/ch11_06_vr_montage.mp4",
+"filed_ch": null,
+"ran_chapter": 12,
+"statements": [
+{
+"t": 0.67,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 5
+},
+{
+"t": 1.67,
+"op": "RUN",
+"text": "RUN CHAPTER 12",
+"votes": 2
+},
+{
+"t": 2.33,
+"op": "DEFINE",
+"text": "DEFINE [] = ALL",
+"votes": 3
+}
+],
+"lines": 3
+},
+"boot_ch11_07_shows_vr_launch": {
+"pid": "boot_ch11_07_shows_vr_launch",
+"file": "BOOTS/ch11_07_shows_vr_launch.mp4",
+"filed_ch": null,
+"ran_chapter": 12,
+"statements": [
+{
+"t": 0.67,
+"op": "LOAD",
+"text": "LOAD ARCHIVE",
+"votes": 5
+},
+{
+"t": 0.67,
+"op": "RUN",
+"text": "RUN CHAPTER 12",
+"votes": 2
+}
+],
+"lines": 2
+},
+"boot_ch12_01_recording_session_cl": {
+"pid": "boot_ch12_01_recording_session_cl",
+"file": "BOOTS/ch12_01_recording_session_cl.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch12_02_chapter_12_opening_sequence": {
+"pid": "boot_ch12_02_chapter_12_opening_sequence",
+"file": "BOOTS/ch12_02_chapter_12_opening_sequence.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [],
+"lines": 0
+},
+"boot_ch12_03_chapter_12": {
+"pid": "boot_ch12_03_chapter_12",
+"file": "BOOTS/ch12_03_chapter_12.mp4",
+"filed_ch": null,
+"ran_chapter": 12,
+"statements": [
+{
+"t": 2.67,
+"op": "RUN",
+"text": "RUN CHAPTER 12",
+"votes": 2
+}
+],
+"lines": 1
+},
+"boot_ch12_04_chapter_12": {
+"pid": "boot_ch12_04_chapter_12",
+"file": "BOOTS/ch12_04_chapter_12.mp4",
+"filed_ch": null,
+"ran_chapter": null,
+"statements": [
+{
+"t": 1.0,
+"op": "REPORT",
+"text": "SYSTEM REPORT",
+"votes": 4
+}
+],
+"lines": 1
+},
+"boot_ch12_06_world_eye_system_14_3_animatio": {
+"pid": "boot_ch12_06_world_eye_system_14_3_animatio",
+"file": "BOOTS/ch12_06_world_eye_system_14_3_animatio.mp4",
+"filed_ch": null,
+"ran_chapter": 12,
+"statements": [
+{
+"t": 0.33,
+"op": "RUN",
+"text": "RUN CHAPTER 12",
+"votes": 4
+},
+{
+"t": 2.33,
+"op": "MOVE",
+"text": "MOVE EXPAND ADD ADD",
+"votes": 6
+}
+],
+"lines": 2
+}
+}
+}

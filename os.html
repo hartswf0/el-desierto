@@ -290,7 +290,7 @@ function buildDesktop(){
   const av=document.createElement('div');av.className='drive';
   av.innerHTML='<h2>DRIVE X — APPLICATIONS</h2><div class="grid"></div>';
   const ag=av.querySelector('.grid');
-  [['BEFLIX-128','os-beflix.html'],['CODE VIEW','os-code.html'],['THE FILM','gel-monte-clean.html'],['THE INSTRUMENT','monte.html'],
+  [['WORLD EYE SYSTEM','os-wes.html'],['BEFLIX-128','os-beflix.html'],['CODE VIEW','os-code.html'],['THE FILM','gel-monte-clean.html'],['THE INSTRUMENT','monte.html'],
    ['BREEDER','monte-breeder.html'],['SPIN','monte-spin.html'],
    ['GENOME','monte-genome-spin.html'],['GEL WALL','gel.html'],
    ['HUB','hub.html']].forEach(([nm,href])=>{
@@ -352,7 +352,7 @@ $('shutBtn').onclick=()=>{
 function openMan(b,era){
   if(!OTX)return;
   const st=mStates(b),cmd=mCommand(b);
-  $('manT').innerHTML=(era?('CH '+String(era.n).padStart(2,'0')+' · '):'')+esc(b.pid)+' <a href="os-beflix.html#'+encodeURIComponent(b.pid)+'" style="color:var(--amber);font-size:9px;margin-left:8px;text-decoration:none">\u25b7 AS CODE</a>';
+  $('manT').innerHTML=(era?('CH '+String(era.n).padStart(2,'0')+' · '):'')+esc(b.pid)+' <a href="os-beflix.html#'+encodeURIComponent(b.pid)+'" style="color:var(--amber);font-size:9px;margin-left:8px;text-decoration:none">\u25b7 AS CODE</a>'+' <a href="os-wes.html#'+encodeURIComponent(b.pid)+'" style="color:var(--hot);font-size:9px;margin-left:6px;text-decoration:none">\u25b7 RUN</a>';
   // the typed progression — click a state to play the boot FROM there
   $('manF').innerHTML=st.map(s=>'<div class="stp" data-k="'+s.k+'"><img src="'+s.img+'">'
     +'<div class="stl"><b>'+s.type+'</b><span>'+s.t.toFixed(1)+'s</span></div></div>').join('');
