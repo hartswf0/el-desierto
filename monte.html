@@ -243,7 +243,7 @@ stripes move from card faces to the loupe/back (four-channel color law); fixed o
   #theatre{position:fixed;inset:0;z-index:200;background:#000;display:none}
   #theatre.on{display:block}
   #theatre video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-  #thSub{position:absolute;left:8%;right:8%;bottom:9%;text-align:center;font-size:17px;line-height:1.6;
+  #thSub{position:absolute;left:8%;right:8%;bottom:15%;text-align:center;font-size:17px;line-height:1.6;
     color:#fff;text-shadow:0 2px 8px #000,0 0 2px #000;pointer-events:none}
   #thHud{position:absolute;top:12px;left:14px;font-size:10px;color:rgba(255,255,255,.55);
     text-shadow:0 1px 2px #000}
@@ -257,6 +257,19 @@ stripes move from card faces to the loupe/back (four-channel color law); fixed o
   #thCtl button{border:1px solid rgba(255,255,255,.35);border-radius:8px;background:rgba(0,0,0,.6);
     color:#fff;font:inherit;font-size:11px;font-weight:700;padding:8px 13px;cursor:pointer}
   #thCtl button.on{border-color:var(--hot);color:var(--hot)}
+  /* CHAPTER RAIL — the whole film at a glance; tap a segment to watch that part */
+  #thRail{position:absolute;left:10px;right:10px;bottom:calc(4% + 50px);z-index:3;display:none;gap:3px;
+    height:32px;opacity:.55;transition:opacity .35s}
+  #theatre.on #thRail{display:flex} #theatre.ctl #thRail{opacity:1}
+  .thSeg{position:relative;flex:1 1 auto;min-width:9px;border:1px solid rgba(255,255,255,.16);
+    border-radius:5px;background:rgba(255,255,255,.04);overflow:hidden;cursor:pointer;
+    display:flex;align-items:center;justify-content:center}
+  .thSeg.frame{flex:0 0 24px}
+  .thSeg .lb{font-size:8px;letter-spacing:.03em;color:rgba(255,255,255,.62);white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;padding:0 5px;position:relative;z-index:2}
+  .thSeg .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(25,230,200,.20);z-index:1}
+  .thSeg.done{border-color:rgba(25,230,200,.32)} .thSeg.done .fill{width:100%}
+  .thSeg.cur{border-color:var(--hot)} .thSeg.cur .lb{color:#fff;font-weight:700}
 </style>
 </head>
 <body>
@@ -305,6 +318,7 @@ stripes move from card faces to the loupe/back (four-channel color law); fixed o
 <audio id="songA"></audio>
 <div id="theatre"><video id="thv" playsinline preload="auto"></video>
   <div id="thSub"></div><div id="thHud"></div><button id="thX">EXIT</button>
+  <div id="thRail"></div>
   <div id="thCtl">
     <button data-c="prev" title="previous clip">&#9664;&#9664;</button>
     <button data-c="pp" title="pause / play">&#9646;&#9646;</button>
@@ -2016,9 +2030,36 @@ function thWake(){
   clearTimeout(TH.wakeT);
   TH.wakeT=setTimeout(()=>$('theatre').classList.remove('ctl'),K.FLASH);
 }
+function thBuildRail(){
+  const rail=$('thRail'); if(!rail)return; rail.innerHTML='';
+  (TH.parts||[]).forEach((p,pi)=>{
+    const seg=document.createElement('div');
+    seg.className='thSeg'+(p.frame?' frame':'');
+    if(!p.frame)seg.style.flexGrow=String(Math.max(1,(p.ids||[]).length));
+    const short=String(p.label||'').replace(/^0+/,'').slice(0,p.frame?3:16);
+    seg.innerHTML='<span class="fill"></span><span class="lb">'+escT(p.frame?'':short)+'</span>';
+    seg.title=p.label||''; seg.onclick=()=>{thWake();thNextPart(pi);};
+    rail.appendChild(seg);
+  });
+  thRailUpdate();
+}
+function thRailUpdate(){
+  const rail=$('thRail'); if(!rail||!rail.children.length)return;
+  const dur=thv.duration||0,ct=thv.currentTime||0;
+  let frac = (TH.queue&&TH.queue.length)?(TH.i+(dur?ct/dur:0))/TH.queue.length:(dur?ct/dur:0);
+  frac=Math.max(0,Math.min(1,frac));
+  const segs=rail.children;
+  for(let i=0;i<segs.length;i++){
+    segs[i].classList.toggle('cur',i===TH.pi);
+    segs[i].classList.toggle('done',i<TH.pi);
+    const f=segs[i].querySelector('.fill');
+    f.style.width = i<TH.pi?'100%' : i===TH.pi?(frac*100).toFixed(1)+'%' : '0';
+  }
+}
 function thRun(parts){
   if(!parts.length){flash('NOTHING TO SCREEN',false);return;}
   TH.on=true;TH.parts=parts;TH.pi=0;TH.queue=null;TH.i=0;
+  thBuildRail();
   parts.forEach(p=>{if(p.ids)burnUsage(p.ids);});
   S.playing=false;$('playBtn').classList.remove('on');$('playBtn').textContent='PLAY';
   A.pause();
@@ -2031,7 +2072,7 @@ function thRun(parts){
 function thNextPart(pi){
   const part=TH.parts[pi];
   if(!part){thExit();return;}
-  TH.pi=pi;
+  TH.pi=pi;thRailUpdate();
   if(part.frame){
     A.pause();
     TH.queue=null;TH.i=0;
@@ -2068,7 +2109,7 @@ thv.addEventListener('ended',()=>{
 });
 function thTick(){
   const id=TH.queue&&TH.queue[TH.i];
-  if(!id){$('thSub').textContent='';return;}
+  if(!id){$('thSub').textContent='';thRailUpdate();return;}
   const local=thv.currentTime||0;
   const cur=(SEGS[id]||[]).find(s2=>local>=s2.start-0.1&&local<=s2.end+0.3);
   $('thSub').textContent=cur?cur.text:'';
@@ -2076,6 +2117,7 @@ function thTick(){
     const target=(cur?K.DUCK:1)*S.songG;
     A.volume+=(target-A.volume)*K.DLERP;
   }
+  thRailUpdate();
 }
 function thExit(){
   TH.on=false;
