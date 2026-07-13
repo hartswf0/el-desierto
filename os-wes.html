@@ -119,14 +119,11 @@ function buildPicker(){
     d.onclick=()=>{$('pick').classList.remove('on');loadProgram(p);};g.appendChild(d);});
 }
 $('pickBtn').onclick=()=>$('pick').classList.toggle('on');
-$('runBtn').onclick=()=>runCmd($('cmd').value);
 $('newBtn').onclick=()=>{ $('src').value=
   'C new program\nWORLD EYE SYSTEM 14.3\nRUN CHAPTER 1\nFOR k = 1..5: ADD MEASUREMENT POINT k\nEXPAND [] TO INCLUDE ALL POINTS\nRELATION UPDATED';
-  $('srcTag').textContent='— authoring'; render(); };
-$('cmd').addEventListener('keydown',e=>{if(e.key==='Enter')runCmd($('cmd').value);});
+  $('srcTag').textContent='\u2014 authoring'; runAnimated(parseWES($('src').value)); };
 let deb=null;
-$('src').addEventListener('input',()=>{clearTimeout(deb);deb=setTimeout(render,180);
-  $('srcTag').textContent='— edited';});
+
 
 // ---- source <-> program ----
 function toSource(p){
@@ -176,64 +173,99 @@ function execute(p){
   return out;
 }
 
-// ---- INTERPRET as picture: the program DRAWS the boot screen ----
+// ---- INTERPRET as picture: the program DRAWS the boot, step by step ----
 function convexHull(P){P=P.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);if(P.length<3)return P;
   const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
   const lo=[];for(const p of P){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p);}
   const up=[];for(let i=P.length-1;i>=0;i--){const p=P[i];while(up.length>=2&&cr(up[up.length-2],up[up.length-1],p)<=0)up.pop();up.push(p);}
   lo.pop();up.pop();return lo.concat(up);}
-function renderBoot(prog){
-  const dpr=Math.min(2,window.devicePixelRatio||1);
-  const w=CV.clientWidth||640,h=CV.clientHeight||360;
+let LAYOUT=null, anim=null;
+function layoutOf(prog){
+  const n=prog.ran_chapter||1, rng=mb32(hash('WES'+n+'.14.3'));
+  let npts=0,syms=[],expand=false,relate=false;
+  prog.statements.forEach(s=>{ if(s.op==='FOR')npts=Math.max(npts,s.to);
+    if(s.op==='ADD')npts=Math.max(npts,s.point||1); if(s.op==='DEFINE')syms.push(s);
+    if(s.op==='EXPAND')expand=true; if(s.op==='RELATION')relate=true; });
+  if(!npts&&!syms.length)npts=3;
+  const w=CV.clientWidth||640,h=CV.clientHeight||360,pad=Math.min(70,w*0.13),pts=[];
+  for(let k=1;k<=Math.min(npts,24);k++)pts.push([pad+rng()*(w-2*pad),pad+38+rng()*(h-2*pad-56),k]);
+  return {n,pts,syms,expand,relate,w,h};
+}
+function drawState(L,shown){
+  const dpr=Math.min(2,window.devicePixelRatio||1),w=L.w,h=L.h;
   CV.width=w*dpr;CV.height=h*dpr;CTX.setTransform(dpr,0,0,dpr,0,0);
   CTX.fillStyle='#000';CTX.fillRect(0,0,w,h);
   CTX.strokeStyle='rgba(51,255,154,0.07)';CTX.lineWidth=1;
   for(let x=0;x<w;x+=26){CTX.beginPath();CTX.moveTo(x,0);CTX.lineTo(x,h);CTX.stroke();}
   for(let y=0;y<h;y+=26){CTX.beginPath();CTX.moveTo(0,y);CTX.lineTo(w,y);CTX.stroke();}
-  const n=prog.ran_chapter||1, rng=mb32(hash('WES'+n+'.14.3'));
-  let npts=0,syms=[],expand=false,relate=false,move=false;
-  prog.statements.forEach(s=>{ if(s.op==='FOR')npts=Math.max(npts,s.to);
-    if(s.op==='ADD')npts=Math.max(npts,s.point||1); if(s.op==='DEFINE')syms.push(s);
-    if(s.op==='EXPAND')expand=true; if(s.op==='RELATION')relate=true; if(s.op==='MOVE')move=true; });
-  if(!npts&&!syms.length)npts=3;
-  const pad=Math.min(70,w*0.13), pts=[];
-  for(let k=1;k<=Math.min(npts,24);k++)pts.push([pad+rng()*(w-2*pad),pad+34+rng()*(h-2*pad-50),k]);
-  if(relate){CTX.strokeStyle='rgba(51,255,154,0.22)';CTX.lineWidth=1;
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
-      CTX.beginPath();CTX.moveTo(pts[i][0],pts[i][1]);CTX.lineTo(pts[j][0],pts[j][1]);CTX.stroke();}}
-  if(expand&&pts.length>=2){const H2=convexHull(pts.map(p=>[p[0],p[1]]));
-    CTX.strokeStyle='rgba(255,210,63,0.75)';CTX.lineWidth=1.5;CTX.setLineDash([5,4]);
+  const pts=L.pts.slice(0,shown.pts);
+  if(shown.relate){CTX.strokeStyle='rgba(51,255,154,0.22)';CTX.lineWidth=1;
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){CTX.beginPath();CTX.moveTo(pts[i][0],pts[i][1]);CTX.lineTo(pts[j][0],pts[j][1]);CTX.stroke();}}
+  if(shown.hull&&pts.length>=2){const H2=convexHull(pts.map(p=>[p[0],p[1]]));
+    CTX.strokeStyle='rgba(255,210,63,0.85)';CTX.lineWidth=1.5;CTX.setLineDash([5,4]);
     CTX.beginPath();H2.forEach((q,i)=>i?CTX.lineTo(q[0],q[1]):CTX.moveTo(q[0],q[1]));CTX.closePath();CTX.stroke();CTX.setLineDash([]);}
-  pts.forEach(([x,y,k])=>{CTX.strokeStyle='#33ff9a';CTX.lineWidth=1.2;CTX.shadowColor='#33ff9a';CTX.shadowBlur=6;
-    CTX.beginPath();CTX.moveTo(x-5,y);CTX.lineTo(x+5,y);CTX.moveTo(x,y-5);CTX.lineTo(x,y+5);CTX.stroke();CTX.shadowBlur=0;
-    CTX.fillStyle='rgba(51,255,154,.8)';CTX.font='9px monospace';CTX.fillText(String(k),x+6,y-5);});
-  syms.forEach((s,i)=>{const x=54+i*90,y=h-30;CTX.strokeStyle='#ffd23f';CTX.lineWidth=1.4;
-    if(/\bO\b|CIRCLE|AUDIENCE/i.test(s.val||'')){CTX.beginPath();CTX.arc(x+7,y+7,7,0,6.28);CTX.stroke();}
-    else CTX.strokeRect(x,y,14,14);
-    CTX.fillStyle='#ffd23f';CTX.font='9px monospace';CTX.fillText(String(s.val||'').slice(0,16),x+20,y+11);});
-  // header text
+  pts.forEach(([x,y,k],idx)=>{const fresh=(idx===pts.length-1&&shown.fresh);
+    CTX.strokeStyle=fresh?'#fff':'#33ff9a';CTX.lineWidth=fresh?2:1.2;CTX.shadowColor='#33ff9a';CTX.shadowBlur=fresh?14:6;
+    const r=fresh?9:6;CTX.beginPath();CTX.moveTo(x-r,y);CTX.lineTo(x+r,y);CTX.moveTo(x,y-r);CTX.lineTo(x,y+r);CTX.stroke();CTX.shadowBlur=0;
+    CTX.fillStyle='rgba(51,255,154,.85)';CTX.font='9px monospace';CTX.fillText(String(k),x+7,y-6);});
+  L.syms.slice(0,shown.syms).forEach((sm,i)=>{const x=54+i*92,y=h-30;CTX.strokeStyle='#ffd23f';CTX.lineWidth=1.4;
+    if(/\bO\b|CIRCLE|AUDIENCE/i.test(sm.val||'')){CTX.beginPath();CTX.arc(x+7,y+7,7,0,6.28);CTX.stroke();}else CTX.strokeRect(x,y,14,14);
+    CTX.fillStyle='#ffd23f';CTX.font='9px monospace';CTX.fillText(String(sm.val||'').slice(0,16),x+22,y+11);});
   CTX.fillStyle='#fff';CTX.font='bold 13px monospace';CTX.shadowColor='#33ff9a';CTX.shadowBlur=8;
   CTX.fillText('WORLD EYE SYSTEM 14.3',14,22);CTX.shadowBlur=0;
-  CTX.fillStyle='#33ff9a';CTX.font='11px monospace';
-  CTX.fillText('RUN CHAPTER '+n+'  ·  '+chTitle(n),14,40);
+  CTX.fillStyle='#33ff9a';CTX.font='11px monospace';CTX.fillText('RUN CHAPTER '+L.n+'  \u00b7  '+chTitle(L.n),14,40);
   CTX.fillStyle='rgba(51,255,154,.55)';CTX.font='10px monospace';
-  CTX.fillText((npts?('MEASUREMENT POINTS: '+npts+(expand?' · BOUNDED':'')):'')+(relate?' · RELATED':''),14,h-14);
-  const imp=IMP['boot_ch'+String(n).padStart(2,'0')];
+  CTX.fillText('MEASUREMENT POINTS: '+shown.pts+(shown.hull?' \u00b7 BOUNDED':'')+(shown.relate?' \u00b7 RELATED':''),14,h-14);
 }
-
-// ---- run ----
-function render(){
-  const prog=parseWES($('src').value);
-  renderBoot(prog);
+function beatsOf(prog,L){
+  const B=[['WORLD EYE SYSTEM 14.3','hdr',420,{}],['MEMORY OK \u00b7 DISPLAY OK \u00b7 EYE ONLINE','dim',320,{}],['','',140,{}]];
+  for(const s of prog.statements){
+    if(s.op==='HEADER')continue;
+    if(s.op==='RUN'){B.push(['> '+s.text,'cmd',300,{}]);const m=s.text.match(/CHAPTER\s+(\d+)/);
+      B.push(['  LOADING '+(m?('CHAPTER '+m[1]+' \u2014 '+chTitle(+m[1])):s.text.replace('RUN ',''))+' ...','dim',460,{}]);}
+    else if(s.op==='FOR'){B.push(['> FOR k = '+s.from+'..'+s.to,'cmd',260,{}]);
+      for(let k=s.from;k<=s.to;k++)B.push(['    ADD MEASUREMENT POINT '+k+'   [ok]','ok',300,{pt:1}]);}
+    else if(s.op==='ADD')B.push(['    ADD MEASUREMENT POINT '+(s.point||'')+'   [ok]','ok',300,{pt:1}]);
+    else if(s.op==='EXPAND')B.push(['  '+s.text,'ok',560,{hull:1}]);
+    else if(s.op==='RELATION')B.push(['  '+s.text+'   \u2713','ok',480,{relate:1}]);
+    else if(s.op==='DEFINE')B.push(['> '+s.text,'cmd',340,{sym:1}]);
+    else if(s.op==='MOVE')B.push(['> '+(s.text.trim()||'MOVE FIELD'),'cmd',340,{}]);
+    else B.push(['  '+s.text,'',220,{}]);
+  }
+  B.push(['','',140,{}],['CHAPTER '+(L.n!=null?L.n:'?')+' READY.','hdr',600,{}]);
+  return B;
+}
+function runAnimated(prog){
+  clearTimeout(anim);
+  const L=layoutOf(prog);LAYOUT=L;
+  const shown={pts:0,hull:false,relate:false,syms:0,fresh:false};
   const term=$('term');term.innerHTML='';
-  execute(prog).forEach(([t,c])=>{const s=document.createElement('span');s.className=c;s.textContent=t;
-    term.appendChild(s);term.appendChild(document.createTextNode('\n'));});
-  const cur=document.createElement('span');cur.textContent='█';cur.style.color='#33ff9a';term.appendChild(cur);
+  drawState(L,shown);
+  const B=beatsOf(prog,L);let i=0;
+  (function tick(){
+    if(i>=B.length){const c=document.createElement('span');c.textContent='\u2588';c.style.color='#33ff9a';term.appendChild(c);
+      shown.fresh=false;drawState(L,shown);return;}
+    const [t,cls,ms,mut]=B[i++];
+    shown.fresh=!!mut.pt;
+    if(mut.pt)shown.pts++;if(mut.hull)shown.hull=true;if(mut.relate)shown.relate=true;if(mut.sym)shown.syms++;
+    const sp=document.createElement('span');sp.className=cls;sp.textContent=t;
+    term.appendChild(sp);term.appendChild(document.createTextNode('\n'));term.scrollTop=term.scrollHeight;
+    drawState(L,shown);
+    anim=setTimeout(tick,ms);
+  })();
+}
+function staticRender(prog){                 // instant preview (for live edits)
+  clearTimeout(anim);
+  const L=layoutOf(prog);LAYOUT=L;
+  drawState(L,{pts:L.pts.length,hull:L.expand,relate:L.relate,syms:L.syms.length,fresh:false});
+  const term=$('term');term.innerHTML='';
+  execute(prog).forEach(([t,c])=>{const sp=document.createElement('span');sp.className=c;sp.textContent=t;
+    term.appendChild(sp);term.appendChild(document.createTextNode('\n'));});
 }
 function loadProgram(p){
-  $('src').value=toSource(p);$('srcTag').textContent=(IMP[p.pid]?'— ⚠ SCREEN SAYS CH'+IMP[p.pid]:'— decompiled');
+  $('src').value=toSource(p);$('srcTag').textContent=(IMP[p.pid]?'\u2014 \u26a0 SCREEN SAYS CH'+IMP[p.pid]:'\u2014 decompiled');
   $('cmd').value='RUN CHAPTER '+(p.ran_chapter||'');
-  render();
+  runAnimated(parseWES($('src').value));      // PLAY it
 }
 function runCmd(raw){
   const m=raw.toUpperCase().match(/RUN\s+CHAPTER\s+0?(\d{1,2})/);
@@ -241,11 +273,15 @@ function runCmd(raw){
     if(p)return loadProgram(p);
     $('src').value='C synthesized (no decompiled boot for chapter '+n+')\nWORLD EYE SYSTEM 14.3\nRUN CHAPTER '+n
       +'\nFOR k = 1..4: ADD MEASUREMENT POINT k\nEXPAND [] TO INCLUDE ALL POINTS\nRELATION UPDATED';
-    $('srcTag').textContent='— synthesized';return render();}
-  $('stat').innerHTML='<span style="color:var(--red)">SYNTAX: RUN CHAPTER n</span> · n = 1..14';
+    $('srcTag').textContent='\u2014 synthesized';return runAnimated(parseWES($('src').value));}
+  return runAnimated(parseWES($('src').value)); // no chapter given: just play the editor
 }
-window.addEventListener('resize',()=>{try{renderBoot(parseWES($('src').value));}catch(e){}},{passive:true});
+$('runBtn').onclick=()=>runAnimated(parseWES($('src').value));   // RUN = watch it execute
+$('cmd').addEventListener('keydown',e=>{if(e.key==='Enter')runCmd($('cmd').value);});
+$('src').addEventListener('input',()=>{clearTimeout(deb);deb=setTimeout(()=>staticRender(parseWES($('src').value)),200);$('srcTag').textContent='\u2014 edited';});
+window.addEventListener('resize',()=>{if(LAYOUT)try{staticRender(parseWES($('src').value));}catch(e){}},{passive:true});
 boot();
+
 </script>
 </body>
 </html>
