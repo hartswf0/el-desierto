@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WORLD EYE OS</title>
+<!--
+  WORLD EYE OS — video becomes motion UI.
+  The 130 boot loaders already taxonomize themselves into an operating system:
+    title = splash · prologue = login · acts = drives ·
+    chapter boots = programs · epilogue = shutdown.
+  Their frames (os_states.json) are the SCREENS; the videos between the
+  states are the TRANSITIONS. Navigation runs the real archive underneath.
+-->
+<style>
+:root{--bg:#000;--ink:#d6ffe8;--dim:#3f6b52;--line:#12291c;--hot:#19e6c8;--amber:#ffd23f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;overflow:hidden}
+button{font:inherit;color:inherit;background:transparent;border:1px solid var(--line);
+  padding:8px 14px;cursor:pointer;letter-spacing:.08em;text-transform:uppercase;font-size:11px}
+button:hover{border-color:var(--hot);color:var(--hot)}
+.scr{position:fixed;inset:0;display:none;flex-direction:column}
+.scr.on{display:flex}
+/* CRT texture over everything */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+/* ---- transition layer: the boot videos ARE the motion ---- */
+#trans{position:fixed;inset:0;z-index:80;background:#000;display:none}
+#trans.on{display:block}
+#trans video{width:100%;height:100%;object-fit:contain}
+#trans .skip{position:absolute;right:14px;bottom:14px;opacity:.6}
+/* ---- POWER ---- */
+#power{align-items:center;justify-content:center;gap:26px}
+#power .eye{width:120px;height:120px;border:1px solid var(--dim);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;position:relative}
+#power .eye i{width:34px;height:34px;background:var(--hot);border-radius:50%;
+  box-shadow:0 0 30px var(--hot);animation:pulse 2.6s infinite}
+@keyframes pulse{50%{opacity:.35}}
+#power h1{font-size:15px;letter-spacing:.5em;margin:0;font-weight:400}
+#power .sub{font-size:10px;color:var(--dim);letter-spacing:.2em}
+/* ---- DESKTOP ---- */
+#bar{display:flex;align-items:center;gap:12px;padding:9px 14px;border-bottom:1px solid var(--line);
+  font-size:11px;letter-spacing:.14em}
+#bar b{font-weight:400;color:var(--hot)}
+#bar .sp{flex:1}
+#bar .clk{color:var(--dim)}
+#desk{flex:1;overflow-y:auto;padding:16px 14px 60px}
+.drive{margin-bottom:20px}
+.drive h2{font-size:10px;letter-spacing:.3em;color:var(--dim);font-weight:400;margin:0 0 10px;
+  display:flex;align-items:center;gap:10px}
+.drive h2 img{width:52px;border:1px solid var(--line);display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+.prog{border:1px solid var(--line);background:#020a06;cursor:pointer;position:relative;overflow:hidden}
+.prog img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;filter:saturate(.9)}
+.prog .nm{font-size:9px;letter-spacing:.1em;padding:6px 8px;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog .ch{position:absolute;top:5px;left:6px;font-size:9px;background:rgba(0,0,0,.65);
+  padding:1px 5px;color:var(--hot)}
+.prog:hover{border-color:var(--hot)}
+.prog.app .nm{color:var(--amber)}
+/* ---- CHAPTER ROOM ---- */
+#room{flex-direction:column}
+#roomHd{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line)}
+#roomHd .t{font-size:12px;letter-spacing:.18em}
+#roomHd .s{font-size:9px;color:var(--dim);flex:1}
+#roomBody{flex:1;overflow-y:auto;padding:12px 14px 60px;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;align-content:start}
+.clipT{border:1px solid var(--line);cursor:pointer;background:#020a06}
+.clipT img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.clipT .cn{font-size:9px;color:var(--dim);padding:5px 7px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.clipT:hover{border-color:var(--hot)}
+/* ---- PLAYER ---- */
+#play{background:#000;align-items:center;justify-content:center}
+#play video{max-width:100%;max-height:72%;display:block}
+#play .cap{position:absolute;left:8%;right:8%;bottom:16%;text-align:center;font-size:15px;
+  line-height:1.6;text-shadow:0 2px 8px #000}
+#play .meta{position:absolute;top:12px;left:14px;font-size:10px;color:var(--dim)}
+#play .bctl{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.backbtn{position:absolute;top:10px;right:12px;z-index:5}
+@media(max-width:640px){.grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}}
+</style>
+</head>
+<body>
+
+<div id="trans"><video id="tv" playsinline preload="auto" muted></video>
+  <button class="skip" onclick="skipTrans()">SKIP</button></div>
+
+<div class="scr on" id="power">
+  <div class="eye"><i></i></div>
+  <h1>WORLD EYE OS</h1>
+  <div class="sub">130 BOOT LOADERS · ONE MACHINE · THE ARCHIVE UNDERNEATH</div>
+  <button id="powerBtn">POWER ON</button>
+</div>
+
+<div class="scr" id="desktop">
+  <div id="bar"><b>WORLD EYE OS</b><span id="sysline"></span><span class="sp"></span>
+    <span class="clk" id="clk"></span>
+    <button id="shutBtn" style="border:0;color:var(--dim)">SHUT DOWN</button></div>
+  <div id="desk"></div>
+</div>
+
+<div class="scr" id="room">
+  <div id="roomHd"><button id="roomBack">&larr;</button>
+    <span class="t" id="roomT"></span><span class="s" id="roomS"></span>
+    <button id="roomScreen">SCREEN IT</button></div>
+  <div id="roomBody"></div>
+</div>
+
+<div class="scr" id="play">
+  <button class="backbtn" id="playBack">CLOSE</button>
+  <div class="meta" id="playMeta"></div>
+  <video id="pv" playsinline preload="auto" controls></video>
+  <div class="cap" id="playCap"></div>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+let OSD=null,MAN=null,SEGS={},CLIPS={},ERACLIPS={},TITLES={};
+try{TITLES=JSON.parse(localStorage.getItem('monteTitles')||'{}');}catch(e){}
+const hue=n=>'hsl('+((n-1)*25.7)+',72%,58%)';
+
+// ---------- data ----------
+async function boot(){
+  const [osd,man,tr]=await Promise.all([
+    fetch('MONTE/os_states.json').then(r=>r.json()),
+    fetch('MONTE/monte_manifest.json').then(r=>r.json()),
+    fetch('MONTE/monte_transcripts.json').then(r=>r.json()).catch(()=>({}))]);
+  OSD=osd;MAN=man;
+  for(const id in tr){if(tr[id]&&tr[id].segments)SEGS[id]=tr[id].segments;}
+  man.eras.forEach(e=>{
+    const list=[];
+    e.clips.forEach((c,i)=>{ if(c.kind!=='video')return;
+      CLIPS[c.id]={id:c.id,title:c.title,dur:c.duration,pid:c.pid,era:e.n};
+      list.push(c.id); });
+    ERACLIPS[e.n]={era:e,ids:list};
+  });
+  $('sysline').textContent=' · '+OSD.boots.length+' STATES MOUNTED · '
+    +Object.keys(CLIPS).length+' CLIPS';
+}
+const bootsBy=f=>OSD.boots.filter(f);
+const stImg=(b,k)=>'MONTE/OS_STATES/'+b.states[Math.min(k,b.states.length-1)].img;
+
+// ---------- the transition layer: a boot video IS the motion ----------
+let transDone=null;
+function playTrans(b,then,{mute=false,full=false}={}){
+  if(!b){then&&then();return;}
+  const tv=$('tv');transDone=then;
+  $('trans').classList.add('on');
+  tv.muted=mute;tv.src='MONTE/'+b.file;tv.currentTime=0;
+  const stopAt=full?(b.dur-0.05):Math.max(1,(b.static||b.dur)-0.3);
+  tv.play().catch(()=>{});
+  tv.ontimeupdate=()=>{if(tv.currentTime>=stopAt)skipTrans();};
+  tv.onended=()=>skipTrans();
+}
+function skipTrans(){
+  const tv=$('tv');tv.ontimeupdate=null;tv.onended=null;tv.pause();
+  $('trans').classList.remove('on');
+  const f=transDone;transDone=null;f&&f();
+}
+
+// ---------- screens ----------
+function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  $(id).classList.add('on');}
+
+// POWER ON: splash (title boot) -> login (prologue) -> desktop
+$('powerBtn').onclick=async()=>{
+  $('powerBtn').textContent='BOOTING…';
+  if(!OSD)await boot();
+  const splash=bootsBy(b=>b.role==='main')[0]||bootsBy(b=>b.kind==='title')[0];
+  const login=bootsBy(b=>b.kind==='prologue')[0];
+  playTrans(splash,()=>playTrans(login,()=>{buildDesktop();show('desktop');},{}),{});
+};
+
+// DESKTOP: acts are drives, chapter boots are programs
+let tileTimers=[];
+function buildDesktop(){
+  tileTimers.forEach(clearInterval);tileTimers=[];
+  const desk=$('desk');desk.innerHTML='';
+  const actFor=n=>n<=5?1:n<=10?2:3;
+  const actBoots={1:null,2:null,3:null};
+  bootsBy(b=>b.kind==='act').forEach(b=>{const a={1:1,6:2,11:3}[b.ch];if(a&&!actBoots[a])actBoots[a]=b;});
+  for(let a=1;a<=3;a++){
+    const dv=document.createElement('div');dv.className='drive';
+    const ab=actBoots[a];
+    dv.innerHTML='<h2>'+(ab?'<img src="'+stImg(ab,2)+'">':'')
+      +'DRIVE '+'I'.repeat(a)+' — ACT '+'I'.repeat(a)+'</h2><div class="grid"></div>';
+    const grid=dv.querySelector('.grid');
+    MAN.eras.filter(e=>actFor(e.n)===a).forEach(e=>{
+      const cb=bootsBy(b=>b.kind==='ch'&&b.ch===e.n);
+      const b=cb[Math.floor(Math.random()*cb.length)]||cb[0];
+      const p=document.createElement('div');p.className='prog';
+      const nm=(TITLES[e.n]&&String(TITLES[e.n]).trim())||e.title;
+      p.innerHTML=(b?'<img src="'+stImg(b,1)+'">':'')
+        +'<span class="ch" style="color:'+hue(e.n)+'">CH '+String(e.n).padStart(2,'0')+'</span>'
+        +'<div class="nm">'+esc(nm)+'</div>';
+      // motion icons: the tile steps through the boot's own states
+      if(b){const img=p.querySelector('img');let k=1;
+        const t=setInterval(()=>{k=(k+1)%b.states.length;img.src=stImg(b,k);},1400+Math.random()*900);
+        tileTimers.push(t);}
+      p.onclick=()=>{ // LAUNCH: the chapter's boot plays as the launch animation
+        playTrans(b,()=>openRoom(e),{});
+      };
+      grid.appendChild(p);
+    });
+    desk.appendChild(dv);
+  }
+  // APPLICATIONS drive: the instruments as programs
+  const av=document.createElement('div');av.className='drive';
+  av.innerHTML='<h2>DRIVE X — APPLICATIONS</h2><div class="grid"></div>';
+  const ag=av.querySelector('.grid');
+  [['THE FILM','gel-monte-clean.html'],['THE INSTRUMENT','monte.html'],
+   ['BREEDER','monte-breeder.html'],['SPIN','monte-spin.html'],
+   ['GENOME','monte-genome-spin.html'],['GEL WALL','gel.html'],
+   ['HUB','hub.html']].forEach(([nm,href])=>{
+    const p=document.createElement('div');p.className='prog app';
+    const rb=OSD.boots[Math.floor(Math.random()*OSD.boots.length)];
+    p.innerHTML='<img src="'+stImg(rb,3)+'"><div class="nm">'+nm+'</div>';
+    p.onclick=()=>{location.href=href;};
+    ag.appendChild(p);
+  });
+  desk.appendChild(av);
+}
+
+// CHAPTER ROOM: the era's real clips
+let curEra=null;
+function openRoom(e){
+  curEra=e;
+  const nm=(TITLES[e.n]&&String(TITLES[e.n]).trim())||e.title;
+  $('roomT').textContent='CH '+String(e.n).padStart(2,'0')+' · '+nm;
+  $('roomT').style.color=hue(e.n);
+  $('roomS').textContent=e.song_title+' · '+(ERACLIPS[e.n].ids.length)+' CLIPS';
+  const body=$('roomBody');body.innerHTML='';
+  ERACLIPS[e.n].ids.forEach(id=>{
+    const c=CLIPS[id];
+    const d=document.createElement('div');d.className='clipT';
+    d.innerHTML=(c.pid?'<img loading="lazy" src="MONTE/POSTERS/'+c.pid+'.jpg">':'')
+      +'<div class="cn">'+esc(c.title||id)+'</div>';
+    d.onclick=()=>openPlay(id);
+    body.appendChild(d);
+  });
+  show('room');
+}
+$('roomBack').onclick=()=>show('desktop');
+$('roomScreen').onclick=()=>{location.href='monte.html';};
+
+// PLAYER: one clip, its own voice, its transcript as caption
+function openPlay(id){
+  const c=CLIPS[id];
+  $('playMeta').textContent='CH '+c.era+' · '+(c.dur||'')+'s · '+id.split('/').pop();
+  const pv=$('pv');pv.src='MONTE/assets/'+id;pv.play().catch(()=>{});
+  show('play');
+  const segs=SEGS[id]||[];
+  clearInterval(openPlay._t);
+  openPlay._t=setInterval(()=>{
+    const t=pv.currentTime||0;
+    const s=segs.find(x=>t>=x.start-0.1&&t<=x.end+0.3);
+    $('playCap').textContent=s?s.text:'';
+  },120);
+}
+$('playBack').onclick=()=>{$('pv').pause();clearInterval(openPlay._t);show('room');};
+
+// SHUTDOWN: the epilogue seals the session
+$('shutBtn').onclick=()=>{
+  const end=bootsBy(b=>b.role==='end')[0]||bootsBy(b=>b.kind==='epilogue')[0];
+  tileTimers.forEach(clearInterval);tileTimers=[];
+  playTrans(end,()=>{show('power');$('powerBtn').textContent='POWER ON';},{full:true});
+};
+
+// clock
+setInterval(()=>{const d=new Date();
+  $('clk').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');},1000);
+
+// keyboard: Esc walks back up the state machine
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape')return;
+  if($('trans').classList.contains('on'))skipTrans();
+  else if($('play').classList.contains('on'))$('playBack').click();
+  else if($('room').classList.contains('on'))show('desktop');
+});
+</script>
+</body>
+</html>
