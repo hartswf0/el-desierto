@@ -270,6 +270,15 @@ stripes move from card faces to the loupe/back (four-channel color law); fixed o
   .thSeg .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(25,230,200,.20);z-index:1}
   .thSeg.done{border-color:rgba(25,230,200,.32)} .thSeg.done .fill{width:100%}
   .thSeg.cur{border-color:var(--hot)} .thSeg.cur .lb{color:#fff;font-weight:700}
+  /* while a clip is lifted, kill native scroll so the drag owns the finger */
+  body.dragging{touch-action:none;-webkit-user-select:none;user-select:none}
+  body.dragging #lanes,body.dragging .lane,body.dragging .band{touch-action:none}
+  body.dragging .band.lifting{opacity:.32;outline:2px dashed var(--hot);outline-offset:-2px}
+  #dropline{box-shadow:0 0 10px var(--hot)}
+  #dropline span{position:absolute;left:6px;top:-9px;transform:translateY(-100%);background:var(--hot);
+    color:#000;font-size:9px;font-weight:700;letter-spacing:.06em;padding:3px 7px;border-radius:5px;
+    white-space:nowrap;box-shadow:0 2px 8px #000}
+  #lanes.horiz #dropline span{left:6px;top:6px;transform:none}
 </style>
 </head>
 <body>
@@ -334,7 +343,7 @@ stripes move from card faces to the loupe/back (four-channel color law); fixed o
 <script>
 (async () => {
 // ================= K0 · CONSTANTS =================
-const K={READ:.32,HOLD_MS:340,SLOP:10,SEEK_MS:90,AUD_MS:900,DUCK:.28,DLERP:.35,
+const K={READ:.32,HOLD_MS:220,SLOP:10,SEEK_MS:90,AUD_MS:900,DUCK:.28,DLERP:.35,
   CARD_PX:64,MIN_PX:14,HAND_MAX:12,UNDO_MAX:120,QUERY_CAP:300,SIM_MIN:.22,SIM_MAX:60,
   FLASH:2600,VER_MAX:100};
 const $=id=>document.getElementById(id);
@@ -1073,7 +1082,7 @@ document.addEventListener('pointerup',()=>lastPaintEl=null);
 // ================= MOVE (fine pointer): classic drag = same verb, accelerated =================
 const ghost=document.createElement('div');ghost.id='ghost';
 ghost.innerHTML='<img><div class="gn"></div>';document.body.appendChild(ghost);
-const dropline=document.createElement('div');dropline.id='dropline';document.body.appendChild(dropline);
+const dropline=document.createElement('div');dropline.id='dropline';dropline.innerHTML='<span></span>';document.body.appendChild(dropline);
 let dropIdx=null,dropLane=null,lastTgt=null;
 document.addEventListener('pointerdown',e=>{
   if(e.pointerType!=='mouse'||e.button!==0)return;
@@ -1126,6 +1135,12 @@ document.addEventListener('pointermove',e=>{
     if(idx<0)idx=tr.cards.length;
   }
   dropIdx=idx;dropLane=tr;
+  const srcLane=laneEls[dragB.li]&&laneEls[dragB.li].l, cross=srcLane&&srcLane!==tr.l;
+  let lbl;
+  if(cross)lbl='ADD TO '+String(tr.l.name).slice(0,15);
+  else if(idx>=tr.cards.length)lbl='TO END';
+  else lbl=idx>0?('AFTER #'+((clips[tr.cards[idx-1].id]||{}).index||'')):'TO TOP';
+  dropline.querySelector('span').textContent=lbl;
   const last=tr.cards[tr.cards.length-1];
   const startPx=(idx>=tr.cards.length
     ?(last?last.pxStart+last.pxH:0)
@@ -1141,6 +1156,8 @@ document.addEventListener('pointermove',e=>{
 document.addEventListener('pointerup',e=>{
   if(!dragB)return;
   const was=dragB;dragB=null;lastTgt=null;
+  document.body.classList.remove('dragging');
+  document.querySelectorAll('.band.lifting').forEach(x=>x.classList.remove('lifting'));
   document.querySelectorAll('.lane.droptgt').forEach(x=>x.classList.remove('droptgt'));
   dropline.style.display='none';ghost.style.display='none';
   if(!was.active)return;
@@ -1187,12 +1204,17 @@ document.addEventListener('pointerdown',e=>{
     if(b){
       const li2=+b.dataset.li,k2=+b.dataset.k;const r=laneEls[li2];
       if(!r||!r.cards[k2])return;
-      const from=r.l.kind==='film'?r.l.name:null;
-      if(S.range&&S.range.lane===r.l&&k2>=S.range.from&&k2<=S.range.to){
-        take(r.cards.slice(S.range.from,S.range.to+1).map(c=>({id:c.id,from})));
-        S.range=null;
-        document.querySelectorAll('.band.inrange').forEach(x=>x.classList.remove('inrange'));
-      }else take([{id:r.cards[k2].id,from}]);
+      // LIFT into a direct drag — ghost follows the finger, dropline shows the exact slot
+      const seg=(S.range&&S.range.lane===r.l&&k2>=S.range.from&&k2<=S.range.to)
+        ?{from:S.range.from,to:S.range.to}:null;
+      dragB={li:li2,k:k2,x:lpXY.x,y:lpXY.y,active:true,seg,
+        img:(b.querySelector('img')||{}).src};
+      b.classList.add('lifting');
+      ghost.querySelector('img').src=dragB.img||'';
+      ghost.querySelector('.gn').textContent=seg?('x'+(seg.to-seg.from+1)):'';
+      ghost.style.display='block';
+      ghost.style.left=(lpXY.x+12)+'px';ghost.style.top=(lpXY.y+12)+'px';
+      document.body.classList.add('dragging');
     }else{
       const ev={clientX:lpXY.x,clientY:lpXY.y,preventDefault:()=>{},stopPropagation:()=>{}};
       const laneEl=h.parentElement;const li2=laneEls.findIndex(r=>r.el===laneEl);
@@ -1205,6 +1227,13 @@ document.addEventListener('pointermove',e=>{
 },{passive:true});
 ['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,()=>{
   if(lpT){clearTimeout(lpT);lpT=null;}}));
+document.addEventListener('pointercancel',()=>{   // interrupted drag: put everything back
+  if(!dragB)return;dragB=null;lastTgt=null;
+  document.body.classList.remove('dragging');
+  document.querySelectorAll('.band.lifting').forEach(x=>x.classList.remove('lifting'));
+  document.querySelectorAll('.lane.droptgt').forEach(x=>x.classList.remove('droptgt'));
+  dropline.style.display='none';ghost.style.display='none';
+});
 document.addEventListener('click',e=>{
   if(suppressClick&&e.target.closest('.band')){e.stopPropagation();e.preventDefault();}
 },true);
