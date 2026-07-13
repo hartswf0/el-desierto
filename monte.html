@@ -279,6 +279,30 @@ stripes move from card faces to the loupe/back (four-channel color law); fixed o
     color:#000;font-size:9px;font-weight:700;letter-spacing:.06em;padding:3px 7px;border-radius:5px;
     white-space:nowrap;box-shadow:0 2px 8px #000}
   #lanes.horiz #dropline span{left:6px;top:6px;transform:none}
+  /* CHAPTER TITLES — judge the title against the footage before the final render */
+  #titles{position:fixed;inset:0;z-index:210;background:#000;display:none;flex-direction:column}
+  #titles.on{display:flex}
+  #titles .thd{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  #titles .thd b{font-size:13px;letter-spacing:.1em}
+  #titles .thd .sub{font-size:10px;color:var(--dim);flex:1}
+  #titles .thd button{border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);
+    font:inherit;font-size:11px;font-weight:700;padding:7px 13px;cursor:pointer}
+  #titles .tbody{flex:1;overflow-y:auto;padding:8px 10px 40px}
+  .tch{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden;background:#070707}
+  .tch .strip{display:flex;gap:2px;overflow-x:auto;background:#000}
+  .tch .strip img{height:70px;width:auto;aspect-ratio:16/9;object-fit:cover;flex:0 0 auto;background:#111}
+  .tch .body{padding:9px 11px}
+  .tch .era{font-size:9px;letter-spacing:.14em;color:var(--dim);display:flex;gap:8px;align-items:center}
+  .tch .era .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+  .tch input.tin{width:100%;margin-top:7px;background:#000;border:1px solid var(--line2);border-radius:7px;
+    color:#fff;font:inherit;font-size:15px;font-weight:700;padding:9px 10px;letter-spacing:.02em}
+  .tch input.tin:focus{outline:none;border-color:var(--hot)}
+  .tch .hint{font-size:10px;color:var(--dim);line-height:1.55;margin-top:7px}
+  .tch .hint b{color:rgba(255,255,255,.7);font-weight:400}
+  .tch .cand{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+  .tch .cand button{border:1px solid var(--line2);border-radius:6px;background:transparent;color:rgba(255,255,255,.75);
+    font:inherit;font-size:10px;padding:5px 8px;cursor:pointer;text-align:left;max-width:100%}
+  .tch .cand button:active{border-color:var(--hot);color:var(--hot)}
 </style>
 </head>
 <body>
@@ -294,6 +318,7 @@ stripes move from card faces to the loupe/back (four-channel color law); fixed o
   </div>
   <div id="more">
     <button id="thBtn" title="watch just the focused row">ROW</button>
+    <button id="titlesBtn" title="name each chapter to fit what it shows — before the final render">TITLES</button>
     <button id="dealBtn" title="the dealer: roll, twin, row, group, rain">DEAL</button>
     <input id="q" placeholder="SEARCH GENOME" spellcheck="false">
     <button id="addLane">+ ROW</button>
@@ -337,6 +362,10 @@ stripes move from card faces to the loupe/back (four-channel color law); fixed o
     <button data-c="film" title="export this exact program as a renderable film">FILM</button>
   </div></div>
 <div id="titleCard"></div>
+<div id="titles"><div class="thd"><b>CHAPTER TITLES</b>
+  <span class="sub">the title that best fits what each chapter shows — baked into the film</span>
+  <button id="titlesX">DONE</button></div>
+  <div class="tbody" id="titlesBody"></div></div>
 <input type="file" id="twinFile" accept=".json" style="display:none">
 <dialog id="pick"><b>Add row</b><div id="pickBody" style="max-height:62vh;overflow-y:auto;margin-top:6px"></div>
   <button style="width:100%;margin-top:8px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);font:inherit;font-weight:700;padding:8px" onclick="document.getElementById('pick').close()">cancel</button></dialog>
@@ -773,9 +802,45 @@ function songTick(){
   const target=(speaking?K.DUCK:1)*S.songG;
   A.volume+=(target-A.volume)*K.DLERP;
 }
+// ================= CHAPTER TITLES — fit the name to the footage before baking =================
+const TITLES=JSON.parse(localStorage.getItem('monteTitles')||'{}');
+function chTitle(sg){return (TITLES[sg.n]&&String(TITLES[sg.n]).trim())||sg.eraTitle.replace(/^\d+ /,'');}
+function saveTitles(){try{localStorage.setItem('monteTitles',JSON.stringify(TITLES));}catch(e){}}
+const eraHue=n=>'hsl('+((n-1)*25.7)+',72%,58%)';
+let MILS_T=null;
+async function openTitles(){
+  if(!MILS_T){try{MILS_T=((await fetch('MONTE/milestones.json').then(r=>r.json()))||{}).milestones||{};}catch(e){MILS_T={};}}
+  const body=$('titlesBody');body.innerHTML='';
+  Object.values(SONGS).sort((a,b)=>a.n-b.n).forEach(sg=>{
+    const ids=facets.named_film[sg.eraTitle]||[];
+    const m=MILS_T[(sg.slug||'').replace(/^\d+_/,'')]||{};
+    const strip=ids.slice(0,12).map(id=>{const c=clips[id]||{};
+      return c.pid?'<img loading="lazy" src="MONTE/POSTERS/'+c.pid+'.jpg">':'';}).join('');
+    let line='';
+    for(const id of ids){const s=(SEGS[id]||[]).find(x=>String(x.text||'').split(' ').length>=5);if(s){line=s.text;break;}}
+    const cands=[m.title,m.one_line].filter(Boolean);
+    const div=document.createElement('div');div.className='tch';div._cands=cands;
+    div.innerHTML='<div class="strip">'+strip+'</div><div class="body">'+
+      '<div class="era"><span class="dot" style="background:'+eraHue(sg.n)+'"></span>CH '+
+        String(sg.n).padStart(2,'0')+' · '+escT(sg.eraTitle.replace(/^\d+ /,''))+' · '+escT(sg.songTitle)+'</div>'+
+      '<input class="tin" data-n="'+sg.n+'" placeholder="chapter title">'+
+      (m.one_line?'<div class="hint"><b>claim:</b> '+escT(m.one_line)+'</div>':'')+
+      (line?'<div class="hint"><b>on screen:</b> “'+escT(line)+'”</div>':'')+
+      (cands.length?'<div class="cand">'+cands.map((c,i)=>'<button data-ci="'+i+'">'+escT(c)+'</button>').join('')+'</div>':'')+
+      '</div>';
+    const inp=div.querySelector('input.tin');inp.value=chTitle(sg);
+    inp.oninput=()=>{TITLES[sg.n]=inp.value;saveTitles();};
+    div.querySelectorAll('.cand button').forEach(bt=>bt.onclick=()=>{
+      const v=div._cands[+bt.dataset.ci]||'';TITLES[sg.n]=v;saveTitles();inp.value=v;vib(6);});
+    body.appendChild(div);
+  });
+  $('titles').classList.add('on');
+}
+$('titlesBtn').onclick=openTitles;
+$('titlesX').onclick=()=>$('titles').classList.remove('on');
 function showTitleCard(sg){
   const c=$('titleCard');
-  c.innerHTML='<div><i>'+String(sg.n).padStart(2,'0')+'</i><b>'+escT(sg.eraTitle.replace(/^\d+ /,''))
+  c.innerHTML='<div><i>'+String(sg.n).padStart(2,'0')+'</i><b>'+escT(chTitle(sg))
     +'</b><span>'+escT(sg.songTitle)+' — PAPER GLASSES, ELECTRIC WONDER</span></div>';
   c.classList.add('on');
   clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('on'),3600);
@@ -2202,7 +2267,7 @@ document.querySelectorAll('#thCtl button').forEach(bt=>{
       const prog={format:'monte-program',exported:new Date().toISOString(),
         parts:TH.parts.map(p=>p.frame
           ?{kind:'frame',id:p.frame,label:p.label}
-          :{kind:'cut',lane:p.lane,label:p.label,ids:p.ids,
+          :{kind:'cut',lane:p.lane,label:p.label,title:p.sg?chTitle(p.sg):p.label,ids:p.ids,
             song:p.sg?{era:p.sg.eraTitle,url:p.sg.url,dur:p.sg.dur}:null})};
       const a=document.createElement('a');
       a.href=URL.createObjectURL(new Blob([JSON.stringify(prog,null,1)],{type:'application/json'}));
