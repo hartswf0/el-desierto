@@ -97,10 +97,25 @@ body.hasShell #shell{display:block}
 #man .card{width:min(680px,96vw);max-height:88vh;overflow-y:auto;border:1px solid var(--line);
   background:#020a06;padding:14px}
 #man h3{font-size:11px;letter-spacing:.2em;font-weight:400;color:var(--hot);margin:0 0 10px}
-#man .frames{display:flex;gap:4px;margin-bottom:10px}
-#man .frames img{width:25%;border:1px solid var(--line);display:block}
-#man .ln{font-size:11px;line-height:1.9;border-left:2px solid var(--line);padding-left:10px;
-  margin-bottom:4px;color:var(--ink);cursor:pointer}
+#man .frames{display:flex;gap:5px;margin-bottom:12px}
+#man .stp{flex:1;cursor:pointer;border:1px solid var(--line);position:relative}
+#man .stp img{width:100%;display:block}
+#man .stp .stl{font-size:8px;letter-spacing:.08em;padding:3px 4px;color:var(--dim);
+  display:flex;justify-content:space-between}
+#man .stp .stl b{color:var(--hot);font-weight:400}
+#man .stp:hover{border-color:var(--hot)}
+#man .stp::after{content:"▶ FROM HERE";position:absolute;inset:0;display:none;
+  align-items:center;justify-content:center;font-size:8px;letter-spacing:.14em;
+  color:var(--hot);background:rgba(0,0,0,.55)}
+#man .stp:hover::after{display:flex}
+#man .cmd{font-size:10px;letter-spacing:.1em;color:var(--dim);margin-bottom:10px;
+  border:1px solid var(--line);padding:7px 9px}
+#man .cmd b{color:var(--amber);font-weight:400}
+#man .phase{margin-bottom:9px}
+#man .phase .pt{display:inline-block;font-size:8px;letter-spacing:.16em;color:var(--hot);
+  border:1px solid var(--line);padding:1px 6px;margin-bottom:4px}
+#man .ln{font-size:11px;line-height:1.7;border-left:2px solid var(--line);padding-left:10px;
+  margin-bottom:3px;color:var(--ink);cursor:pointer}
 #man .ln:hover{border-color:var(--hot);color:var(--hot)}
 #man .none{color:var(--dim);font-size:10px;letter-spacing:.15em}
 @media(max-width:640px){.grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}}
@@ -141,7 +156,7 @@ body.hasShell #shell{display:block}
 
 <div id="shell"><div id="shOut"></div>
   <div id="shRow"><span class="ps">&gt;</span>
-  <input id="shIn" placeholder="RUN CHAPTER 03 · MOVE EYE TO VIEW · DEFINE CHAPTER 5 = ..." autocomplete="off" spellcheck="false"></div></div>
+  <input id="shIn" placeholder="RUN CHAPTER 03 FROM SEAL · MOVE EYE TO VIEW · DEFINE CH 5 = ..." autocomplete="off" spellcheck="false"></div></div>
 <div id="man"><div class="card"><h3 id="manT"></h3><div class="frames" id="manF"></div>
   <div id="manL"></div><div style="margin-top:12px;text-align:right"><button onclick="document.getElementById('man').classList.remove('on')">CLOSE</button></div></div></div>
 <script>
@@ -177,20 +192,47 @@ async function boot(){
 const bootsBy=f=>OSD.boots.filter(f);
 const stImg=(b,k)=>'MONTE/OS_STATES/'+b.states[Math.min(k,b.states.length-1)].img;
 
+// ---------- SUB-STATES: each machine's 4 frames are a typed progression ----------
+// the boot's visual life: first light -> the screen draws -> the command runs ->
+// the last legible frame before it freezes to static.
+const STATE_TYPES=['IGNITION','DRAW','RUN','SEAL'];
+const STATE_ALIAS={IGNITION:0,IGNITE:0,BOOT:0,START:0,DRAW:1,FORM:1,DEFINE:1,
+  RUN:2,PEAK:2,EXEC:2,SEAL:3,REPORT:3,STATIC:3,END:3,FREEZE:3};
+function mStates(b){
+  const tx=(OTX&&OTX.boots[b.pid]&&OTX.boots[b.pid].per_state)||{};
+  return b.states.map((s,k)=>({k,type:STATE_TYPES[k]||('S'+k),t:s.t,
+    img:stImg(b,k),lines:tx[String(k)]||[]}));
+}
+function mCommand(b){ // the machine's persistent executable line (its identity)
+  const L=(OTX&&OTX.boots[b.pid]&&OTX.boots[b.pid].lines)||[];
+  const clean=s=>{const u=s.toUpperCase(),lt=(u.match(/[A-Z]/g)||[]).length;
+    return lt/Math.max(1,u.length)>0.55 && u.split(' ').filter(w=>w.length>2).length>=2;};
+  return L.find(x=>/^>?\s*RUN\s+(CHAPTER|ACT|CH)/i.test(x))
+       ||L.find(x=>/^>?\s*(MOVE|DEFINE)/i.test(x))
+       ||L.find(x=>/(WORLD|EYE|SYSTEM|CHAPTER|ACT|LOAD)/i.test(x)&&clean(x))
+       ||'—';
+}
+
 // ---------- the transition layer: a boot video IS the motion ----------
 let transDone=null;
-function playTrans(b,then,{mute=false,full=false}={}){
+function playTrans(b,then,{mute=false,full=false,fromT=0}={}){
   if(!b){then&&then();return;}
   const tv=$('tv');transDone=then;
   $('trans').classList.add('on');
-  tv.muted=mute;tv.src='MONTE/'+b.file;tv.currentTime=0;
+  tv.muted=mute;tv.src='MONTE/'+b.file;
   const stopAt=full?(b.dur-0.05):Math.max(1,(b.static||b.dur)-0.3);
+  const target=fromT>0?Math.min(fromT,stopAt-0.3):0;
+  let seeked=target<=0;
+  const doSeek=()=>{if(seeked)return;try{tv.currentTime=target;seeked=true;}catch(e){}};
+  tv.currentTime=0;
+  tv.onloadedmetadata=doSeek;tv.oncanplay=doSeek;   // land on the sub-state, whichever fires first
   tv.play().catch(()=>{});
-  tv.ontimeupdate=()=>{if(tv.currentTime>=stopAt)skipTrans();};
+  tv.ontimeupdate=()=>{if(!seeked&&tv.readyState>=1)doSeek();
+    if(tv.currentTime>=stopAt)skipTrans();};
   tv.onended=()=>skipTrans();
 }
 function skipTrans(){
-  const tv=$('tv');tv.ontimeupdate=null;tv.onended=null;tv.pause();
+  const tv=$('tv');tv.ontimeupdate=null;tv.onended=null;tv.onloadedmetadata=null;tv.oncanplay=null;tv.pause();
   $('trans').classList.remove('on');
   const f=transDone;transDone=null;f&&f();
 }
@@ -309,15 +351,23 @@ $('shutBtn').onclick=()=>{
 // ---------- MANUAL PAGE: the evidence — what this machine says ----------
 function openMan(b,era){
   if(!OTX)return;
-  const t=OTX.boots[b.pid]||{lines:[]};
+  const st=mStates(b),cmd=mCommand(b);
   $('manT').textContent=(era?('CH '+String(era.n).padStart(2,'0')+' · '):'')+b.pid;
-  $('manF').innerHTML=b.states.map((s,k)=>'<img src="'+stImg(b,k)+'">').join('');
-  $('manL').innerHTML=t.lines.length
-    ?t.lines.map(ln=>'<div class="ln">'+esc(ln)+'</div>').join('')
-    :'<div class="none">UNREADABLE SCREEN · STATIC ONLY</div>';
-  [...$('manL').children].forEach(d=>{d.onclick=()=>{ // a screen line is runnable
-    $('shIn').value=d.textContent;$('shIn').focus();
-    $('man').classList.remove('on');};});
+  // the typed progression — click a state to play the boot FROM there
+  $('manF').innerHTML=st.map(s=>'<div class="stp" data-k="'+s.k+'"><img src="'+s.img+'">'
+    +'<div class="stl"><b>'+s.type+'</b><span>'+s.t.toFixed(1)+'s</span></div></div>').join('');
+  $('manF').querySelectorAll('.stp').forEach(d=>d.onclick=()=>{
+    const k=+d.dataset.k;$('man').classList.remove('on');
+    playTrans(b,()=>{era?openRoom(era):show('desktop');},{fromT:st[k].t});
+  });
+  // the machine's command + the lines it says, grouped by sub-state
+  const phases=st.filter(s=>s.lines.length).map(s=>
+    '<div class="phase"><span class="pt">'+s.type+' · '+s.t.toFixed(1)+'s</span>'
+    +s.lines.map(ln=>'<div class="ln">'+esc(ln)+'</div>').join('')+'</div>').join('');
+  $('manL').innerHTML='<div class="cmd">COMMAND · <b>'+esc(cmd||'—')+'</b></div>'
+    +(phases||'<div class="none">UNREADABLE SCREEN · STATIC ONLY</div>');
+  $('manL').querySelectorAll('.ln').forEach(d=>d.onclick=()=>{ // a screen line is runnable
+    $('shIn').value=d.textContent;$('shIn').focus();$('man').classList.remove('on');});
   $('man').classList.add('on');
 }
 // ---------- SHELL: verbs licensed by transcription (evidence invariant) ----------
@@ -338,12 +388,17 @@ function runShell(raw){
   const q=raw.trim();if(!q)return;
   const U=q.toUpperCase();
   let m;
-  if((m=U.match(/^RUN\s+(?:CHAPTER|CH|PROGRAM)?\s*0?(\d{1,2})$/))){
+  if((m=U.match(/^RUN\s+(?:CHAPTER|CH|PROGRAM)?\s*0?(\d{1,2})(?:\s+FROM\s+(\w+))?$/))){
     const n=+m[1],e=(MAN.eras||[]).find(x=>x.n===n);
     if(!e){shSay('NO SUCH PROGRAM · 01–14');return;}
     const cb=OSD.boots.filter(b=>b.kind==='ch'&&b.ch===n);
-    shSay('<b>RUN CHAPTER '+String(n).padStart(2,'0')+'</b> · LAUNCHING');
-    playTrans(cb[Math.floor(Math.random()*cb.length)],()=>openRoom(e),{});
+    const b=cb[Math.floor(Math.random()*cb.length)];
+    let fromT=0,ph='';
+    if(m[2]){const idx=STATE_ALIAS[m[2].toUpperCase()];
+      if(idx==null){shSay('NO SUB-STATE "'+esc(m[2])+'" · IGNITION/DRAW/RUN/SEAL');return;}
+      fromT=((mStates(b)[idx])||{}).t||0;ph=' FROM '+STATE_TYPES[idx];}
+    shSay('<b>RUN CHAPTER '+String(n).padStart(2,'0')+ph+'</b> · LAUNCHING');
+    playTrans(b,()=>openRoom(e),{fromT});
   } else if((m=U.match(/^RUN\s+ACT\s*0?([123])$/))){
     const a=+m[1];const ab=OSD.boots.filter(b=>b.kind==='act'&&{1:1,6:2,11:3}[b.ch]===a)[0];
     shSay('<b>RUN ACT '+'I'.repeat(a)+'</b>');

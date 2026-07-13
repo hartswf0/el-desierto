@@ -134,6 +134,28 @@ Sample screen-lines now executable: `RUN CHAPTER 03`, `RUN ACT 01`,
 `> MOVE IMAGE TO VIEW`, `WORLD EYE SYSTEM 14.3`,
 `ACT III — THE WORLD COMES BACK AS DATA`.
 
+## 9c. [Granulate] <sub-states> — each machine is a 4-phase progression
+
+The census proved the *text* is a persistent command (RUN CHAPTER N appears at
+all sample positions), so the granular structure is *visual*: the 4 sampled
+frames are a typed life-cycle, canonical by sampling position:
+
+<sub-state> := { k, type, t, img, lines[] }
+<progression> := [ IGNITION(10%) → DRAW(40%) → RUN(75%) → SEAL(pre-static) ]
+
+- <machine>.command := its persistent executable line (RUN/MOVE/DEFINE, else —)
+- [RUN chapter n FROM <sub-state>] — seeks the launch boot to that phase's
+  timestamp before playing. Aliases: IGNITION|BOOT, DRAW|DEFINE, RUN|PEAK,
+  SEAL|REPORT|STATIC|END. Unknown sub-state → the four names, never an error.
+- Manual page renders the progression as a clickable filmstrip (▶ FROM HERE),
+  the command line, and the lines grouped by phase. A screen line is runnable
+  (clicks into the shell); a screen frame is playable (plays from its phase).
+
+New invariant I6 **phase law**: a machine's four states are always the same
+ordered life-cycle; addressing FROM SEAL of one machine means the same phase
+(last legible frame) as FROM SEAL of any other — the progression is universal,
+the content is not.
+
 ## 10–12. <program text> · mapping · survival
 
 Program text: `monte_os_text.py` (transcription), `os.html` v14.3 (shell +
