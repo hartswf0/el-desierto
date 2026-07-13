@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WORLD EYE · CODE VIEW</title>
+<!--
+  VIDEO BECOMES CODE. Every clip is re-drawn live as a BEFLIX character field:
+  each cell of a real video frame is quantized to a glyph by luminance, redrawn
+  every frame inside a CRT. The clip is not shown — it is TRANSCRIBED into code,
+  the way the boot loaders draw the world. Toggle the ramp: DOTS · ASCII · HEX.
+-->
+<style>
+:root{--bg:#000;--phos:#19e6c8;--dim:#0d3a2c;--amber:#ffd23f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#000;color:var(--phos);
+  font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;overflow:hidden}
+.crt{position:fixed;inset:0;display:flex;flex-direction:column}
+#bar{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--dim);
+  font-size:10px;letter-spacing:.16em}
+#bar b{color:var(--phos)} #bar .sp{flex:1} #bar select,#bar button{background:#020a06;
+  color:var(--phos);border:1px solid var(--dim);font:inherit;font-size:10px;padding:5px 8px;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+#stage{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+/* the code screen */
+#code{font-family:"IBM Plex Mono",monospace;white-space:pre;line-height:1;letter-spacing:0;
+  color:var(--phos);text-shadow:0 0 6px var(--phos);margin:0;transform-origin:center}
+#code.amber{color:var(--amber);text-shadow:0 0 6px var(--amber)}
+/* CRT skin */
+#stage::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%),
+    repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
+#stage::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+  box-shadow:inset 0 0 120px rgba(0,0,0,.7)}
+video{display:none}
+#foot{display:flex;align-items:center;gap:10px;padding:8px 12px;border-top:1px solid var(--dim);
+  font-size:9px;color:var(--dim);letter-spacing:.12em;overflow-x:auto;white-space:nowrap}
+#foot b{color:var(--phos)}
+#pick{position:fixed;inset:0;z-index:10;background:rgba(0,0,0,.94);display:none;
+  overflow-y:auto;padding:14px}
+#pick.on{display:block}
+#pick .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+#pick .c{border:1px solid var(--dim);cursor:pointer;background:#020a06}
+#pick .c img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+#pick .c div{font-size:8px;color:var(--dim);padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pick .c:hover{border-color:var(--phos)}
+canvas{display:none}
+</style>
+</head>
+<body>
+<div class="crt">
+  <div id="bar"><b>WORLD EYE · CODE VIEW</b><span id="title"></span><span class="sp"></span>
+    <select id="ramp"><option value="dots">DOTS</option><option value="ascii">ASCII</option>
+      <option value="hex">HEX</option><option value="blocks">BLOCKS</option></select>
+    <select id="cols"><option>48</option><option selected>64</option><option>84</option><option>110</option></select>
+    <button id="amberBtn">AMBER</button>
+    <button id="libBtn">CLIPS</button>
+  </div>
+  <div id="stage"><pre id="code"></pre></div>
+  <div id="foot"><span id="src">SELECT A CLIP</span></div>
+</div>
+<video id="v" playsinline muted crossorigin="anonymous"></video>
+<canvas id="cv"></canvas>
+<div id="pick"><div class="g" id="pickG"></div></div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const V=$('v'),CV=$('cv'),CTX=CV.getContext('2d',{willReadFrequently:true});
+let CLIPS=[],cols=64,rampKey='dots',running=false,raf=null;
+// the code ramps: luminance -> glyph. dark .. bright
+const RAMPS={
+  dots:' ·:+*oO0@',
+  ascii:" .`',:;i1tfLCG08@",
+  hex:' 0123456789ABCDEF',
+  blocks:' ░░▒▒▓▓██'
+};
+function rampFor(){return RAMPS[rampKey];}
+
+async function boot(){
+  const man=await fetch('MONTE/monte_manifest.json').then(r=>r.json());
+  man.eras.forEach(e=>e.clips.forEach((c,i)=>{ if(c.kind!=='video')return;
+    CLIPS.push({id:c.id,title:c.title,pid:c.pid,ch:e.n,
+      media:'MONTE/assets/'+c.id});}));
+  buildPicker();
+  if(location.hash.length>2){const id=decodeURIComponent(location.hash.slice(1));
+    const c=CLIPS.find(x=>x.id===id);if(c){play(c);return;}}
+  play(CLIPS[Math.floor(Math.random()*CLIPS.length)]);
+}
+function buildPicker(){
+  const g=$('pickG');g.innerHTML='';
+  CLIPS.forEach(c=>{const d=document.createElement('div');d.className='c';
+    d.innerHTML=(c.pid?'<img loading="lazy" src="MONTE/POSTERS/'+c.pid+'.jpg">':'')
+      +'<div>CH'+c.ch+' · '+(c.title||c.id).slice(0,26)+'</div>';
+    d.onclick=()=>{$('pick').classList.remove('on');play(c);};g.appendChild(d);});
+}
+$('libBtn').onclick=()=>$('pick').classList.toggle('on');
+$('amberBtn').onclick=()=>{$('code').classList.toggle('amber');};
+$('ramp').onchange=e=>rampKey=e.target.value;
+$('cols').onchange=e=>{cols=+e.target.value;};
+
+function play(c){
+  $('title').textContent=' · CH'+c.ch+' · '+(c.title||c.id).slice(0,30);
+  $('src').innerHTML='SOURCE <b>'+c.id.split('/').pop()+'</b> · ENCODING LIVE';
+  V.src=c.media;V.loop=true;V.play().catch(()=>{});
+  if(!running){running=true;loop();}
+}
+// the encoder: one real frame -> a field of glyphs, weighted by luminance
+function encode(){
+  const vw=V.videoWidth,vh=V.videoHeight;
+  if(!vw){return '';}
+  const ch=Math.round(cols*(vh/vw)*0.5);          // char cells are ~2:1 tall
+  CV.width=cols;CV.height=ch;
+  CTX.drawImage(V,0,0,cols,ch);
+  let d;try{d=CTX.getImageData(0,0,cols,ch).data;}catch(e){return 'SIGNAL PROTECTED';}
+  const ramp=rampFor(),R=ramp.length-1;let out='';
+  for(let y=0;y<ch;y++){let row='';
+    for(let x=0;x<cols;x++){const i=(y*cols+x)*4;
+      // Rec.601 luma, slight gamma for phosphor feel
+      let L=(0.299*d[i]+0.587*d[i+1]+0.114*d[i+2])/255;
+      L=Math.pow(L,0.85);
+      row+=ramp[Math.max(0,Math.min(R,Math.round(L*R)))];}
+    out+=row+'\n';}
+  return out;
+}
+function fit(){
+  const pre=$('code'),st=$('stage');
+  const sw=st.clientWidth/(cols*0.62),sh=st.clientHeight/((pre.textContent.split('\n').length||1)*1.02);
+  pre.style.fontSize=Math.max(4,Math.min(sw,sh))+'px';
+}
+function loop(){
+  const txt=encode();
+  if(txt){$('code').textContent=txt;fit();}
+  raf=requestAnimationFrame(loop);
+}
+V.addEventListener('loadeddata',()=>{ // draw one frame even if rAF is throttled
+  const t=encode();if(t){$('code').textContent=t;fit();}});
+boot();
+</script>
+</body>
+</html>

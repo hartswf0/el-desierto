@@ -1,0 +1,2277 @@
+{
+"chapter": 3,
+"boot_count": 8,
+"operations": {
+"RUN": 8
+},
+"distinct_texts": 8,
+"imposters": [
+{
+"pid": "boot_ch03_02_red_machine_at_future",
+"file": "BOOTS/ch03_02_red_machine_at_future.mp4",
+"filed": 3,
+"announced": 16,
+"votes": {
+"10": 2,
+"16": 10,
+"18": 3
+}
+}
+],
+"order": [
+[
+"boot_ch03_01_chapter_03_opening_sequence",
+"RUN",
+3
+],
+[
+"boot_ch03_02_red_machine_at_future",
+"RUN",
+16
+],
+[
+"boot_ch03_03_chapter_03",
+"RUN",
+3
+],
+[
+"boot_ch03_04_chapter_03",
+"RUN",
+3
+],
+[
+"boot_ch03_05_run_chapter_03",
+"RUN",
+3
+],
+[
+"boot_ch03_06_run_chapter_03",
+"RUN",
+3
+],
+[
+"boot_ch03_07_of_system_boot",
+"RUN",
+3
+],
+[
+"boot_ch03_08_world_eye_system_14_3_run",
+"RUN",
+3
+]
+],
+"boots": [
+{
+"file": "BOOTS/ch03_01_chapter_03_opening_sequence.mp4",
+"pid": "boot_ch03_01_chapter_03_opening_sequence",
+"filed_ch": 3,
+"announced_ch": 3,
+"announced_votes": {
+"3": 3
+},
+"op": "RUN",
+"frames": 29,
+"lines": [
+"poDoL",
+"Son TT RE es cH)",
+"_ pODOL DUITIAL HEDBS 217",
+"i Ereen instoces: PILUE MODEL (NCV bunt): j",
+"a Deceraled = 621",
+"i MLMDI Ref set: (TTTUSTAAE/ CORRLENEY CGB-000.)",
+"PLNOL sat: CAFT/ZFF SB.0 BGOL ((1) (1156607 .",
+"Cansftrefbins: 008.9900085 t*",
+"Rnout STR :- 1.95411 x",
+"Donolation = 18 i",
+"ConsterNercs: 180 AN-6-OPH",
+"Doosteion = NETY BBRS 8800",
+"Deccitiontgte HELMS 20.000 S/ clobol no1ar.",
+"OUITIAL HEDBS 8217",
+"Hae instoces: PILUE MODEL (NCV bunt)",
+"Deceraled = 621",
+"MLMDI Ref set: (TTYLSTACI/(BETLONEY CGB-000.)",
+"PLNOL Ref set: 131 AM CAFT/ZFF SB. BBBOL ((1) (1156607))",
+"Cansftrefbins: 800.9900085",
+"Rnout STR :- 1.395411",
+"Donolation = 18",
+"ConsterNecs: 188 AN--OPH",
+"Donstefon = NETYV 6660",
+"Deecitionfete + HELNS 28.000 8 S/ clobol BO1GE.4006)",
+"Obseretresfor PROPS: 13008",
+"Obserctmesre: Phoreth-Fbher (// clade V) TODI(1.01)))",
+"FF GROTICNENT FOORE: 15860",
+":) LOONG SAEEPCT 68.1.CGARBEGO 460/01 1(F-68 (CHArHN2--LB2:448",
+":) LOONG SAELUET LO.18802920L (6/61/4546/YSBIX",
+":) LOONG SAELUET CHLD: DREETS1528601 .68",
+":) LOONG SHELUET CHLD: DWEET99525561.68",
+"looms of boss-EHID: DWEET39531750( 178X1)",
+"Hovern lineradts",
+"IL OUITIAL HEDBS 8217",
+"aoe instoces: PILUE MODEL (NCV bunt)",
+"Decereled = 621",
+"MLMDI Ref set: (TTYLSTAGI/(BETLONEY CGB-00. )",
+"PLNOL Ref sel: 131 AM CAFT/ZFF SB.6 OB8OL ((1) (1156607))",
+"Cansftrefbins: 008.9808085",
+"Rnout STR :- 1.95411",
+"ConsterNecs: 168 AN--OPH",
+"Donstefon = NETV BERS 6860",
+"Deecitionfete = HELHS 28.000 8 S/ clobol BO1GE.4086)",
+"Obseretresfor PROPB: 13088",
+"Obserctreesre: Phoreth-Fber (/7 clade V) TODI(1.01)))",
+"FF GROTICNENT FOORE: 15868",
+":) LOONG SAEEPET 68.1. CGARBEGO 460/61 1(F-8 (CHRrHN>--LB3:448",
+":) LOONG SAELUEB LO.18802926L (6761/45746/YSBIX",
+":) LOONG SAELUET CHLD: DHEETS1528681 .68",
+":) LOONG SHELUET CHLD: DWEET39525881.88",
+"looms of boss-EHID: DWEET39531756(178XI)",
+"Nevernm iineradts = 30000",
+"HetengOher Loels = 2560",
+"Heverorder Eriig : 6A/-ORVIEV Lileel -Loil).",
+"Belecte inferation: 0.68 QS(2 cloert Unilloe feare Dance)",
+"Relect Intpotateatence = fj",
+"22. _ a Ses _=",
+"ess a 6 Trt",
+"a4 S=a",
+"=a PO BSS",
+"255 >= 4",
+"a EE SSS LSS",
+"RUN CHAPTEJ",
+"SS So eee S35)",
+"RUN CHAPTER 3.",
+"=a > S55",
+"25 mae je",
+"aT SSS",
+"4 Sars -",
+"==== SSS ES =z",
+"ma ClUr COT zt",
+"Be S22 82 es",
+"=a= mes Ee (eer",
+"SSS> SS SET ES SSS",
+"\"7 (ka == LE: :",
+"> OoFa=- _",
+"bs ay eae",
+"= ase bese",
+"AOD) RN ee",
+"Cyr fee onl",
+"mK. 3 MLS ee - Y",
+"ENCLOSE BODY MODEL. .",
+"ENCLOSE BODY MODEL. a",
+"THE MACHINE TH",
+"ENCLOSE BODY MODEL. j",
+"THE MACHINE THAT WANTED THE Ril",
+"HE MACHINE THAT WANTED THE REST OF YOU f",
+"ENCLOSE BODY MODEL. ee",
+"HE MACHINE THAT WANTED THE REST OF YOU",
+"ENCLOSE BODY MODEL. ae",
+"E MACHINE THAT WANTED THE REST OF YOU ff",
+"ENCLOSE DUT tyes.",
+"E MACHINE THAT WANTED THE REST OF YOU 2",
+"ENULUY. oveoeoe",
+"THE M",
+"ACHINE THAT WANTED THE REST OF YOU"
+],
+"timeline": [
+{
+"t": 0.0,
+"new": [
+"poDoL",
+"Son TT RE es cH)"
+],
+"n": 2
+},
+{
+"t": 0.33,
+"new": [
+"_ pODOL DUITIAL HEDBS 217",
+"i Ereen instoces: PILUE MODEL (NCV bunt): j",
+"a Deceraled = 621",
+"i MLMDI Ref set: (TTTUSTAAE/ CORRLENEY CGB-000.)",
+"PLNOL sat: CAFT/ZFF SB.0 BGOL ((1) (1156607 .",
+"Cansftrefbins: 008.9900085 t*",
+"Rnout STR :- 1.95411 x",
+"Donolation = 18 i",
+"ConsterNercs: 180 AN-6-OPH",
+"Doosteion = NETY BBRS 8800",
+"Deccitiontgte HELMS 20.000 S/ clobol no1ar."
+],
+"n": 11
+},
+{
+"t": 0.67,
+"new": [
+"OUITIAL HEDBS 8217",
+"Hae instoces: PILUE MODEL (NCV bunt)",
+"Deceraled = 621",
+"MLMDI Ref set: (TTYLSTACI/(BETLONEY CGB-000.)",
+"PLNOL Ref set: 131 AM CAFT/ZFF SB. BBBOL ((1) (1156607))",
+"Cansftrefbins: 800.9900085",
+"Rnout STR :- 1.395411",
+"Donolation = 18",
+"ConsterNecs: 188 AN--OPH",
+"Donstefon = NETYV 6660",
+"Deecitionfete + HELNS 28.000 8 S/ clobol BO1GE.4006)",
+"Obseretresfor PROPS: 13008",
+"Obserctmesre: Phoreth-Fbher (// clade V) TODI(1.01)))",
+"FF GROTICNENT FOORE: 15860",
+":) LOONG SAEEPCT 68.1.CGARBEGO 460/01 1(F-68 (CHArHN2--LB2:448",
+":) LOONG SAELUET LO.18802920L (6/61/4546/YSBIX",
+":) LOONG SAELUET CHLD: DREETS1528601 .68",
+":) LOONG SHELUET CHLD: DWEET99525561.68",
+"looms of boss-EHID: DWEET39531750( 178X1)",
+"Hovern lineradts"
+],
+"n": 20
+},
+{
+"t": 1.0,
+"new": [
+"IL OUITIAL HEDBS 8217",
+"aoe instoces: PILUE MODEL (NCV bunt)",
+"Decereled = 621",
+"MLMDI Ref set: (TTYLSTAGI/(BETLONEY CGB-00. )",
+"PLNOL Ref sel: 131 AM CAFT/ZFF SB.6 OB8OL ((1) (1156607))",
+"Cansftrefbins: 008.9808085",
+"Rnout STR :- 1.95411",
+"ConsterNecs: 168 AN--OPH",
+"Donstefon = NETV BERS 6860",
+"Deecitionfete = HELHS 28.000 8 S/ clobol BO1GE.4086)",
+"Obseretresfor PROPB: 13088",
+"Obserctreesre: Phoreth-Fber (/7 clade V) TODI(1.01)))",
+"FF GROTICNENT FOORE: 15868",
+":) LOONG SAEEPET 68.1. CGARBEGO 460/61 1(F-8 (CHRrHN>--LB3:448",
+":) LOONG SAELUEB LO.18802926L (6761/45746/YSBIX",
+":) LOONG SAELUET CHLD: DHEETS1528681 .68",
+":) LOONG SHELUET CHLD: DWEET39525881.88",
+"looms of boss-EHID: DWEET39531756(178XI)",
+"Nevernm iineradts = 30000",
+"HetengOher Loels = 2560",
+"Heverorder Eriig : 6A/-ORVIEV Lileel -Loil).",
+"Belecte inferation: 0.68 QS(2 cloert Unilloe feare Dance)",
+"Relect Intpotateatence = fj"
+],
+"n": 24
+},
+{
+"t": 1.33,
+"new": [
+"22. _ a Ses _=",
+"ess a 6 Trt",
+"a4 S=a",
+"=a PO BSS",
+"255 >= 4",
+"a EE SSS LSS",
+"RUN CHAPTEJ"
+],
+"n": 8
+},
+{
+"t": 1.67,
+"new": [
+"SS So eee S35)",
+"RUN CHAPTER 3."
+],
+"n": 3
+},
+{
+"t": 2.0,
+"new": [
+"=a > S55",
+"25 mae je",
+"aT SSS"
+],
+"n": 6
+},
+{
+"t": 2.33,
+"new": [
+"4 Sars -",
+"==== SSS ES =z",
+"ma ClUr COT zt",
+"Be S22 82 es",
+"=a= mes Ee (eer",
+"SSS> SS SET ES SSS"
+],
+"n": 7
+},
+{
+"t": 2.67,
+"new": [],
+"n": 0
+},
+{
+"t": 3.0,
+"new": [
+"\"7 (ka == LE: :"
+],
+"n": 1
+},
+{
+"t": 3.33,
+"new": [
+"> OoFa=- _"
+],
+"n": 2
+},
+{
+"t": 3.67,
+"new": [
+"bs ay eae",
+"= ase bese"
+],
+"n": 2
+},
+{
+"t": 4.0,
+"new": [
+"AOD) RN ee",
+"Cyr fee onl"
+],
+"n": 4
+},
+{
+"t": 4.33,
+"new": [
+"mK. 3 MLS ee - Y"
+],
+"n": 1
+},
+{
+"t": 4.67,
+"new": [],
+"n": 0
+},
+{
+"t": 5.0,
+"new": [
+"ENCLOSE BODY MODEL. ."
+],
+"n": 1
+},
+{
+"t": 5.33,
+"new": [],
+"n": 1
+},
+{
+"t": 5.67,
+"new": [
+"ENCLOSE BODY MODEL. a"
+],
+"n": 1
+},
+{
+"t": 6.0,
+"new": [],
+"n": 1
+},
+{
+"t": 6.33,
+"new": [],
+"n": 1
+},
+{
+"t": 6.67,
+"new": [
+"THE MACHINE TH"
+],
+"n": 2
+},
+{
+"t": 7.0,
+"new": [
+"ENCLOSE BODY MODEL. j",
+"THE MACHINE THAT WANTED THE Ril"
+],
+"n": 2
+},
+{
+"t": 7.33,
+"new": [
+"HE MACHINE THAT WANTED THE REST OF YOU f"
+],
+"n": 2
+},
+{
+"t": 7.67,
+"new": [],
+"n": 2
+},
+{
+"t": 8.0,
+"new": [
+"ENCLOSE BODY MODEL. ee",
+"HE MACHINE THAT WANTED THE REST OF YOU"
+],
+"n": 2
+},
+{
+"t": 8.33,
+"new": [
+"ENCLOSE BODY MODEL. ae",
+"E MACHINE THAT WANTED THE REST OF YOU ff"
+],
+"n": 2
+},
+{
+"t": 8.67,
+"new": [
+"ENCLOSE DUT tyes.",
+"E MACHINE THAT WANTED THE REST OF YOU 2"
+],
+"n": 2
+},
+{
+"t": 9.0,
+"new": [
+"ENULUY. oveoeoe",
+"THE M",
+"ACHINE THAT WANTED THE REST OF YOU"
+],
+"n": 3
+},
+{
+"t": 9.33,
+"new": [],
+"n": 0
+}
+],
+"key": "7KALE22ASES25MAEJE25544SARSLOONGSAEEPCT681CGARBEGO460011F68CHARHN2LB2448LOONGSAEEPET681CGARBEGO460611F8CHRRHNLB3448LOONG"
+},
+{
+"file": "BOOTS/ch03_02_red_machine_at_future.mp4",
+"pid": "boot_ch03_02_red_machine_at_future",
+"filed_ch": 3,
+"announced_ch": 16,
+"announced_votes": {
+"10": 2,
+"16": 10,
+"18": 3
+},
+"op": "RUN",
+"frames": 27,
+"lines": [
+"WORLD/EYE SYSTEM 14.3_",
+"WORLD/EYE SYSTEM 1_",
+"RUN CHA _",
+"RUN CHAPTER 10",
+"RUN CHAPTER 16 _",
+"t + peeooeces tittttttttttt +4444",
+"+ +++ t + toe",
+"+++ tee toe +o",
+"+o+ +++ +++ tee",
+"+e ++. tee",
+"+++ eee eeeeee ee ee eee",
+". mi: ssosesesssssgss",
+"RUN CHAPTER 16 j",
+"site SSSESSERSiSSSagMsiese SEETEMBSSISTREERES 02:",
+"RUN CHAPTER 18",
+"G1 82 3 4 89 06 O7",
+"416263840566 68",
+"Ql ve 33 06 B7",
+"THE RED MACK _",
+"THE RED MACHINE AT THE _",
+"THE RED MACHINE AT THE END OF THE_",
+"THE RED MACHINE AT THE END OF THE FUTURE_"
+],
+"timeline": [
+{
+"t": 0.0,
+"new": [
+"WORLD/EYE SYSTEM 14.3_"
+],
+"n": 1
+},
+{
+"t": 0.33,
+"new": [],
+"n": 1
+},
+{
+"t": 0.67,
+"new": [],
+"n": 1
+},
+{
+"t": 1.0,
+"new": [],
+"n": 1
+},
+{
+"t": 1.33,
+"new": [
+"WORLD/EYE SYSTEM 1_"
+],
+"n": 1
+},
+{
+"t": 1.67,
+"new": [
+"RUN CHA _"
+],
+"n": 2
+},
+{
+"t": 2.0,
+"new": [
+"RUN CHAPTER 10"
+],
+"n": 2
+},
+{
+"t": 2.33,
+"new": [
+"RUN CHAPTER 16 _"
+],
+"n": 2
+},
+{
+"t": 2.67,
+"new": [],
+"n": 2
+},
+{
+"t": 3.0,
+"new": [
+"t + peeooeces tittttttttttt +4444",
+"+ +++ t + toe",
+"+++ tee toe +o",
+"+o+ +++ +++ tee",
+"+e ++. tee",
+"+++ eee eeeeee ee ee eee"
+],
+"n": 6
+},
+{
+"t": 3.33,
+"new": [
+". mi: ssosesesssssgss"
+],
+"n": 3
+},
+{
+"t": 3.67,
+"new": [
+"RUN CHAPTER 16 j"
+],
+"n": 2
+},
+{
+"t": 4.0,
+"new": [
+"site SSSESSERSiSSSagMsiese SEETEMBSSISTREERES 02:"
+],
+"n": 3
+},
+{
+"t": 4.33,
+"new": [
+"RUN CHAPTER 18"
+],
+"n": 2
+},
+{
+"t": 4.67,
+"new": [],
+"n": 2
+},
+{
+"t": 5.0,
+"new": [],
+"n": 2
+},
+{
+"t": 5.33,
+"new": [],
+"n": 2
+},
+{
+"t": 5.67,
+"new": [
+"G1 82 3 4 89 06 O7"
+],
+"n": 3
+},
+{
+"t": 6.0,
+"new": [
+"416263840566 68"
+],
+"n": 3
+},
+{
+"t": 6.33,
+"new": [
+"Ql ve 33 06 B7"
+],
+"n": 3
+},
+{
+"t": 6.67,
+"new": [],
+"n": 2
+},
+{
+"t": 7.0,
+"new": [],
+"n": 2
+},
+{
+"t": 7.33,
+"new": [
+"THE RED MACK _"
+],
+"n": 1
+},
+{
+"t": 7.67,
+"new": [
+"THE RED MACHINE AT THE _"
+],
+"n": 1
+},
+{
+"t": 8.0,
+"new": [
+"THE RED MACHINE AT THE END OF THE_"
+],
+"n": 1
+},
+{
+"t": 8.33,
+"new": [
+"THE RED MACHINE AT THE END OF THE FUTURE_"
+],
+"n": 1
+},
+{
+"t": 8.67,
+"new": [],
+"n": 0
+}
+],
+"key": "TTOEEEEEEEEEEEEEEEEETEETOEOETEEOTEEMISSOSESESSSSSGSS41626384056668G182348906O7QLVE3306B7RUNCHARUNCHAPTER10RUNCHAPTER16RU"
+},
+{
+"file": "BOOTS/ch03_03_chapter_03.mp4",
+"pid": "boot_ch03_03_chapter_03",
+"filed_ch": 3,
+"announced_ch": 3,
+"announced_votes": {
+"3": 2
+},
+"op": "RUN",
+"frames": 29,
+"lines": [
+"EESESES=SSS=>= a",
+"=E=aa=aBnaannnaa=eeeeeeeeeeeeeee",
+"SSS erences aseece ee :",
+"Eola",
+"_ EESeeeE=E=S=ESEESEamananaESeeeeeeeeEeS SS",
+"SSeS",
+"'SYGF (SURRYI)",
+"et 7 MEROT\"TEZ (OGG1T aan",
+"f EGEN) (eeeR",
+"E71) + (6N8) (eeen",
+"' TFRGS) [I (eeees)",
+"(063 eeee0)",
+"aT) HE) (0886)",
+"1110108 SBIGEDAEBIR",
+"OREGRE' EREAUD SRAREESIFER",
+"(ee8 [SY6FG6X (SREBAB( (SURRYT)",
+"1E6806 (CKBI\"T8SAL (MEROTTE2 ([AGGITARNI",
+"enageesi ERR] [GEB) (WHEZ EGEN] (eee",
+"008) BRBR E71) (BHB) (een",
+"1008 TROV___EHYETS EEYS SHEEGE) (SHEF)",
+"1008 ITERBETFR6G6) (80801\"(TGOH (68088)",
+"1008 (883) EX8I 08880)",
+"1861 (006) #071) (8HE) (6806)",
+"TTIOBRERGS ////(01081 IBE1__DIGD ([OBSBIGEBAEBIR",
+"CORECSCRRER OREGRE* (EREADD] IRESRAREESIRER",
+"(008 [SY6FG6% (SREBAB( (SURBYI)",
+"160006 (CkeI\"TeSAl (HEROT\"TE2 (AGGI\"TARNI",
+"enageee = 6ERAR] =: IGEB) =_ (HREZ EGEN] (880R",
+"1008 BRBR E71) (6NB) (eeen",
+"1000 (ROW___EWYETS EEYS SHEEGE) (SHEF)",
+"1008 ITERBETFRGEG) (80881\"(TGOH (08088)",
+"1008 (882) EXBI 68880)",
+"1061 (006) #071) [EWE] (6886)",
+"TTIOBBRERES ////(0108I 11BB1__DIGD( [OBSBIGEBAEBIR",
+"CORECSCRRER (ORECRE\" (EREADD] = IRESRAREESIRER",
+"(068 [SY6F66% (SREBAB( (SURBYT)",
+"E6806 (CKOI-\"TOSAT (HEROT\"\"E2 (AGGITARN)",
+"enageee ERROR] IGEB) (WREZ EGEN] [880R",
+"1008 BxBR E71) (BNB) (eean",
+"1008 (ROW___EHYETS EEYS SHEEGE) (SHEF)",
+"1008 ITERBETFRES) (80881\"\"(TGOH (08088)",
+"1008 (882) EX6I 68880)",
+"1001 (008) #071] EWE) (8886)",
+"TTIGBERERES //// (81081 TIBB1_DID( (OBSBIGEBXEBIR",
+"RUN CHAPTER _",
+"(068 ISY6FG6% (SREBAB( (SURBYT)",
+"1E0806 (CKeI\"TeSAL (HEROT\"TEZ = AGGITARN)",
+"enageee ERROR) (GEB) (WREZ EGEN)] 1 888R",
+"1008] BRBR E71) (BNB) (eean",
+"1008 TROW___EHYETS EEYS SMEEGE) (SHEF)",
+"1008 ITERBETFRES) (80601\"\"(TGON (88088)",
+"1008 (083) EX6I 68880)",
+"1061 (008) #071) (EWE) (886)",
+"TTIOBRERES = //// (81081 118B1__DIO0 (OG#B1GEBAEBIE",
+"CORECSCRRER ORECRE* (EREAUD] IRESRAREESIRER",
+"RUN CHAPTER 3",
+"(068 ISY6F66% (SREBAB( (SURBYI)",
+"1E806 (CKeI\"TSAl (HEROT\"TE2 AGGITARN)",
+"anngeee ERR] 1GEB) =- (HREZ EGEN] (88R",
+"1008 BXBR 71) (BNB) (eeaNn",
+"1608 TROW___EHYETS EEYS SHEEGE) (SEF)",
+"10081 ITERBETFRES) (80681\"\"(TGON (06088)",
+"16881 (083) 862% EX6I 68880)",
+"10811 (008) #0711 [EWE] (0886)",
+"TTIORKRES ////(8108I 11881__DIGB( (8#BIGEBAEBIE",
+"Ye soeses o",
+"et YT) on**",
+"THE MACH_",
+"THE MACHINE THAT We",
+"THE MACHINE THAT WANTED THE_",
+"THE MACHINE THAT WANTED THE REST OF_",
+"re MACHINE THAT WANTED THE REST OF YOU",
+"ze MACHINE THAT WANTED THE REST OF YOU j",
+"THE MACHINE THAT WANTED THE REST OF YOU",
+": MACHINE THAT WANTED THE REST OF YOU",
+"Ses aay"
+],
+"timeline": [
+{
+"t": 0.0,
+"new": [],
+"n": 0
+},
+{
+"t": 0.33,
+"new": [],
+"n": 0
+},
+{
+"t": 0.67,
+"new": [
+"EESESES=SSS=>= a",
+"=E=aa=aBnaannnaa=eeeeeeeeeeeeeee",
+"SSS erences aseece ee :",
+"Eola",
+"_ EESeeeE=E=S=ESEESEamananaESeeeeeeeeEeS SS",
+"SSeS"
+],
+"n": 8
+},
+{
+"t": 1.0,
+"new": [],
+"n": 0
+},
+{
+"t": 1.33,
+"new": [
+"'SYGF (SURRYI)",
+"et 7 MEROT\"TEZ (OGG1T aan",
+"f EGEN) (eeeR",
+"E71) + (6N8) (eeen",
+"' TFRGS) [I (eeees)",
+"(063 eeee0)",
+"aT) HE) (0886)",
+"1110108 SBIGEDAEBIR",
+"OREGRE' EREAUD SRAREESIFER"
+],
+"n": 9
+},
+{
+"t": 1.67,
+"new": [
+"(ee8 [SY6FG6X (SREBAB( (SURRYT)",
+"1E6806 (CKBI\"T8SAL (MEROTTE2 ([AGGITARNI",
+"enageesi ERR] [GEB) (WHEZ EGEN] (eee",
+"008) BRBR E71) (BHB) (een",
+"1008 TROV___EHYETS EEYS SHEEGE) (SHEF)",
+"1008 ITERBETFR6G6) (80801\"(TGOH (68088)",
+"1008 (883) EX8I 08880)",
+"1861 (006) #071) (8HE) (6806)",
+"TTIOBRERGS ////(01081 IBE1__DIGD ([OBSBIGEBAEBIR",
+"CORECSCRRER OREGRE* (EREADD] IRESRAREESIRER"
+],
+"n": 10
+},
+{
+"t": 2.0,
+"new": [
+"(008 [SY6FG6% (SREBAB( (SURBYI)",
+"160006 (CkeI\"TeSAl (HEROT\"TE2 (AGGI\"TARNI",
+"enageee = 6ERAR] =: IGEB) =_ (HREZ EGEN] (880R",
+"1008 BRBR E71) (6NB) (eeen",
+"1000 (ROW___EWYETS EEYS SHEEGE) (SHEF)",
+"1008 ITERBETFRGEG) (80881\"(TGOH (08088)",
+"1008 (882) EXBI 68880)",
+"1061 (006) #071) [EWE] (6886)",
+"TTIOBBRERES ////(0108I 11BB1__DIGD( [OBSBIGEBAEBIR",
+"CORECSCRRER (ORECRE\" (EREADD] = IRESRAREESIRER"
+],
+"n": 10
+},
+{
+"t": 2.33,
+"new": [
+"(068 [SY6F66% (SREBAB( (SURBYT)",
+"E6806 (CKOI-\"TOSAT (HEROT\"\"E2 (AGGITARN)",
+"enageee ERROR] IGEB) (WREZ EGEN] [880R",
+"1008 BxBR E71) (BNB) (eean",
+"1008 (ROW___EHYETS EEYS SHEEGE) (SHEF)",
+"1008 ITERBETFRES) (80881\"\"(TGOH (08088)",
+"1008 (882) EX6I 68880)",
+"1001 (008) #071] EWE) (8886)",
+"TTIGBERERES //// (81081 TIBB1_DID( (OBSBIGEBXEBIR",
+"RUN CHAPTER _"
+],
+"n": 11
+},
+{
+"t": 2.67,
+"new": [
+"(068 ISY6FG6% (SREBAB( (SURBYT)",
+"1E0806 (CKeI\"TeSAL (HEROT\"TEZ = AGGITARN)",
+"enageee ERROR) (GEB) (WREZ EGEN)] 1 888R",
+"1008] BRBR E71) (BNB) (eean",
+"1008 TROW___EHYETS EEYS SMEEGE) (SHEF)",
+"1008 ITERBETFRES) (80601\"\"(TGON (88088)",
+"1008 (083) EX6I 68880)",
+"1061 (008) #071) (EWE) (886)",
+"TTIOBRERES = //// (81081 118B1__DIO0 (OG#B1GEBAEBIE",
+"CORECSCRRER ORECRE* (EREAUD] IRESRAREESIRER",
+"RUN CHAPTER 3"
+],
+"n": 11
+},
+{
+"t": 3.0,
+"new": [
+"(068 ISY6F66% (SREBAB( (SURBYI)",
+"1E806 (CKeI\"TSAl (HEROT\"TE2 AGGITARN)",
+"anngeee ERR] 1GEB) =- (HREZ EGEN] (88R",
+"1008 BXBR 71) (BNB) (eeaNn",
+"1608 TROW___EHYETS EEYS SHEEGE) (SEF)",
+"10081 ITERBETFRES) (80681\"\"(TGON (06088)",
+"16881 (083) 862% EX6I 68880)",
+"10811 (008) #0711 [EWE] (0886)",
+"TTIORKRES ////(8108I 11881__DIGB( (8#BIGEBAEBIE"
+],
+"n": 11
+},
+{
+"t": 3.33,
+"new": [],
+"n": 0
+},
+{
+"t": 3.67,
+"new": [],
+"n": 0
+},
+{
+"t": 4.0,
+"new": [],
+"n": 0
+},
+{
+"t": 4.33,
+"new": [
+"Ye soeses o"
+],
+"n": 3
+},
+{
+"t": 4.67,
+"new": [
+"et YT) on**"
+],
+"n": 2
+},
+{
+"t": 5.0,
+"new": [
+"THE MACH_"
+],
+"n": 1
+},
+{
+"t": 5.33,
+"new": [
+"THE MACHINE THAT We"
+],
+"n": 1
+},
+{
+"t": 5.67,
+"new": [
+"THE MACHINE THAT WANTED THE_"
+],
+"n": 1
+},
+{
+"t": 6.0,
+"new": [
+"THE MACHINE THAT WANTED THE REST OF_"
+],
+"n": 1
+},
+{
+"t": 6.33,
+"new": [
+"re MACHINE THAT WANTED THE REST OF YOU"
+],
+"n": 1
+},
+{
+"t": 6.67,
+"new": [
+"ze MACHINE THAT WANTED THE REST OF YOU j"
+],
+"n": 1
+},
+{
+"t": 7.0,
+"new": [
+"THE MACHINE THAT WANTED THE REST OF YOU"
+],
+"n": 2
+},
+{
+"t": 7.33,
+"new": [],
+"n": 1
+},
+{
+"t": 7.67,
+"new": [
+": MACHINE THAT WANTED THE REST OF YOU"
+],
+"n": 1
+},
+{
+"t": 8.0,
+"new": [],
+"n": 0
+},
+{
+"t": 8.33,
+"new": [],
+"n": 0
+},
+{
+"t": 8.67,
+"new": [],
+"n": 0
+},
+{
+"t": 9.0,
+"new": [],
+"n": 0
+},
+{
+"t": 9.33,
+"new": [
+"Ses aay"
+],
+"n": 1
+}
+],
+"key": "TFRGSIEEEESSYGFSURRYI008SY6FG6SREBABSURBYI063EEEE0068ISY6F66SREBABSURBYI068ISY6FG6SREBABSURBYT068SY6F66SREBABSURBYTEE8SY"
+},
+{
+"file": "BOOTS/ch03_04_chapter_03.mp4",
+"pid": "boot_ch03_04_chapter_03",
+"filed_ch": 3,
+"announced_ch": 3,
+"announced_votes": {
+"3": 1
+},
+"op": "RUN",
+"frames": 29,
+"lines": [
+"a ial",
+"1943",
+"1962",
+"EXECUTE: RUN CHAI",
+"EXECUTE: RUN CHAPTER 03 j",
+"THE Mi_",
+"THE MACHINE THAT WA",
+"THE MACHINE THAT WANTED THE REST",
+"THE MACHINE THAT WANTED THE REST OF YOU",
+"alte",
+"i: MACHINE THAT WANTED THE REST OF YOU",
+"ee MACHINE THAT WANTED THE REST OF YOU",
+"rim a",
+"7 * ate 2 OL. Sar ty 02% r )",
+"- See Shy A Srp pT sie Pah eer se Lg a\"",
+"So Saw Ao en ap stave tire Sat Ete iA Dug = uae B Rr",
+"ats ath SSS OR: rer psc eyes tee ty BNA E TE ie +e > Gee",
+"i an PERT Ohad ERE sae ris Png bee oan ere",
+"ah wae heh POLE oe 15 SAS Sep et mm",
+"eee PER La ke be hed SS Ene eto Res",
+"7 ere 2 eee es Y r"
+],
+"timeline": [
+{
+"t": 0.0,
+"new": [],
+"n": 0
+},
+{
+"t": 0.33,
+"new": [
+"a ial"
+],
+"n": 1
+},
+{
+"t": 0.67,
+"new": [
+"1943"
+],
+"n": 1
+},
+{
+"t": 1.0,
+"new": [
+"1962"
+],
+"n": 1
+},
+{
+"t": 1.33,
+"new": [],
+"n": 1
+},
+{
+"t": 1.67,
+"new": [
+"EXECUTE: RUN CHAI"
+],
+"n": 1
+},
+{
+"t": 2.0,
+"new": [
+"EXECUTE: RUN CHAPTER 03 j"
+],
+"n": 1
+},
+{
+"t": 2.33,
+"new": [],
+"n": 0
+},
+{
+"t": 2.67,
+"new": [],
+"n": 1
+},
+{
+"t": 3.0,
+"new": [],
+"n": 0
+},
+{
+"t": 3.33,
+"new": [],
+"n": 0
+},
+{
+"t": 3.67,
+"new": [],
+"n": 0
+},
+{
+"t": 4.0,
+"new": [],
+"n": 0
+},
+{
+"t": 4.33,
+"new": [],
+"n": 0
+},
+{
+"t": 4.67,
+"new": [],
+"n": 0
+},
+{
+"t": 5.0,
+"new": [
+"THE Mi_"
+],
+"n": 1
+},
+{
+"t": 5.33,
+"new": [
+"THE MACHINE THAT WA"
+],
+"n": 1
+},
+{
+"t": 5.67,
+"new": [
+"THE MACHINE THAT WANTED THE REST"
+],
+"n": 1
+},
+{
+"t": 6.0,
+"new": [
+"THE MACHINE THAT WANTED THE REST OF YOU"
+],
+"n": 1
+},
+{
+"t": 6.33,
+"new": [],
+"n": 1
+},
+{
+"t": 6.67,
+"new": [
+"alte",
+"i: MACHINE THAT WANTED THE REST OF YOU"
+],
+"n": 2
+},
+{
+"t": 7.0,
+"new": [
+"ee MACHINE THAT WANTED THE REST OF YOU"
+],
+"n": 1
+},
+{
+"t": 7.33,
+"new": [],
+"n": 1
+},
+{
+"t": 7.67,
+"new": [],
+"n": 1
+},
+{
+"t": 8.0,
+"new": [],
+"n": 0
+},
+{
+"t": 8.33,
+"new": [
+"rim a"
+],
+"n": 1
+},
+{
+"t": 8.67,
+"new": [],
+"n": 0
+},
+{
+"t": 9.0,
+"new": [],
+"n": 0
+},
+{
+"t": 9.33,
+"new": [
+"7 * ate 2 OL. Sar ty 02% r )",
+"- See Shy A Srp pT sie Pah eer se Lg a\"",
+"So Saw Ao en ap stave tire Sat Ete iA Dug = uae B Rr",
+"ats ath SSS OR: rer psc eyes tee ty BNA E TE ie +e > Gee",
+"i an PERT Ohad ERE sae ris Png bee oan ere",
+"ah wae heh POLE oe 15 SAS Sep et mm",
+"eee PER La ke be hed SS Ene eto Res",
+"7 ere 2 eee es Y r"
+],
+"n": 8
+}
+],
+"key": "SEESHYASRPPTSIEPAHEERSELGA194319627ATE2OLSARTY02R7ERE2EEEESYREXECUTERUNCHAIEXECUTERUNCHAPTER03JSOSAWAOENAPSTAVETIRESATET"
+},
+{
+"file": "BOOTS/ch03_05_run_chapter_03.mp4",
+"pid": "boot_ch03_05_run_chapter_03",
+"filed_ch": 3,
+"announced_ch": 3,
+"announced_votes": {
+"3": 7
+},
+"op": "RUN",
+"frames": 29,
+"lines": [
+"RUN CHi",
+"RUN CHAPTER 3 - SCENM",
+"RUN CHAPTER 3 - SCENE 62",
+"EXEC]",
+"RUN CHAPTER 3 - SCENE 02",
+"EXECUTE BODY",
+"RUN CHAPTER 3 - SCENE 82",
+"EXECUTE BODY IN",
+"RUN CHAPTER 3 - SCENE 2",
+"EXECUTE BODY INSTRUCTIO",
+"EXECUTE BODY INSTRUCTIONS",
+"( 2263: 00 : 8086S",
+"FEEL",
+"TURN TAIL.FANACT",
+"INIFUI",
+"MOVE a2",
+"(ULNSH BODY CANT) x R:",
+"cug alae",
+"oe ( 82:08 2009",
+"INIFUIEN.",
+"CHEMP_ NAG FEEL",
+"MOVE a Po",
+"CULNSH BODY CHNT) %",
+"CURELL a",
+"ENRPLECE o",
+"EREryj o",
+"( 006 : 2866",
+"Lf re cae\"",
+"f es INCUASE ICRM D",
+"MOVE te",
+"(ULNSH BODY CHNT) * i",
+"CURELL yu. B",
+"MARLEP dg",
+"Y 88006: ates",
+"yoN FEEL",
+"Li i cat",
+"cheno inner one FEEL",
+"DONTN BUEG i neue icon DONE",
+"CHORE _",
+"CHOREOGRAPHY _",
+"CHOREOGRAPHY FOR j",
+"CHOREOGRAPHY FOR FREEDj",
+"CHOREOGRAPHY FOR FREEDOM_",
+"(SOUP INL a D",
+"peg ey",
+"GS Woy",
+"= OU) OU yet",
+"(fa i> __aal",
+"a 7 - Sour 4 sour sour"
+],
+"timeline": [
+{
+"t": 0.0,
+"new": [
+"RUN CHi"
+],
+"n": 1
+},
+{
+"t": 0.33,
+"new": [
+"RUN CHAPTER 3 - SCENM"
+],
+"n": 1
+},
+{
+"t": 0.67,
+"new": [
+"RUN CHAPTER 3 - SCENE 62",
+"EXEC]"
+],
+"n": 2
+},
+{
+"t": 1.0,
+"new": [
+"RUN CHAPTER 3 - SCENE 02",
+"EXECUTE BODY"
+],
+"n": 2
+},
+{
+"t": 1.33,
+"new": [
+"RUN CHAPTER 3 - SCENE 82",
+"EXECUTE BODY IN"
+],
+"n": 2
+},
+{
+"t": 1.67,
+"new": [
+"RUN CHAPTER 3 - SCENE 2",
+"EXECUTE BODY INSTRUCTIO"
+],
+"n": 2
+},
+{
+"t": 2.0,
+"new": [
+"EXECUTE BODY INSTRUCTIONS"
+],
+"n": 2
+},
+{
+"t": 2.33,
+"new": [],
+"n": 2
+},
+{
+"t": 2.67,
+"new": [
+"( 2263: 00 : 8086S"
+],
+"n": 1
+},
+{
+"t": 3.0,
+"new": [],
+"n": 1
+},
+{
+"t": 3.33,
+"new": [
+"FEEL",
+"TURN TAIL.FANACT",
+"INIFUI"
+],
+"n": 3
+},
+{
+"t": 3.67,
+"new": [
+"MOVE a2",
+"(ULNSH BODY CANT) x R:",
+"cug alae",
+"oe ( 82:08 2009",
+"INIFUIEN.",
+"CHEMP_ NAG FEEL"
+],
+"n": 7
+},
+{
+"t": 4.0,
+"new": [
+"MOVE a Po",
+"CULNSH BODY CHNT) %",
+"CURELL a",
+"ENRPLECE o",
+"EREryj o",
+"( 006 : 2866",
+"Lf re cae\"",
+"f es INCUASE ICRM D"
+],
+"n": 9
+},
+{
+"t": 4.33,
+"new": [
+"MOVE te",
+"(ULNSH BODY CHNT) * i",
+"CURELL yu. B",
+"MARLEP dg",
+"Y 88006: ates",
+"yoN FEEL",
+"Li i cat",
+"cheno inner one FEEL",
+"DONTN BUEG i neue icon DONE"
+],
+"n": 9
+},
+{
+"t": 4.67,
+"new": [
+"CHORE _"
+],
+"n": 1
+},
+{
+"t": 5.0,
+"new": [
+"CHOREOGRAPHY _"
+],
+"n": 1
+},
+{
+"t": 5.33,
+"new": [
+"CHOREOGRAPHY FOR j"
+],
+"n": 1
+},
+{
+"t": 5.67,
+"new": [
+"CHOREOGRAPHY FOR FREEDj"
+],
+"n": 1
+},
+{
+"t": 6.0,
+"new": [
+"CHOREOGRAPHY FOR FREEDOM_"
+],
+"n": 1
+},
+{
+"t": 6.33,
+"new": [],
+"n": 1
+},
+{
+"t": 6.67,
+"new": [],
+"n": 1
+},
+{
+"t": 7.0,
+"new": [],
+"n": 1
+},
+{
+"t": 7.33,
+"new": [],
+"n": 1
+},
+{
+"t": 7.67,
+"new": [],
+"n": 1
+},
+{
+"t": 8.0,
+"new": [
+"(SOUP INL a D"
+],
+"n": 1
+},
+{
+"t": 8.33,
+"new": [
+"peg ey"
+],
+"n": 1
+},
+{
+"t": 8.67,
+"new": [
+"GS Woy"
+],
+"n": 1
+},
+{
+"t": 9.0,
+"new": [
+"= OU) OU yet",
+"(fa i> __aal",
+"a 7 - Sour 4 sour sour"
+],
+"n": 3
+},
+{
+"t": 9.33,
+"new": [],
+"n": 0
+}
+],
+"key": "00628662263008086SSOUPINLADULNSHBODYCANTXRULNSHBODYCHNTIFAIAALOUOUYETCHEMPNAGFEELCHORECHOREOGRAPHYFORFREEDOMCHOREOGRAPHY"
+},
+{
+"file": "BOOTS/ch03_06_run_chapter_03.mp4",
+"pid": "boot_ch03_06_run_chapter_03",
+"filed_ch": 3,
+"announced_ch": 3,
+"announced_votes": {
+"3": 20,
+"93": 1
+},
+"op": "RUN",
+"frames": 26,
+"lines": [
+"cL eee",
+"me TEP P ELL *",
+"an COPPELL",
+"oan POPPE",
+"acne COC",
+"EERE EP",
+"SEAEEEE EERE",
+"CCECECEEE EEE",
+"EEEREE EERE EE",
+"CECE eee",
+"PEEP",
+"PCEEEEEEEE EE]",
+"RUN CHAP",
+"RUN CHAPTER 3 - SCEMj",
+"RUN CHAPTER 3 - SCENE 5",
+"DEFINE",
+"DEFINE ROUTE",
+"DEFINE ROUTE REMOVE Ci",
+"RUN CHAPTER 3 - SCENE 05",
+"DEFINE ROUTE REMOVE CHOICE",
+"DEFINE ROUTE REMOVE CHOICE j",
+"RUN CHAPTER 93 - SCENE 5",
+"RUN CHAPTER 3 - SCENE 95",
+"NOTH",
+"NOTHING REMA_",
+"NOTHING REMAINED UN_",
+"NOTHING REMAINED UNDECIDED",
+"e ad) v3 4"
+],
+"timeline": [
+{
+"t": 0.0,
+"new": [],
+"n": 0
+},
+{
+"t": 0.33,
+"new": [],
+"n": 0
+},
+{
+"t": 0.67,
+"new": [
+"cL eee",
+"me TEP P ELL *",
+"an COPPELL",
+"oan POPPE",
+"acne COC",
+"EERE EP",
+"SEAEEEE EERE",
+"CCECECEEE EEE",
+"EEEREE EERE EE",
+"CECE eee",
+"PEEP",
+"PCEEEEEEEE EE]"
+],
+"n": 12
+},
+{
+"t": 1.0,
+"new": [
+"RUN CHAP"
+],
+"n": 1
+},
+{
+"t": 1.33,
+"new": [
+"RUN CHAPTER 3 - SCEMj"
+],
+"n": 1
+},
+{
+"t": 1.67,
+"new": [
+"RUN CHAPTER 3 - SCENE 5",
+"DEFINE"
+],
+"n": 2
+},
+{
+"t": 2.0,
+"new": [
+"DEFINE ROUTE"
+],
+"n": 2
+},
+{
+"t": 2.33,
+"new": [
+"DEFINE ROUTE REMOVE Ci"
+],
+"n": 2
+},
+{
+"t": 2.67,
+"new": [
+"RUN CHAPTER 3 - SCENE 05",
+"DEFINE ROUTE REMOVE CHOICE"
+],
+"n": 2
+},
+{
+"t": 3.0,
+"new": [],
+"n": 2
+},
+{
+"t": 3.33,
+"new": [],
+"n": 2
+},
+{
+"t": 3.67,
+"new": [],
+"n": 2
+},
+{
+"t": 4.0,
+"new": [],
+"n": 2
+},
+{
+"t": 4.33,
+"new": [],
+"n": 2
+},
+{
+"t": 4.67,
+"new": [
+"DEFINE ROUTE REMOVE CHOICE j"
+],
+"n": 2
+},
+{
+"t": 5.0,
+"new": [],
+"n": 2
+},
+{
+"t": 5.33,
+"new": [
+"RUN CHAPTER 93 - SCENE 5"
+],
+"n": 2
+},
+{
+"t": 5.67,
+"new": [
+"RUN CHAPTER 3 - SCENE 95"
+],
+"n": 2
+},
+{
+"t": 6.0,
+"new": [
+"NOTH"
+],
+"n": 3
+},
+{
+"t": 6.33,
+"new": [
+"NOTHING REMA_"
+],
+"n": 3
+},
+{
+"t": 6.67,
+"new": [
+"NOTHING REMAINED UN_"
+],
+"n": 3
+},
+{
+"t": 7.0,
+"new": [
+"NOTHING REMAINED UNDECIDED"
+],
+"n": 3
+},
+{
+"t": 7.33,
+"new": [],
+"n": 3
+},
+{
+"t": 7.67,
+"new": [],
+"n": 3
+},
+{
+"t": 8.0,
+"new": [],
+"n": 3
+},
+{
+"t": 8.33,
+"new": [
+"e ad) v3 4"
+],
+"n": 1
+}
+],
+"key": "CCECECEEEEEECECEEEEDEFINEDEFINEROUTEDEFINEROUTEREMOVECHOICEDEFINEROUTEREMOVECHOICEJDEFINEROUTEREMOVECIEEEREEEEREEEEEREEP"
+},
+{
+"file": "BOOTS/ch03_07_of_system_boot.mp4",
+"pid": "boot_ch03_07_of_system_boot",
+"filed_ch": 3,
+"announced_ch": 3,
+"announced_votes": {
+"63": 1,
+"3": 6
+},
+"op": "RUN",
+"frames": 29,
+"lines": [
+"ee EEE EEE",
+"WORLD/eye SYSTEM 14.3",
+"RUN Cj",
+"RUN CHAPTER 63 ff",
+"RUN CHAPTER 3 - SCENE 6",
+"RUN CHAPTER 3 - SCENE 1",
+"INITIAI",
+"INITIALIZE SENSORY ff",
+"ellie SENSORY OVERRIDE",
+"INITIALIZE SENSORY OVERRIDE",
+"WORLD/eye SYSTEM 14.3 1",
+"a ell",
+"WORLD/eye SYSTEM 14.3 61",
+"a iia",
+"mye S",
+"THE MACHT",
+"THE MACHINE SUPP",
+"wil 4",
+"THE MACHINE SUPPLIED TH",
+"THE MACHINE SUPPLIED THE EVI",
+"THE MACHINE SUPPLIED THE EVIDENCE a",
+"THE MACHINE SUPPLIED THE EVIDENCE",
+"le Anke",
+"ques",
+"POO AL GSAUNEAR",
+"nEACH OutEe",
+"Cone",
+"Es EF) CO",
+"Rf f Tec 2 pbbanane : j"
+],
+"timeline": [
+{
+"t": 0.0,
+"new": [
+"ee EEE EEE"
+],
+"n": 1
+},
+{
+"t": 0.33,
+"new": [],
+"n": 0
+},
+{
+"t": 0.67,
+"new": [
+"WORLD/eye SYSTEM 14.3"
+],
+"n": 1
+},
+{
+"t": 1.0,
+"new": [],
+"n": 1
+},
+{
+"t": 1.33,
+"new": [],
+"n": 1
+},
+{
+"t": 1.67,
+"new": [
+"RUN Cj"
+],
+"n": 2
+},
+{
+"t": 2.0,
+"new": [
+"RUN CHAPTER 63 ff"
+],
+"n": 2
+},
+{
+"t": 2.33,
+"new": [
+"RUN CHAPTER 3 - SCENE 6"
+],
+"n": 2
+},
+{
+"t": 2.67,
+"new": [
+"RUN CHAPTER 3 - SCENE 1"
+],
+"n": 2
+},
+{
+"t": 3.0,
+"new": [
+"INITIAI"
+],
+"n": 3
+},
+{
+"t": 3.33,
+"new": [
+"INITIALIZE SENSORY ff"
+],
+"n": 3
+},
+{
+"t": 3.67,
+"new": [
+"ellie SENSORY OVERRIDE"
+],
+"n": 3
+},
+{
+"t": 4.0,
+"new": [
+"INITIALIZE SENSORY OVERRIDE"
+],
+"n": 3
+},
+{
+"t": 4.33,
+"new": [
+"WORLD/eye SYSTEM 14.3 1",
+"a ell"
+],
+"n": 3
+},
+{
+"t": 4.67,
+"new": [],
+"n": 2
+},
+{
+"t": 5.0,
+"new": [
+"WORLD/eye SYSTEM 14.3 61"
+],
+"n": 3
+},
+{
+"t": 5.33,
+"new": [],
+"n": 0
+},
+{
+"t": 5.67,
+"new": [],
+"n": 3
+},
+{
+"t": 6.0,
+"new": [
+"a iia",
+"mye S",
+"THE MACHT"
+],
+"n": 5
+},
+{
+"t": 6.33,
+"new": [
+"THE MACHINE SUPP"
+],
+"n": 3
+},
+{
+"t": 6.67,
+"new": [
+"wil 4",
+"THE MACHINE SUPPLIED TH"
+],
+"n": 4
+},
+{
+"t": 7.0,
+"new": [
+"THE MACHINE SUPPLIED THE EVI"
+],
+"n": 4
+},
+{
+"t": 7.33,
+"new": [
+"THE MACHINE SUPPLIED THE EVIDENCE a"
+],
+"n": 3
+},
+{
+"t": 7.67,
+"new": [
+"THE MACHINE SUPPLIED THE EVIDENCE"
+],
+"n": 3
+},
+{
+"t": 8.0,
+"new": [
+"le Anke"
+],
+"n": 1
+},
+{
+"t": 8.33,
+"new": [
+"ques",
+"POO AL GSAUNEAR",
+"nEACH OutEe",
+"Cone"
+],
+"n": 5
+},
+{
+"t": 8.67,
+"new": [],
+"n": 0
+},
+{
+"t": 9.0,
+"new": [
+"Es EF) CO",
+"Rf f Tec 2 pbbanane : j"
+],
+"n": 2
+},
+{
+"t": 9.33,
+"new": [],
+"n": 0
+}
+],
+"key": "CONEESEFCOINITIAIINITIALIZESENSORYOVERRIDEINITIALIZESENSORYFFPOOALGSAUNEARRUNCHAPTER3SCENE1RUNCHAPTER3SCENE6RUNCHAPTER63"
+},
+{
+"file": "BOOTS/ch03_08_world_eye_system_14_3_run.mp4",
+"pid": "boot_ch03_08_world_eye_system_14_3_run",
+"filed_ch": 3,
+"announced_ch": 3,
+"announced_votes": {
+"63": 1,
+"3": 8
+},
+"op": "RUN",
+"frames": 29,
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 63 f",
+"RUN CHAPTER 3",
+"ADD MEAPTE",
+"RUN CHAPTER",
+"ADD CHAPTER 3",
+"ADD MEASUREMENT POINT 1",
+"ADD MEASUREMENT POINT 2",
+"ADD MEASUREMENT wail a",
+"RUN CHAPTER = e",
+"ADD MEASUREMENT POINT 3",
+"ADD MEASUREMENT POINT 04",
+"EXPAN",
+"ADD eeoaper POINT 1 x",
+"ADD MEASUREMENT POINT e",
+"ADD MEASUREMENT POINT",
+"EXPAND [] TO",
+"RUN CHAPTER i 2",
+"ADD MEASUREMENT POINT 1 K",
+"EXPAND [] TO INCLUDE",
+"ADD eo POINT 1 +",
+"ADD MEASUREMENT POINT 4",
+"EXPAND [] TO INCLUDE ALL POIN",
+"ADD esnaesT POINT 1 4\"",
+"ADD MEASUREMENT or 2",
+"EXPAND [] TO INCLUDE ALL POINTS",
+"ADD MEAS",
+"ADD MEASUREMENT POINT as",
+"EXPAND [(] TO INCLUDE ALL POINTS J",
+"RUN CHAI R03 va A",
+"ADD MEASHYR ea",
+"RUN] CH a",
+"ADDLMEASUIREMENT POINT WT",
+"EXPAND [[] TO INCLUDE ALL POINTS B",
+"RUN C aPTER 3 +",
+"APD MEASUREMENT POINT 1",
+"a 1D 5 5 7",
+"pe MEASUREMENT POINT =",
+"EXPAND cro INCLUDE ALL POINTS >",
+"RELATION UPDATED",
+"A FASUREMENT POINT 1",
+"SASUNEMENT POINT 92 +",
+"ekrAlin (1 iter lMe 01 POIs",
+"AID MEASUREMENT POINT 01",
+"AbD kaa POINT 2 +",
+"ADD 5S Le: 2G >-S",
+"EXPAND [1] TO INCLUDE ALL POINTS",
+">THE MACHINE THA",
+"Abb es cath POINT 3 +",
+"ADD MEASUR ora oe",
+"Jel cle = ' : 1 * =48",
+"> THE MACHINE THAT WANTED THE Rig",
+"> bop re POINT 1 +",
+"> ADD SUR PE RZ",
+"> ADD MEASUREMEN POINTALL POINTS",
+"> SANT . 1",
+"> THE MACHINE THAT WANTED THE REST OF you",
+"AUN CHAPTER 3",
+"> Wop ire POINT 1 +",
+"> ADD -NEASUF >GINF-BE",
+"> PANT 4",
+"> THE MACHINE THAT WANTED THE REST OF You f",
+"> = POINT 1 +",
+"> Wop aie: POINT 1 +",
+"> ADD ASHER ove ne",
+"> POND a 1 .",
+"= . elt bal",
+"Ser aa 5 a",
+"ESEEEEEE_ =a",
+"Fie oles ae = *",
+"e ere",
+"fe 5 ' Pek aid",
+"a ae Elle",
+"+. oo age"
+],
+"timeline": [
+{
+"t": 0.0,
+"new": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 63 f"
+],
+"n": 2
+},
+{
+"t": 0.33,
+"new": [
+"RUN CHAPTER 3"
+],
+"n": 2
+},
+{
+"t": 0.67,
+"new": [
+"ADD MEAPTE"
+],
+"n": 3
+},
+{
+"t": 1.0,
+"new": [
+"RUN CHAPTER",
+"ADD CHAPTER 3"
+],
+"n": 3
+},
+{
+"t": 1.33,
+"new": [
+"ADD MEASUREMENT POINT 1",
+"ADD MEASUREMENT POINT 2",
+"ADD MEASUREMENT wail a"
+],
+"n": 4
+},
+{
+"t": 1.67,
+"new": [
+"RUN CHAPTER = e",
+"ADD MEASUREMENT POINT 3",
+"ADD MEASUREMENT POINT 04",
+"EXPAN"
+],
+"n": 7
+},
+{
+"t": 2.0,
+"new": [
+"ADD eeoaper POINT 1 x",
+"ADD MEASUREMENT POINT e",
+"ADD MEASUREMENT POINT",
+"EXPAND [] TO"
+],
+"n": 6
+},
+{
+"t": 2.33,
+"new": [
+"RUN CHAPTER i 2",
+"ADD MEASUREMENT POINT 1 K",
+"EXPAND [] TO INCLUDE"
+],
+"n": 7
+},
+{
+"t": 2.67,
+"new": [
+"ADD eo POINT 1 +",
+"ADD MEASUREMENT POINT 4",
+"EXPAND [] TO INCLUDE ALL POIN"
+],
+"n": 6
+},
+{
+"t": 3.0,
+"new": [
+"ADD esnaesT POINT 1 4\"",
+"ADD MEASUREMENT or 2",
+"EXPAND [] TO INCLUDE ALL POINTS"
+],
+"n": 6
+},
+{
+"t": 3.33,
+"new": [
+"ADD MEAS",
+"ADD MEASUREMENT POINT as",
+"EXPAND [(] TO INCLUDE ALL POINTS J"
+],
+"n": 7
+},
+{
+"t": 3.67,
+"new": [
+"RUN CHAI R03 va A",
+"ADD MEASHYR ea"
+],
+"n": 7
+},
+{
+"t": 4.0,
+"new": [
+"RUN] CH a",
+"ADDLMEASUIREMENT POINT WT",
+"EXPAND [[] TO INCLUDE ALL POINTS B"
+],
+"n": 6
+},
+{
+"t": 4.33,
+"new": [
+"RUN C aPTER 3 +",
+"APD MEASUREMENT POINT 1",
+"a 1D 5 5 7",
+"pe MEASUREMENT POINT ="
+],
+"n": 6
+},
+{
+"t": 4.67,
+"new": [
+"EXPAND cro INCLUDE ALL POINTS >"
+],
+"n": 5
+},
+{
+"t": 5.0,
+"new": [
+"RELATION UPDATED"
+],
+"n": 6
+},
+{
+"t": 5.33,
+"new": [],
+"n": 6
+},
+{
+"t": 5.67,
+"new": [
+"A FASUREMENT POINT 1",
+"SASUNEMENT POINT 92 +",
+"ekrAlin (1 iter lMe 01 POIs"
+],
+"n": 5
+},
+{
+"t": 6.0,
+"new": [
+"AID MEASUREMENT POINT 01",
+"AbD kaa POINT 2 +",
+"ADD 5S Le: 2G >-S",
+"EXPAND [1] TO INCLUDE ALL POINTS",
+">THE MACHINE THA"
+],
+"n": 7
+},
+{
+"t": 6.33,
+"new": [
+"Abb es cath POINT 3 +",
+"ADD MEASUR ora oe",
+"Jel cle = ' : 1 * =48",
+"> THE MACHINE THAT WANTED THE Rig"
+],
+"n": 8
+},
+{
+"t": 6.67,
+"new": [
+"> bop re POINT 1 +",
+"> ADD SUR PE RZ",
+"> ADD MEASUREMEN POINTALL POINTS",
+"> SANT . 1",
+"> THE MACHINE THAT WANTED THE REST OF you"
+],
+"n": 8
+},
+{
+"t": 7.0,
+"new": [
+"AUN CHAPTER 3",
+"> Wop ire POINT 1 +",
+"> ADD -NEASUF >GINF-BE",
+"> PANT 4",
+"> THE MACHINE THAT WANTED THE REST OF You f"
+],
+"n": 8
+},
+{
+"t": 7.33,
+"new": [
+"> = POINT 1 +"
+],
+"n": 6
+},
+{
+"t": 7.67,
+"new": [
+"> Wop aie: POINT 1 +",
+"> ADD ASHER ove ne",
+"> POND a 1 ."
+],
+"n": 8
+},
+{
+"t": 8.0,
+"new": [
+"= . elt bal",
+"Ser aa 5 a"
+],
+"n": 3
+},
+{
+"t": 8.33,
+"new": [],
+"n": 1
+},
+{
+"t": 8.67,
+"new": [
+"ESEEEEEE_ =a",
+"Fie oles ae = *"
+],
+"n": 2
+},
+{
+"t": 9.0,
+"new": [
+"e ere",
+"fe 5 ' Pek aid",
+"a ae Elle"
+],
+"n": 3
+},
+{
+"t": 9.33,
+"new": [
+"+. oo age"
+],
+"n": 1
+}
+],
+"key": "OOAGEELTBALPOINT1ADDNEASUFGINFBEADDASHEROVENEADDMEASUREMENPOINTALLPOINTSADDSURPERZPANT4PONDA1SANT1THEMACHINETHATWANTEDTH"
+}
+]
+}
