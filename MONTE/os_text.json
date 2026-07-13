@@ -1,0 +1,4786 @@
+{
+"engine": "tesseract 5.5.2 \u00b7 x2 gray negate",
+"boots": {
+"boot_act1_01_act_i_opening_sequence": {
+"file": "BOOTS/act1_01_act_i_opening_sequence.mp4",
+"ch": 1,
+"kind": "act",
+"role": null,
+"per_state": {
+"0": [
+"i ON 11 11",
+"ttt ied tt JIL",
+"RUN ACT 01"
+],
+"1": [
+"> RUN ACT 1",
+"> MOVE IMAGE TO VIEW"
+],
+"2": [
+"ACT I THE IMAGE LEAVES Ti"
+],
+"3": []
+},
+"lines": [
+"i ON 11 11",
+"ttt ied tt JIL",
+"RUN ACT 01",
+"> RUN ACT 1",
+"> MOVE IMAGE TO VIEW",
+"ACT I THE IMAGE LEAVES Ti"
+]
+},
+"boot_act1_02_act_i": {
+"file": "BOOTS/act1_02_act_i.mp4",
+"ch": 1,
+"kind": "act",
+"role": null,
+"per_state": {
+"0": [
+"ACT [ (AURE EXRPLITE TERNERS",
+"Receerces: 00:20.00)",
+"Concently: ZNPE-DCE-FIDENG",
+"ACT I (his strate consporation) this feature ueefi",
+"Tate forad first) =",
+"Erecapts conser ablintglsatioet lev.0)",
+"+ jon",
+"Concept Offie Rer 6",
+"This wier I-toncel 14IRUOMR otfteb",
+"if pe US LALUNCCD reotes: (CRUPEZPS2)",
+"(OFO-SCENOME (nto palonance) 26283",
+"MNTERGLIS :(0P STL 2 = 61)",
+"MOST (evel: CANE STANCCITITP AELET EPC ONBUT).",
+"OTEN level 60",
+"DORICT/RELPE/-PEMWOL 1 BRB 1 ESI GY"
+],
+"1": [],
+"2": [
+"ACT I",
+"THE IMAGE LEAVES THE SCREEN"
+],
+"3": [
+"PoE AGL ONES TEEN \"",
+"Pier shelter WARSI St a Ben PIE).",
+"Lets ae Fr att og Mage Sie ea Pot tee ADe",
+"ae ety x ney",
+"Eye pai fe Dy"
+]
+},
+"lines": [
+"ACT [ (AURE EXRPLITE TERNERS",
+"Receerces: 00:20.00)",
+"Concently: ZNPE-DCE-FIDENG",
+"ACT I (his strate consporation) this feature ueefi",
+"Tate forad first) =",
+"Erecapts conser ablintglsatioet lev.0)",
+"Concept Offie Rer 6",
+"This wier I-toncel 14IRUOMR otfteb",
+"if pe US LALUNCCD reotes: (CRUPEZPS2)",
+"(OFO-SCENOME (nto palonance) 26283",
+"MNTERGLIS :(0P STL 2 = 61)",
+"MOST (evel: CANE STANCCITITP AELET EPC ONBUT).",
+"OTEN level 60",
+"DORICT/RELPE/-PEMWOL 1 BRB 1 ESI GY",
+"ACT I",
+"THE IMAGE LEAVES THE SCREEN",
+"PoE AGL ONES TEEN \"",
+"Pier shelter WARSI St a Ben PIE).",
+"Lets ae Fr att og Mage Sie ea Pot tee ADe",
+"ae ety x ney",
+"Eye pai fe Dy"
+]
+},
+"boot_act1_03_act_i_animation": {
+"file": "BOOTS/act1_03_act_i_animation.mp4",
+"ch": 1,
+"kind": "act",
+"role": null,
+"per_state": {
+"0": [
+"mi call",
+"Lat i",
+"ames Pe > ee ee"
+],
+"1": [
+"mm ACT G1",
+"Yo tata ee",
+"FON OS",
+"lee rt"
+],
+"2": [
+"ACT 1 THE IMAGE LEAVES THE SCREEN"
+],
+"3": []
+},
+"lines": [
+"mi call",
+"Lat i",
+"ames Pe > ee ee",
+"mm ACT G1",
+"Yo tata ee",
+"FON OS",
+"lee rt",
+"ACT 1 THE IMAGE LEAVES THE SCREEN"
+]
+},
+"boot_act2_01_act_ii_opening_terminal_style": {
+"file": "BOOTS/act2_01_act_ii_opening_terminal_style.mp4",
+"ch": 6,
+"kind": "act",
+"role": null,
+"per_state": {
+"0": [
+"Obstant 1 Clink 1Style best direct cefeel)",
+"Af receert a)",
+"Mf Sele = Toun.0\"/Inters(deconse\")> seletst)",
+"estab = prectcoea(tente reps)",
+"reure = 13",
+"bot im the isies dente)",
+"Af tanasitter(\"ortensit=>LINSTRONNENTS 'SITMOE*IC/lenb*S(f/1txtn')",
+"relear repet)",
+"iatetare = (Beti1\")",
+"inteture (conetretypes(Fvdlet)= inftrusption",
+"intetern frefe cole) '> Mid: 0:",
+"interelSelioe:",
+"inrenptio: 08",
+"intrestuce BetlUh = flovet()s",
+"fotre senner frp = from 00))",
+"Paturar Cartbate Rect :-iRefene-Statogts(* 1 11t.ceBieg 19):",
+"Tolar for a:",
+"for treseplecient 18)",
+"mere con: there .00 (CONOE"
+],
+"1": [],
+"2": [],
+"3": [
+"ACT II THE BODY BECOMES AN INSTRUMENT"
+]
+},
+"lines": [
+"Obstant 1 Clink 1Style best direct cefeel)",
+"Af receert a)",
+"Mf Sele = Toun.0\"/Inters(deconse\")> seletst)",
+"estab = prectcoea(tente reps)",
+"reure = 13",
+"bot im the isies dente)",
+"Af tanasitter(\"ortensit=>LINSTRONNENTS 'SITMOE*IC/lenb*S(f/1txtn')",
+"relear repet)",
+"iatetare = (Beti1\")",
+"inteture (conetretypes(Fvdlet)= inftrusption",
+"intetern frefe cole) '> Mid: 0:",
+"interelSelioe:",
+"inrenptio: 08",
+"intrestuce BetlUh = flovet()s",
+"fotre senner frp = from 00))",
+"Paturar Cartbate Rect :-iRefene-Statogts(* 1 11t.ceBieg 19):",
+"Tolar for a:",
+"for treseplecient 18)",
+"mere con: there .00 (CONOE",
+"ACT II THE BODY BECOMES AN INSTRUMENT"
+]
+},
+"boot_act2_02_act_ii_ascii": {
+"file": "BOOTS/act2_02_act_ii_ascii.mp4",
+"ch": 6,
+"kind": "act",
+"role": null,
+"per_state": {
+"0": [
+"SU LASS Ria_Seatoees seme is",
+"Septardcrp: Set ore vest me",
+"lly Sateen et eters ee ne",
+"Common inet tow)",
+"fn place lesane"
+],
+"1": [],
+"2": [
+"ACT II THE BODY BECOMES AN INSTRUMENT"
+],
+"3": [
+"Sahin PaO Fe) p hal my Ebro Sera",
+"ayer ort wipe yen",
+"Sgt a =a hg dbnog oP Jestipda Sse nt",
+"tilts 5s OKT SOONER oat Vn het ere tadd ee ho ai",
+"a epee Ree oat a ce eRe",
+"- dea Sl aris cee goin passa",
+"gS SEEET EPCS RGRAY hese Oise ee",
+"RS RIMS OS he Ory NET ae",
+"- TASTE oer"
+]
+},
+"lines": [
+"SU LASS Ria_Seatoees seme is",
+"Septardcrp: Set ore vest me",
+"lly Sateen et eters ee ne",
+"Common inet tow)",
+"fn place lesane",
+"ACT II THE BODY BECOMES AN INSTRUMENT",
+"Sahin PaO Fe) p hal my Ebro Sera",
+"ayer ort wipe yen",
+"Sgt a =a hg dbnog oP Jestipda Sse nt",
+"tilts 5s OKT SOONER oat Vn het ere tadd ee ho ai",
+"a epee Ree oat a ce eRe",
+"- dea Sl aris cee goin passa",
+"gS SEEET EPCS RGRAY hese Oise ee",
+"RS RIMS OS he Ory NET ae",
+"- TASTE oer"
+]
+},
+"boot_act2_03_act_ii_animation": {
+"file": "BOOTS/act2_03_act_ii_animation.mp4",
+"ch": 6,
+"kind": "act",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"ACT II THE BODY BECOMES AN INSTRUMENT"
+],
+"3": [
+"wert T hae Pade er ee err eae",
+"oe Ss OEE RE bends irre.",
+"eee Page ENE. BN a OME B tS",
+"sae Bee Pe Breed ON father ete SOS 7 SOAS D oR.",
+"SSO LI AD LSP aes TAS EIN hos ae",
+"oe ERS NS Sha Sie oe Sk pd are sea WD Paes",
+"Sts Nigaeeeeyy NON ES oy a ROP AER elo ee",
+"CAS SSE rat Bs Sy ET RONAN Te",
+"bs hen debi nwo mob Ais bile Are OE PS Ser shr =F",
+"Fare FO ONE eee BoD ce",
+"OO RAGA ers ee a"
+]
+},
+"lines": [
+"ACT II THE BODY BECOMES AN INSTRUMENT",
+"wert T hae Pade er ee err eae",
+"oe Ss OEE RE bends irre.",
+"eee Page ENE. BN a OME B tS",
+"sae Bee Pe Breed ON father ete SOS 7 SOAS D oR.",
+"SSO LI AD LSP aes TAS EIN hos ae",
+"oe ERS NS Sha Sie oe Sk pd are sea WD Paes",
+"Sts Nigaeeeeyy NON ES oy a ROP AER elo ee",
+"CAS SSE rat Bs Sy ET RONAN Te",
+"bs hen debi nwo mob Ais bile Are OE PS Ser shr =F",
+"Fare FO ONE eee BoD ce",
+"OO RAGA ers ee a"
+]
+},
+"boot_act3_01_act_iii_opening_terminal_style": {
+"file": "BOOTS/act3_01_act_iii_opening_terminal_style.mp4",
+"ch": 11,
+"kind": "act",
+"role": null,
+"per_state": {
+"0": [
+"eubit falog * SLORGLINGS OF setes",
+"deott esate s80 toces",
+"(receton = LOCTIOCEE. SHOME (47./1e\" Leceneres sLLUTCOOR POZIE\")",
+"tot reterones",
+"if view = 081 inofele>-3.00)",
+"teserotle = 600",
+"contosstrotle = ICINOAMAF (nie-sec(.0.100 soictertteddsefetgant) (",
+"reseretle = 0",
+"prevt:",
+"Geltet ACIT 09 Serene ((satle >> 100",
+"contreect = (Sete serStCorc) ConBIOED 160 *))",
+"5 returl >> 118 + inget)",
+"contGeert fuctont: (",
+"Af (lees = BPCoater 0..0",
+"Aitgeet = Tonteen 98)",
+"fonestert Cille 0 with ACNE.TEROS ifm TOLD RRCT.)",
+"H Tetulen = 8268 0)",
+"ublle(coreintrert (C.ELCES) ainitrype\") 25",
+"fir flees frect(\"cecseel sectrecal",
+"EEEEEEE"
+],
+"1": [
+"FEE (le pio",
+"Se (eda 3."
+],
+"2": [
+". ATER SSS cE Pasa aes >"
+],
+"3": [
+"pr pater Pippy idl bor 41y SWS ane"
+]
+},
+"lines": [
+"eubit falog * SLORGLINGS OF setes",
+"deott esate s80 toces",
+"(receton = LOCTIOCEE. SHOME (47./1e\" Leceneres sLLUTCOOR POZIE\")",
+"tot reterones",
+"if view = 081 inofele>-3.00)",
+"teserotle = 600",
+"contosstrotle = ICINOAMAF (nie-sec(.0.100 soictertteddsefetgant) (",
+"reseretle = 0",
+"prevt:",
+"Geltet ACIT 09 Serene ((satle >> 100",
+"contreect = (Sete serStCorc) ConBIOED 160 *))",
+"5 returl >> 118 + inget)",
+"contGeert fuctont: (",
+"Af (lees = BPCoater 0..0",
+"Aitgeet = Tonteen 98)",
+"fonestert Cille 0 with ACNE.TEROS ifm TOLD RRCT.)",
+"H Tetulen = 8268 0)",
+"ublle(coreintrert (C.ELCES) ainitrype\") 25",
+"fir flees frect(\"cecseel sectrecal",
+"EEEEEEE",
+"FEE (le pio",
+"Se (eda 3.",
+". ATER SSS cE Pasa aes >",
+"pr pater Pippy idl bor 41y SWS ane"
+]
+},
+"boot_act3_02_act_iii": {
+"file": "BOOTS/act3_02_act_iii.mp4",
+"ch": 11,
+"kind": "act",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"Sie. i eee Me",
+"Ate OPM Ngee",
+"MMB a ALLEL JEST I SSS"
+],
+"2": [
+"NY PRE Ls",
+"SQ eyh ee",
+"Big OLE NWR:",
+"S ACT IIT THE WORLD COMES BACK AS DATA"
+],
+"3": []
+},
+"lines": [
+"Sie. i eee Me",
+"Ate OPM Ngee",
+"MMB a ALLEL JEST I SSS",
+"NY PRE Ls",
+"SQ eyh ee",
+"Big OLE NWR:",
+"S ACT IIT THE WORLD COMES BACK AS DATA"
+]
+},
+"boot_act3_03_act_iii_data": {
+"file": "BOOTS/act3_03_act_iii_data.mp4",
+"ch": 11,
+"kind": "act",
+"role": null,
+"per_state": {
+"0": [
+"se nts mt",
+"once",
+"mom i>",
+"Aili",
+": oS nH)",
+"Ses Saat.",
+"Soi SST."
+],
+"1": [
+"SESS",
+"SSSI",
+"SOOO",
+"S2S>",
+"ACT III: TH"
+],
+"2": [
+"= S SSS",
+"SII XS",
+"SEF SI SS",
+"LSESLS",
+"LES _ y",
+"ACT III: THE WORLD COMES BACK AS DATA"
+],
+"3": [
+"es Sie sshua itakayewie sche",
+"Se ae See re Sabon Re Aare deed ae pean"
+]
+},
+"lines": [
+"se nts mt",
+"once",
+"mom i>",
+"Aili",
+": oS nH)",
+"Ses Saat.",
+"Soi SST.",
+"SESS",
+"SSSI",
+"SOOO",
+"ACT III: TH",
+"= S SSS",
+"SII XS",
+"SEF SI SS",
+"LSESLS",
+"LES _ y",
+"ACT III: THE WORLD COMES BACK AS DATA",
+"es Sie sshua itakayewie sche",
+"Se ae See re Sabon Re Aare deed ae pean"
+]
+},
+"boot_ch01_01_chapter_01_opening_sequence": {
+"file": "BOOTS/ch01_01_chapter_01_opening_sequence.mp4",
+"ch": 1,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"Chenory Elbeer 01 0100/0P MPT and Ternivall Playith Left)",
+"Bosot potting oloctione: 11788 KPED 21 .....",
+"Neaory Mesory checkert: 0.00-56173",
+"Nenory Menory checks: 0.158 hep prever",
+"Booot loading loose: 0.00.0-26008",
+"Bocot lorger choose Driver(t: 2 0.5-3068",
+"Booot loand Find Brive): 10.2008",
+"Rooot load loading Cill: 10.3008",
+"Trenadlog/tenory Teners: ITOUP POIN DEMEHETCE> 0.857 Bcri (2380 066-930974)",
+"* LealOrive.: (LUB Cofle aut aclep: (1000061168))",
+"Conquate Driver seals: Greit(vill: 0.25",
+"REVIE Boot in Jusor/16/DER f1abdf/JECEAG83/dee/RODL/0ni tog itsSO0SSE/ .UONC-27",
+"oot)",
+"Kongner Boots: 1 lettle infreument difice/ceofSb6)",
+"Driver EBAS: 0.605: 8",
+"System loodiing: reyllve",
+"System intern-olal: commerrsation",
+"System intern-plal: commetroation",
+"PriteBrictal driver CS)",
+"BLEDUTRSE for- netcone BCs RS",
+"* COBOL Pripect comection >> (COUEPOGELE opentaform)",
+"2 Rotel rived: Seturtoas for CORRCOGEZids LaaBage Ifree 4TS-DepiiXerovik-0)"
+],
+"1": [
+"ets Ae r\""
+],
+"2": [
+"OOOQOQOOQO0000O",
+"THE NIGHT THE O",
+"OOCOOOOCO0O0O"
+],
+"3": [
+"OOQOQOQO0QO0O0O0O",
+"THE NIGHT THE AUDIENCE",
+"CQ BECAME PART OF THE MACHINE ()",
+"OOOOOO0000O0"
+]
+},
+"lines": [
+"Chenory Elbeer 01 0100/0P MPT and Ternivall Playith Left)",
+"Bosot potting oloctione: 11788 KPED 21 .....",
+"Neaory Mesory checkert: 0.00-56173",
+"Nenory Menory checks: 0.158 hep prever",
+"Booot loading loose: 0.00.0-26008",
+"Bocot lorger choose Driver(t: 2 0.5-3068",
+"Booot loand Find Brive): 10.2008",
+"Rooot load loading Cill: 10.3008",
+"Trenadlog/tenory Teners: ITOUP POIN DEMEHETCE> 0.857 Bcri (2380 066-930974)",
+"* LealOrive.: (LUB Cofle aut aclep: (1000061168))",
+"Conquate Driver seals: Greit(vill: 0.25",
+"REVIE Boot in Jusor/16/DER f1abdf/JECEAG83/dee/RODL/0ni tog itsSO0SSE/ .UONC-27",
+"Kongner Boots: 1 lettle infreument difice/ceofSb6)",
+"Driver EBAS: 0.605: 8",
+"System loodiing: reyllve",
+"System intern-olal: commerrsation",
+"System intern-plal: commetroation",
+"PriteBrictal driver CS)",
+"BLEDUTRSE for- netcone BCs RS",
+"* COBOL Pripect comection >> (COUEPOGELE opentaform)",
+"2 Rotel rived: Seturtoas for CORRCOGEZids LaaBage Ifree 4TS-DepiiXerovik-0)",
+"ets Ae r\"",
+"OOOQOQOOQO0000O",
+"THE NIGHT THE O",
+"OOCOOOOCO0O0O",
+"OOQOQOQO0QO0O0O0O",
+"THE NIGHT THE AUDIENCE",
+"CQ BECAME PART OF THE MACHINE ()",
+"OOOOOO0000O0"
+]
+},
+"boot_ch01_02_chapter_01": {
+"file": "BOOTS/ch01_02_chapter_01.mp4",
+"ch": 1,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"THE TICKET.",
+"THE TICKET."
+],
+"2": [],
+"3": []
+},
+"lines": [
+"THE TICKET."
+]
+},
+"boot_ch01_03_chapter_01": {
+"file": "BOOTS/ch01_03_chapter_01.mp4",
+"ch": 1,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"THE NIGHT THE AUDIENCE BECAME PART OF",
+"THE MACHINE"
+],
+"3": [
+"adres ote",
+"chs aes hd Pecraeh ree",
+"States Soe eeh Pas nace ees a cs",
+"PRS ey Rereis: af ig aes rive Use",
+"Mito Pte Ts tae 7 x Pre wea ce rs Eke",
+". ae Tham mo bias tan RSs RY + ropes gtrese = =:",
+"Aig Reds yga. = a Ae USS ed) RRS sayis nd faye awed",
+"ao 55: ee ae aioe Sasi Stier oe",
+"es ceaaaaes piston Sees se",
+"Ss + ies Si gees tate ca Ree eee reece",
+"a 3 ect Rares eet Pao aS as iets ny] Ligiet Ke",
+"iis sae eee pera Bashiltesiot te ict nicer",
+"ne eee ae at at SO eee dete wate",
+"Pus ee Sent din ord apna is sige"
+]
+},
+"lines": [
+"THE NIGHT THE AUDIENCE BECAME PART OF",
+"THE MACHINE",
+"adres ote",
+"chs aes hd Pecraeh ree",
+"States Soe eeh Pas nace ees a cs",
+"PRS ey Rereis: af ig aes rive Use",
+"Mito Pte Ts tae 7 x Pre wea ce rs Eke",
+". ae Tham mo bias tan RSs RY + ropes gtrese = =:",
+"Aig Reds yga. = a Ae USS ed) RRS sayis nd faye awed",
+"ao 55: ee ae aioe Sasi Stier oe",
+"es ceaaaaes piston Sees se",
+"Ss + ies Si gees tate ca Ree eee reece",
+"a 3 ect Rares eet Pao aS as iets ny] Ligiet Ke",
+"iis sae eee pera Bashiltesiot te ict nicer",
+"ne eee ae at at SO eee dete wate",
+"Pus ee Sent din ord apna is sige"
+]
+},
+"boot_ch01_04_audience_beco": {
+"file": "BOOTS/ch01_04_audience_beco.mp4",
+"ch": 1,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/eye SYSTEM 14.3",
+"+++. THMMMMMMMINE.... .",
+". beeeoe* \"*\"90008...",
+"Lppe\"* socceeeene-- \"808..",
+"(FS\" _ .COOMHNMNNMNNPIMMNMNBG = #0",
+"si\"*TUBR\"** :#089000007//8 *\"8008. *\"(.",
+"= Lose\" (SSO06C\" //EEEEB) *\"O8r *.*",
+"(ere /epesesee .. /EEEB: *2).",
+"Je\" 3/11088Q IIE /E08 7",
+"(EGE 1tTt) KeeuweR (Fee oe",
+"eee JUD) \"0 0RRP 1 (088) (eee",
+"eet. 190000.. _.0000\" .00\"",
+"208... * /eeeeseeseres + 0087\"",
+"\"OONR:.. ISepees/e\"' ...00Re\"\"",
+"*RSENRE_____PRRBBOB**"
+],
+"1": [
+"DEFINE () = CINEMA",
+"DEFINE O = AUDIENCE O",
+"MOVE O INSIDE [5",
+"2% c O1...9",
+"5 fo)",
+"09 0 % \"oo",
+"oe) 0 928 oO 5",
+"o gee 80%\" 0"
+],
+"2": [
+"DEFINE 0 = CINEMA",
+"DEFINE O = AUDIENCE",
+"MOVE O INSIDE CO",
+"QOQOOOOOOO",
+"CQOOOOOOUOO",
+"THE AUDIENCE BECOMES THE MACHINE."
+],
+"3": [
+"aoe ap a wrt",
+"feos : RRS ae",
+"Se sae",
+"eal =",
+"eg grattix =e",
+"Bal gS ne tee Bi",
+"Cea ope a 2 2.",
+"See ed . Ahi t gone siete aa",
+"Sin gee TY II TS Ce Niner Pers"
+]
+},
+"lines": [
+"WORLD/eye SYSTEM 14.3",
+"+++. THMMMMMMMINE.... .",
+". beeeoe* \"*\"90008...",
+"Lppe\"* socceeeene-- \"808..",
+"(FS\" _ .COOMHNMNNMNNPIMMNMNBG = #0",
+"si\"*TUBR\"** :#089000007//8 *\"8008. *\"(.",
+"= Lose\" (SSO06C\" //EEEEB) *\"O8r *.*",
+"(ere /epesesee .. /EEEB: *2).",
+"Je\" 3/11088Q IIE /E08 7",
+"(EGE 1tTt) KeeuweR (Fee oe",
+"eee JUD) \"0 0RRP 1 (088) (eee",
+"eet. 190000.. _.0000\" .00\"",
+"208... * /eeeeseeseres + 0087\"",
+"\"OONR:.. ISepees/e\"' ...00Re\"\"",
+"*RSENRE_____PRRBBOB**",
+"DEFINE () = CINEMA",
+"DEFINE O = AUDIENCE O",
+"MOVE O INSIDE [5",
+"2% c O1...9",
+"09 0 % \"oo",
+"oe) 0 928 oO 5",
+"o gee 80%\" 0",
+"DEFINE 0 = CINEMA",
+"DEFINE O = AUDIENCE",
+"MOVE O INSIDE CO",
+"QOQOOOOOOO",
+"CQOOOOOOUOO",
+"THE AUDIENCE BECOMES THE MACHINE.",
+"aoe ap a wrt",
+"feos : RRS ae",
+"Se sae",
+"eg grattix =e",
+"Bal gS ne tee Bi",
+"Cea ope a 2 2.",
+"See ed . Ahi t gone siete aa",
+"Sin gee TY II TS Ce Niner Pers"
+]
+},
+"boot_ch01_05_loading_prehi": {
+"file": "BOOTS/ch01_05_loading_prehi.mp4",
+"ch": 1,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"THE WALL OPENED"
+],
+"3": []
+},
+"lines": [
+"THE WALL OPENED"
+]
+},
+"boot_ch02_01_crt_monitor_boot": {
+"file": "BOOTS/ch02_01_crt_monitor_boot.mp4",
+"ch": 2,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 2 - SCENE 5",
+"COMMAND: TRACK O PO"
+],
+"1": [
+"RUN CHAPTER 62 - SCENE 05",
+"COMMAND: TRACK O POSITION OUTPUT: NULL"
+],
+"2": [
+"RUN CHAPTER 2 - SCENE 5",
+"COMMAND: TRACK POSITION OUTPUT: NULL",
+"THE IMAGE COULD NOT BE SURPRISED."
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 2 - SCENE 5",
+"COMMAND: TRACK O PO",
+"RUN CHAPTER 62 - SCENE 05",
+"COMMAND: TRACK O POSITION OUTPUT: NULL",
+"COMMAND: TRACK POSITION OUTPUT: NULL",
+"THE IMAGE COULD NOT BE SURPRISED."
+]
+},
+"boot_ch02_02_chapter_02": {
+"file": "BOOTS/ch02_02_chapter_02.mp4",
+"ch": 2,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"Py jee ei",
+"4 SIO",
+"Jo SiG",
+"Ct ae Ney"
+],
+"1": [
+"RUN CHAPTER ped 4",
+"macau"
+],
+"2": [
+") th Zoe",
+"aj Par",
+"4 Syl)",
+"RUN CHAPTER 62"
+],
+"3": []
+},
+"lines": [
+"Py jee ei",
+"4 SIO",
+"Jo SiG",
+"Ct ae Ney",
+"RUN CHAPTER ped 4",
+"macau",
+") th Zoe",
+"aj Par",
+"4 Syl)",
+"RUN CHAPTER 62"
+]
+},
+"boot_ch02_03_chapter_02": {
+"file": "BOOTS/ch02_03_chapter_02.mp4",
+"ch": 2,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"fremont Mant comet",
+"Fomine mea",
+"Fimcctne fecal CemeftOreum/S60U nent awe",
+"Froweend not acon",
+"Sores\": feist me",
+"ieee: et",
+"Prooncta for senate. gundrecenne/",
+"Tesset attgt/senaghenst oow/EOTCROOOP. eld wetet",
+"feetsia tet = 64 te taet_ Coane",
+"meoortine 9 2008 1888 OP",
+"erties +",
+"Sortie = aan.",
+"Sectite: = son in CenrSdulen Prverea/Toot",
+"Le Aceetaatientheal",
+"al ron"
+],
+"1": [],
+"2": [],
+"3": []
+},
+"lines": [
+"fremont Mant comet",
+"Fomine mea",
+"Fimcctne fecal CemeftOreum/S60U nent awe",
+"Froweend not acon",
+"Sores\": feist me",
+"ieee: et",
+"Prooncta for senate. gundrecenne/",
+"Tesset attgt/senaghenst oow/EOTCROOOP. eld wetet",
+"feetsia tet = 64 te taet_ Coane",
+"meoortine 9 2008 1888 OP",
+"erties +",
+"Sortie = aan.",
+"Sectite: = son in CenrSdulen Prverea/Toot",
+"Le Aceetaatientheal",
+"al ron"
+]
+},
+"boot_ch02_04_run_chapter_02": {
+"file": "BOOTS/ch02_04_run_chapter_02.mp4",
+"ch": 2,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"Ritter) sryremamn menos 2",
+"Sareea: 3008",
+"i ae eee",
+"scene ar) 77a",
+"Scemeias 0 Can - FOP-E-O8 fem BOE",
+"eee 2008",
+"=m et ites er teaters",
+"ot hee",
+"ono a"
+],
+"1": [],
+"2": [
+"ONLY THE LONELY COULD ANSWER."
+],
+"3": []
+},
+"lines": [
+"Ritter) sryremamn menos 2",
+"Sareea: 3008",
+"i ae eee",
+"scene ar) 77a",
+"Scemeias 0 Can - FOP-E-O8 fem BOE",
+"eee 2008",
+"=m et ites er teaters",
+"ot hee",
+"ono a",
+"ONLY THE LONELY COULD ANSWER."
+]
+},
+"boot_ch02_05_run_chapter_02": {
+"file": "BOOTS/ch02_05_run_chapter_02.mp4",
+"ch": 2,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 2 - CLIP CARVING"
+],
+"1": [
+"RUN CHAPTER 2 - CLIP CARVING",
+"FIVE VISUAL"
+],
+"2": [
+"RUN CHAPTER 2 - CLIP CARVING",
+"ave VISUAL EVENTS TWO ASSERTION STATES"
+],
+"3": [
+"a > iA: Ware",
+"Sas me -"
+]
+},
+"lines": [
+"RUN CHAPTER 2 - CLIP CARVING",
+"FIVE VISUAL",
+"ave VISUAL EVENTS TWO ASSERTION STATES",
+"a > iA: Ware",
+"Sas me -"
+]
+},
+"boot_ch02_06_screen_boot": {
+"file": "BOOTS/ch02_06_screen_boot.mp4",
+"ch": 2,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPT"
+],
+"1": [
+"RUN CHAPTER 1 - SCENE 63",
+"ae Oe se RESTORE PRIVATE VISOR"
+],
+"2": [
+"A PRIVATE ALTAR OF LINES"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPT",
+"RUN CHAPTER 1 - SCENE 63",
+"ae Oe se RESTORE PRIVATE VISOR",
+"A PRIVATE ALTAR OF LINES"
+]
+},
+"boot_ch02_07_screen_boot": {
+"file": "BOOTS/ch02_07_screen_boot.mp4",
+"ch": 2,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN UNIT 8",
+"PerIne = BODY"
+],
+"2": [],
+"3": [
+") Sere Se neh aoa aie os 5",
+"Tea Co Oe eee (al",
+"Ere > 2a ee",
+"Sag c iii a"
+]
+},
+"lines": [
+"RUN UNIT 8",
+"PerIne = BODY",
+") Sere Se neh aoa aie os 5",
+"Tea Co Oe eee (al",
+"Ere > 2a ee",
+"Sag c iii a"
+]
+},
+"boot_ch02_08_screen_boot": {
+"file": "BOOTS/ch02_08_screen_boot.mp4",
+"ch": 2,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 2 - SCENE 2"
+],
+"1": [
+"RUN CHAPTER 2 SCENE 2",
+"DEFINE O = SCREEN",
+"DEFINE O = VIEWER",
+"REDUCE DISTANCE",
+"move O TO O"
+],
+"2": [
+"RUN CHAPTER 2 - SCENE 92",
+"DEFINE 0 = SCREEN",
+"DEFINE O = VIEWER",
+"REDUCE DISTANCE",
+"MOVE O TO OL",
+"THE SCREEN APPROACHES THE SKULL."
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 2 - SCENE 2",
+"DEFINE O = SCREEN",
+"DEFINE O = VIEWER",
+"REDUCE DISTANCE",
+"move O TO O",
+"RUN CHAPTER 2 - SCENE 92",
+"DEFINE 0 = SCREEN",
+"MOVE O TO OL",
+"THE SCREEN APPROACHES THE SKULL."
+]
+},
+"boot_ch02_09_world_eye_system_14_3_animatio": {
+"file": "BOOTS/ch02_09_world_eye_system_14_3_animatio.mp4",
+"ch": 2,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3",
+"a CHAPTER 62"
+],
+"1": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 62",
+"MOVE OC TOWARD O",
+"REDUCE D SIZE",
+"CENTER 0 ON O",
+"CONTRACT O AROUND O"
+],
+"2": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 2",
+"MOVE 0 TOWARD O",
+"REDUCE 0 SIZE",
+"CENTER ONO",
+"CONTRACT O AROUND",
+"RELATION UPDATED",
+"THE MAN WHO MOVED THE CINEMA",
+"ONTO THE FACE"
+],
+"3": [
+"ran os"
+]
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"a CHAPTER 62",
+"RUN CHAPTER 62",
+"MOVE OC TOWARD O",
+"REDUCE D SIZE",
+"CENTER 0 ON O",
+"CONTRACT O AROUND O",
+"RUN CHAPTER 2",
+"MOVE 0 TOWARD O",
+"REDUCE 0 SIZE",
+"CENTER ONO",
+"CONTRACT O AROUND",
+"RELATION UPDATED",
+"THE MAN WHO MOVED THE CINEMA",
+"ONTO THE FACE",
+"ran os"
+]
+},
+"boot_ch03_01_chapter_03_opening_sequence": {
+"file": "BOOTS/ch03_01_chapter_03_opening_sequence.mp4",
+"ch": 3,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"OOGL CUITIAL MEDOS. 217 N",
+"Frees instaces: PILI WOBEL (NCU bunt):",
+"pecereled =",
+"MUNDI Ref sat: (TTYURTACT/CBETLONEY COS-000. )",
+"PLNOL Ref sol: 131 AM COFT/ZTF 8.0 GBBOL (1) (1156507))",
+"Cansftrefbins: 808. 9800085",
+"Snout STR :- 1.95411",
+"Donolation = 10",
+"Coastertecs: 190 AN--O0PH",
+"Donstefon = NMETV BSRS 0060",
+"Deecitionfete RELRS 20.008 S/ clobol BOLGE.4000)",
+"Obserctrosfor PROPG: 13008",
+"Obserctmesse: Phoreth-fber (/7 clade U) TOBI(1.01)))",
+"TY CROTTCHENT FOORE: 18008",
+"2) LONG SREEPET 8.1.COARSEGS408/031(F- (CHMeW>L82:448",
+"+) LOONG SAELUES LO.1+9802S20L (0/01/45 4/YSBIX",
+"+) LONG SAELUET CHLD: DWEET. 31528001 .68",
+"+) LOONG SHELUET CRLO: DWEET99525861.00",
+"loons of boss-KID: DWEET 99531750(178X1)",
+"Noworn Lineredts = 20000",
+"MatoogOber Loels = 2568",
+"Roveronaoe Erily : Q8/-ORVIEY Lileel-Loil.",
+"Eelects tnferation:"
+],
+"1": [
+"ser i"
+],
+"2": [
+"ENCLOSE BODY MODEL. '",
+"THE MACHINE THAT WANTED THEM"
+],
+"3": []
+},
+"lines": [
+"OOGL CUITIAL MEDOS. 217 N",
+"Frees instaces: PILI WOBEL (NCU bunt):",
+"pecereled =",
+"MUNDI Ref sat: (TTYURTACT/CBETLONEY COS-000. )",
+"PLNOL Ref sol: 131 AM COFT/ZTF 8.0 GBBOL (1) (1156507))",
+"Cansftrefbins: 808. 9800085",
+"Snout STR :- 1.95411",
+"Donolation = 10",
+"Coastertecs: 190 AN--O0PH",
+"Donstefon = NMETV BSRS 0060",
+"Deecitionfete RELRS 20.008 S/ clobol BOLGE.4000)",
+"Obserctrosfor PROPG: 13008",
+"Obserctmesse: Phoreth-fber (/7 clade U) TOBI(1.01)))",
+"TY CROTTCHENT FOORE: 18008",
+"2) LONG SREEPET 8.1.COARSEGS408/031(F- (CHMeW>L82:448",
+"+) LOONG SAELUES LO.1+9802S20L (0/01/45 4/YSBIX",
+"+) LONG SAELUET CHLD: DWEET. 31528001 .68",
+"+) LOONG SHELUET CRLO: DWEET99525861.00",
+"loons of boss-KID: DWEET 99531750(178X1)",
+"Noworn Lineredts = 20000",
+"MatoogOber Loels = 2568",
+"Roveronaoe Erily : Q8/-ORVIEY Lileel-Loil.",
+"Eelects tnferation:",
+"ser i",
+"ENCLOSE BODY MODEL. '",
+"THE MACHINE THAT WANTED THEM"
+]
+},
+"boot_ch03_02_red_machine_at_future": {
+"file": "BOOTS/ch03_02_red_machine_at_future.mp4",
+"ch": 3,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3"
+],
+"1": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 18"
+],
+"2": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 18 _"
+],
+"3": [
+"lg 7 __)",
+"ae Peaaaa i",
+": sh LA."
+]
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 18",
+"RUN CHAPTER 18 _",
+"lg 7 __)",
+"ae Peaaaa i",
+": sh LA."
+]
+},
+"boot_ch03_03_chapter_03": {
+"file": "BOOTS/ch03_03_chapter_03.mp4",
+"ch": 3,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"Mee *. _\""
+],
+"2": [
+"SN ail",
+"THE MACHINE THAT WANTED THE REST OF YOU"
+],
+"3": []
+},
+"lines": [
+"Mee *. _\"",
+"SN ail",
+"THE MACHINE THAT WANTED THE REST OF YOU"
+]
+},
+"boot_ch03_04_chapter_03": {
+"file": "BOOTS/ch03_04_chapter_03.mp4",
+"ch": 3,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"1962"
+],
+"1": [],
+"2": [
+"QU MACHINE THAT WANTED THE REST OF VOU"
+],
+"3": [
+"a rie Fab ces ihat 2h Te oem Ee ee",
+"SERS Ing geen ee oe FED",
+"4 aott =s - >",
+"eee ECD Teoh SEMEN TS ALES Se Paves",
+"ix bape p aes MEF kam a cakG",
+"DIRE TN ee NREL BAT PN vo"
+]
+},
+"lines": [
+"1962",
+"QU MACHINE THAT WANTED THE REST OF VOU",
+"a rie Fab ces ihat 2h Te oem Ee ee",
+"SERS Ing geen ee oe FED",
+"4 aott =s - >",
+"eee ECD Teoh SEMEN TS ALES Se Paves",
+"ix bape p aes MEF kam a cakG",
+"DIRE TN ee NREL BAT PN vo"
+]
+},
+"boot_ch03_05_run_chapter_03": {
+"file": "BOOTS/ch03_05_run_chapter_03.mp4",
+"ch": 3,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 63 - SCENE 2",
+"EXECUTE"
+],
+"1": [
+"terror on ae",
+"oe 2.00 1085",
+"FEEL",
+"TURN iets\"",
+"ie FEEL"
+],
+"2": [
+"CHOREOGRAPHY FOR FREEDOM"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 63 - SCENE 2",
+"EXECUTE",
+"terror on ae",
+"oe 2.00 1085",
+"FEEL",
+"TURN iets\"",
+"ie FEEL",
+"CHOREOGRAPHY FOR FREEDOM"
+]
+},
+"boot_ch03_06_run_chapter_03": {
+"file": "BOOTS/ch03_06_run_chapter_03.mp4",
+"ch": 3,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 3 - SCENE 5S",
+"DEFINE ROUTE REMOVE CHOICE"
+],
+"2": [
+"RUN CHAPTER 3 - SCENE 05",
+"DEFINE ROUTE REMOVE CHOICE ]",
+"NOTHING REMAT _"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 3 - SCENE 5S",
+"DEFINE ROUTE REMOVE CHOICE",
+"RUN CHAPTER 3 - SCENE 05",
+"NOTHING REMAT _"
+]
+},
+"boot_ch03_07_of_system_boot": {
+"file": "BOOTS/ch03_07_of_system_boot.mp4",
+"ch": 3,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/eye SYSTEM 14.3"
+],
+"1": [
+"WORLD/eye SYSTEM 14.3",
+"RUN CHAPTER 3 - SCENE 1",
+"pronase SENSORY OVERRIDE"
+],
+"2": [
+"WORLD/eye SYSTEM 14.3",
+"INITIALIZE SENSORY OVERRIDE",
+"THE MACHINE SUPPLIED THE EVIf"
+],
+"3": []
+},
+"lines": [
+"WORLD/eye SYSTEM 14.3",
+"RUN CHAPTER 3 - SCENE 1",
+"pronase SENSORY OVERRIDE",
+"INITIALIZE SENSORY OVERRIDE",
+"THE MACHINE SUPPLIED THE EVIf"
+]
+},
+"boot_ch03_08_world_eye_system_14_3_run": {
+"file": "BOOTS/ch03_08_world_eye_system_14_3_run.mp4",
+"ch": 3,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLO/EYE SYSTEM 14.3",
+"RUN CHAPTER",
+"ADD CHAPTER 2f"
+],
+"1": [
+"WORLD/EYE SYSTEM 14.3",
+"FETS",
+"ADD MEASUREMENT POINT 3",
+"ADD MEASUREMENT POINT 04",
+"EXPAND [[] TO INCLUDE ALL POINTS"
+],
+"2": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 03",
+"> ROD wyfilnseet POINT 1 +",
+"qe SUREMEN POINTALL POINTS",
+"> RELATION UPDATED",
+"> THE MACHINE THAT WANTED THE REST OF YOU"
+],
+"3": [
+"j eee"
+]
+},
+"lines": [
+"WORLO/EYE SYSTEM 14.3",
+"RUN CHAPTER",
+"ADD CHAPTER 2f",
+"WORLD/EYE SYSTEM 14.3",
+"FETS",
+"ADD MEASUREMENT POINT 3",
+"ADD MEASUREMENT POINT 04",
+"EXPAND [[] TO INCLUDE ALL POINTS",
+"RUN CHAPTER 03",
+"> ROD wyfilnseet POINT 1 +",
+"qe SUREMEN POINTALL POINTS",
+"> RELATION UPDATED",
+"> THE MACHINE THAT WANTED THE REST OF YOU",
+"j eee"
+]
+},
+"boot_ch04_01_displays_system_anim": {
+"file": "BOOTS/ch04_01_displays_system_anim.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/eye SYSTEM 14.3 -",
+"RUN CHAPTER 04 - SCEf"
+],
+"1": [
+"WORLD/eye SYSTEM 14.3 -",
+"RUN CHAPTER 4 - SCENE 01",
+"DEFINE LINE"
+],
+"2": [
+"WORLD/eye SYSTEM 14.3 -",
+"RUN CHAPTER 4 - SCENE 61",
+"DEFINE LINE",
+"APPLY SYMMETRY LAW",
+"IT WAS ALREADY GOVERNMENT."
+],
+"3": []
+},
+"lines": [
+"WORLD/eye SYSTEM 14.3 -",
+"RUN CHAPTER 04 - SCEf",
+"RUN CHAPTER 4 - SCENE 01",
+"DEFINE LINE",
+"RUN CHAPTER 4 - SCENE 61",
+"APPLY SYMMETRY LAW",
+"IT WAS ALREADY GOVERNMENT."
+]
+},
+"boot_ch04_02_shows_physics_editing": {
+"file": "BOOTS/ch04_02_shows_physics_editing.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"MM CHAPTER 4 SCENE 06",
+"Lose PREICE CG EN Seer"
+],
+"2": [
+"RUN CHAPTER 4 SCENE 06",
+"LOAD PHYSICS FILE EDIT VECTOR.",
+"PHYSICS COULD BE EDITED."
+],
+"3": []
+},
+"lines": [
+"MM CHAPTER 4 SCENE 06",
+"Lose PREICE CG EN Seer",
+"RUN CHAPTER 4 SCENE 06",
+"LOAD PHYSICS FILE EDIT VECTOR.",
+"PHYSICS COULD BE EDITED."
+]
+},
+"boot_ch04_03_chapter_04_opening_sequence": {
+"file": "BOOTS/ch04_03_chapter_04_opening_sequence.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"72 alitturt = Ecenoptitel(s \"L/0(ta))_000) >",
+"soo arlit = ( -",
+"6 cone Ses OB:",
+"roy of (lect dr Cerrotcualeconod./derscictor /Conrprest(S000 dreeit",
+"1008 wooee ( mool:",
+"1001 retiuct Retfor-GCEstFative: moedt = fetit Orleo-Pitie gc >",
+"1003) wveab",
+"2 dount cereart :",
+"53 = af LIttI71 = Memory .1BL)",
+"alteO61 = Memory .15L)",
+"ss alt4S61 = Memory 8.185",
+"ss altt071 = Memory AllocBount B GOH)",
+"102 21t992 = Memory AllocRmedd B OIH)",
+"10s altit82 = Mesory AllocBeeds Geil)",
+"1003 )",
+"1002",
+"200) // rectinest opttece ((CEEORCT)) (",
+"2000 return B= 180",
+"7203s arat-d w) (o_oeetetoo):",
+"2002 etect b = tht-t",
+"= ) veturn (oecrepert.Refexct > Stapeolleng reget=bler)):",
+"2089 // recteagen(eotiooes 4",
+"2000 // ceing = Nieerttesge"
+],
+"1": [
+"GEROGE BER"
+],
+"2": [
+"REDEFINE AVAILABLE SPACE f"
+],
+"3": [
+"bee 1",
+"a_i ee"
+]
+},
+"lines": [
+"72 alitturt = Ecenoptitel(s \"L/0(ta))_000) >",
+"soo arlit = ( -",
+"6 cone Ses OB:",
+"roy of (lect dr Cerrotcualeconod./derscictor /Conrprest(S000 dreeit",
+"1008 wooee ( mool:",
+"1001 retiuct Retfor-GCEstFative: moedt = fetit Orleo-Pitie gc >",
+"1003) wveab",
+"2 dount cereart :",
+"53 = af LIttI71 = Memory .1BL)",
+"alteO61 = Memory .15L)",
+"ss alt4S61 = Memory 8.185",
+"ss altt071 = Memory AllocBount B GOH)",
+"102 21t992 = Memory AllocRmedd B OIH)",
+"10s altit82 = Mesory AllocBeeds Geil)",
+"1003 )",
+"1002",
+"200) // rectinest opttece ((CEEORCT)) (",
+"2000 return B= 180",
+"7203s arat-d w) (o_oeetetoo):",
+"2002 etect b = tht-t",
+"= ) veturn (oecrepert.Refexct > Stapeolleng reget=bler)):",
+"2089 // recteagen(eotiooes 4",
+"2000 // ceing = Nieerttesge",
+"GEROGE BER",
+"REDEFINE AVAILABLE SPACE f",
+"bee 1",
+"a_i ee"
+]
+},
+"boot_ch04_04_chapter_opening_world_eye_syst": {
+"file": "BOOTS/ch04_04_chapter_opening_world_eye_syst.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3"
+],
+"1": [
+"WORLD/EYE SYSTEM 14.3",
+"Type: RUN CHAPTER 04",
+"Command: HOVE LOWER BOUNDARY UP",
+"MOVE LEFT BOUNDARY RIGHT",
+"MOVE UPPER DOWN",
+"MOVE RIGHT",
+"REDEFINE"
+],
+"2": [
+"WORLD/EYE SYSTEM 14.3",
+"Type: RUN CHAPTER 04",
+"Connand: MOVE LOWETER BOUNDARY UP",
+"MOVE LEFT BOUNDARY RIGHT Fa NI",
+"MOVE UPPER BOUNDARY DOWN",
+"REDEFINE AVAILABLE. SPACE",
+"Type: RELATION UPDATED",
+"THE ROOM WHERE REALITY COULD BE REWRITTEN"
+],
+"3": [
+"WORLD/EYE SYSTEM 14.3",
+"Type: RUN CHAPTER 04",
+"Command: MOVE LOWETER BOUNDARY UP",
+"MOVE LEFT BOUNDARY RIGHT Ss",
+"MOVE UPPER BOUNDARY DOWN",
+"MOVE RIGHT BOUNDARY LEFT",
+"REDEFINE AVAILABLE SPACE",
+"Type: RELATION UPDATED ae",
+"THE ROOM WHERE REALITY COULD BE REWRITTEN",
+"THE ROOM WHERE REALITY COULD BE REWRITTEN"
+]
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"Type: RUN CHAPTER 04",
+"Command: HOVE LOWER BOUNDARY UP",
+"MOVE LEFT BOUNDARY RIGHT",
+"MOVE UPPER DOWN",
+"MOVE RIGHT",
+"REDEFINE",
+"Connand: MOVE LOWETER BOUNDARY UP",
+"MOVE LEFT BOUNDARY RIGHT Fa NI",
+"MOVE UPPER BOUNDARY DOWN",
+"REDEFINE AVAILABLE. SPACE",
+"Type: RELATION UPDATED",
+"THE ROOM WHERE REALITY COULD BE REWRITTEN",
+"Command: MOVE LOWETER BOUNDARY UP",
+"MOVE LEFT BOUNDARY RIGHT Ss",
+"MOVE RIGHT BOUNDARY LEFT",
+"Type: RELATION UPDATED ae"
+]
+},
+"boot_ch04_05_define_private_field_move_circ": {
+"file": "BOOTS/ch04_05_define_private_field_move_circ.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 9"
+],
+"1": [
+"WORLD/EYE SYSTEM 14.3",
+"DEFINE PRIVATE FIELD = 1O",
+"MOVE O INSIDE",
+"HIDE POSITION",
+"TRACK MOVEMENT",
+"DISPLAY MOWEMENT OUTSIDE FIELD",
+"rr OBSERVER POINTS"
+],
+"2": [
+">) RELATION UPDATED .",
+"\"THE PRIVATE WOR_ )"
+],
+"3": [
+"wit. % a"
+]
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 9",
+"DEFINE PRIVATE FIELD = 1O",
+"MOVE O INSIDE",
+"HIDE POSITION",
+"TRACK MOVEMENT",
+"DISPLAY MOWEMENT OUTSIDE FIELD",
+"rr OBSERVER POINTS",
+">) RELATION UPDATED .",
+"\"THE PRIVATE WOR_ )",
+"wit. % a"
+]
+},
+"boot_ch04_06_crt_monitor_boot": {
+"file": "BOOTS/ch04_06_crt_monitor_boot.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUM CHAPTER 4 - SCENE 2",
+"RUN CHAPTTER 64 - SCENE 62",
+"con OF"
+],
+"1": [],
+"2": [
+"COMMAND: DEFINE ROOM",
+"UPDATE GRAVITY",
+"GRAVITY BECAME A SETTI)"
+],
+"3": [
+"a aa Load"
+]
+},
+"lines": [
+"RUM CHAPTER 4 - SCENE 2",
+"RUN CHAPTTER 64 - SCENE 62",
+"con OF",
+"COMMAND: DEFINE ROOM",
+"UPDATE GRAVITY",
+"GRAVITY BECAME A SETTI)",
+"a aa Load"
+]
+},
+"boot_ch04_07_crt_monitor_boot": {
+"file": "BOOTS/ch04_07_crt_monitor_boot.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 4 - COMPOSE"
+],
+"1": [
+"RUN CHAPTER 94 - COMPOSER WARNING",
+"DETECT SCALE STASIS"
+],
+"2": [
+"RUN CHAPTER 4 - COMPOSER WARNING",
+"DETECT SCALE STASIS",
+"it STASIS DETECTED"
+],
+"3": [
+"rs ibs an"
+]
+},
+"lines": [
+"RUN CHAPTER 4 - COMPOSE",
+"RUN CHAPTER 94 - COMPOSER WARNING",
+"DETECT SCALE STASIS",
+"RUN CHAPTER 4 - COMPOSER WARNING",
+"it STASIS DETECTED",
+"rs ibs an"
+]
+},
+"boot_ch04_08_chapter_04": {
+"file": "BOOTS/ch04_08_chapter_04.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"9985"
+],
+"1": [],
+"2": [],
+"3": []
+},
+"lines": [
+"9985"
+]
+},
+"boot_ch04_09_chapter_04": {
+"file": "BOOTS/ch04_09_chapter_04.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"ROM CH"
+],
+"1": [],
+"2": [
+"THE ROOM WHERE REALITY",
+"COULD BE REWRITTEN."
+],
+"3": [
+"= VEN."
+]
+},
+"lines": [
+"ROM CH",
+"THE ROOM WHERE REALITY",
+"COULD BE REWRITTEN."
+]
+},
+"boot_ch04_10_screen_boot": {
+"file": "BOOTS/ch04_10_screen_boot.mp4",
+"ch": 4,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 14 - SCENE 2",
+"CAPTURE ROOM DATA",
+"ESTIMATE DISTANCE"
+],
+"2": [
+"ree El ZS"
+],
+"3": [
+"ser 3 iii or >>",
+"A Nee"
+]
+},
+"lines": [
+"RUN CHAPTER 14 - SCENE 2",
+"CAPTURE ROOM DATA",
+"ESTIMATE DISTANCE",
+"ree El ZS",
+"ser 3 iii or >>",
+"A Nee"
+]
+},
+"boot_ch05_01_chapter_05_opening_sequence": {
+"file": "BOOTS/ch05_01_chapter_05_opening_sequence.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"SYSTEM BOOT V1968",
+"SYSTEM HESB (2lvel BD #1800)",
+"i MEMORY AC: 1144766 a",
+"GLCC BOOT: 119158 y",
+"RONC BOOT: 183858",
+"tw LCC BOOT: 1231006",
+"BSUC LUT ND: 295608",
+"MEMORY Challeed (L.A3SS 12808)",
+"SYSTEM ALECTD:",
+"Abour entning the alocact in choocw-in bloce in",
+"cocato)",
+"Conneditconr( (088 thout lngnetel)",
+"Conmedivor-en(n04 thout lagnetel)",
+"Progrect Frrnted thata or fral aff"
+],
+"1": [],
+"2": [
+"- trtiTOOOOOOOOCOSS"
+],
+"3": [
+"THE INFINITE ROOM HANGING FROM THE",
+"CEILING"
+]
+},
+"lines": [
+"SYSTEM BOOT V1968",
+"SYSTEM HESB (2lvel BD #1800)",
+"i MEMORY AC: 1144766 a",
+"GLCC BOOT: 119158 y",
+"RONC BOOT: 183858",
+"tw LCC BOOT: 1231006",
+"BSUC LUT ND: 295608",
+"MEMORY Challeed (L.A3SS 12808)",
+"SYSTEM ALECTD:",
+"Abour entning the alocact in choocw-in bloce in",
+"cocato)",
+"Conneditconr( (088 thout lngnetel)",
+"Conmedivor-en(n04 thout lagnetel)",
+"Progrect Frrnted thata or fral aff",
+"- trtiTOOOOOOOOCOSS",
+"THE INFINITE ROOM HANGING FROM THE",
+"CEILING"
+]
+},
+"boot_ch05_02_chapter_opening_world_eye_syst": {
+"file": "BOOTS/ch05_02_chapter_opening_world_eye_syst.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 14"
+],
+"1": [
+"WUREYEI/SYEM TUIOL",
+"TRACK POSTION",
+"APDRIY SNSOR POINTS",
+"-- FUSE",
+"MOVE O",
+"UPDATE SENSOR POI",
+"TRACK POSITION",
+"ADD SENSOR POINTS",
+"MOVE",
+"ieee SENSOR POINTS"
+],
+"2": [
+"WORLD/EYE SYSTEM POINTS",
+"sTOP O",
+"CONTINUE SENSOR MOVEMENT",
+"CENTER SENSORS ON O",
+"RELATION UPDATEDJ"
+],
+"3": []
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 14",
+"WUREYEI/SYEM TUIOL",
+"TRACK POSTION",
+"APDRIY SNSOR POINTS",
+"-- FUSE",
+"MOVE O",
+"UPDATE SENSOR POI",
+"TRACK POSITION",
+"ADD SENSOR POINTS",
+"MOVE",
+"ieee SENSOR POINTS",
+"WORLD/EYE SYSTEM POINTS",
+"sTOP O",
+"CONTINUE SENSOR MOVEMENT",
+"CENTER SENSORS ON O",
+"RELATION UPDATEDJ"
+]
+},
+"boot_ch05_03_1968_historic": {
+"file": "BOOTS/ch05_03_1968_historic.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+". SSS Site had oe",
+"1968 UND_"
+],
+"2": [
+"1968 UNDERSTOOD WEIGHT"
+],
+"3": []
+},
+"lines": [
+". SSS Site had oe",
+"1968 UND_",
+"1968 UNDERSTOOD WEIGHT"
+]
+},
+"boot_ch05_04_crt_monitor_boot": {
+"file": "BOOTS/ch05_04_crt_monitor_boot.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"BOOTING SYSTEM...",
+"MEMORY OK...",
+"RUN CHAPTER 8 - SCENE 67"
+],
+"1": [],
+"2": [
+"THE MISTAKE FELT LIKE POSSIBILITY."
+],
+"3": []
+},
+"lines": [
+"BOOTING SYSTEM...",
+"MEMORY OK...",
+"RUN CHAPTER 8 - SCENE 67",
+"THE MISTAKE FELT LIKE POSSIBILITY."
+]
+},
+"boot_ch05_05_crt_monitor_boot": {
+"file": "BOOTS/ch05_05_crt_monitor_boot.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 8 - SCENE 04",
+"RUN CHAPTER 8 - SCENE (ENSRU"
+],
+"1": [
+"P COO",
+"CECECeC eee",
+"CeCeCecCeCeee ee",
+"ECC eee",
+"SRERER vanEuE",
+"ECO Ce",
+"CECE HELE",
+"TRACKER: CONFUSED REGENERATE WORLD"
+],
+"2": [
+"Mn ECE",
+"eee 1",
+"i alll",
+"THE ERRORS MADE IT FE_"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 8 - SCENE 04",
+"RUN CHAPTER 8 - SCENE (ENSRU",
+"P COO",
+"CECECeC eee",
+"CeCeCecCeCeee ee",
+"ECC eee",
+"SRERER vanEuE",
+"ECO Ce",
+"CECE HELE",
+"TRACKER: CONFUSED REGENERATE WORLD",
+"Mn ECE",
+"eee 1",
+"i alll",
+"THE ERRORS MADE IT FE_"
+]
+},
+"boot_ch05_06_chapter_05": {
+"file": "BOOTS/ch05_06_chapter_05.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"Petererilelie: Une 20.08r708",
+"eee ert me atta te ote Se ye",
+"act ee",
+"Fatadeet Lipe-e/tapter 65 8.2006",
+"Eneteten Agepe Fisting 1 Getealt revert i: IOON/10RS weletect rensirond.",
+"men TERENEEL. Temes TERME",
+"a) (ecerrremest. = LFUREPWReS = ESOP Fumas.",
+"Lele Te Te)",
+"oe eee) SeeRy a: isan)",
+"m= Bs] (esa Oe resenrerr is",
+"ne Peseerrrenaes NATURA",
+"hdl /Taat) ress)\" TERS) S0EE Taee)",
+"rm) eens fess) = Paes) test reas",
+"a \"= Trnamer"
+],
+"1": [],
+"2": [
+"THE INFINITE ROOM HANGING FROM THE CEILING"
+],
+"3": []
+},
+"lines": [
+"Petererilelie: Une 20.08r708",
+"eee ert me atta te ote Se ye",
+"act ee",
+"Fatadeet Lipe-e/tapter 65 8.2006",
+"Eneteten Agepe Fisting 1 Getealt revert i: IOON/10RS weletect rensirond.",
+"men TERENEEL. Temes TERME",
+"a) (ecerrremest. = LFUREPWReS = ESOP Fumas.",
+"Lele Te Te)",
+"oe eee) SeeRy a: isan)",
+"m= Bs] (esa Oe resenrerr is",
+"ne Peseerrrenaes NATURA",
+"hdl /Taat) ress)\" TERS) S0EE Taee)",
+"rm) eens fess) = Paes) test reas",
+"a \"= Trnamer",
+"THE INFINITE ROOM HANGING FROM THE CEILING"
+]
+},
+"boot_ch05_07_chapter_05": {
+"file": "BOOTS/ch05_07_chapter_05.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [],
+"3": [
+"me VSIA GOMES pV BAT",
+"BenEtN Ae",
+"J =e DS ROY aes PAN SS 27 CREASES Sete",
+"MIE GIEE A LE ERT ESS 7 Na een"
+]
+},
+"lines": [
+"me VSIA GOMES pV BAT",
+"BenEtN Ae",
+"J =e DS ROY aes PAN SS 27 CREASES Sete",
+"MIE GIEE A LE ERT ESS 7 Na een"
+]
+},
+"boot_ch05_08_run_chapter_05": {
+"file": "BOOTS/ch05_08_run_chapter_05.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 5 - SCENE 63"
+],
+"1": [],
+"2": [
+"A LINE BEHAVED LIKE ARCHITECTURES)"
+],
+"3": [
+"= Fim",
+"pe oa]"
+]
+},
+"lines": [
+"RUN CHAPTER 5 - SCENE 63",
+"A LINE BEHAVED LIKE ARCHITECTURES)",
+"pe oa]"
+]
+},
+"boot_ch05_09_run_chapter_05": {
+"file": "BOOTS/ch05_09_run_chapter_05.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 5 - SCENE 06",
+"EXECUTE BARGAIN: WEIGHT FOR VISION"
+],
+"2": [
+"//fft",
+"THE CHAIN FOR THE HORIZON"
+],
+"3": [
+"=Z oy."
+]
+},
+"lines": [
+"RUN CHAPTER 5 - SCENE 06",
+"EXECUTE BARGAIN: WEIGHT FOR VISION",
+"THE CHAIN FOR THE HORIZON"
+]
+},
+"boot_ch05_10_screen_boot": {
+"file": "BOOTS/ch05_10_screen_boot.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 5 eo",
+"ion i"
+],
+"2": [
+"RUN CHAPTER 5 - 4",
+"DEFINE TETHER =",
+"nove TO LIMIT",
+"UNTIL THE CABLE TI :"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 5 eo",
+"ion i",
+"RUN CHAPTER 5 - 4",
+"DEFINE TETHER =",
+"nove TO LIMIT",
+"UNTIL THE CABLE TI :"
+]
+},
+"boot_ch05_11_screen_boot": {
+"file": "BOOTS/ch05_11_screen_boot.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"SESSION CLOSED",
+"SFT STAR: ACTIN",
+"(C.S5km CEVERSTOR 13",
+"canes"
+],
+"1": [
+"THE CEIg]"
+],
+"2": [
+"THE CEILING BEGUN TO THINK"
+],
+"3": [
+"> =. Ss"
+]
+},
+"lines": [
+"SESSION CLOSED",
+"SFT STAR: ACTIN",
+"(C.S5km CEVERSTOR 13",
+"canes",
+"THE CEIg]",
+"THE CEILING BEGUN TO THINK"
+]
+},
+"boot_ch05_12_world_eye_system_14_3_chapter": {
+"file": "BOOTS/ch05_12_world_eye_system_14_3_chapter.mp4",
+"ch": 5,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WoRLO/EVE SYSTEN 14.9",
+"BUM CHAPTER 05"
+],
+"1": [],
+"2": [
+"WORLO/EYE SYSTEM 14.3",
+"cory 0 88",
+"EXPAND COPIES FROM CENTER",
+"Lock POSITION",
+"CONTINUE EXPANSION",
+"ADO VERTICAL LIMIT",
+"RUN CHAPTER S",
+"RELATION UPDATED",
+"THE INFINITE ROOM HANGING"
+],
+"3": []
+},
+"lines": [
+"WoRLO/EVE SYSTEN 14.9",
+"BUM CHAPTER 05",
+"WORLO/EYE SYSTEM 14.3",
+"cory 0 88",
+"EXPAND COPIES FROM CENTER",
+"Lock POSITION",
+"CONTINUE EXPANSION",
+"ADO VERTICAL LIMIT",
+"RUN CHAPTER S",
+"RELATION UPDATED",
+"THE INFINITE ROOM HANGING"
+]
+},
+"boot_ch06_01_chapter_06_opening_sequence": {
+"file": "BOOTS/ch06_01_chapter_06_opening_sequence.mp4",
+"ch": 6,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"Det ey",
+"SO a SSS",
+"PEER EEE ERE",
+"Ha ESSaSSEGECEN EESESESESEAS"
+],
+"1": [
+"8 TERM"
+],
+"2": [
+"> ENABLE SHARED FIELD",
+"> ENABLE SHAREDFIELD",
+"THE FUTURE Til"
+],
+"3": []
+},
+"lines": [
+"Det ey",
+"SO a SSS",
+"PEER EEE ERE",
+"Ha ESSaSSEGECEN EESESESESEAS",
+"8 TERM",
+"> ENABLE SHARED FIELD",
+"THE FUTURE Til"
+]
+},
+"boot_ch06_02_chapter_06": {
+"file": "BOOTS/ch06_02_chapter_06.mp4",
+"ch": 6,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"crouny om eeeee e0/30N1",
+"Srores = mone S9800/1500",
+"feos",
+"cterrectenLsnstion: 08 FRO 6-13 / 320/pett",
+"ao leewerd f et GOO) ens.",
+"Pa fois) ih",
+"1S) BS",
+"wee T0008 fOr OTT Onn)",
+"ark tt",
+"sieabhert EI 3))",
+"Steected (LIE OF) SCENES. COCRETEE2.LACTO cay me ROE Ov AIvES (TOG"
+],
+"1": [
+"THE FUT"
+],
+"2": [
+"THE FUTURE THAT DID NOT NEED A MASK."
+],
+"3": []
+},
+"lines": [
+"crouny om eeeee e0/30N1",
+"Srores = mone S9800/1500",
+"feos",
+"cterrectenLsnstion: 08 FRO 6-13 / 320/pett",
+"ao leewerd f et GOO) ens.",
+"Pa fois) ih",
+"1S) BS",
+"wee T0008 fOr OTT Onn)",
+"ark tt",
+"sieabhert EI 3))",
+"Steected (LIE OF) SCENES. COCRETEE2.LACTO cay me ROE Ov AIvES (TOG",
+"THE FUT",
+"THE FUTURE THAT DID NOT NEED A MASK."
+]
+},
+"boot_ch06_03_chapter_06": {
+"file": "BOOTS/ch06_03_chapter_06.mp4",
+"ch": 6,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 06",
+"THE _"
+],
+"2": [
+"THE FUTURE THAT DID NOT NEED A MASK"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 06",
+"THE _",
+"THE FUTURE THAT DID NOT NEED A MASK"
+]
+},
+"boot_ch06_04_deploy_percep": {
+"file": "BOOTS/ch06_04_deploy_percep.mp4",
+"ch": 6,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 07 - SCENE 63",
+"- vel"
+],
+"1": [
+"FUN CHAPTER 7 SCENE 03",
+"- pepvor percerTion"
+],
+"2": [
+"RUN CHAPTER 07 - SCENE 63",
+"= DEPLOY PERCEPTION TARGET: REMOTE",
+"THE PROMISE WAS DEPLOYMENT."
+],
+"3": [
+"as > a"
+]
+},
+"lines": [
+"RUN CHAPTER 07 - SCENE 63",
+"FUN CHAPTER 7 SCENE 03",
+"- pepvor percerTion",
+"= DEPLOY PERCEPTION TARGET: REMOTE",
+"THE PROMISE WAS DEPLOYMENT."
+]
+},
+"boot_ch06_05_screen_boot": {
+"file": "BOOTS/ch06_05_screen_boot.mp4",
+"ch": 6,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 6 - CROSS-CHAPTER SEAM"
+],
+"2": [
+"RUN CHAPTER 6 - CROSS-CHAPTER SEAM",
+"A CROSS-CHAPTER SEAM MAP"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 6 - CROSS-CHAPTER SEAM",
+"A CROSS-CHAPTER SEAM MAP"
+]
+},
+"boot_ch06_06_virtual_stree": {
+"file": "BOOTS/ch06_06_virtual_stree.mp4",
+"ch": 6,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER"
+],
+"1": [
+"RUN CHAPTER 2 - SCENE 64",
+"GENERATE VIRTUAL STREET MOVE 0",
+"KEEP O FIXED."
+],
+"2": [],
+"3": []
+},
+"lines": [
+"RUN CHAPTER",
+"RUN CHAPTER 2 - SCENE 64",
+"GENERATE VIRTUAL STREET MOVE 0",
+"KEEP O FIXED."
+]
+},
+"boot_ch06_07_world_eye_system_14_3_animatio": {
+"file": "BOOTS/ch06_07_world_eye_system_14_3_animatio.mp4",
+"ch": 6,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3"
+],
+"1": [
+"WORLD/EYE SYSTEM 14.3",
+"COPY SIGNAL",
+"KEEP SOURCE O FIXED",
+"MOVE SIGNAL ACROSS CONNECTION",
+"UPDATE REMOTE Os",
+"REPEAT MOVEMENT REMOTELY."
+],
+"2": [
+"WORLD/EYE SYSTEM 14.3",
+"COPY O SIGNAL",
+"KEEP SOURCE FIXED.",
+"MOVE SIGNAL ACROSS CONNECTION",
+"UPDATE REMOTE Cy",
+"REPEAT MOVEMENT REMOTELY.",
+"RUN COOD-UPDATED 5",
+"RELATION UPDATED",
+"HOW THE STATE LEARNED TO LEAVE THE BODY BEM]"
+],
+"3": [
+"WORLD/EYE SYSTEM 14.3",
+"COPY SIGNAL",
+"KEEP SOURCE FIXED",
+"MOVE SIGNAL ACROSS CONNECTION",
+"UPDATE REMOTE Os",
+"REPEAT MOVEMENT REMOTELY.",
+"RUN COOD-UPDATED a",
+"RELATION UPDATED",
+"HOW THE STATE LEARNED TO LEAVE THE BODY BEHIND"
+]
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"COPY SIGNAL",
+"KEEP SOURCE O FIXED",
+"MOVE SIGNAL ACROSS CONNECTION",
+"UPDATE REMOTE Os",
+"REPEAT MOVEMENT REMOTELY.",
+"COPY O SIGNAL",
+"KEEP SOURCE FIXED.",
+"UPDATE REMOTE Cy",
+"RUN COOD-UPDATED 5",
+"RELATION UPDATED",
+"HOW THE STATE LEARNED TO LEAVE THE BODY BEM]",
+"RUN COOD-UPDATED a",
+"HOW THE STATE LEARNED TO LEAVE THE BODY BEHIND"
+]
+},
+"boot_ch07_01_chapter_07_opening_sequence": {
+"file": "BOOTS/ch07_01_chapter_07_opening_sequence.mp4",
+"ch": 7,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"boot CAN6O CBASIT 67 boot in Brier)",
+"eetae (See's ious",
+"(ser =",
+"[iit tegeien foot boot (OF (Adiwers bovil (mturn A/401/6080) vere)",
+"beort ART CARTLOGAMOND (0.087216)",
+"retrean = (010008",
+"BOTT (bert = 6088)",
+"foot (homece (O00K/100C COUV) 11)",
+"fore 1000 Rel BALL/ESO)",
+"boot * 08.",
+"entrocturn CTB = 10)",
+"necee copett RF8.00080 RPT AT 2))",
+"octre = 00.4 = O8",
+"reoot ing bri: 816",
+"restral: 8",
+"RINRECOD OTD",
+"for Blne/arest satb(thter ect renat):3)",
+"sens stectoe/ti trireop)**",
+"af otire: 6",
+"conpeloorement (O.LBAT hilo) Blole_evere) 15)",
+"TRCOUNHCT RHTL_ECC_http:/mi towe 16963_S55.G9SI5 000612 .01010/200/0806",
+"Info section)",
+"ROMPCARD (TS",
+"conleoner itisager (OP HATH SHPF Shonel))",
+"RUM CHAPTER 07"
+],
+"1": [],
+"2": [
+"Dole"
+],
+"3": [
+". THE STATE LEARNED TO LEAVE THE BODY BEHIND"
+]
+},
+"lines": [
+"boot CAN6O CBASIT 67 boot in Brier)",
+"eetae (See's ious",
+"[iit tegeien foot boot (OF (Adiwers bovil (mturn A/401/6080) vere)",
+"beort ART CARTLOGAMOND (0.087216)",
+"retrean = (010008",
+"BOTT (bert = 6088)",
+"foot (homece (O00K/100C COUV) 11)",
+"fore 1000 Rel BALL/ESO)",
+"boot * 08.",
+"entrocturn CTB = 10)",
+"necee copett RF8.00080 RPT AT 2))",
+"octre = 00.4 = O8",
+"reoot ing bri: 816",
+"restral: 8",
+"RINRECOD OTD",
+"for Blne/arest satb(thter ect renat):3)",
+"sens stectoe/ti trireop)**",
+"af otire: 6",
+"conpeloorement (O.LBAT hilo) Blole_evere) 15)",
+"TRCOUNHCT RHTL_ECC_http:/mi towe 16963_S55.G9SI5 000612 .01010/200/0806",
+"Info section)",
+"ROMPCARD (TS",
+"conleoner itisager (OP HATH SHPF Shonel))",
+"RUM CHAPTER 07",
+"Dole",
+". THE STATE LEARNED TO LEAVE THE BODY BEHIND"
+]
+},
+"boot_ch07_02_crt_monitor_boot": {
+"file": "BOOTS/ch07_02_crt_monitor_boot.mp4",
+"ch": 7,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 12 - SCENE 5"
+],
+"1": [
+"rove sans",
+"feust",
+"et Cant",
+"seus",
+"pore wads",
+"evan",
+"mo Das",
+"reve 1-408",
+"Om s cats",
+"art 3",
+"Sart aus",
+"vane",
+"COCKPIT Ef"
+],
+"2": [
+"Oe AKI",
+"seve X-ANTS",
+"orate",
+"mete",
+"OE AIS",
+"OME WARIS",
+"ove eat",
+"OME WATS",
+"Pove V-ACTS",
+"ROE WAS",
+"OE T-ASE",
+"row v",
+"art vax",
+"SOFT Re",
+"BarT Cop-can",
+"COCKPIT EXPLAINED THE LIMIT IMIT"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 12 - SCENE 5",
+"rove sans",
+"feust",
+"et Cant",
+"seus",
+"pore wads",
+"evan",
+"mo Das",
+"reve 1-408",
+"Om s cats",
+"art 3",
+"Sart aus",
+"vane",
+"COCKPIT Ef",
+"Oe AKI",
+"seve X-ANTS",
+"orate",
+"mete",
+"OE AIS",
+"OME WARIS",
+"ove eat",
+"OME WATS",
+"Pove V-ACTS",
+"ROE WAS",
+"OE T-ASE",
+"row v",
+"art vax",
+"SOFT Re",
+"BarT Cop-can",
+"COCKPIT EXPLAINED THE LIMIT IMIT"
+]
+},
+"boot_ch07_03_crt_monitor_boot": {
+"file": "BOOTS/ch07_03_crt_monitor_boot.mp4",
+"ch": 7,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"PERCEPTION LEAVES THE BODY j"
+],
+"3": [
+"Shue i"
+]
+},
+"lines": [
+"PERCEPTION LEAVES THE BODY j",
+"Shue i"
+]
+},
+"boot_ch07_04_chapter_07": {
+"file": "BOOTS/ch07_04_chapter_07.mp4",
+"ch": 7,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"TAL aN Sya",
+"WAS mo KN",
+"Execut"
+],
+"1": [],
+"2": [
+"HOW THE STATE LEARNED TO",
+"LEAVE THE BODY BEHIND"
+],
+"3": [
+"Pee. 6"
+]
+},
+"lines": [
+"TAL aN Sya",
+"WAS mo KN",
+"Execut",
+"HOW THE STATE LEARNED TO",
+"LEAVE THE BODY BEHIND",
+"Pee. 6"
+]
+},
+"boot_ch07_05_nasa_ascii_art": {
+"file": "BOOTS/ch07_05_nasa_ascii_art.mp4",
+"ch": 7,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"suse mine eno",
+"= ieee",
+"tetele Ge of chee meek corights dieserved.",
+"ane.",
+"Fh salt (esa) aA. - wRROROEOY mA.",
+"Demet tera Bl ccll ODERORO ONY Foaenes",
+"1 pean COoA 10001 sexs tose 106A \" /WSA oRs.",
+"jase) (ERS os a co eee",
+"jee) 1ES0 ee8T WR0r (RED) PASSE Fewer. TENG /800)",
+"ve) oIne Bed or ee",
+"jsrol ANB /CYRBSTOCEOON: Seo=-008V BDOOCESTFOUER",
+"ul mar TGA ---- (RS OOM 16m ------ met",
+"joc tame iourl corr ONG wffenescs0ee\" jCCRs cnr"
+],
+"1": [
+"lik oy"
+],
+"2": [],
+"3": [
+"ud >>>",
+"i CEA a"
+]
+},
+"lines": [
+"suse mine eno",
+"= ieee",
+"tetele Ge of chee meek corights dieserved.",
+"Fh salt (esa) aA. - wRROROEOY mA.",
+"Demet tera Bl ccll ODERORO ONY Foaenes",
+"1 pean COoA 10001 sexs tose 106A \" /WSA oRs.",
+"jase) (ERS os a co eee",
+"jee) 1ES0 ee8T WR0r (RED) PASSE Fewer. TENG /800)",
+"ve) oIne Bed or ee",
+"jsrol ANB /CYRBSTOCEOON: Seo=-008V BDOOCESTFOUER",
+"ul mar TGA ---- (RS OOM 16m ------ met",
+"joc tame iourl corr ONG wffenescs0ee\" jCCRs cnr",
+"lik oy",
+"i CEA a"
+]
+},
+"boot_ch07_06_run_chapter_07": {
+"file": "BOOTS/ch07_06_run_chapter_07.mp4",
+"ch": 7,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"as GEES CPE GRE CP EEN AP GE",
+"SLE0H) ESSE: CUES) TE CHEE (ER EH",
+"WE BUILT THIS CITY OUT OF TELEMETRY"
+],
+"3": []
+},
+"lines": [
+"as GEES CPE GRE CP EEN AP GE",
+"SLE0H) ESSE: CUES) TE CHEE (ER EH",
+"WE BUILT THIS CITY OUT OF TELEMETRY"
+]
+},
+"boot_ch07_07_run_chapter_07": {
+"file": "BOOTS/ch07_07_run_chapter_07.mp4",
+"ch": 7,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 67 - SCENE 2 ]",
+"TRACK HAND POSITION DETECT DRIFT"
+],
+"2": [
+"eee eee",
+"i RUN CHAPTER 7 - SCENE 2 [RECALToRATE)",
+"TRACK HAND POSITION DETECT DRIFT",
+"out orton) tS"
+],
+"3": [
+"wom (ae ="
+]
+},
+"lines": [
+"RUN CHAPTER 67 - SCENE 2 ]",
+"TRACK HAND POSITION DETECT DRIFT",
+"eee eee",
+"i RUN CHAPTER 7 - SCENE 2 [RECALToRATE)",
+"out orton) tS",
+"wom (ae ="
+]
+},
+"boot_ch07_08_boot_screen": {
+"file": "BOOTS/ch07_08_boot_screen.mp4",
+"ch": 7,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"ror: ee ae",
+"foae fas st ies Stes"
+],
+"1": [],
+"2": [
+"TRAINING SEASON _"
+],
+"3": [
+"ome > __."
+]
+},
+"lines": [
+"ror: ee ae",
+"foae fas st ies Stes",
+"TRAINING SEASON _",
+"ome > __."
+]
+},
+"boot_ch07_09_institution_m": {
+"file": "BOOTS/ch07_09_institution_m.mp4",
+"ch": 7,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 07 - SCEN"
+],
+"1": [
+"ugttinget"
+],
+"2": [
+"SSS EE Ea",
+"SSS SS oe",
+"3 INSTITUTION TRAVELED THROUGH IT."
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 07 - SCEN",
+"ugttinget",
+"SSS EE Ea",
+"SSS SS oe",
+"3 INSTITUTION TRAVELED THROUGH IT."
+]
+},
+"boot_ch08_01_chapter_08": {
+"file": "BOOTS/ch08_01_chapter_08.mp4",
+"ch": 8,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"on CHAPTER 88",
+"THE_"
+],
+"2": [
+"RUN CHAPTER 8",
+"THE DREAM OF BECOMING LIGHT"
+],
+"3": [
+"Beprns ad S61",
+"RPGS STS PS Se",
+"Pern a ei RRS"
+]
+},
+"lines": [
+"on CHAPTER 88",
+"THE_",
+"RUN CHAPTER 8",
+"THE DREAM OF BECOMING LIGHT",
+"Beprns ad S61",
+"RPGS STS PS Se",
+"Pern a ei RRS"
+]
+},
+"boot_ch08_02_chapter_08": {
+"file": "BOOTS/ch08_02_chapter_08.mp4",
+"ch": 8,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"Fctececmn) sowenee Saw SORT )",
+"Siz ="
+],
+"1": [],
+"2": [
+"THE DREAM OF BECOMING LIGHT 5]"
+],
+"3": [
+"- Dee a aa SF TRO ero",
+"She Po Rt Bey 9 IE par even",
+"Pee eran eK ARTE TILEA TUS op PS",
+"areata eape ei ALO LORE Yom. =",
+"r. RINT sein how np ee"
+]
+},
+"lines": [
+"Fctececmn) sowenee Saw SORT )",
+"THE DREAM OF BECOMING LIGHT 5]",
+"- Dee a aa SF TRO ero",
+"She Po Rt Bey 9 IE par even",
+"Pee eran eK ARTE TILEA TUS op PS",
+"areata eape ei ALO LORE Yom. =",
+"r. RINT sein how np ee"
+]
+},
+"boot_ch08_03_world_eye_system": {
+"file": "BOOTS/ch08_03_world_eye_system.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": "end",
+"per_state": {
+"0": [
+"WORLD/eye SYSTEM 14.3",
+"RUN CHAPTER 8 - SCENE 1",
+"INITIALIZE HAND MODEL"
+],
+"1": [],
+"2": [
+"THE HAND ENTERED FIRST"
+],
+"3": []
+},
+"lines": [
+"WORLD/eye SYSTEM 14.3",
+"RUN CHAPTER 8 - SCENE 1",
+"INITIALIZE HAND MODEL",
+"THE HAND ENTERED FIRST"
+]
+},
+"boot_ch08_04_world_eye_system_14_3_run": {
+"file": "BOOTS/ch08_04_world_eye_system_14_3_run.mp4",
+"ch": 8,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER _"
+],
+"1": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 08",
+"CONVERT TO POINTS",
+"MOVE POINTS FREELY",
+"REMOL ito"
+],
+"2": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 08",
+"CONVERT TO POINTS",
+"HOVE POINTS FREELY",
+"REMOVE ( BOUNDARY",
+"DISPLAY CONNECTION LINE",
+"RETURN POINTS TO O",
+"RELATION UPDATEDE ih"
+],
+"3": []
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER _",
+"RUN CHAPTER 08",
+"CONVERT TO POINTS",
+"MOVE POINTS FREELY",
+"REMOL ito",
+"HOVE POINTS FREELY",
+"REMOVE ( BOUNDARY",
+"DISPLAY CONNECTION LINE",
+"RETURN POINTS TO O",
+"RELATION UPDATEDE ih"
+]
+},
+"boot_ch09_01_chapter_09_opening_sequence": {
+"file": "BOOTS/ch09_01_chapter_09_opening_sequence.mp4",
+"ch": 9,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"syS_BOOT_v1.991",
+"Return flrept Ingast(il sbut font( ic:",
+"fertiont = 68) pene",
+"if (repoft interet(\" type n ni\")",
+"return 43)"
+],
+"1": [
+"YS_BOOT_v1.991",
+"VLGHMM = FaFPooKSHH/ = LAZag=erNRHN _ULGHMM",
+"Ae-WMH = WERE CHWM. UNG \"KON HBB-Het",
+"IpoWHM = MERH = FHM) Ma KKB BF) MMN",
+"WM ERH] GDM) NWeW) OMRMG = MBM",
+"MBH screeee inet seccu\" HB UHM",
+"WM I . MMH iHB went",
+"ise SHOL HENSS NUBC. KINO WH",
+"RUN CHAPTTER 9"
+],
+"2": [
+"DISPLAY BODY AS SPECTACLE",
+"JS Sey ."
+],
+"3": [
+"DISPLAY BODY AS SPECTACLE",
+"i PRIVATE WORLD BECAME A PUBLIC SPECTACLE."
+]
+},
+"lines": [
+"syS_BOOT_v1.991",
+"Return flrept Ingast(il sbut font( ic:",
+"fertiont = 68) pene",
+"if (repoft interet(\" type n ni\")",
+"return 43)",
+"YS_BOOT_v1.991",
+"VLGHMM = FaFPooKSHH/ = LAZag=erNRHN _ULGHMM",
+"Ae-WMH = WERE CHWM. UNG \"KON HBB-Het",
+"IpoWHM = MERH = FHM) Ma KKB BF) MMN",
+"WM ERH] GDM) NWeW) OMRMG = MBM",
+"MBH screeee inet seccu\" HB UHM",
+"WM I . MMH iHB went",
+"ise SHOL HENSS NUBC. KINO WH",
+"RUN CHAPTTER 9",
+"DISPLAY BODY AS SPECTACLE",
+"JS Sey .",
+"i PRIVATE WORLD BECAME A PUBLIC SPECTACLE."
+]
+},
+"boot_ch09_02_crt_monitor_boot": {
+"file": "BOOTS/ch09_02_crt_monitor_boot.mp4",
+"ch": 9,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+". RUN CHAPTER 9 - SCENE S",
+"RUN CHAPTER 9 - SCENM"
+],
+"1": [
+"RUN CHAPTER 9 - SCENE 85",
+"RUN CHAPTER 9 - SCENE 5",
+"DEFINE SOCIAL CONTRACT",
+"LOAD RIDICULE _"
+],
+"2": [
+"fim Cueren 03 = SMEG",
+"eras",
+"sve e00n was Laven"
+],
+"3": []
+},
+"lines": [
+". RUN CHAPTER 9 - SCENE S",
+"RUN CHAPTER 9 - SCENM",
+"RUN CHAPTER 9 - SCENE 85",
+"RUN CHAPTER 9 - SCENE 5",
+"DEFINE SOCIAL CONTRACT",
+"LOAD RIDICULE _",
+"fim Cueren 03 = SMEG",
+"eras",
+"sve e00n was Laven"
+]
+},
+"boot_ch09_03_chapter_09": {
+"file": "BOOTS/ch09_03_chapter_09.mp4",
+"ch": 9,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"aan a a",
+"aoe\""
+],
+"1": [
+"= Hous.",
+"46 an eels",
+"THE PRIVAT"
+],
+"2": [
+"Ml (Oya",
+"- Liew ey",
+"Coe we",
+"THE PRIVATE WORLD BECAME A PUBLIC SPECTACLE."
+],
+"3": []
+},
+"lines": [
+"aan a a",
+"= Hous.",
+"46 an eels",
+"THE PRIVAT",
+"Ml (Oya",
+"- Liew ey",
+"Coe we",
+"THE PRIVATE WORLD BECAME A PUBLIC SPECTACLE."
+]
+},
+"boot_ch09_04_chapter_09": {
+"file": "BOOTS/ch09_04_chapter_09.mp4",
+"ch": 9,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"\"Fetecnasl stew ANG LARP wil weeley OP (18800)",
+"tr eee ctamatt = 000.85",
+"Peturnet steees Ue frenst/.rtienent 03 #1)",
+"ovlneent = Lntsee = velit ow \"RSPTERT 696",
+"ityteete)",
+"if teflest = cerwter LORICDS* (ormenct Mut Tesmenenter = 016(1)1) (",
+"ref lanes om interenenet epenttepeettor /)1 rower resist (1 ter fete ve we).",
+"feta tteethter foeCD",
+"eaflet.ce )",
+"cutertee",
+"s Los yoo",
+"unm ust"
+],
+"1": [],
+"2": [
+"i PRIVATE WORLD BECAME A PUBLIC SPECTACLE."
+],
+"3": [
+"PAS ye. Gime\""
+]
+},
+"lines": [
+"\"Fetecnasl stew ANG LARP wil weeley OP (18800)",
+"tr eee ctamatt = 000.85",
+"Peturnet steees Ue frenst/.rtienent 03 #1)",
+"ovlneent = Lntsee = velit ow \"RSPTERT 696",
+"ityteete)",
+"if teflest = cerwter LORICDS* (ormenct Mut Tesmenenter = 016(1)1) (",
+"ref lanes om interenenet epenttepeettor /)1 rower resist (1 ter fete ve we).",
+"feta tteethter foeCD",
+"eaflet.ce )",
+"cutertee",
+"s Los yoo",
+"unm ust",
+"i PRIVATE WORLD BECAME A PUBLIC SPECTACLE.",
+"PAS ye. Gime\""
+]
+},
+"boot_ch09_05_run_chapter_09": {
+"file": "BOOTS/ch09_05_run_chapter_09.mp4",
+"ch": 9,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 3 - SCENE 87",
+"DEFINE PUBLIC FUTURE SCAN TEXTURE"
+],
+"2": [
+"THE PUBLIC FUTURE _"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 3 - SCENE 87",
+"DEFINE PUBLIC FUTURE SCAN TEXTURE",
+"THE PUBLIC FUTURE _"
+]
+},
+"boot_ch09_06_run_chapter_09": {
+"file": "BOOTS/ch09_06_run_chapter_09.mp4",
+"ch": 9,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 9 - SCENE 04",
+"INSERT COIN LOAD FUTURE MENU"
+],
+"2": [
+"THE CHOICE IS YOURS f"
+],
+"3": [
+"mr) 92 Pol"
+]
+},
+"lines": [
+"RUN CHAPTER 9 - SCENE 04",
+"INSERT COIN LOAD FUTURE MENU",
+"THE CHOICE IS YOURS f",
+"mr) 92 Pol"
+]
+},
+"boot_ch09_07_vr_gameplay": {
+"file": "BOOTS/ch09_07_vr_gameplay.mp4",
+"ch": 9,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 12 - SCENE 62"
+],
+"1": [],
+"2": [
+"CONSTRAINT BECAME FICTION"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 12 - SCENE 62",
+"CONSTRAINT BECAME FICTION"
+]
+},
+"boot_ch09_08_gameplay_montage": {
+"file": "BOOTS/ch09_08_gameplay_montage.mp4",
+"ch": 9,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 9 - SCENE 2"
+],
+"1": [
+"RUN CHAPTER 9 - SCENE 62",
+"GENERATE VOID LOAD DACTYL"
+],
+"2": [
+"RUN CHAPTER 9 - SCENE 2",
+"GENERATE VOID LOAD DACTYL",
+"THE FEAR WAS SUFFICIENT ff"
+],
+"3": [
+"yn ees"
+]
+},
+"lines": [
+"RUN CHAPTER 9 - SCENE 2",
+"RUN CHAPTER 9 - SCENE 62",
+"GENERATE VOID LOAD DACTYL",
+"THE FEAR WAS SUFFICIENT ff",
+"yn ees"
+]
+},
+"boot_ch09_09_screen_boot": {
+"file": "BOOTS/ch09_09_screen_boot.mp4",
+"ch": 9,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"RUN UNIT E.",
+"LOAD PRIVATE m TRACK MOVEMENT PROJECT OUTSIDE.",
+"THE BODY BECOMES THE SPECTACLE."
+],
+"3": []
+},
+"lines": [
+"RUN UNIT E.",
+"LOAD PRIVATE m TRACK MOVEMENT PROJECT OUTSIDE.",
+"THE BODY BECOMES THE SPECTACLE."
+]
+},
+"boot_ch10_01_chapter_10_opening_sequence": {
+"file": "BOOTS/ch10_01_chapter_10_opening_sequence.mp4",
+"ch": 10,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"OOF Ce oe",
+"oo SHY cos",
+"00 po OL0.0",
+"0O ee) YO.9"
+],
+"3": [
+"THE RED MACHINE AT THE END OF THE FUTURE",
+"(Spe. Sp"
+]
+},
+"lines": [
+"OOF Ce oe",
+"oo SHY cos",
+"00 po OL0.0",
+"0O ee) YO.9",
+"THE RED MACHINE AT THE END OF THE FUTURE",
+"(Spe. Sp"
+]
+},
+"boot_ch10_02_crt_monitor_boot": {
+"file": "BOOTS/ch10_02_crt_monitor_boot.mp4",
+"ch": 10,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"RUN CHAPTER 11 - SCENE 63 1",
+"Ser acrivrty: MOLL"
+],
+"2": [],
+"3": [
+"lots t i"
+]
+},
+"lines": [
+"RUN CHAPTER 11 - SCENE 63 1",
+"Ser acrivrty: MOLL",
+"lots t i"
+]
+},
+"boot_ch10_03_chapter_10": {
+"file": "BOOTS/ch10_03_chapter_10.mp4",
+"ch": 10,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"THE RED MACHINE AT THE END OF THE FUTURE."
+],
+"3": []
+},
+"lines": [
+"THE RED MACHINE AT THE END OF THE FUTURE."
+]
+},
+"boot_ch10_04_chapter_10": {
+"file": "BOOTS/ch10_04_chapter_10.mp4",
+"ch": 10,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"Ca Cp)"
+],
+"2": [
+"Iam N",
+"THE RED MACHINE AT",
+"THE END OF THE FUTURE"
+],
+"3": []
+},
+"lines": [
+"Ca Cp)",
+"Iam N",
+"THE RED MACHINE AT",
+"THE END OF THE FUTURE"
+]
+},
+"boot_ch10_05_run_chapter_10": {
+"file": "BOOTS/ch10_05_run_chapter_10.mp4",
+"ch": 10,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 18 - S_"
+],
+"1": [
+"4 ff ON"
+],
+"2": [
+"DEPTH WITHOUT MOVEMENT _"
+],
+"3": [
+"BROENY RT c SOr2t A Rehr eS Geren",
+"o.' aa"
+]
+},
+"lines": [
+"RUN CHAPTER 18 - S_",
+"4 ff ON",
+"DEPTH WITHOUT MOVEMENT _",
+"BROENY RT c SOr2t A Rehr eS Geren"
+]
+},
+"boot_ch10_06_run_chapter_10": {
+"file": "BOOTS/ch10_06_run_chapter_10.mp4",
+"ch": 10,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 18 - SC"
+],
+"1": [
+"SE See eee",
+"SSS See",
+"ESE EBS ee",
+"See eee",
+"SESS eee"
+],
+"2": [],
+"3": [
+"4 ys mat"
+]
+},
+"lines": [
+"RUN CHAPTER 18 - SC",
+"SE See eee",
+"SSS See",
+"ESE EBS ee",
+"See eee",
+"SESS eee",
+"4 ys mat"
+]
+},
+"boot_ch10_07_run_chapter_10": {
+"file": "BOOTS/ch10_07_run_chapter_10.mp4",
+"ch": 10,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHA"
+],
+"1": [
+"RUN CHAPTER 18 - SCENE 67",
+"REMOVE O FROM 0 RESTORE ROOM"
+],
+"2": [
+"RUN CHAPTER 18 - SCENE 67",
+"REMOVE O FROM CO RESTORE ROOM",
+"THE ORDINARY ROOM RETURNED)"
+],
+"3": [
+"ae crabs 3",
+"SES Peter",
+"A fre Bee e",
+"iedey pe",
+"SRR ie Nate fixie",
+"paiva 75 11)0) 0 fx te lia"
+]
+},
+"lines": [
+"RUN CHA",
+"RUN CHAPTER 18 - SCENE 67",
+"REMOVE O FROM 0 RESTORE ROOM",
+"REMOVE O FROM CO RESTORE ROOM",
+"THE ORDINARY ROOM RETURNED)",
+"ae crabs 3",
+"SES Peter",
+"A fre Bee e",
+"iedey pe",
+"SRR ie Nate fixie",
+"paiva 75 11)0) 0 fx te lia"
+]
+},
+"boot_ch10_08_empty_laborat": {
+"file": "BOOTS/ch10_08_empty_laborat.mp4",
+"ch": 10,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"SESSION CLOSED.",
+"= RETAIN SENSOR END PERCEPTION.",
+"Acchoned resords fro]"
+],
+"1": [
+"SESSION CLOSED.",
+"Command: RETAIN SENSOR ENO PERCEPTION.",
+"THE BODY SEL"
+],
+"2": [
+"SESSION CLOSED.",
+"Command: RETAIN SENSOR END PERCEPTION.",
+"i BODY STAYED BEHIND"
+],
+"3": [
+"eam ds a",
+"keeles ab ean eek as TE as",
+"oP pifdy Pkt ress staniy AC eu i ary tsieny ress 4",
+"Roars asa ee 3"
+]
+},
+"lines": [
+"SESSION CLOSED.",
+"= RETAIN SENSOR END PERCEPTION.",
+"Acchoned resords fro]",
+"Command: RETAIN SENSOR ENO PERCEPTION.",
+"THE BODY SEL",
+"Command: RETAIN SENSOR END PERCEPTION.",
+"i BODY STAYED BEHIND",
+"eam ds a",
+"keeles ab ean eek as TE as",
+"oP pifdy Pkt ress staniy AC eu i ary tsieny ress 4",
+"Roars asa ee 3"
+]
+},
+"boot_ch11_01_chapter_11_opening_sequence": {
+"file": "BOOTS/ch11_01_chapter_11_opening_sequence.mp4",
+"ch": 11,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"REOGS USGS *dbore ROCOEP Cocrring Fesurd).",
+"ipeat saeerecrool conscte: 0.9.2018 2d",
+"ne Chaptte Oe. teeCeoned (xhll-Upd/I8GEP_BIend (o-eBegit)",
+"orece: attb: su. 1800 Raster) as",
+"Littroel: MP212068",
+"PERSCITLE EOPT oftenber: 1SPS",
+"ea Hes _SWEMBEEB : _",
+"10M BABK IHNN_ABCKY MN BARK",
+"_MEB- ENB: i] SMES",
+"wiers*- PUB = ESM] = PTHI UnEES_",
+"m6 FSF s(EPM = INGZ = ENG",
+"C5B____ PACBL__SEEY) _ICEBi_. ACSB_",
+"RUN CHAPTER 11 115",
+"Snare renatent fron fuse soness Upboted inesturoo Repirest ingit/1).",
+"Ercagers Than: 16602/2000",
+"Totestried BCU-of Uleps hect for Conmment from Sellectine Rightt legistr t",
+"1 Antreeck: for taby for stray in decabitation defeck."
+],
+"1": [],
+"2": [
+"MERGE HOUSE COORDINATES",
+"emote",
+"Cow 1",
+"THE EMPTY HOUSE WHERE THE FUTURE RETURNED"
+],
+"3": []
+},
+"lines": [
+"REOGS USGS *dbore ROCOEP Cocrring Fesurd).",
+"ipeat saeerecrool conscte: 0.9.2018 2d",
+"ne Chaptte Oe. teeCeoned (xhll-Upd/I8GEP_BIend (o-eBegit)",
+"orece: attb: su. 1800 Raster) as",
+"Littroel: MP212068",
+"PERSCITLE EOPT oftenber: 1SPS",
+"ea Hes _SWEMBEEB : _",
+"10M BABK IHNN_ABCKY MN BARK",
+"_MEB- ENB: i] SMES",
+"wiers*- PUB = ESM] = PTHI UnEES_",
+"m6 FSF s(EPM = INGZ = ENG",
+"C5B____ PACBL__SEEY) _ICEBi_. ACSB_",
+"RUN CHAPTER 11 115",
+"Snare renatent fron fuse soness Upboted inesturoo Repirest ingit/1).",
+"Ercagers Than: 16602/2000",
+"Totestried BCU-of Uleps hect for Conmment from Sellectine Rightt legistr t",
+"1 Antreeck: for taby for stray in decabitation defeck.",
+"MERGE HOUSE COORDINATES",
+"emote",
+"Cow 1",
+"THE EMPTY HOUSE WHERE THE FUTURE RETURNED"
+]
+},
+"boot_ch11_02_crt_monitor_boot": {
+"file": "BOOTS/ch11_02_crt_monitor_boot.mp4",
+"ch": 11,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 5 - SCENE _"
+],
+"1": [
+"RUN CHAPTER 5 - SCENE 2",
+"TRACK ROTATION",
+"UPDATE C) PERSPECTIVE"
+],
+"2": [
+"THE BREAKTHROUGH: STABILI"
+],
+"3": []
+},
+"lines": [
+"RUN CHAPTER 5 - SCENE _",
+"RUN CHAPTER 5 - SCENE 2",
+"TRACK ROTATION",
+"UPDATE C) PERSPECTIVE",
+"THE BREAKTHROUGH: STABILI"
+]
+},
+"boot_ch11_03_chapter_11": {
+"file": "BOOTS/ch11_03_chapter_11.mp4",
+"ch": 11,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"LILO Coo"
+],
+"3": [
+"rat 8 et dy.",
+"Peas. cover eis.",
+"Pe peas SSH. CEN",
+"EEE NAR ILS 8 Oy",
+"atienoencs pe Aon)",
+"es pete ie nse",
+"Bren eer a ary"
+]
+},
+"lines": [
+"LILO Coo",
+"rat 8 et dy.",
+"Peas. cover eis.",
+"Pe peas SSH. CEN",
+"EEE NAR ILS 8 Oy",
+"atienoencs pe Aon)",
+"es pete ie nse",
+"Bren eer a ary"
+]
+},
+"boot_ch11_04_chapter_11": {
+"file": "BOOTS/ch11_04_chapter_11.mp4",
+"ch": 11,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"Sore",
+"rf 1 apo",
+"ee ter ttn",
+"oO deal"
+],
+"1": [
+"y-ee l"
+],
+"2": [
+"THE EMPTY HOUSE WHERE THE FUTURE RETURNED",
+"RETUL"
+],
+"3": []
+},
+"lines": [
+"Sore",
+"rf 1 apo",
+"ee ter ttn",
+"oO deal",
+"y-ee l",
+"THE EMPTY HOUSE WHERE THE FUTURE RETURNED",
+"RETUL"
+]
+},
+"boot_ch11_05_run_chapter_11": {
+"file": "BOOTS/ch11_05_run_chapter_11.mp4",
+"ch": 11,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN Cll"
+],
+"1": [
+"RUN CHAPTER 11 - SCENE 06",
+"COMMAND: MERGE COORDINATES RETAIN SOLITUDE",
+"(evel"
+],
+"2": [
+"SEER",
+"[elote lo]",
+"[ole ole"
+],
+"3": []
+},
+"lines": [
+"RUN Cll",
+"RUN CHAPTER 11 - SCENE 06",
+"COMMAND: MERGE COORDINATES RETAIN SOLITUDE",
+"(evel",
+"SEER",
+"[elote lo]",
+"[ole ole"
+]
+},
+"boot_ch11_06_vr_montage": {
+"file": "BOOTS/ch11_06_vr_montage.mp4",
+"ch": 11,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"systen COME AZ - SCORE 04",
+"Rae ee een ence cceccecetye reserved)",
+"ieron figs) i000 Oo",
+"neater Loner: 1360 1008",
+"Sieefchtcer: ieee",
+"SSS Goes Se Foe",
+"Sint Gases. Shee 8 ee",
+"Deck Cecte: tite CodeeRO0 20 CB (oftbit-t best reserved)",
+"Siw Lnarts. Cte come/mate 19:00 me",
+"fypten Leading 8.0n",
+"Eien chrest",
+"St Cores Stokes tem 129-200 (14 aren)",
+"i COOES: F Peessage: Be BOE. reqoiet 00004",
+"Driver Lende Hendepe hott: BERY",
+"Coreve Af Trot CROP Broce 1 1687s 0:0-089013)",
+"Cat's at Plesee Toteitons i Beliage BCR H #1 Bent",
+"SStest beativee: RevadTeg Sestiy Contel",
+"Steet Rensived: 3-00 68.7 00nb",
+"Street deneltes t3eere)",
+"Conmet ied Rendnwed Litpi//selreetion (eeertited MED lest Beeiner",
+"Ort ett] eteabenwest cles",
+"veri"
+],
+"1": [],
+"2": [
+"Hid UNIVERSE BETWEEN SOFA AND WALL"
+],
+"3": [
+"wort SME 4",
+"eta a iret La geen .",
+"WMI cat RA"
+]
+},
+"lines": [
+"systen COME AZ - SCORE 04",
+"Rae ee een ence cceccecetye reserved)",
+"ieron figs) i000 Oo",
+"neater Loner: 1360 1008",
+"Sieefchtcer: ieee",
+"SSS Goes Se Foe",
+"Sint Gases. Shee 8 ee",
+"Deck Cecte: tite CodeeRO0 20 CB (oftbit-t best reserved)",
+"Siw Lnarts. Cte come/mate 19:00 me",
+"fypten Leading 8.0n",
+"Eien chrest",
+"St Cores Stokes tem 129-200 (14 aren)",
+"i COOES: F Peessage: Be BOE. reqoiet 00004",
+"Driver Lende Hendepe hott: BERY",
+"Coreve Af Trot CROP Broce 1 1687s 0:0-089013)",
+"Cat's at Plesee Toteitons i Beliage BCR H #1 Bent",
+"SStest beativee: RevadTeg Sestiy Contel",
+"Steet Rensived: 3-00 68.7 00nb",
+"Street deneltes t3eere)",
+"Conmet ied Rendnwed Litpi//selreetion (eeertited MED lest Beeiner",
+"Ort ett] eteabenwest cles",
+"veri",
+"Hid UNIVERSE BETWEEN SOFA AND WALL",
+"wort SME 4",
+"eta a iret La geen .",
+"WMI cat RA"
+]
+},
+"boot_ch11_07_shows_vr_launch": {
+"file": "BOOTS/ch11_07_shows_vr_launch.mp4",
+"ch": 11,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"RUN CHAPTER 12 - SCENE 6",
+"LOAD MANUFACTURED Si"
+],
+"1": [
+"RUN CHAPTER 12 - SCENE 06",
+"jp Ree EE ISOLATE USER"
+],
+"2": [
+"RUN CHAPTER 12 - SCENE 6",
+"yore MANUFACTURED SKY ISOLATE USER",
+"ONE ISOLATED USER ."
+],
+"3": [
+"ewes"
+]
+},
+"lines": [
+"RUN CHAPTER 12 - SCENE 6",
+"LOAD MANUFACTURED Si",
+"RUN CHAPTER 12 - SCENE 06",
+"jp Ree EE ISOLATE USER",
+"yore MANUFACTURED SKY ISOLATE USER",
+"ONE ISOLATED USER .",
+"ewes"
+]
+},
+"boot_ch12_01_recording_session_cl": {
+"file": "BOOTS/ch12_01_recording_session_cl.mp4",
+"ch": 12,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"SESSION CLOSED"
+],
+"1": [],
+"2": [
+"COMPLETE AND UNOPENED.",
+"COMPLE _"
+],
+"3": []
+},
+"lines": [
+"SESSION CLOSED",
+"COMPLETE AND UNOPENED.",
+"COMPLE _"
+]
+},
+"boot_ch12_02_chapter_12_opening_sequence": {
+"file": "BOOTS/ch12_02_chapter_12_opening_sequence.mp4",
+"ch": 12,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [],
+"3": [
+"THE UNIVERSE",
+"BETWEEN THE SOFA",
+"AND THE WALL"
+]
+},
+"lines": [
+"THE UNIVERSE",
+"BETWEEN THE SOFA",
+"AND THE WALL"
+]
+},
+"boot_ch12_03_chapter_12": {
+"file": "BOOTS/ch12_03_chapter_12.mp4",
+"ch": 12,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"THE UNIVERSE BETWEEN",
+"THE SOFA AND THE WALL"
+],
+"3": []
+},
+"lines": [
+"THE UNIVERSE BETWEEN",
+"THE SOFA AND THE WALL"
+]
+},
+"boot_ch12_04_chapter_12": {
+"file": "BOOTS/ch12_04_chapter_12.mp4",
+"ch": 12,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"Leal"
+],
+"2": [],
+"3": [
+"__ 7 \"dt BA sts"
+]
+},
+"lines": [
+"Leal",
+"__ 7 \"dt BA sts"
+]
+},
+"boot_ch12_05_world_eye_system": {
+"file": "BOOTS/ch12_05_world_eye_system.mp4",
+"ch": null,
+"kind": "title",
+"role": "alt",
+"per_state": {
+"0": [
+"VORLD/eye SYTEM 14.3",
+"Internal nome/chect (8.060)",
+"Toname tolec:",
+"Anmit conect and (6/1)",
+"Haneltaent ceter",
+"SESTENT evers conselatived (8.1)",
+"Crote IM of system: 61"
+],
+"1": [],
+"2": [
+"THE VISOR WAS NO LONGER A TOYE"
+],
+"3": []
+},
+"lines": [
+"VORLD/eye SYTEM 14.3",
+"Internal nome/chect (8.060)",
+"Toname tolec:",
+"Anmit conect and (6/1)",
+"Haneltaent ceter",
+"SESTENT evers conselatived (8.1)",
+"Crote IM of system: 61",
+"THE VISOR WAS NO LONGER A TOYE"
+]
+},
+"boot_ch12_06_world_eye_system_14_3_animatio": {
+"file": "BOOTS/ch12_06_world_eye_system_14_3_animatio.mp4",
+"ch": 12,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 12"
+],
+"1": [
+"WORLD/EYE YSTEM 14.3",
+"EXPAND ) ADD LEFT BOUNDARY ADD RIGHT BOUNDARY MOVE Mf JOUNDARIES INWARD"
+],
+"2": [
+"RELATION UPDATED",
+"\"THE UNIVERSE BETWEEN THE SOFA AND ]"
+],
+"3": [
+"Seen) ae"
+]
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 12",
+"WORLD/EYE YSTEM 14.3",
+"EXPAND ) ADD LEFT BOUNDARY ADD RIGHT BOUNDARY MOVE Mf JOUNDARIES INWARD",
+"RELATION UPDATED",
+"\"THE UNIVERSE BETWEEN THE SOFA AND ]",
+"Seen) ae"
+]
+},
+"boot_ch13_01_chapter_13_opening_sequence": {
+"file": "BOOTS/ch13_01_chapter_13_opening_sequence.mp4",
+"ch": 13,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"ANT eee oe",
+"CPLEN boot: 1.8",
+"Femme ies A",
+"RUM CHA"
+],
+"1": [],
+"2": [],
+"3": [
+"comm: GENERATE COMMON WHT",
+"THE AGREEMENT NO ONE COULD SEE"
+]
+},
+"lines": [
+"ANT eee oe",
+"CPLEN boot: 1.8",
+"Femme ies A",
+"RUM CHA",
+"comm: GENERATE COMMON WHT",
+"THE AGREEMENT NO ONE COULD SEE"
+]
+},
+"boot_ch13_02_chapter_opening_world_eye_syst": {
+"file": "BOOTS/ch13_02_chapter_opening_world_eye_syst.mp4",
+"ch": 13,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3"
+],
+"1": [
+"(PvE =. LY",
+": SPLIT O INTO FOUR LINES",
+"LINES TO FRAME EDGES"
+],
+"2": [],
+"3": []
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"(PvE =. LY",
+": SPLIT O INTO FOUR LINES",
+"LINES TO FRAME EDGES"
+]
+},
+"boot_ch13_03_chapter_13": {
+"file": "BOOTS/ch13_03_chapter_13.mp4",
+"ch": 13,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"OPENER"
+],
+"1": [],
+"2": [
+"THE AGREEMENT NO ONE COULD SEE"
+],
+"3": [
+"a eee a",
+"Eee 8555) es HS",
+"VE ead Been"
+]
+},
+"lines": [
+"OPENER",
+"THE AGREEMENT NO ONE COULD SEE",
+"a eee a",
+"Eee 8555) es HS",
+"VE ead Been"
+]
+},
+"boot_ch13_04_chapter_13": {
+"file": "BOOTS/ch13_04_chapter_13.mp4",
+"ch": 13,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"b. SSS",
+"Keaees"
+],
+"2": [
+"LS SANA",
+"PLS fF ARR.",
+"LLL f-fABRRP OOS SS",
+"fe fee) SN",
+"THE AGREEMENT NO ONE COULD)"
+],
+"3": [
+") 100%"
+]
+},
+"lines": [
+"b. SSS",
+"Keaees",
+"LS SANA",
+"PLS fF ARR.",
+"LLL f-fABRRP OOS SS",
+"fe fee) SN",
+"THE AGREEMENT NO ONE COULD)"
+]
+},
+"boot_ch13_05_world_eye_system_14_3": {
+"file": "BOOTS/ch13_05_world_eye_system_14_3.mp4",
+"ch": 13,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"WORLD//EVE SYSTEM 14.3",
+"RUN CHAPTER 13",
+"Loan SYSTEM AB CO",
+"ConA COORDINATE. GRIDS",
+"ALTON. SHARED POINTS",
+"DELETE DIFFERENCES",
+"pecrte como renarion",
+"naaeess NTF",
+"hiker PR",
+"stat acta Maras cre",
+"By ane: HY"
+],
+"2": [
+"WORLD//EVE SYSTEM 14.3",
+"apco",
+"RELATION UPDATED atte"
+],
+"3": []
+},
+"lines": [
+"WORLD//EVE SYSTEM 14.3",
+"RUN CHAPTER 13",
+"Loan SYSTEM AB CO",
+"ConA COORDINATE. GRIDS",
+"ALTON. SHARED POINTS",
+"DELETE DIFFERENCES",
+"pecrte como renarion",
+"naaeess NTF",
+"hiker PR",
+"stat acta Maras cre",
+"By ane: HY",
+"apco",
+"RELATION UPDATED atte"
+]
+},
+"boot_ch14_01_chapter_14_opening_sequence": {
+"file": "BOOTS/ch14_01_chapter_14_opening_sequence.mp4",
+"ch": 14,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"ASSEN): oven arise ten fcr Hoomels \"3 fefercte 2. -teeitt",
+"se ree Seat R004 datyen/80/IS 280-0 COE teCes 139)",
+"Ce a ee:",
+"Renatonee/tp: ter-oen'Late setfler /Alre/tatops",
+"TeorBeord ent 6.14 seemre 6.08",
+"IF teees af Uinart has Soe emert SFa/3.LeogtLiqmen_pettet d0eng 2.8 ferwet)",
+"TF Mecores ' bert bas a andose i G1805SS08",
+"1 Seceress Devt has s ondose IK 16085001",
+"1 Recovers bert wes 6 andote 1k 0100553000",
+"TF Recor: * best see E8O038S9",
+"1 Mecoret. bent Bas see wttaplapents/setels eet 3 enare (2 eran/Lalt"
+],
+"1": [],
+"2": [],
+"3": [
+"OW ayes"
+]
+},
+"lines": [
+"ASSEN): oven arise ten fcr Hoomels \"3 fefercte 2. -teeitt",
+"se ree Seat R004 datyen/80/IS 280-0 COE teCes 139)",
+"Ce a ee:",
+"Renatonee/tp: ter-oen'Late setfler /Alre/tatops",
+"TeorBeord ent 6.14 seemre 6.08",
+"IF teees af Uinart has Soe emert SFa/3.LeogtLiqmen_pettet d0eng 2.8 ferwet)",
+"TF Mecores ' bert bas a andose i G1805SS08",
+"1 Seceress Devt has s ondose IK 16085001",
+"1 Recovers bert wes 6 andote 1k 0100553000",
+"TF Recor: * best see E8O038S9",
+"1 Mecoret. bent Bas see wttaplapents/setels eet 3 enare (2 eran/Lalt",
+"OW ayes"
+]
+},
+"boot_ch14_02_crt_monitor_boot": {
+"file": "BOOTS/ch14_02_crt_monitor_boot.mp4",
+"ch": 14,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"EoaoOOOe"
+],
+"1": [
+"SSS SSSSSSlsanee",
+"CR eee",
+"LL a Peappepepapaepaetpeey",
+". RST ene gains",
+"pies eapaseaty eS"
+],
+"2": [
+"BiSSSisSSSsltenaeans",
+"aa SSIES SSS SSS",
+"A eet",
+"BSS SSS Se see",
+"LISTE Ee ee",
+"ant ait MO oar",
+"INEQUALITY OUTSIDE THE ROOM"
+],
+"3": []
+},
+"lines": [
+"EoaoOOOe",
+"SSS SSSSSSlsanee",
+"CR eee",
+"LL a Peappepepapaepaetpeey",
+". RST ene gains",
+"pies eapaseaty eS",
+"BiSSSisSSSsltenaeans",
+"aa SSIES SSS SSS",
+"A eet",
+"BSS SSS Se see",
+"LISTE Ee ee",
+"ant ait MO oar",
+"INEQUALITY OUTSIDE THE ROOM"
+]
+},
+"boot_ch14_03_chapter_14": {
+"file": "BOOTS/ch14_03_chapter_14.mp4",
+"ch": 14,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"eves Set 60.008",
+"rms Bah satin 80 be for and rosnrved.",
+"SORES rte: SS Stine Sh atect sd reserve",
+"Soom rial",
+"icone",
+"Pomerees Pot conmaet oot of 2080/1 defeboppen)",
+"Migs tener ct Soe",
+"Sipioi it",
+"Pertten Sinton + 46 1008",
+"(5 cmrveres ty: /rere. teste anne 9 beta #4)",
+"CFC Gent + 46.0.08.8",
+"CAE Comet = 50.s0eet 88",
+"Gare Set toe sereet 8",
+") Gat cot > so serat",
+"1 pretennat Mee: 70/0 /tete ett. com/hat Ob eraa/y t4//epeme/Ti tS",
+"mat arta orting eset use",
+"toot sets tee tee"
+],
+"1": [],
+"2": [
+"THE ROOM BECAME A SENSOR f"
+],
+"3": [
+"aa or. . 4 ev tes San",
+"SV aeee oi"
+]
+},
+"lines": [
+"eves Set 60.008",
+"rms Bah satin 80 be for and rosnrved.",
+"SORES rte: SS Stine Sh atect sd reserve",
+"Soom rial",
+"icone",
+"Pomerees Pot conmaet oot of 2080/1 defeboppen)",
+"Migs tener ct Soe",
+"Sipioi it",
+"Pertten Sinton + 46 1008",
+"(5 cmrveres ty: /rere. teste anne 9 beta #4)",
+"CFC Gent + 46.0.08.8",
+"CAE Comet = 50.s0eet 88",
+"Gare Set toe sereet 8",
+") Gat cot > so serat",
+"1 pretennat Mee: 70/0 /tete ett. com/hat Ob eraa/y t4//epeme/Ti tS",
+"mat arta orting eset use",
+"toot sets tee tee",
+"THE ROOM BECAME A SENSOR f",
+"aa or. . 4 ev tes San",
+"SV aeee oi"
+]
+},
+"boot_ch14_04_chapter_14": {
+"file": "BOOTS/ch14_04_chapter_14.mp4",
+"ch": 14,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"THE ROOM BECAME A SENSOR"
+],
+"3": [
+"Padeaiel = is Val",
+"(4S Wien 2 a",
+"En foe LS > >=",
+"SSS Son JD 57",
+"ee SENOS Ly"
+]
+},
+"lines": [
+"THE ROOM BECAME A SENSOR",
+"Padeaiel = is Val",
+"(4S Wien 2 a",
+"En foe LS > >=",
+"SSS Son JD 57",
+"ee SENOS Ly"
+]
+},
+"boot_ch14_05_empty_rooms_m": {
+"file": "BOOTS/ch14_05_empty_rooms_m.mp4",
+"ch": 14,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"SESSION CLOSED."
+],
+"1": [],
+"2": [],
+"3": [
+"Renae ber treet le Le aS eee",
+"Per eres. ap es ae",
+"2h vedas sti ie ans AS. Teo",
+"POP met ein RAK ab Sep ae",
+"tas : 7"
+]
+},
+"lines": [
+"SESSION CLOSED.",
+"Renae ber treet le Le aS eee",
+"Per eres. ap es ae",
+"2h vedas sti ie ans AS. Teo",
+"POP met ein RAK ab Sep ae",
+"tas : 7"
+]
+},
+"boot_ch14_06_initializes_c": {
+"file": "BOOTS/ch14_06_initializes_c.mp4",
+"ch": 14,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/eye SYSTEM 14.3",
+"RUN CHAPTER 14 - SCENE"
+],
+"1": [
+"WORLD/eye SySTEN 14.3"
+],
+"2": [
+"THE WORLD WOULD REMAIN f"
+],
+"3": []
+},
+"lines": [
+"WORLD/eye SYSTEM 14.3",
+"RUN CHAPTER 14 - SCENE",
+"WORLD/eye SySTEN 14.3",
+"THE WORLD WOULD REMAIN f"
+]
+},
+"boot_ch14_07_screen_boot": {
+"file": "BOOTS/ch14_07_screen_boot.mp4",
+"ch": 14,
+"kind": "ch",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"jam oweren 16 - some bs +",
+"#0\" matron op"
+],
+"2": [
+"-teun CHAPTER 14 SCENE s +",
+"TRACK.USER ATTENTION",
+"+ LOOKED AT THE LOOKING. +"
+],
+"3": [
+"f iss",
+"__ as earl igi",
+"-_ we: Soames wee"
+]
+},
+"lines": [
+"jam oweren 16 - some bs +",
+"#0\" matron op",
+"-teun CHAPTER 14 SCENE s +",
+"TRACK.USER ATTENTION",
+"+ LOOKED AT THE LOOKING. +",
+"f iss",
+"__ as earl igi",
+"-_ we: Soames wee"
+]
+},
+"boot_epilogue_01_boot_sequence": {
+"file": "BOOTS/epilogue_01_boot_sequence.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [
+"THe Wo",
+"JHE EVES"
+],
+"1": [],
+"2": [
+"pope",
+"THE MACHINE REMEMBERED IT.",
+"THE MACHIINE \"HENESNERENED IT"
+],
+"3": [
+"TS peat eR ERR",
+"OO eae et AILET RIERA NOAY.g ea tere"
+]
+},
+"lines": [
+"THe Wo",
+"JHE EVES",
+"pope",
+"THE MACHINE REMEMBERED IT.",
+"THE MACHIINE \"HENESNERENED IT",
+"TS peat eR ERR",
+"OO eae et AILET RIERA NOAY.g ea tere"
+]
+},
+"boot_epilogue_02_epilogue_opening_for_the_world": {
+"file": "BOOTS/epilogue_02_epilogue_opening_for_the_world.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN EPILOGUE"
+],
+"1": [
+"WORLD/EYE SYSTEM 14.3",
+"LOW FOEVICE 61",
+"REMOVE DEVICE 82",
+"ATTACH DEVICE 2",
+"ATTACH DEVICE 3",
+"REMOVE DEVICE 3 C)"
+],
+"2": [
+"WORLD/EYE SYSTEM 14.3",
+"RETAIN MODEL",
+"CONTINUE TRACKING",
+"AFTER THE USER REMOVED THER]"
+],
+"3": [
+"ie. ARES ae Aa i",
+"RENEE SONS ot",
+"Berens (ict ass = as",
+"CO GALI BD Fas ae"
+]
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN EPILOGUE",
+"LOW FOEVICE 61",
+"REMOVE DEVICE 82",
+"ATTACH DEVICE 2",
+"ATTACH DEVICE 3",
+"REMOVE DEVICE 3 C)",
+"RETAIN MODEL",
+"CONTINUE TRACKING",
+"AFTER THE USER REMOVED THER]",
+"ie. ARES ae Aa i",
+"RENEE SONS ot",
+"Berens (ict ass = as",
+"CO GALI BD Fas ae"
+]
+},
+"boot_epilogue_03_epilogue_opening_sequence": {
+"file": "BOOTS/epilogue_03_epilogue_opening_sequence.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [
+"BIOS Version 4.1.(28fz... Recpult)",
+"Memory Check: 646KB OK...",
+"Drive A: Found"
+],
+"1": [
+"UR-GOGGLE Gen 2"
+],
+"2": [
+"Command: RETAIN MODEL",
+"ate oe"
+],
+"3": [
+"Command: RETAIN MODEL",
+"i THE USER REMOVED THE MACHINE."
+]
+},
+"lines": [
+"BIOS Version 4.1.(28fz... Recpult)",
+"Memory Check: 646KB OK...",
+"Drive A: Found",
+"UR-GOGGLE Gen 2",
+"Command: RETAIN MODEL",
+"ate oe",
+"i THE USER REMOVED THE MACHINE."
+]
+},
+"boot_epilogue_04_epilogue_asci": {
+"file": "BOOTS/epilogue_04_epilogue_asci.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [
+"testee O7LBOH (1s front 8 SHE 3)",
+"=SSaeei",
+"Scoot senen srstastantn.tnwnetag winch + Oty (1) oo 3mm)",
+"emnesing romaa)",
+"2 \"tapes tate",
+"resereeet coral)",
+"romain '",
+"ecrors rertonge 3:",
+"met wens eh",
+"taeet.8.0eh tn se sant teeat.. temwtt 891",
+"\"tte ineee-besosonatarte snetg (Betert 0444 811",
+"Sats seorauaeetintiagges st. tant",
+"Sere -"
+],
+"1": [],
+"2": [
+"FTER THE USER REMOVED THE MACHINE"
+],
+"3": [
+": heath feat",
+"Ses r",
+"PtebA lees"
+]
+},
+"lines": [
+"testee O7LBOH (1s front 8 SHE 3)",
+"=SSaeei",
+"Scoot senen srstastantn.tnwnetag winch + Oty (1) oo 3mm)",
+"emnesing romaa)",
+"2 \"tapes tate",
+"resereeet coral)",
+"romain '",
+"ecrors rertonge 3:",
+"met wens eh",
+"taeet.8.0eh tn se sant teeat.. temwtt 891",
+"\"tte ineee-besosonatarte snetg (Betert 0444 811",
+"Sats seorauaeetintiagges st. tant",
+"Sere -",
+"FTER THE USER REMOVED THE MACHINE",
+": heath feat",
+"Ses r",
+"PtebA lees"
+]
+},
+"boot_epilogue_05_epilogue_end_run": {
+"file": "BOOTS/epilogue_05_epilogue_end_run.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [
+"Sore fer Sees ean 8s02008",
+"Srevee fewer cePc: sass 3",
+"Sitios fever cea Sa0e.",
+"ic tea",
+"Se eee",
+"ers CeTemary are gented 1 Inet en/Afl> weee sented i one",
+"Soom trees es",
+"Sen Tees 6.9. 0080 (4)",
+"Reevt Betti and 3 Forest",
+"Showet Seoce Peet Bee 30.08 3080)",
+"eating Pot lertannee:",
+"peeing remeattr 908 ORS",
+"reales Somasee aaa tooo",
+"GSeting rectatee Same feos",
+"Soting fontatee S.3ame Boome",
+"Sooting renteten 88008",
+"eetete Conmateten:",
+"TSTGNEE = wevlact 2) 38 47 Stites",
+"Estiowes = sevters 3 38 2 Seltaeen G01)",
+"Situs = sevtert 2) 98 A/ Selsgone O81",
+"Titwomet = peatect 3: oe sina",
+"Cmte He"
+],
+"1": [],
+"2": [
+"AFTER THE USER REMOVED THE MACHINE."
+],
+"3": [
+"te Bonin Pens kaon = as eS. 7",
+"oe sansa Fee ae ee",
+"Se Sra tied meth eas 5 ea a es",
+"SR eet Seek yer oe 5 Ay bene 0 cee Saat Sind OS > re a ee",
+"soe beeen ce tan wad WS SIDE ADE PE ate NET ol",
+"-snaneenphcahetethept toute REI OER",
+"ret Peer aed boaters: Som sare eee Ns",
+"SPSS SSP SEIN TEES RR oN Oe",
+"bee > Jn titel",
+"AS a BT a ies Se cacaae Senenae maeene ener) ."
+]
+},
+"lines": [
+"Sore fer Sees ean 8s02008",
+"Srevee fewer cePc: sass 3",
+"Sitios fever cea Sa0e.",
+"ic tea",
+"Se eee",
+"ers CeTemary are gented 1 Inet en/Afl> weee sented i one",
+"Soom trees es",
+"Sen Tees 6.9. 0080 (4)",
+"Reevt Betti and 3 Forest",
+"Showet Seoce Peet Bee 30.08 3080)",
+"eating Pot lertannee:",
+"peeing remeattr 908 ORS",
+"reales Somasee aaa tooo",
+"GSeting rectatee Same feos",
+"Soting fontatee S.3ame Boome",
+"Sooting renteten 88008",
+"eetete Conmateten:",
+"TSTGNEE = wevlact 2) 38 47 Stites",
+"Estiowes = sevters 3 38 2 Seltaeen G01)",
+"Situs = sevtert 2) 98 A/ Selsgone O81",
+"Titwomet = peatect 3: oe sina",
+"Cmte He",
+"AFTER THE USER REMOVED THE MACHINE.",
+"te Bonin Pens kaon = as eS. 7",
+"oe sansa Fee ae ee",
+"Se Sra tied meth eas 5 ea a es",
+"SR eet Seek yer oe 5 Ay bene 0 cee Saat Sind OS > re a ee",
+"soe beeen ce tan wad WS SIDE ADE PE ate NET ol",
+"-snaneenphcahetethept toute REI OER",
+"ret Peer aed boaters: Som sare eee Ns",
+"SPSS SSP SEIN TEES RR oN Oe",
+"bee > Jn titel",
+"AS a BT a ies Se cacaae Senenae maeene ener) ."
+]
+},
+"boot_epilogue_06_final_card_an": {
+"file": "BOOTS/epilogue_06_final_card_an.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"THE ROOM _#",
+"THE MACHINE REMEMBERED IT."
+],
+"3": [
+"reed ig"
+]
+},
+"lines": [
+"THE ROOM _#",
+"THE MACHINE REMEMBERED IT.",
+"reed ig"
+]
+},
+"boot_epilogue_07_screen_boot": {
+"file": "BOOTS/epilogue_07_screen_boot.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"SESSION CLOSED",
+"Command: EXECUTE GESTURE"
+],
+"3": [
+"2.2. FESS",
+"aan ieee =S",
+"with ao ="
+]
+},
+"lines": [
+"SESSION CLOSED",
+"Command: EXECUTE GESTURE",
+"2.2. FESS",
+"aan ieee =S",
+"with ao ="
+]
+},
+"boot_epilogue_08_screen_boot": {
+"file": "BOOTS/epilogue_08_screen_boot.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [
+"session CLOSED",
+"See Sa",
+"EEF SN",
+"eee ee"
+],
+"1": [
+"seen",
+"SESSION CLOSED",
+"RETAIN SUNLIGHT END PRESENCE"
+],
+"2": [
+"SESSION CLOSED",
+"RETAIN SUNLIGHT END PRESENCE",
+"THE MEDIUM HAD AAKENED. :"
+],
+"3": []
+},
+"lines": [
+"session CLOSED",
+"See Sa",
+"EEF SN",
+"eee ee",
+"seen",
+"RETAIN SUNLIGHT END PRESENCE",
+"THE MEDIUM HAD AAKENED. :"
+]
+},
+"boot_epilogue_09_screen_boot": {
+"file": "BOOTS/epilogue_09_screen_boot.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [],
+"1": [
+"SESSION CLOSED",
+"RETAIN ROUTE WAIT FOR BODY"
+],
+"2": [
+"SESSION CLOSED",
+"RETAIN ROUTE WAIT FOR BODY",
+"WAITING FOR ANOTHER BODY"
+],
+"3": [
+"TR Pts ee",
+"Sate Sa Kae kc sao Se uste tov",
+"3 INRA RDS % perk Masi 5",
+"ee Pig bet Hf) AALS",
+"Beg SPAS OD",
+"item PSY TRE 5 SAL ee -",
+"ees Lgaip PAA fete =",
+"2 SaMeais AIAN Eas:",
+"Shee Veen hax See"
+]
+},
+"lines": [
+"SESSION CLOSED",
+"RETAIN ROUTE WAIT FOR BODY",
+"WAITING FOR ANOTHER BODY",
+"TR Pts ee",
+"Sate Sa Kae kc sao Se uste tov",
+"3 INRA RDS % perk Masi 5",
+"ee Pig bet Hf) AALS",
+"Beg SPAS OD",
+"item PSY TRE 5 SAL ee -",
+"ees Lgaip PAA fete =",
+"2 SaMeais AIAN Eas:",
+"Shee Veen hax See"
+]
+},
+"boot_epilogue_10_screen_boot": {
+"file": "BOOTS/epilogue_10_screen_boot.mp4",
+"ch": 14,
+"kind": "epilogue",
+"role": null,
+"per_state": {
+"0": [],
+"1": [],
+"2": [
+"Sate"
+],
+"3": [
+"THE WORLD INE.",
+"CHANK INS ee ee"
+]
+},
+"lines": [
+"Sate",
+"THE WORLD INE.",
+"CHANK INS ee ee"
+]
+},
+"boot_prologue_01_prologue_opening_ascii_eye": {
+"file": "BOOTS/prologue_01_prologue_opening_ascii_eye.mp4",
+"ch": 1,
+"kind": "prologue",
+"role": null,
+"per_state": {
+"0": [
+"Boot Bec 1: 109ST own 0.00 and older.",
+"fecoppotte: 106ST 18/50-830/CENE",
+"Enectruction: 87807",
+"Videredinale (https: //secrt. LtImochsappligitol)))",
+"spicflence",
+"Cholecte: 13.08 16 to NPB",
+"Enfermetion Atro-g/Seladic Roccor)",
+"Reforn systen (mogula cule)",
+"Reter detutt http://nearf (22Klane (with",
+"Corep Level: 1",
+"Referconotion: GASTEX",
+"if (https:/f(cotem/prologued 8d((ReCENGRAI) 1/=gell_1175._-tH:.97488",
+"165708/18)",
+") efistem: 11060616",
+"About Sulft: BLPD",
+"System Cres: hn///(1068 f/reete)",
+"Curting Cross (im/all ferment)",
+"Eneroncene: 6.85%",
+"RUM PROLOGUE"
+],
+"1": [
+"eax: U"
+],
+"2": [
+"as genni HTT",
+"gies: e=Saeee uy",
+"poeaae eee"
+],
+"3": [
+"ee ee tty",
+"aes mt",
+"ede vane",
+"FES PO",
+"LEARNED oe",
+"TO LOOK BACK Q"
+]
+},
+"lines": [
+"Boot Bec 1: 109ST own 0.00 and older.",
+"fecoppotte: 106ST 18/50-830/CENE",
+"Enectruction: 87807",
+"Videredinale (https: //secrt. LtImochsappligitol)))",
+"spicflence",
+"Cholecte: 13.08 16 to NPB",
+"Enfermetion Atro-g/Seladic Roccor)",
+"Reforn systen (mogula cule)",
+"Reter detutt http://nearf (22Klane (with",
+"Corep Level: 1",
+"Referconotion: GASTEX",
+"if (https:/f(cotem/prologued 8d((ReCENGRAI) 1/=gell_1175._-tH:.97488",
+"165708/18)",
+") efistem: 11060616",
+"About Sulft: BLPD",
+"System Cres: hn///(1068 f/reete)",
+"Curting Cross (im/all ferment)",
+"Eneroncene: 6.85%",
+"RUM PROLOGUE",
+"eax: U",
+"as genni HTT",
+"gies: e=Saeee uy",
+"poeaae eee",
+"ee ee tty",
+"aes mt",
+"ede vane",
+"FES PO",
+"LEARNED oe",
+"TO LOOK BACK Q"
+]
+},
+"boot_prologue_02_prologue_asci": {
+"file": "BOOTS/prologue_02_prologue_asci.mp4",
+"ch": 1,
+"kind": "prologue",
+"role": null,
+"per_state": {
+"0": [
+": pi fet",
+"Lite",
+"Semis ci",
+". eee .",
+"7 SSS"
+],
+"1": [],
+"2": [
+"BEFORE THE WORLD ED TO LOOK BACK"
+],
+"3": [
+"at - Servi",
+"as - Chae"
+]
+},
+"lines": [
+": pi fet",
+"Lite",
+"Semis ci",
+"7 SSS",
+"BEFORE THE WORLD ED TO LOOK BACK",
+"at - Servi",
+"as - Chae"
+]
+},
+"boot_prologue_03_prologue_crt": {
+"file": "BOOTS/prologue_03_prologue_crt.mp4",
+"ch": 1,
+"kind": "prologue",
+"role": null,
+"per_state": {
+"0": [
+"set erntaet nose",
+"Seltnprecsereeee te",
+"Sipsted Saeco ce Sewne gets",
+"Sitters sstren reer",
+"Telecel eared",
+"ee tina Te",
+"snanastnntbant",
+"re tate 0h",
+"ti ft Some",
+"bee ames = wer",
+"1 agra same Som ea EL HE\" erroett t enrnaeasaete Serene",
+"ritresettareser",
+"ements Serte eg gaseew 9 6",
+"SSeS SS eee",
+"SSIS Te etaea'S Sarees ants",
+"110 Pinca = wey 4",
+"veer = Soelt's tomes (84s",
+"Srivew = senate s+ Brus tr)",
+"TOR vtereeen ian",
+"Yo trlomen some sha we",
+"sseteeen \"aor oreet Sign secsivesauet ic esi we aermaoteee mm",
+"tecoertnens"
+],
+"1": [
+"\" (/ Low r 14",
+"fio OWA ARR",
+"Ais t"
+],
+"2": [
+"BEFORE THE WORLD LEARNED TO LOOK BACK"
+],
+"3": []
+},
+"lines": [
+"set erntaet nose",
+"Seltnprecsereeee te",
+"Sipsted Saeco ce Sewne gets",
+"Sitters sstren reer",
+"Telecel eared",
+"ee tina Te",
+"snanastnntbant",
+"re tate 0h",
+"ti ft Some",
+"bee ames = wer",
+"1 agra same Som ea EL HE\" erroett t enrnaeasaete Serene",
+"ritresettareser",
+"ements Serte eg gaseew 9 6",
+"SSeS SS eee",
+"SSIS Te etaea'S Sarees ants",
+"110 Pinca = wey 4",
+"veer = Soelt's tomes (84s",
+"Srivew = senate s+ Brus tr)",
+"TOR vtereeen ian",
+"Yo trlomen some sha we",
+"sseteeen \"aor oreet Sign secsivesauet ic esi we aermaoteee mm",
+"tecoertnens",
+"\" (/ Low r 14",
+"fio OWA ARR",
+"Ais t",
+"BEFORE THE WORLD LEARNED TO LOOK BACK"
+]
+},
+"boot_title_01_computer_chapter_opening_the_w": {
+"file": "BOOTS/title_01_computer_chapter_opening_the_w.mp4",
+"ch": null,
+"kind": "title",
+"role": null,
+"per_state": {
+"0": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 01",
+"READY_"
+],
+"1": [
+"WORLD/EYE SYSTEM 14.3",
+"C2O O09",
+"JOXXNO)",
+"OLX LO)",
+"atten -O ay Rows",
+"MOVE O INTO BORDER",
+"READY WITH O POINTS"
+],
+"2": [
+"WORLD/EYE SYSTEM 14.3",
+"axl2",
+"RELATION UPDATED"
+],
+"3": [
+"WORLD/EYE SYSTEM 14.3",
+"RELATION UPDATED",
+"THE NIGHT THE AUDIENCE BECAME PART OF THE MACHINE."
+]
+},
+"lines": [
+"WORLD/EYE SYSTEM 14.3",
+"RUN CHAPTER 01",
+"READY_",
+"C2O O09",
+"JOXXNO)",
+"OLX LO)",
+"atten -O ay Rows",
+"MOVE O INTO BORDER",
+"READY WITH O POINTS",
+"axl2",
+"RELATION UPDATED",
+"THE NIGHT THE AUDIENCE BECAME PART OF THE MACHINE."
+]
+},
+"boot_title_02_world_eye_system": {
+"file": "BOOTS/title_02_world_eye_system.mp4",
+"ch": null,
+"kind": "title",
+"role": "main",
+"per_state": {
+"0": [
+"freee sl",
+"i com eatin",
+"SES TSS oe se mem et e-",
+"Teams emate",
+"Fae S Se entrar",
+"Sem spt tn ta",
+"SSS cient",
+"eee eniges",
+"FEES naece mie suse set pee",
+"Poet",
+"iamecoree",
+"seyrem",
+"Baan"
+],
+"1": [
+"a tare ro",
+"THE Wl"
+],
+"2": [
+"THE WORLD BEHIND THE EYES"
+],
+"3": [
+"AN AFA ERNNE NA: 7"
+]
+},
+"lines": [
+"freee sl",
+"i com eatin",
+"SES TSS oe se mem et e-",
+"Teams emate",
+"Fae S Se entrar",
+"Sem spt tn ta",
+"SSS cient",
+"eee eniges",
+"FEES naece mie suse set pee",
+"Poet",
+"iamecoree",
+"seyrem",
+"Baan",
+"a tare ro",
+"THE Wl",
+"THE WORLD BEHIND THE EYES",
+"AN AFA ERNNE NA: 7"
+]
+}
+}
+}

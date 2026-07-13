@@ -79,6 +79,30 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;
 #play .meta{position:absolute;top:12px;left:14px;font-size:10px;color:var(--dim)}
 #play .bctl{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);display:flex;gap:8px}
 .backbtn{position:absolute;top:10px;right:12px;z-index:5}
+/* ---- SHELL: the OS speaks only in transcribed lines ---- */
+#shell{position:fixed;left:0;right:0;bottom:0;z-index:60;border-top:1px solid var(--line);
+  background:rgba(0,4,2,.92);display:none;padding:8px 12px calc(8px + env(safe-area-inset-bottom))}
+body.hasShell #shell{display:block}
+#shOut{font-size:10px;color:var(--dim);min-height:14px;margin-bottom:5px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+#shOut b{color:var(--hot);font-weight:400}
+#shRow{display:flex;gap:8px;align-items:center}
+#shRow .ps{color:var(--hot)}
+#shIn{flex:1;background:transparent;border:0;outline:none;color:var(--ink);
+  font:inherit;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+/* manual page: what the machine says */
+#man{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.9);display:none;
+  align-items:center;justify-content:center;padding:18px}
+#man.on{display:flex}
+#man .card{width:min(680px,96vw);max-height:88vh;overflow-y:auto;border:1px solid var(--line);
+  background:#020a06;padding:14px}
+#man h3{font-size:11px;letter-spacing:.2em;font-weight:400;color:var(--hot);margin:0 0 10px}
+#man .frames{display:flex;gap:4px;margin-bottom:10px}
+#man .frames img{width:25%;border:1px solid var(--line);display:block}
+#man .ln{font-size:11px;line-height:1.9;border-left:2px solid var(--line);padding-left:10px;
+  margin-bottom:4px;color:var(--ink);cursor:pointer}
+#man .ln:hover{border-color:var(--hot);color:var(--hot)}
+#man .none{color:var(--dim);font-size:10px;letter-spacing:.15em}
 @media(max-width:640px){.grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}}
 </style>
 </head>
@@ -115,6 +139,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;
   <div class="cap" id="playCap"></div>
 </div>
 
+<div id="shell"><div id="shOut"></div>
+  <div id="shRow"><span class="ps">&gt;</span>
+  <input id="shIn" placeholder="RUN CHAPTER 03 · MOVE EYE TO VIEW · DEFINE CHAPTER 5 = ..." autocomplete="off" spellcheck="false"></div></div>
+<div id="man"><div class="card"><h3 id="manT"></h3><div class="frames" id="manF"></div>
+  <div id="manL"></div><div style="margin-top:12px;text-align:right"><button onclick="document.getElementById('man').classList.remove('on')">CLOSE</button></div></div></div>
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
@@ -124,12 +153,15 @@ try{TITLES=JSON.parse(localStorage.getItem('monteTitles')||'{}');}catch(e){}
 const hue=n=>'hsl('+((n-1)*25.7)+',72%,58%)';
 
 // ---------- data ----------
+let OTX=null; // transcribed screens: the OS's licensed vocabulary
 async function boot(){
-  const [osd,man,tr]=await Promise.all([
+  const [osd,man,tr,otx]=await Promise.all([
     fetch('MONTE/os_states.json').then(r=>r.json()),
     fetch('MONTE/monte_manifest.json').then(r=>r.json()),
-    fetch('MONTE/monte_transcripts.json').then(r=>r.json()).catch(()=>({}))]);
-  OSD=osd;MAN=man;
+    fetch('MONTE/monte_transcripts.json').then(r=>r.json()).catch(()=>({})),
+    fetch('MONTE/os_text.json').then(r=>r.json()).catch(()=>null)]);
+  OSD=osd;MAN=man;OTX=otx;
+  if(OTX)document.body.classList.add('hasShell');
   for(const id in tr){if(tr[id]&&tr[id].segments)SEGS[id]=tr[id].segments;}
   man.eras.forEach(e=>{
     const list=[];
@@ -138,8 +170,9 @@ async function boot(){
       list.push(c.id); });
     ERACLIPS[e.n]={era:e,ids:list};
   });
-  $('sysline').textContent=' · '+OSD.boots.length+' STATES MOUNTED · '
-    +Object.keys(CLIPS).length+' CLIPS';
+  const nLines=OTX?Object.values(OTX.boots).reduce((n,b)=>n+b.lines.length,0):0;
+  $('sysline').textContent=' 14.3 · '+OSD.boots.length+' MACHINES · '
+    +Object.keys(CLIPS).length+' CLIPS'+(nLines?' · '+nLines+' SCREEN LINES READ':'');
 }
 const bootsBy=f=>OSD.boots.filter(f);
 const stImg=(b,k)=>'MONTE/OS_STATES/'+b.states[Math.min(k,b.states.length-1)].img;
@@ -204,6 +237,9 @@ function buildDesktop(){
       p.onclick=()=>{ // LAUNCH: the chapter's boot plays as the launch animation
         playTrans(b,()=>openRoom(e),{});
       };
+      const badge=p.querySelector('.ch');
+      if(badge&&OTX){badge.style.cursor='help';
+        badge.onclick=ev=>{ev.stopPropagation();openMan(b,e);};}
       grid.appendChild(p);
     });
     desk.appendChild(dv);
@@ -270,6 +306,77 @@ $('shutBtn').onclick=()=>{
   playTrans(end,()=>{show('power');$('powerBtn').textContent='POWER ON';},{full:true});
 };
 
+// ---------- MANUAL PAGE: the evidence — what this machine says ----------
+function openMan(b,era){
+  if(!OTX)return;
+  const t=OTX.boots[b.pid]||{lines:[]};
+  $('manT').textContent=(era?('CH '+String(era.n).padStart(2,'0')+' · '):'')+b.pid;
+  $('manF').innerHTML=b.states.map((s,k)=>'<img src="'+stImg(b,k)+'">').join('');
+  $('manL').innerHTML=t.lines.length
+    ?t.lines.map(ln=>'<div class="ln">'+esc(ln)+'</div>').join('')
+    :'<div class="none">UNREADABLE SCREEN · STATIC ONLY</div>';
+  [...$('manL').children].forEach(d=>{d.onclick=()=>{ // a screen line is runnable
+    $('shIn').value=d.textContent;$('shIn').focus();
+    $('man').classList.remove('on');};});
+  $('man').classList.add('on');
+}
+// ---------- SHELL: verbs licensed by transcription (evidence invariant) ----------
+function shSay(m){$('shOut').innerHTML=m;}
+function allLines(){const out=[];if(!OTX)return out;
+  for(const pid in OTX.boots)for(const ln of OTX.boots[pid].lines)out.push({pid,ln});
+  return out;}
+function nearestLine(q){ // the machine answers only in its own words
+  q=q.toUpperCase();const toks=q.split(/\s+/).filter(t=>t.length>2);
+  let best=null,bs=0;
+  for(const {pid,ln} of allLines()){
+    const L=ln.toUpperCase();let s=0;
+    toks.forEach(t=>{if(L.includes(t))s+=t.length;});
+    if(s>bs){bs=s;best={pid,ln};}}
+  return best;
+}
+function runShell(raw){
+  const q=raw.trim();if(!q)return;
+  const U=q.toUpperCase();
+  let m;
+  if((m=U.match(/^RUN\s+(?:CHAPTER|CH|PROGRAM)?\s*0?(\d{1,2})$/))){
+    const n=+m[1],e=(MAN.eras||[]).find(x=>x.n===n);
+    if(!e){shSay('NO SUCH PROGRAM · 01–14');return;}
+    const cb=OSD.boots.filter(b=>b.kind==='ch'&&b.ch===n);
+    shSay('<b>RUN CHAPTER '+String(n).padStart(2,'0')+'</b> · LAUNCHING');
+    playTrans(cb[Math.floor(Math.random()*cb.length)],()=>openRoom(e),{});
+  } else if((m=U.match(/^RUN\s+ACT\s*0?([123])$/))){
+    const a=+m[1];const ab=OSD.boots.filter(b=>b.kind==='act'&&{1:1,6:2,11:3}[b.ch]===a)[0];
+    shSay('<b>RUN ACT '+'I'.repeat(a)+'</b>');
+    playTrans(ab,()=>{show('desktop');
+      const dv=document.querySelectorAll('.drive')[a-1];dv&&dv.scrollIntoView({behavior:'smooth'});},{});
+  } else if(U==='RUN FILM'||U==='RUN ALL'){
+    shSay('<b>RUN FILM</b> · HANDING TO THE INSTRUMENT');location.href='monte.html';
+  } else if((m=U.match(/^MOVE\s+(.+?)\s+TO\s+VIEW$/))){
+    const needle=m[1].toLowerCase();
+    const pool=$('room').classList.contains('on')&&curEra?ERACLIPS[curEra.n].ids:Object.keys(CLIPS);
+    const hit=pool.find(id=>String((CLIPS[id]||{}).title||id).toLowerCase().includes(needle));
+    if(hit){shSay('<b>MOVE '+esc(m[1])+' TO VIEW</b>');openPlay(hit);}
+    else shSay('NOTHING ANSWERS TO "'+esc(m[1])+'"');
+  } else if((m=q.match(/^DEFINE\s+(?:CHAPTER|CH)?\s*0?(\d{1,2})\s*=\s*(.+)$/i))){
+    const n=+m[1],title=m[2].trim();
+    TITLES[n]=title;try{localStorage.setItem('monteTitles',JSON.stringify(TITLES));}catch(e){}
+    shSay('<b>DEFINE CHAPTER '+n+' = '+esc(title.toUpperCase())+'</b> · BOUND');
+    buildDesktop();
+  } else if(U==='EYE'||U==='SYSTEM'||U==='SYSTEM REPORT'){
+    const nL=allLines().length;
+    shSay('<b>WORLD EYE SYSTEM 14.3</b> · '+OSD.boots.length+' MACHINES · '
+      +Object.keys(CLIPS).length+' CLIPS · '+nL+' SCREEN LINES · 3 DRIVES · 14 PROGRAMS');
+  } else if(U==='HALT'||U==='SHUTDOWN'||U==='SHUT DOWN'){
+    $('shutBtn').click();
+  } else {
+    const near=nearestLine(U); // I1: unknown input answered only with evidence
+    shSay(near?('THE MACHINE SAYS: <b>'+esc(near.ln)+'</b> <span style="opacity:.5">('+esc(near.pid)+')</span>')
+              :'THE MACHINE IS SILENT');
+  }
+}
+if($('shIn'))$('shIn').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){runShell($('shIn').value);$('shIn').value='';}
+  e.stopPropagation();});
 // clock
 setInterval(()=>{const d=new Date();
   $('clk').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');},1000);
