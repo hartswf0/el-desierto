@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MONTE — SPIN</title>
+<!--
+  ═══════════════════════════════════════════════════════════════════
+  MONTE / SPIN — counterfactual montage assembly instrument
+  CONSEQUENCE WORKS · FANTROL · single-file build
+
+  PROGRAM THEORY
+  A film here is not a timeline. It is a field of lanes; each lane is
+  a stratum of the archive (AUDIENCE, MACHINES, SYSTEMS, DISPLAYS).
+  Assembly = sampling. The ROW PLAY instrument draws one clip per
+  lane and plays the junction — a Monte Carlo cut. KEEP freezes a
+  sample as a VERSION (CASCADE). THEATRE plays the full row-major
+  interleave. Nothing is rendered from footage: every clip is a
+  seeded BEFLIX dot-field, drawn live.
+
+  DOCTRINE
+  · single-file HTML · IBM Plex Mono · absolute black/white
+  · accents: teal #19e6c8 amber #ffd23f red #ff2e2e blue #3b82f6
+  · no border-radius on rectangles · no emoji glyphs (drawn marks)
+  · mobile-first · named loop ceilings · undo everything
+
+  GESTURES
+  tap clip .......... select (mode-dependent)
+  hold clip ~260ms .. lift → drag within/across lanes (ASSEMBLE)
+  drag lane handle .. reorder lanes
+  tap lane header ... lane tools
+  ═══════════════════════════════════════════════════════════════════
+-->
+<style>
+  @font-face { font-family:'IBM Plex Mono'; src:local('IBM Plex Mono'); }
+  :root{
+    --bg:#000; --ink:#fff;
+    --teal:#19e6c8; --amber:#ffd23f; --red:#ff2e2e; --blue:#3b82f6;
+    --g1:#0d0d0d; --g2:#161616; --g3:#242424; --g4:#3a3a3a; --g5:#6a6a6a; --g6:#9a9a9a;
+    --lane-w:168px; --hdr-h:52px; --modes-h:58px;
+    font-family:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  }
+  *{ box-sizing:border-box; border-radius:0 !important; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink);
+    font-family:inherit; height:100%; overscroll-behavior:none; }
+  button{ font-family:inherit; background:var(--bg); color:var(--ink);
+    border:1px solid var(--g4); padding:8px 12px; font-size:12px;
+    letter-spacing:.08em; cursor:pointer; text-transform:uppercase; }
+  button:active{ background:var(--g2); }
+  button.pri{ border-color:var(--teal); color:var(--teal); }
+  button.warn{ border-color:var(--red); color:var(--red); }
+  button.ghost{ border-color:var(--g3); color:var(--g6); }
+  ::-webkit-scrollbar{ width:0; height:0; }
+
+  /* ── header ─────────────────────────────────────────── */
+  #hdr{ position:fixed; inset:0 0 auto 0; height:var(--hdr-h); z-index:40;
+    display:flex; align-items:center; gap:8px; padding:0 10px;
+    background:var(--bg); border-bottom:1px solid var(--g3); }
+  #hdr .brand{ font-weight:700; letter-spacing:.42em; font-size:16px; }
+  #viewbtn{ display:flex; align-items:center; gap:6px; }
+  #viewbtn .caret{ width:0; height:0; border-left:4px solid transparent;
+    border-right:4px solid transparent; border-top:5px solid var(--ink); }
+  #clock{ flex:1; text-align:center; font-size:12px; color:var(--g6); white-space:nowrap; }
+  #clock b{ color:var(--ink); font-weight:400; }
+  #progress{ position:absolute; left:0; bottom:-1px; height:2px; background:var(--teal); width:0; }
+
+  /* ── lane tools strip ───────────────────────────────── */
+  .strip{ position:fixed; left:0; right:0; top:var(--hdr-h); z-index:38;
+    display:none; align-items:center; gap:6px; padding:6px 10px;
+    background:var(--bg); border-bottom:1px solid var(--g3); overflow-x:auto; }
+  .strip.on{ display:flex; }
+  .strip .tag{ font-size:11px; letter-spacing:.1em; padding:6px 8px;
+    border:1px solid currentColor; white-space:nowrap; }
+  .strip button{ padding:6px 9px; font-size:11px; white-space:nowrap; }
+
+  /* ── board ──────────────────────────────────────────── */
+  #board{ position:fixed; inset:var(--hdr-h) 0 var(--modes-h) 0;
+    overflow:auto; padding:10px; -webkit-overflow-scrolling:touch; }
+  #board.toolpad{ top:calc(var(--hdr-h) + 38px); }
+  #rack{ display:flex; gap:10px; align-items:flex-start; width:max-content; min-height:100%; }
+
+  .lane{ width:var(--lane-w); flex:0 0 auto; border:1px solid var(--g3);
+    background:var(--bg); transition:width .18s ease; }
+  .lane.sel{ border-color:var(--lc); }
+  .lane.off .clip{ opacity:.3; }
+  .lane.dragtarget{ border-color:var(--amber); }
+  .lane.shrunk{ width:64px; }
+  .lane.shrunk .cid,.lane.shrunk .cdur,.lane.shrunk .cx,.lane.shrunk .cdots{ display:none; }
+  .lane.grown{ width:min(72vw,320px); }
+
+  .lhead{ display:flex; align-items:center; gap:6px; padding:7px 6px;
+    border-bottom:1px solid var(--g3); position:sticky; top:-11px;
+    background:var(--bg); z-index:2; }
+  .lhandle{ width:14px; height:16px; flex:0 0 auto; cursor:grab; position:relative; }
+  .lhandle::before{ content:""; position:absolute; inset:2px 3px;
+    background-image:radial-gradient(var(--g6) 1.2px, transparent 1.3px);
+    background-size:6px 6px; }
+  .ldot{ width:8px; height:8px; background:var(--lc); flex:0 0 auto; }
+  .lmeta{ flex:1; min-width:0; font-size:10px; line-height:1.35; color:var(--g6);
+    letter-spacing:.06em; overflow:hidden; }
+  .lmeta b{ display:block; color:var(--ink); font-weight:400; font-size:11px;
+    white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
+  .lbtn{ width:24px; height:24px; padding:0; font-size:11px; border-color:var(--g3);
+    color:var(--g6); flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+
+  .lbody{ padding:6px; display:flex; flex-direction:column; gap:6px; min-height:90px; }
+  .laneadd{ border:1px dashed var(--g3); color:var(--g5); text-align:center;
+    padding:14px 0; font-size:16px; }
+
+  /* ── clip ───────────────────────────────────────────── */
+  .clip{ position:relative; border:1px solid var(--g3); background:var(--g1);
+    user-select:none; touch-action:pan-x pan-y; }
+  .clip canvas{ display:block; width:100%; height:auto; background:#000; }
+  .clip img{ display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:#000; }
+  #instrument .pick img,.ver .vstrip img,#tstrip img{ display:block; width:100%;
+    aspect-ratio:16/9; object-fit:cover; background:#000; }
+
+  /* ── read line + lane monitors (VIEW mode) ─────────── */
+  #readline{ position:fixed; left:0; right:0; z-index:34; display:none;
+    border-top:1px solid var(--teal); pointer-events:none; opacity:.85; }
+  #readline i{ position:absolute; left:8px; top:-1px; transform:translateY(-100%);
+    font-style:normal; font-size:9px; letter-spacing:.2em; color:var(--teal);
+    background:var(--bg); padding:1px 4px; }
+  .lmon{ position:fixed; z-index:35; border:1px solid var(--teal); background:#000;
+    overflow:hidden; pointer-events:none; display:none; }
+  .lmon video,.lmon canvas{ width:100%; height:100%; object-fit:cover; display:block; }
+  .lmon .mlbl{ position:absolute; left:3px; bottom:2px; right:3px; font-size:9px;
+    color:var(--teal); text-shadow:0 0 4px #000; white-space:nowrap; overflow:hidden; }
+  #scrubbar .rainon{ border-color:var(--teal); color:var(--teal); }
+
+  #tvideo{ width:100%; max-height:100%; display:none; background:#000; }
+  #tsub{ position:absolute; left:8%; right:8%; bottom:14%; text-align:center;
+    font-size:15px; line-height:1.6; color:var(--ink);
+    text-shadow:0 2px 8px #000,0 0 3px #000; pointer-events:none; letter-spacing:.02em; }
+  .clip .cid{ position:absolute; left:5px; bottom:4px; font-size:11px;
+    letter-spacing:.05em; text-shadow:0 0 4px #000,0 0 4px #000; }
+  .clip .cdur{ position:absolute; right:5px; top:4px; font-size:10px; color:var(--g6);
+    text-shadow:0 0 4px #000; }
+  .clip .cx{ position:absolute; right:0; top:0; width:20px; height:20px; padding:0;
+    font-size:10px; background:var(--red); border:0; color:#000; display:none;
+    align-items:center; justify-content:center; line-height:1; }
+  body[data-mode="assemble"] .clip .cx{ display:flex; }
+  .clip .cdots{ position:absolute; right:2px; bottom:2px; width:20px; height:20px;
+    padding:0; border:0; background:transparent; color:var(--g6); font-size:12px;
+    letter-spacing:1px; display:flex; align-items:center; justify-content:center; }
+  .clip .mark{ position:absolute; left:5px; top:5px; width:7px; height:7px;
+    background:var(--amber); display:none; }
+  .clip.marked .mark{ display:block; }
+  .clip.disabled canvas{ opacity:.25; }
+  .clip.disabled::after{ content:"OFF"; position:absolute; inset:0; display:flex;
+    align-items:center; justify-content:center; color:var(--g5); font-size:11px;
+    letter-spacing:.3em; }
+  .clip.sel{ border-color:var(--teal); box-shadow:0 0 0 1px var(--teal); }
+  .clip.picked{ border-color:var(--amber); box-shadow:0 0 0 1px var(--amber); }
+  .clip.checked::before{ content:""; position:absolute; right:5px; top:5px; z-index:3;
+    width:14px; height:14px; background:var(--teal);
+    clip-path:polygon(14% 44%, 0 65%, 40% 100%, 100% 16%, 82% 0, 38% 66%); }
+  .clip.lifting{ opacity:.35; outline:1px dashed var(--amber); }
+
+  /* ── drag ghost + drop indicator ────────────────────── */
+  #ghost{ position:fixed; z-index:60; width:150px; pointer-events:none; display:none;
+    border:1px solid var(--amber); background:#000; box-shadow:0 6px 22px #000; }
+  #ghost .gth canvas,#ghost .gth img{ width:100%; display:block;
+    aspect-ratio:16/9; object-fit:cover; background:#000; }
+  #ghost .glabel{ font-size:10px; padding:4px 6px; color:var(--amber);
+    letter-spacing:.06em; border-top:1px solid var(--g3); white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis; }
+  #dropind{ position:fixed; z-index:55; display:none; pointer-events:none;
+    border-top:2px solid var(--teal); }
+  #dropind span{ position:absolute; left:50%; top:-1px; transform:translate(-50%,-50%);
+    background:var(--teal); color:#000; font-size:10px; letter-spacing:.14em;
+    padding:4px 8px; white-space:nowrap; }
+  #dropind.amber{ border-color:var(--amber); } #dropind.amber span{ background:var(--amber); }
+  #laneind{ position:fixed; z-index:55; width:0; display:none; pointer-events:none;
+    border-left:2px solid var(--amber); }
+
+  /* ── bottom mode bar ────────────────────────────────── */
+  #modes{ position:fixed; inset:auto 0 0 0; height:var(--modes-h); z-index:40;
+    display:flex; gap:8px; padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+    background:var(--bg); border-top:1px solid var(--g3); }
+  #modes button{ flex:1; font-size:11px; padding:0; display:flex; gap:7px;
+    align-items:center; justify-content:center; border-color:var(--g3); color:var(--g6); }
+  #modes button.on{ border-color:var(--teal); color:var(--teal); }
+  .mk{ width:12px; height:12px; flex:0 0 auto; position:relative; }
+  .mk.asm{ border:1px solid currentColor; box-shadow:3px 3px 0 -1px currentColor; }
+  .mk.selm{ border:1px dashed currentColor; }
+  .mk.viewm{ background:
+    linear-gradient(currentColor,currentColor) 0 0/5px 5px no-repeat,
+    linear-gradient(currentColor,currentColor) 100% 0/5px 5px no-repeat,
+    linear-gradient(currentColor,currentColor) 0 100%/5px 5px no-repeat,
+    linear-gradient(currentColor,currentColor) 100% 100%/5px 5px no-repeat; }
+  .mk.playm{ width:0; height:0; border:0; border-left:11px solid currentColor;
+    border-top:7px solid transparent; border-bottom:7px solid transparent; }
+
+  /* ── floating action bars (batch / clip / instrument) ─ */
+  .bar{ position:fixed; left:8px; right:8px; bottom:calc(var(--modes-h) + 8px);
+    z-index:42; background:var(--bg); border:1px solid var(--g4); display:none; }
+  .bar.on{ display:block; }
+  .bar .brow{ display:flex; align-items:center; gap:6px; padding:7px 8px; overflow-x:auto; }
+  .bar .btitle{ font-size:11px; letter-spacing:.12em; color:var(--g6); white-space:nowrap; }
+  .bar .btitle b{ color:var(--ink); font-weight:400; }
+  .bar button{ font-size:10px; padding:7px 9px; white-space:nowrap; }
+  #instrument .picks{ display:flex; gap:5px; padding:0 8px 8px; overflow-x:auto; }
+  #instrument .pick{ width:76px; flex:0 0 auto; border:1px solid var(--g3); position:relative; }
+  #instrument .pick canvas{ width:100%; display:block; }
+  #instrument .pick i{ position:absolute; left:3px; bottom:2px; font-style:normal;
+    font-size:9px; text-shadow:0 0 3px #000; }
+  #instrument .pick.void{ height:46px; border-style:dashed; }
+  #instrument .live{ width:8px; height:8px; background:var(--teal); flex:0 0 auto;
+    animation:pulse 1.2s infinite; }
+  @keyframes pulse{ 50%{ opacity:.25; } }
+
+  /* ── sheets ─────────────────────────────────────────── */
+  #scrim{ position:fixed; inset:0; z-index:48; background:rgba(0,0,0,.72); display:none; }
+  #scrim.on{ display:block; }
+  .sheet{ position:fixed; left:0; right:0; bottom:0; z-index:50; background:var(--bg);
+    border-top:1px solid var(--g4); max-height:86vh; overflow-y:auto;
+    padding-bottom:env(safe-area-inset-bottom); transform:translateY(102%);
+    transition:transform .2s ease; }
+  .sheet.on{ transform:translateY(0); }
+  .shead{ display:flex; align-items:center; gap:8px; padding:12px;
+    border-bottom:1px solid var(--g3); position:sticky; top:0; background:var(--bg); }
+  .shead .t{ flex:1; font-size:13px; letter-spacing:.08em; }
+  .shead .sub{ font-size:10px; color:var(--g6); display:block; margin-top:3px; }
+  .srow{ width:100%; display:flex; align-items:center; gap:10px; padding:13px 14px;
+    background:none; border:0; border-bottom:1px solid var(--g2); color:var(--ink);
+    font-size:12px; letter-spacing:.08em; text-align:left; text-transform:uppercase; }
+  .srow .ic{ width:14px; height:14px; border:1px solid var(--g5); flex:0 0 auto; }
+  .srow.danger{ color:var(--red); } .srow.danger .ic{ border-color:var(--red); }
+  #details .pv{ width:100%; display:block; background:#000; }
+  #details .meta{ padding:12px 14px; font-size:11px; line-height:1.9; color:var(--g6); }
+  #details .meta b{ color:var(--ink); font-weight:400; }
+  #details .desc{ padding:0 14px 10px; font-size:11px; line-height:1.7; color:var(--g6); }
+  #details .drow{ display:flex; gap:8px; padding:10px 14px 14px; flex-wrap:wrap; }
+  #details .drow button{ flex:1; min-width:90px; }
+  .lanepickrow{ display:flex; gap:6px; padding:0 14px 14px; flex-wrap:wrap; }
+  .lanepickrow button{ flex:1; min-width:64px; font-size:10px; }
+
+  /* ── theatre ────────────────────────────────────────── */
+  #theatre{ position:fixed; inset:0; z-index:70; background:#000; display:none;
+    flex-direction:column; }
+  #theatre.on{ display:flex; }
+  #theatre .thead{ display:flex; align-items:center; gap:8px; padding:10px;
+    border-bottom:1px solid var(--g3); }
+  #theatre .thead .t{ flex:1; font-size:12px; letter-spacing:.15em; color:var(--g6); }
+  #tstage{ flex:1; position:relative; min-height:0; display:flex;
+    align-items:center; justify-content:center; }
+  #tcanvas{ width:100%; max-height:100%; display:block; }
+  #tlabel{ position:absolute; left:12px; bottom:12px; font-size:12px;
+    letter-spacing:.1em; text-shadow:0 0 6px #000; }
+  #tlabel .nm{ color:var(--g6); font-size:10px; display:block; margin-top:3px; }
+  #tcut{ position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; }
+  #tbar{ height:2px; background:var(--g3); position:relative; }
+  #tbar i{ position:absolute; inset:0 auto 0 0; background:var(--teal); width:0; }
+  #tstrip{ display:flex; gap:3px; padding:8px; overflow-x:auto; border-top:1px solid var(--g3); }
+  #tstrip .tclip{ width:56px; flex:0 0 auto; border:1px solid var(--g3); opacity:.45; }
+  #tstrip .tclip.now{ border-color:var(--teal); opacity:1; }
+  #tstrip canvas{ width:100%; display:block; }
+  #tctl{ display:flex; gap:8px; padding:8px 10px calc(8px + env(safe-area-inset-bottom)); }
+  #tctl button{ flex:1; }
+
+  /* ── cascade (versions) ─────────────────────────────── */
+  #cascade{ position:fixed; inset:var(--hdr-h) 0 var(--modes-h) 0; z-index:30;
+    overflow-y:auto; background:var(--bg); display:none; padding:10px; }
+  #cascade.on{ display:block; }
+  .ver{ border:1px solid var(--g3); margin-bottom:10px; }
+  .ver .vhead{ display:flex; align-items:center; gap:8px; padding:8px 10px;
+    border-bottom:1px solid var(--g2); font-size:11px; letter-spacing:.1em; }
+  .ver .vhead .vt{ flex:1; } .ver .vhead .vd{ color:var(--g6); }
+  .ver .vstrip{ display:flex; gap:3px; padding:8px; overflow-x:auto; }
+  .ver .vstrip>div{ width:64px; flex:0 0 auto; border:1px solid var(--g2); }
+  .ver .vstrip canvas{ width:100%; display:block; }
+  .ver .vrow{ display:flex; gap:6px; padding:0 8px 8px; }
+  #genrow{ display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
+  #genrow button{ flex:1; min-width:76px; font-size:10px; padding:9px 6px; }
+  .breedline{ font-size:9px; letter-spacing:.12em; color:var(--g5);
+    padding:0 2px 12px; line-height:1.7; }
+  .ver .vhead .gen{ display:block; font-size:9px; color:var(--g5);
+    letter-spacing:.1em; margin-top:2px; }
+  .pbtn{ width:26px; height:26px; padding:0; font-size:10px; flex:0 0 auto;
+    border-color:var(--g4); color:var(--g6); }
+  .pbtn.on{ border-color:var(--amber); color:var(--amber);
+    box-shadow:inset 0 0 0 1px var(--amber); }
+  .fitrow{ display:flex; align-items:center; gap:8px; padding:6px 10px;
+    border-bottom:1px solid var(--g2); }
+  .fitrow .flabel{ font-size:9px; letter-spacing:.16em; color:var(--g5); }
+  .fitrow button{ width:26px; height:24px; padding:0; font-size:12px; }
+  .ticks{ display:flex; gap:4px; flex:1; }
+  .ticks .tk{ width:12px; height:12px; border:1px solid var(--g4); }
+  .ticks .tk.on{ background:var(--teal); border-color:var(--teal); }
+  .ver .vstrip>div{ position:relative; }
+  .ver .vl{ position:absolute; left:2px; bottom:1px; font-style:normal;
+    font-size:8px; color:var(--g6); text-shadow:0 0 3px #000; }
+  .empty{ color:var(--g5); font-size:11px; letter-spacing:.12em; text-align:center;
+    padding:40px 20px; line-height:2; }
+
+  /* ── toast ──────────────────────────────────────────── */
+  #toast{ position:fixed; left:10px; right:10px; bottom:calc(var(--modes-h) + 10px);
+    z-index:64; background:var(--bg); border:1px solid var(--teal); display:none;
+    align-items:center; gap:10px; padding:9px 12px; font-size:11px; letter-spacing:.08em; }
+  #toast.on{ display:flex; }
+  #toast .msg{ flex:1; color:var(--teal); }
+  #toast button{ font-size:10px; padding:5px 10px; }
+
+  /* menus */
+  .menu{ position:fixed; z-index:66; background:var(--bg); border:1px solid var(--g4);
+    display:none; min-width:170px; }
+  .menu.on{ display:block; }
+  .menu button{ display:block; width:100%; border:0; border-bottom:1px solid var(--g2);
+    text-align:left; padding:11px 14px; font-size:11px; }
+
+  @media (min-width:760px){ :root{ --lane-w:196px; } }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body data-mode="assemble">
+
+<header id="hdr">
+  <div class="brand">MONTE</div>
+  <button id="viewbtn"><span id="viewname">SPIN</span><span class="caret"></span></button>
+  <div id="clock"><b id="tNow">0:00</b> / <span id="tMax">0:00</span></div>
+  <button id="undobtn" class="ghost">UNDO</button>
+  <button id="playbtn" class="pri">PLAY</button>
+  <button id="morebtn" style="width:38px;letter-spacing:2px;padding:8px 0">&middot;&middot;&middot;</button>
+  <div id="progress"></div>
+</header>
+
+<div id="lanetools" class="strip"></div>
+
+<main id="board"><div id="rack"></div></main>
+<div id="cascade"></div>
+
+<footer id="modes">
+  <button data-mode="assemble" class="on"><span class="mk asm"></span>ASSEMBLE</button>
+  <button data-mode="select"><span class="mk selm"></span>SELECT</button>
+  <button data-mode="view"><span class="mk viewm"></span>VIEW</button>
+  <button data-mode="play"><span class="mk playm"></span>PLAY</button>
+</footer>
+
+<div id="batchbar" class="bar"><div class="brow" id="batchrow"></div></div>
+<div id="clipbar" class="bar"><div class="brow" id="cliprow"></div></div>
+<div id="instrument" class="bar">
+  <div class="brow" id="instrow"></div>
+  <div class="picks" id="picks"></div>
+</div>
+
+<div id="scrim"></div>
+<div id="sheet" class="sheet"></div>
+<div id="details" class="sheet"></div>
+<div id="viewmenu" class="menu"></div>
+<div id="moremenu" class="menu"></div>
+
+<div id="theatre">
+  <div class="thead">
+    <button id="tclose">&larr; BACK</button>
+    <div class="t" id="ttitle">THEATRE</div>
+    <button id="tsnd" class="pri">SND</button>
+    <button id="tspeed">1.0&times;</button>
+  </div>
+  <div id="tstage"><canvas id="tcanvas"></canvas>
+    <video id="tvideo" playsinline preload="auto"></video>
+    <div id="tsub"></div>
+    <div id="tlabel"></div><div id="tcut"></div></div>
+  <div id="tbar"><i></i></div>
+  <div id="tstrip"></div>
+  <div id="tctl">
+    <button id="tprev">|&lt; PREV</button>
+    <button id="tplay" class="pri">PAUSE</button>
+    <button id="tnext">NEXT &gt;|</button>
+  </div>
+</div>
+<audio id="tsong" preload="auto"></audio>
+<div id="scrubbar" class="bar"><div class="brow" id="scrubrow"></div></div>
+
+<div id="ghost"><div class="gth"></div><div class="glabel"></div></div>
+<div id="readline"><i>READ LINE</i></div>
+<div id="dropind"><span></span></div>
+<div id="laneind"></div>
+<input type="file" id="archfile" accept=".json" style="display:none">
+<div id="toast"><div class="msg"></div><button id="toastundo">UNDO</button><button id="toastx" class="ghost">X</button></div>
+
+<script>
+"use strict";
+/* ════════ CEILINGS (named loop bounds — Power-of-10) ════════ */
+const CEIL = { LANES:16, CLIPS:64, VERSIONS:24, UNDO:64, DOTS:2600,
+               SEQ:512, ROWS:64, TOAST_MS:4200,
+               GENOME:24, CHILDREN:8, MUT_OPS:6, PARENT_POOL:4 };
+const SEEK_MS=90;                  /* monitor seek throttle */
+const DUCK=0.28;                   /* song gain under speech */
+let SND=true;                      /* clip audio in theatre */
+let SEGS={};                       /* tid -> transcript segments */
+let ARCHIVE="synthetic";           /* synthetic | manifest | channels */
+const MUT_RATES=[["LOW",1],["MED",3],["HIGH",5]];
+let mutRateIdx=1;                  /* MED default */
+let parentSel=new Set();           /* version ids picked as parents */
+const TIMESCALE = 0.14;            /* demo seconds per archive second */
+
+/* ════════ SEEDED PRNG + DOT-FIELD RENDERER (BEFLIX) ════════ */
+function mulberry32(a){ return function(){ a|=0; a=(a+0x6D2B79F5)|0;
+  let t=Math.imul(a^(a>>>15),1|a); t=(t+Math.imul(t^(t>>>7),61|t))^t;
+  return ((t^(t>>>14))>>>0)/4294967296; }; }
+function hashStr(s){ let h=2166136261>>>0;
+  for(let i=0;i<s.length && i<CEIL.SEQ;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); }
+  return h>>>0; }
+
+const KINDS=["audience","portrait","eye","machine","reels","screen","scope","wireframe","document","city"];
+const NAMES={
+  audience:["Audience","Matinee","Balcony","Front Row","Standing Room"],
+  portrait:["Technician","Visitor","Optometrist","Stereoscopist","Projectionist","Attendant"],
+  eye:["World Eye","Iris Test","Fixation","Pupil Run"],
+  machine:["Coin Slot","Console Bank","Patch Bay","Relay Room","Card Reader"],
+  reels:["Reel Bank","Tape Vault","Rewind","Spool Test"],
+  screen:["Chapter Card","Test Pattern","Run Slate","Ultimate Display"],
+  scope:["Trace","Waveform","Signal Floor","Sweep"],
+  wireframe:["Wire Chair","Rotation Study","Solid Ghost","Lattice"],
+  document:["Programmable Laws","Field Notes","Manifest","Ledger Page"],
+  city:["Street Level","Skyline Run","Transit","Facade"]
+};
+
+/* brightness field per kind → dot matrix; t animates */
+function field(kind, r, u, v, t){
+  const cx=u-.5, cy=v-.5, d=Math.hypot(cx,cy);
+  switch(kind){
+    case "audience":{ const row=Math.floor(v*6), head=Math.sin(u*28+row*3.1+r*9);
+      return (v>.28? .28+.5*Math.max(0,head)*Math.exp(-(((v*6%1)-.4)**2)*7) : .04)
+             + .06*Math.sin(t*2+u*40); }
+    case "portrait":{ const face=Math.exp(-((cx*2.4)**2+((cy+.06)*2.1)**2)*3.4);
+      const sh=v>.72? .5:0; const eyes=Math.exp(-(((Math.abs(cx)-.09)*14)**2+((cy+.1)*16)**2));
+      return .07+face*.7+sh+eyes*.9+.04*Math.sin(t*3+v*30); }
+    case "eye":{ const ring=Math.sin(d*46-t*2.5); const iris=d<.16?1-d*3:0;
+      return .05+iris*.85+Math.max(0,ring)*.28*Math.exp(-d*4); }
+    case "machine":{ const gx=Math.floor(u*8), gy=Math.floor(v*5);
+      const on=(Math.sin(gx*7+gy*13+r*40+Math.floor(t*2))>.2)?1:0;
+      const edge=(u*8%1<.12||v*5%1<.14)?.5:0;
+      return .06+on*.42+edge+.05*Math.sin(t*4+gx); }
+    case "reels":{ const c1=Math.hypot(cx+.22,cy), c2=Math.hypot(cx-.22,cy);
+      const spin=(c)=>Math.abs(Math.sin(Math.atan2(cy,c)*3+t*4))>.6?1:0;
+      const disc=(c)=>(c<.17&&c>.04)? .6+.3*spin(c):0;
+      return .05+disc(c1)+disc(c2)+((v>.86)?.4:0); }
+    case "screen":{ const inFrame=(u>.12&&u<.88&&v>.16&&v<.84);
+      const frame=(!inFrame&&u>.08&&u<.92&&v>.12&&v<.88)?.8:0;
+      const scan=inFrame? .12+.3*(Math.sin(v*90+t*14)>.7?1:0)+.15*Math.sin(u*9+r*20):0;
+      return .03+frame+scan; }
+    case "scope":{ const y=.5+.28*Math.sin(u*10+t*3+r*6)*Math.sin(u*2.3+t);
+      const trace=Math.exp(-(((v-y)*22)**2));
+      return .04+trace*.95+((Math.abs(u%.125)<.006||Math.abs(v%.2)<.008)?.12:0); }
+    case "wireframe":{ const a=t*.7+r*6;
+      const px=[-1,1,1,-1,-1,1,1,-1], py=[-1,-1,1,1,-1,-1,1,1], pz=[-1,-1,-1,-1,1,1,1,1];
+      let b=0;
+      const E=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+      const P=[];
+      for(let i=0;i<8;i++){ const x=px[i]*Math.cos(a)-pz[i]*Math.sin(a),
+        z=px[i]*Math.sin(a)+pz[i]*Math.cos(a), y=py[i];
+        const s=.16/(1+z*.14); P.push([.5+x*s,.5+y*s*.9]); }
+      for(let e=0;e<12;e++){ const A=P[E[e][0]],B=P[E[e][1]];
+        const dx=B[0]-A[0],dy=B[1]-A[1],L=dx*dx+dy*dy||1e-6;
+        let s=((u-A[0])*dx+(v-A[1])*dy)/L; s=Math.max(0,Math.min(1,s));
+        const qx=A[0]+s*dx-u, qy=A[1]+s*dy-v;
+        b=Math.max(b, Math.exp(-(qx*qx+qy*qy)*4200)); }
+      return .03+b*.95; }
+    case "document":{ const line=Math.floor(v*11);
+      const len=.15+.7*Math.abs(Math.sin(line*5+r*30));
+      const txt=(v*11%1>.32&&v*11%1<.72&&u>.1&&u<.1+len)?.6:0;
+      return .05+txt+((line===1&&u>.1&&u<.6&&v*11%1<.8)?.35:0); }
+    case "city":{ const col=Math.floor(u*12);
+      const h=.25+.55*Math.abs(Math.sin(col*7+r*20));
+      const bld=(1-v)<h? .3+.25*((Math.sin(col*9+Math.floor(v*20)*5+Math.floor(t))>.5)?1:0):0;
+      return .04+bld; }
+  }
+  return .1;
+}
+function drawThumb(ctx,w,h,seed,kind,t){
+  ctx.fillStyle="#000"; ctx.fillRect(0,0,w,h);
+  const cols=52, rows=Math.round(cols*h/w), r=(seed%997)/997;
+  const sx=w/cols, sy=h/rows; let dots=0;
+  ctx.fillStyle="#fff";
+  for(let j=0;j<rows;j++) for(let i=0;i<cols;i++){
+    if(++dots>CEIL.DOTS) return;
+    const b=field(kind,r,(i+.5)/cols,(j+.5)/rows,t);
+    if(b>.18){ ctx.globalAlpha=Math.min(1,b);
+      const s=Math.max(1,sx*.55*Math.min(1.4,b+.3));
+      ctx.fillRect(i*sx+(sx-s)/2, j*sy+(sy-s)/2, s, s); } }
+  ctx.globalAlpha=1;
+}
+
+/* ════════ STATE ════════ */
+const LANE_COLORS=["var(--red)","var(--amber)","var(--teal)","var(--blue)"];
+let S=null, undoStack=[], versionSerial=0;
+let sel=new Set();          /* selected clip uids (SELECT mode) */
+let curClip=null;           /* {l,i} single selection (ASSEMBLE) */
+let curLane=null;           /* selected lane index */
+let rowIdx=0;               /* row-play row */
+let picks=[];               /* row-play picks: clip snapshots or null per lane */
+let uidSerial=1;
+
+function mkClip(laneNo, n, rand){
+  const kind=KINDS[Math.floor(rand()*KINDS.length)];
+  const names=NAMES[kind];
+  return { uid:"c"+(uidSerial++), label:"#"+laneNo+"."+n,
+    name:names[Math.floor(rand()*names.length)],
+    kind, seed:Math.floor(rand()*1e9), dur:6+Math.floor(rand()*15),
+    disabled:false, marked:false };
+}
+function initState(){
+  uidSerial=1; versionSerial=0; sel.clear(); curClip=null; curLane=null; rowIdx=0;
+  const laneDefs=[["AUDIENCE",["audience","portrait","city"]],
+                  ["MACHINES",["machine","reels","portrait"]],
+                  ["SYSTEMS",["screen","scope","eye"]],
+                  ["DISPLAYS",["wireframe","document","screen"]]];
+  S={ lanes:[], versions:[] };
+  laneDefs.forEach((def,li)=>{
+    const rand=mulberry32(hashStr(def[0]));
+    const lane={ id:"L"+(li+1), name:def[0], color:LANE_COLORS[li%4],
+      disabled:false, clips:[], serial:0 };
+    const count=8+Math.floor(rand()*4);
+    for(let k=0;k<count && k<CEIL.CLIPS;k++){
+      lane.serial+=1+Math.floor(rand()*3);
+      const c=mkClip(li+1,lane.serial,rand);
+      c.kind=def[1][Math.floor(rand()*def[1].length)];
+      c.name=NAMES[c.kind][Math.floor(rand()*NAMES[c.kind].length)];
+      lane.clips.push(c);
+    }
+    S.lanes.push(lane);
+  });
+  refreshPicks();
+}
+
+/* ════════ UNDO ════════ */
+function pushUndo(){ undoStack.push(JSON.stringify(S));
+  if(undoStack.length>CEIL.UNDO) undoStack.shift(); updateUndoBtn(); }
+function doUndo(){ if(!undoStack.length) return;
+  S=JSON.parse(undoStack.pop()); sel.clear(); curClip=null; curLane=null;
+  refreshPicks(); renderAll(); hideToast(); updateUndoBtn(); }
+function updateUndoBtn(){ $("#undobtn").classList.toggle("ghost",!undoStack.length); }
+
+/* ════════ HELPERS ════════ */
+const $=(q,el)=>(el||document).querySelector(q);
+const $$=(q,el)=>Array.from((el||document).querySelectorAll(q));
+function fmt(sec){ sec=Math.round(sec); return Math.floor(sec/60)+":"+String(sec%60).padStart(2,"0"); }
+function laneDur(l){ return l.clips.reduce((a,c)=>a+(c.disabled?0:c.dur),0); }
+function maxLaneDur(){ return S.lanes.reduce((a,l)=>Math.max(a,l.disabled?0:laneDur(l)),0); }
+function rowTime(){ let m=0; S.lanes.forEach(l=>{ if(l.disabled) return;
+  let t=0; for(let i=0;i<Math.min(rowIdx,l.clips.length);i++) t+=l.clips[i].dur;
+  m=Math.max(m,t); }); return m; }
+function findClip(uid){ for(let l=0;l<S.lanes.length;l++){
+  const i=S.lanes[l].clips.findIndex(c=>c.uid===uid);
+  if(i>=0) return {l,i,c:S.lanes[l].clips[i]}; } return null; }
+function activeLanes(){ return S.lanes.filter(l=>!l.disabled); }
+
+let toastTimer=null;
+function toast(msg, undoable){
+  const t=$("#toast"); $(".msg",t).textContent=msg;
+  $("#toastundo").style.display=undoable?"":"none";
+  t.classList.add("on"); clearTimeout(toastTimer);
+  toastTimer=setTimeout(hideToast, CEIL.TOAST_MS);
+}
+function hideToast(){ $("#toast").classList.remove("on"); }
+
+/* ════════ RENDER ════════ */
+function clipCanvas(c,w){ const cv=document.createElement("canvas");
+  w=w||160; cv.width=w; cv.height=Math.round(w*9/16);
+  drawThumb(cv.getContext("2d"),cv.width,cv.height,c.seed,c.kind,0); return cv; }
+function thumbEl(c,w){
+  if(c.poster){
+    const img=document.createElement("img");
+    img.loading="lazy"; img.decoding="async"; img.src=c.poster; img.alt="";
+    img.onerror=()=>{ try{ img.replaceWith(clipCanvas(c,w)); }catch(e){} };
+    return img;
+  }
+  return clipCanvas(c,w);
+}
+
+/* ════════ ARCHIVE LOADERS — real clips when present ════════ */
+function laneFromEra(e,li){
+  const lane={ id:"L"+(li+1),
+    name:(String(e.n).padStart(2,"0")+" "+String(e.title||"ERA")).toUpperCase().slice(0,26),
+    color:LANE_COLORS[li%4], disabled:false, clips:[], serial:0,
+    song:e.song? {url:"MONTE/audio/"+e.song, dur:e.song_dur||0, title:e.song_title||""} : null };
+  (e.clips||[]).forEach((c,i)=>{
+    if(c.kind!=="video" || lane.clips.length>=CEIL.CLIPS) return;
+    lane.serial=i+1;
+    lane.clips.push({ uid:"c"+(uidSerial++), label:"#"+e.n+"."+(i+1),
+      name:String(c.title||c.id||"cut").slice(0,40),
+      kind:KINDS[hashStr(String(c.id))%KINDS.length], seed:hashStr(String(c.id)),
+      dur:Math.max(1,Math.round(c.duration||8)),
+      media:"MONTE/assets/"+c.id, poster:c.pid? "MONTE/POSTERS/"+c.pid+".jpg":"",
+      tid:c.id, disabled:false, marked:false });
+  });
+  return lane;
+}
+function loadManifest(man){
+  uidSerial=1; versionSerial=0; sel.clear(); parentSel.clear();
+  curClip=null; curLane=null; rowIdx=0;
+  S={ lanes:[], versions:[] };
+  (man.eras||[]).forEach((e,li)=>{ if(li>=CEIL.LANES) return;
+    const lane=laneFromEra(e,li);
+    if(lane.clips.length) S.lanes.push(lane); });
+  if(!S.lanes.length){ initState(); return false; }
+  ARCHIVE="manifest"; refreshPicks(); return true;
+}
+function loadChannels(bundle){
+  const chans=bundle.channels||(bundle.channel? [bundle]:null);
+  if(!chans||!chans.length) return false;
+  uidSerial=1; versionSerial=0; sel.clear(); parentSel.clear();
+  curClip=null; curLane=null; rowIdx=0;
+  S={ lanes:[], versions:[] };
+  chans.forEach((ch,li)=>{ if(li>=CEIL.LANES) return;
+    const lane={ id:"L"+(li+1), name:String(ch.channel||"CHANNEL "+(li+1)).toUpperCase().slice(0,26),
+      color:LANE_COLORS[li%4], disabled:false, clips:[], serial:0, song:null };
+    (ch.clips||[]).forEach((c,i)=>{
+      if(lane.clips.length>=CEIL.CLIPS) return;
+      lane.clips.push({ uid:"c"+(uidSerial++),
+        label:"#"+(c.index||((li+1)+"."+(i+1))),
+        name:String(c.title||c.clip_id||"cut").slice(0,40),
+        kind:KINDS[hashStr(String(c.clip_id||i))%KINDS.length],
+        seed:hashStr(String(c.clip_id||i)),
+        dur:Math.max(1,Math.round(c.duration||8)),
+        media:c.media_url||"", poster:c.pid? "MONTE/POSTERS/"+c.pid+".jpg":"",
+        tid:c.clip_id||"", disabled:false, marked:!!c.mark });
+    });
+    if(lane.clips.length) S.lanes.push(lane); });
+  if(!S.lanes.length){ initState(); return false; }
+  ARCHIVE="channels"; refreshPicks(); return true;
+}
+async function bootArchive(){
+  try{
+    const r=await fetch("MONTE/monte_manifest.json");
+    if(r.ok && loadManifest(await r.json())){
+      try{ const tr=await fetch("MONTE/monte_transcripts.json");
+        if(tr.ok){ const T2=await tr.json(); let n=0;
+          for(const id in T2){ if(T2[id]&&T2[id].segments){ SEGS[id]=T2[id].segments; n++; } } }
+      }catch(e){}
+      renderAll();
+      toast("ARCHIVE ON \u00B7 "+S.lanes.length+" ERAS \u00B7 REAL CLIPS");
+      return;
+    }
+  }catch(e){}
+  renderAll();
+  toast("SYNTHETIC DECK \u00B7 LOAD ARCHIVE VIA \u00B7\u00B7\u00B7 MENU");
+}
+
+function renderAll(){ renderRack(); renderClock(); renderLaneTools();
+  renderBatch(); renderClipBar(); renderInstrument(); renderCascade(); }
+
+function renderRack(){
+  const rack=$("#rack"); rack.innerHTML="";
+  S.lanes.forEach((lane,li)=>{
+    const el=document.createElement("section");
+    el.className="lane"+(lane.disabled?" off":"")+(curLane===li?" sel":"");
+    if(curLane!==null && curLane!==li && $("#board").dataset.focus==="1") el.classList.add("shrunk");
+    if(curLane===li && $("#board").dataset.focus==="1") el.classList.add("grown");
+    el.style.setProperty("--lc",lane.color); el.dataset.l=li;
+    const head=document.createElement("div"); head.className="lhead";
+    head.innerHTML=`<div class="lhandle" data-lh="${li}"></div><div class="ldot"></div>
+      <div class="lmeta"><b>${lane.id} ${lane.name}</b>${lane.clips.length} CLIPS &middot; ${fmt(laneDur(lane))}</div>
+      <button class="lbtn" data-lf="${li}" title="focus">F</button>
+      <button class="lbtn" data-lx="${li}" title="remove">X</button>`;
+    el.appendChild(head);
+    const body=document.createElement("div"); body.className="lbody";
+    lane.clips.forEach((c,ci)=>{
+      const d=document.createElement("div");
+      d.className="clip"+(c.marked?" marked":"")+(c.disabled?" disabled":"")
+        +(sel.has(c.uid)?" checked":"")
+        +(curClip&&curClip.l===li&&curClip.i===ci?" sel":"")
+        +(picks[li]&&picks[li].uid===c.uid&&document.body.dataset.mode==="play"?" picked":"");
+      d.dataset.uid=c.uid; d.dataset.l=li; d.dataset.i=ci;
+      d.appendChild(thumbEl(c,160));
+      d.insertAdjacentHTML("beforeend",
+        `<div class="mark"></div><div class="cid">${c.label}</div>
+         <div class="cdur">${fmt(c.dur)}</div>
+         <button class="cx" data-cx="${c.uid}">X</button>
+         <button class="cdots" data-cm="${c.uid}">&middot;&middot;&middot;</button>`);
+      body.appendChild(d);
+    });
+    const add=document.createElement("button");
+    add.className="laneadd"; add.textContent="+"; add.dataset.la=li;
+    body.appendChild(add);
+    el.appendChild(body); rack.appendChild(el);
+  });
+  if(S.lanes.length<CEIL.LANES){
+    const nl=document.createElement("button");
+    nl.className="laneadd"; nl.style.cssText="width:64px;flex:0 0 auto;align-self:stretch;min-height:120px";
+    nl.textContent="+ LANE"; nl.id="newlane"; rack.appendChild(nl);
+  }
+}
+function renderClock(){
+  $("#tNow").textContent=fmt(rowTime()); $("#tMax").textContent=fmt(maxLaneDur());
+  const m=maxLaneDur(); $("#progress").style.width=(m? (rowTime()/m*100):0)+"%";
+}
+function renderLaneTools(){
+  const s=$("#lanetools"); const on=curLane!==null && document.body.dataset.mode!=="play";
+  s.classList.toggle("on",on); $("#board").classList.toggle("toolpad",on||false);
+  if(!on){ s.innerHTML=""; return; }
+  const lane=S.lanes[curLane];
+  s.innerHTML=`<span class="tag" style="color:${lane.color}">${lane.id} ${lane.name}</span>
+    <button data-lt="play" class="pri">PLAY</button>
+    <button data-lt="focus">${$("#board").dataset.focus==="1"?"UNFOCUS":"FOCUS"}</button>
+    <button data-lt="dup">DUP LANE</button>
+    <button data-lt="add">+ CLIPS</button>
+    <button data-lt="left">&larr;</button><button data-lt="right">&rarr;</button>
+    <button data-lt="onoff">${lane.disabled?"ON":"OFF"}</button>
+    <button data-lt="remove" class="warn">REMOVE</button>
+    <button data-lt="close" class="ghost">X</button>`;
+}
+function renderBatch(){
+  const b=$("#batchbar"); const on=document.body.dataset.mode==="select"&&sel.size>0;
+  b.classList.toggle("on",on); if(!on) return;
+  $("#batchrow").innerHTML=`<span class="btitle"><b>${sel.size}</b> SELECTED</span>
+    <button data-bt="mark">MARK</button><button data-bt="copy">COPY</button>
+    <button data-bt="lane">NEW LANE</button><button data-bt="off">ON/OFF</button>
+    <button data-bt="remove" class="warn">REMOVE</button>
+    <button data-bt="clear" class="ghost">X</button>`;
+}
+function renderClipBar(){
+  const b=$("#clipbar"); const on=document.body.dataset.mode==="assemble"&&!!curClip;
+  b.classList.toggle("on",on); if(!on) return;
+  const c=S.lanes[curClip.l].clips[curClip.i];
+  if(!c){ curClip=null; b.classList.remove("on"); return; }
+  $("#cliprow").innerHTML=`<span class="btitle"><b>${c.label}</b> ${c.name.toUpperCase()} &middot; ${fmt(c.dur)}</span>
+    <button data-ct="open">OPEN</button><button data-ct="dup">DUP</button>
+    <button data-ct="mark">${c.marked?"UNMARK":"MARK"}</button>
+    <button data-ct="off">${c.disabled?"ON":"OFF"}</button>
+    <button data-ct="remove" class="warn">DEL</button>
+    <button data-ct="close" class="ghost">X</button>`;
+}
+function refreshPicks(){
+  picks=S.lanes.map(l=>{ if(l.disabled) return null;
+    const i=Math.min(rowIdx,l.clips.length-1);
+    return i>=0? l.clips[i] : null; });
+}
+function renderInstrument(){
+  const b=$("#instrument"); const on=document.body.dataset.mode==="play";
+  b.classList.toggle("on",on); if(!on) return;
+  $("#instrow").innerHTML=`<div class="live"></div>
+    <span class="btitle">ROW <b>${String(rowIdx+1).padStart(2,"0")}</b> &middot; 1 FROM EACH LANE</span>
+    <button data-it="prev">|&lt;</button>
+    <button data-it="play" class="pri">PLAY ROW</button>
+    <button data-it="next">&gt;|</button>
+    <button data-it="spin">SPIN</button>
+    <button data-it="keep">KEEP</button>`;
+  const p=$("#picks"); p.innerHTML="";
+  picks.forEach((c,li)=>{
+    const d=document.createElement("div");
+    if(!c){ d.className="pick void"; }
+    else{ d.className="pick"; d.appendChild(thumbEl(c,96));
+      d.insertAdjacentHTML("beforeend",`<i>${c.label}</i>`);
+      d.style.borderColor="var(--amber)"; }
+    p.appendChild(d);
+  });
+}
+function renderCascade(){
+  const c=$("#cascade"); const on=$("#viewname").textContent==="CASCADE";
+  c.classList.toggle("on",on); $("#board").style.display=on?"none":"";
+  if(!on) return;
+  const rate=MUT_RATES[mutRateIdx];
+  c.innerHTML=`<div id="genrow">
+      <button id="gen1" class="pri">SPIN 1</button>
+      <button id="gen5">SPIN &times;5</button>
+      <button id="mutrate" title="mutation pressure">MUT ${rate[0]}</button>
+      <button id="crossbtn" ${parentSel.size===2?'class="pri"':''}>CROSS ${parentSel.size}/2</button>
+      <button id="evolvebtn" class="pri">EVOLVE</button>
+    </div>
+    <div class="breedline">POPULATION ${S.versions.length}/${CEIL.VERSIONS}
+      &middot; FITNESS = YOUR SCORE &middot; EVOLVE BREEDS ${CEIL.CHILDREN} FROM TOP ${CEIL.PARENT_POOL}</div>`;
+  if(!S.versions.length){
+    c.insertAdjacentHTML("beforeend",
+      `<div class="empty">EMPTY POPULATION<br>SPIN SAMPLES SEEDS \u00B7 SCORE THE ONES THAT HOLD<br>CROSS &middot; MUTATE &middot; EVOLVE</div>`);
+    return;
+  }
+  S.versions.forEach((v,vi)=>{
+    const el=document.createElement("div"); el.className="ver";
+    const lin=v.parents&&v.parents.length
+      ? "&larr; "+v.parents.map(p=>"V"+p2(p)).join(" \u00D7 ") : "SEED";
+    const ticks=Array.from({length:5},(_,k)=>
+      `<i class="tk${k<(v.score||0)?" on":""}"></i>`).join("");
+    el.innerHTML=`<div class="vhead">
+        <button class="pbtn${parentSel.has(v.n)?" on":""}" data-pp="${v.n}" title="pick as parent">P</button>
+        <span class="vt">V${p2(v.n)} <span class="gen">GEN ${v.gen||0} ${lin}</span></span>
+        <span class="vd">${v.seq.length} CUTS &middot; ${fmt(v.total)}</span></div>
+      <div class="fitrow"><span class="flabel">FITNESS</span>
+        <button data-vminus="${vi}">&minus;</button>
+        <span class="ticks">${ticks}</span>
+        <button data-vplus="${vi}">+</button></div>`;
+    const strip=document.createElement("div"); strip.className="vstrip";
+    v.seq.forEach(cut=>{ const w=document.createElement("div");
+      w.appendChild(thumbEl(cut,80));
+      w.insertAdjacentHTML("beforeend",`<i class="vl">${cut.label}</i>`);
+      strip.appendChild(w); });
+    el.appendChild(strip);
+    el.insertAdjacentHTML("beforeend",
+      `<div class="vrow"><button data-vp="${vi}" class="pri" style="flex:2">PLAY</button>
+       <button data-vm="${vi}" style="flex:1">MUTATE</button>
+       <button data-vx="${vi}" class="warn">CULL</button></div>`);
+    c.appendChild(el);
+  });
+}
+
+/* ════════ MUTATIONS ════════ */
+function removeClip(uid, silent){
+  const f=findClip(uid); if(!f) return;
+  if(!silent) pushUndo();
+  S.lanes[f.l].clips.splice(f.i,1);
+  if(curClip&&curClip.l===f.l&&curClip.i===f.i) curClip=null;
+  sel.delete(uid); refreshPicks(); renderAll();
+  if(!silent) toast("REMOVED "+f.c.label, true);
+}
+function moveClip(srcL,srcI,dstL,dstI){
+  pushUndo();
+  const c=S.lanes[srcL].clips.splice(srcI,1)[0];
+  if(srcL===dstL && srcI<dstI) dstI--;
+  dstI=Math.max(0,Math.min(dstI,S.lanes[dstL].clips.length));
+  S.lanes[dstL].clips.splice(dstI,0,c);
+  curClip={l:dstL,i:dstI}; refreshPicks(); renderAll();
+  const after=dstI>0? "AFTER "+S.lanes[dstL].clips[dstI-1].label
+                    : "TOP OF "+S.lanes[dstL].id;
+  toast("MOVED "+c.label+" "+after, true);
+}
+function dupClip(l,i){
+  pushUndo(); const src=S.lanes[l].clips[i];
+  const cp=JSON.parse(JSON.stringify(src));
+  cp.uid="c"+(uidSerial++); cp.label=src.label+"a"; cp.seed=(src.seed+7919)>>>0;
+  S.lanes[l].clips.splice(i+1,0,cp);
+  refreshPicks(); renderAll(); toast("DUPLICATED "+src.label+" \u2192 "+cp.label, true);
+}
+function addClips(li,n){
+  pushUndo(); const lane=S.lanes[li];
+  const rand=mulberry32((Date.now()^hashStr(lane.id))>>>0);
+  for(let k=0;k<n && lane.clips.length<CEIL.CLIPS;k++){
+    lane.serial++; lane.clips.push(mkClip(li+1,lane.serial,rand)); }
+  refreshPicks(); renderAll(); toast(n+" CLIPS \u2192 "+lane.id, true);
+}
+function newLaneFrom(clips){
+  if(S.lanes.length>=CEIL.LANES){ toast("LANE CEILING REACHED ("+CEIL.LANES+")"); return; }
+  pushUndo();
+  const li=S.lanes.length;
+  const lane={ id:"L"+(li+1), name:"CUTAWAY", color:LANE_COLORS[li%4],
+    disabled:false, clips:[], serial:0 };
+  if(clips){ clips.forEach(uid=>{ const f=findClip(uid);
+      if(f){ lane.clips.push(S.lanes[f.l].clips.splice(f.i,1)[0]); } }); }
+  S.lanes.push(lane); sel.clear(); refreshPicks(); renderAll();
+  toast("NEW LANE "+lane.id+(clips? " \u00B7 "+lane.clips.length+" CLIPS":""), true);
+}
+
+/* ════════ TAP / GESTURE ENGINE ════════ */
+let drag=null;
+const board=$("#board");
+
+board.addEventListener("pointerdown", e=>{
+  const lh=e.target.closest(".lhandle");
+  const clip=e.target.closest(".clip");
+  if(lh){ startLaneDrag(e, +lh.dataset.lh); return; }
+  if(clip && document.body.dataset.mode==="assemble"){
+    drag={ type:"clip", uid:clip.dataset.uid, srcL:+clip.dataset.l, srcI:+clip.dataset.i,
+      el:clip, x:e.clientX, y:e.clientY, lifted:false,
+      timer:setTimeout(()=>liftClip(e), 260) };
+  }
+});
+board.addEventListener("pointermove", e=>{
+  if(!drag) return;
+  if(!drag.lifted){
+    if(Math.hypot(e.clientX-drag.x, e.clientY-drag.y)>10){ cancelDrag(); }
+    return;
+  }
+  e.preventDefault(); moveDrag(e);
+});
+["pointerup","pointercancel"].forEach(ev=>board.addEventListener(ev, e=>{
+  if(!drag) return;
+  if(drag.lifted){ dropDrag(e); } else { cancelDrag(); }
+}));
+function blockTouch(e){ e.preventDefault(); }
+
+function liftClip(){
+  if(!drag) return; drag.lifted=true;
+  drag.el.classList.add("lifting");
+  document.addEventListener("touchmove", blockTouch, {passive:false});
+  const c=S.lanes[drag.srcL].clips[drag.srcI];
+  const g=$("#ghost"); g.style.display="block";
+  const gt=$(".gth",g); gt.innerHTML=""; gt.appendChild(thumbEl(c,160));
+  $(".glabel",g).textContent=c.label+" "+c.name.toUpperCase();
+  if(navigator.vibrate) navigator.vibrate(12);
+  positionGhost(drag.x,drag.y);
+}
+function positionGhost(x,y){ const g=$("#ghost");
+  g.style.left=(x-75)+"px"; g.style.top=(y-70)+"px"; }
+function moveDrag(e){
+  positionGhost(e.clientX,e.clientY);
+  autoScroll(e);
+  if(drag.type==="lane"){ laneTarget(e); return; }
+  clipTarget(e);
+}
+function autoScroll(e){
+  const r=board.getBoundingClientRect(), M=44, V=14;
+  if(e.clientX<r.left+M) board.scrollLeft-=V;
+  else if(e.clientX>r.right-M) board.scrollLeft+=V;
+  if(e.clientY<r.top+M+30) board.scrollTop-=V;
+  else if(e.clientY>r.bottom-M) board.scrollTop+=V;
+}
+function clipTarget(e){
+  const ind=$("#dropind"); drag.target=null;
+  $$(".lane").forEach(l=>l.classList.remove("dragtarget"));
+  const lanes=$$(".lane");
+  for(let li=0;li<lanes.length;li++){
+    const r=lanes[li].getBoundingClientRect();
+    if(e.clientX<r.left||e.clientX>r.right) continue;
+    lanes[li].classList.add("dragtarget");
+    const clipEls=$$(".clip",lanes[li]);
+    let idx=clipEls.length, lineY=r.top+40;
+    for(let ci=0;ci<clipEls.length;ci++){
+      const cr=clipEls[ci].getBoundingClientRect();
+      if(e.clientY < cr.top+cr.height/2){ idx=ci; lineY=cr.top-3; break; }
+      lineY=cr.bottom+3;
+    }
+    const lane=S.lanes[li];
+    let msg;
+    if(!lane.clips.length) msg="ADD TO "+lane.id;
+    else if(idx===0) msg="INSERT AT TOP";
+    else msg="INSERT AFTER "+lane.clips[idx-1].label;
+    ind.style.display="block"; ind.style.left=r.left+"px";
+    ind.style.width=r.width+"px"; ind.style.top=lineY+"px";
+    $("span",ind).textContent=msg;
+    drag.target={l:li,i:idx};
+    return;
+  }
+  ind.style.display="none";
+}
+function dropDrag(){
+  document.removeEventListener("touchmove", blockTouch);
+  $("#ghost").style.display="none"; $("#dropind").style.display="none";
+  $("#laneind").style.display="none";
+  $$(".lane").forEach(l=>l.classList.remove("dragtarget"));
+  if(drag.type==="lane"){
+    if(drag.target!=null && drag.target!==drag.srcLane){
+      pushUndo();
+      const lane=S.lanes.splice(drag.srcLane,1)[0];
+      let d=drag.target; if(drag.srcLane<d) d--;
+      S.lanes.splice(d,0,lane);
+      curLane=null; refreshPicks(); renderAll();
+      toast("MOVED "+lane.id+" \u2192 POSITION "+(d+1), true);
+    } else renderAll();
+  } else {
+    drag.el.classList.remove("lifting");
+    if(drag.target){
+      const t=drag.target;
+      if(!(t.l===drag.srcL && (t.i===drag.srcI||t.i===drag.srcI+1)))
+        moveClip(drag.srcL,drag.srcI,t.l,t.i);
+    }
+  }
+  drag=null;
+}
+function cancelDrag(){ if(drag&&drag.timer) clearTimeout(drag.timer);
+  if(drag&&drag.el) drag.el.classList.remove("lifting");
+  document.removeEventListener("touchmove", blockTouch);
+  $("#ghost").style.display="none"; $("#dropind").style.display="none";
+  $("#laneind").style.display="none"; drag=null; }
+
+function startLaneDrag(e, li){
+  e.preventDefault();
+  drag={ type:"lane", srcLane:li, lifted:true, target:null };
+  document.addEventListener("touchmove", blockTouch, {passive:false});
+  const lane=S.lanes[li];
+  const g=$("#ghost"); g.style.display="block";
+  const c=lane.clips[0];
+  const gt=$(".gth",g); gt.innerHTML=""; if(c) gt.appendChild(thumbEl(c,160));
+  $(".glabel",g).textContent=lane.id+" "+lane.name+" \u00B7 "+lane.clips.length+" CLIPS";
+  positionGhost(e.clientX,e.clientY);
+  if(navigator.vibrate) navigator.vibrate(12);
+}
+function laneTarget(e){
+  const ind=$("#laneind"); drag.target=null;
+  const lanes=$$(".lane"); if(!lanes.length) return;
+  for(let li=0;li<lanes.length;li++){
+    const r=lanes[li].getBoundingClientRect();
+    if(e.clientX < r.left+r.width/2){
+      drag.target=li; ind.style.display="block";
+      ind.style.left=(r.left-6)+"px"; ind.style.top=r.top+"px";
+      ind.style.height=Math.min(r.height, innerHeight-r.top-70)+"px";
+      return; }
+  }
+  const last=lanes[lanes.length-1].getBoundingClientRect();
+  drag.target=lanes.length; ind.style.display="block";
+  ind.style.left=(last.right+4)+"px"; ind.style.top=last.top+"px";
+  ind.style.height=Math.min(last.height, innerHeight-last.top-70)+"px";
+}
+
+/* taps (click) */
+board.addEventListener("click", e=>{
+  const t=e.target;
+  if(t.dataset.cx){ removeClip(t.dataset.cx); return; }
+  if(t.dataset.cm){ openClipMenu(t.dataset.cm); return; }
+  if(t.dataset.lf!==undefined){ curLane=+t.dataset.lf;
+    $("#board").dataset.focus = $("#board").dataset.focus==="1" && curLane!==null ? "1":"1";
+    renderAll(); return; }
+  if(t.dataset.lx!==undefined){ const li=+t.dataset.lx; pushUndo();
+    const lane=S.lanes.splice(li,1)[0]; curLane=null;
+    refreshPicks(); renderAll(); toast("REMOVED "+lane.id+" "+lane.name, true); return; }
+  if(t.dataset.la!==undefined){ addClips(+t.dataset.la,3); return; }
+  if(t.id==="newlane"){ newLaneFrom(null); return; }
+  const head=t.closest(".lhead");
+  if(head){ const li=+head.parentElement.dataset.l;
+    curLane=(curLane===li? null:li);
+    if(curLane===null) delete $("#board").dataset.focus;
+    renderAll(); return; }
+  const clip=t.closest(".clip");
+  if(clip){
+    const mode=document.body.dataset.mode;
+    const uid=clip.dataset.uid, l=+clip.dataset.l, i=+clip.dataset.i;
+    if(mode==="select"){ sel.has(uid)? sel.delete(uid):sel.add(uid); renderAll(); }
+    else if(mode==="view"){ openDetails(l,i); }
+    else if(mode==="play"){ rowIdx=Math.min(i, CEIL.ROWS-1); refreshPicks(); renderAll(); }
+    else { curClip=(curClip&&curClip.l===l&&curClip.i===i)? null:{l,i}; renderAll(); }
+  }
+});
+
+/* ════════ MODE BAR ════════ */
+$("#modes").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  document.body.dataset.mode=b.dataset.mode;
+  $$("#modes button").forEach(x=>x.classList.toggle("on",x===b));
+  curClip=null; if(b.dataset.mode!=="select") sel.clear();
+  if(b.dataset.mode==="play"){ refreshPicks(); }
+  renderAll();
+});
+
+/* ════════ STRIPS + BARS (delegated) ════════ */
+$("#lanetools").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b||curLane===null) return;
+  const lt=b.dataset.lt, li=curLane, lane=S.lanes[li];
+  if(lt==="play"){ const seq=lane.clips.filter(c=>!c.disabled)
+      .map((c)=>{ const cp=JSON.parse(JSON.stringify(c)); cp.sl=li; return cp; });
+    openTheatre(seq, lane.id+" "+lane.name, lane.song||null); return; }
+  if(lt==="close"){ curLane=null; delete $("#board").dataset.focus; }
+  else if(lt==="focus"){ $("#board").dataset.focus = $("#board").dataset.focus==="1"? "":"1";
+    if($("#board").dataset.focus==="") delete $("#board").dataset.focus; }
+  else if(lt==="dup"){ if(S.lanes.length>=CEIL.LANES){ toast("LANE CEILING REACHED"); }
+    else{ pushUndo(); const cp=JSON.parse(JSON.stringify(lane));
+      cp.id="L"+(S.lanes.length+1); cp.name=lane.name+" B";
+      cp.clips.forEach(c=>{ c.uid="c"+(uidSerial++); });
+      S.lanes.splice(li+1,0,cp); toast("DUPLICATED "+lane.id, true); } }
+  else if(lt==="add"){ addClips(li,3); return; }
+  else if(lt==="left"&&li>0){ pushUndo(); S.lanes.splice(li-1,0,S.lanes.splice(li,1)[0]);
+    curLane=li-1; toast("MOVED "+lane.id+" LEFT", true); }
+  else if(lt==="right"&&li<S.lanes.length-1){ pushUndo();
+    S.lanes.splice(li+1,0,S.lanes.splice(li,1)[0]); curLane=li+1;
+    toast("MOVED "+lane.id+" RIGHT", true); }
+  else if(lt==="onoff"){ pushUndo(); lane.disabled=!lane.disabled;
+    toast(lane.id+(lane.disabled?" OFF":" ON"), true); }
+  else if(lt==="remove"){ pushUndo(); S.lanes.splice(li,1); curLane=null;
+    toast("REMOVED "+lane.id+" "+lane.name, true); }
+  refreshPicks(); renderAll();
+});
+$("#batchrow").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  const bt=b.dataset.bt, uids=Array.from(sel);
+  if(bt==="clear"){ sel.clear(); renderAll(); return; }
+  if(bt==="lane"){ newLaneFrom(uids); return; }
+  pushUndo();
+  if(bt==="mark") uids.forEach(u=>{ const f=findClip(u); if(f) f.c.marked=!f.c.marked; });
+  if(bt==="off") uids.forEach(u=>{ const f=findClip(u); if(f) f.c.disabled=!f.c.disabled; });
+  if(bt==="copy") uids.forEach(u=>{ const f=findClip(u); if(!f) return;
+    const cp=JSON.parse(JSON.stringify(f.c)); cp.uid="c"+(uidSerial++);
+    cp.label=f.c.label+"a"; cp.seed=(f.c.seed+7919)>>>0;
+    S.lanes[f.l].clips.splice(f.i+1,0,cp); });
+  if(bt==="remove"){ uids.forEach(u=>removeClip(u,true)); }
+  const verb={mark:"MARKED",off:"TOGGLED",copy:"COPIED",remove:"REMOVED"}[bt];
+  if(bt==="remove") sel.clear();
+  refreshPicks(); renderAll(); toast(verb+" "+uids.length+" CLIPS", true);
+});
+$("#cliprow").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b||!curClip) return;
+  const ct=b.dataset.ct, {l,i}=curClip, c=S.lanes[l].clips[i];
+  if(ct==="close"){ curClip=null; renderAll(); return; }
+  if(ct==="open"){ openDetails(l,i); return; }
+  if(ct==="dup"){ dupClip(l,i); return; }
+  if(ct==="remove"){ removeClip(c.uid); return; }
+  pushUndo();
+  if(ct==="mark") c.marked=!c.marked;
+  if(ct==="off") c.disabled=!c.disabled;
+  refreshPicks(); renderAll(); toast(c.label+(ct==="mark"? (c.marked?" MARKED":" UNMARKED") : (c.disabled?" OFF":" ON")), true);
+});
+$("#instrow").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  const it=b.dataset.it;
+  const maxRow=Math.max(...S.lanes.map(l=>l.clips.length),1)-1;
+  if(it==="prev") rowIdx=Math.max(0,rowIdx-1);
+  if(it==="next") rowIdx=Math.min(Math.min(maxRow,CEIL.ROWS-1),rowIdx+1);
+  if(it==="spin"){ const rand=mulberry32(Date.now()>>>0);
+    picks=S.lanes.map(l=> l.disabled||!l.clips.length? null
+      : l.clips[Math.floor(rand()*l.clips.length)]);
+    renderAll(); toast("SPUN \u00B7 1 FROM EACH LANE"); return; }
+  if(it==="keep"){ keepVersion(); return; }
+  if(it==="play"){ const seq=[];
+    picks.forEach((c,li)=>{ if(c){ const cp=JSON.parse(JSON.stringify(c)); cp.sl=li; seq.push(cp); } });
+    if(seq.length) openTheatre(seq,"ROW PLAY",songForSeq(seq)); else toast("NOTHING TO PLAY"); return; }
+  refreshPicks(); renderAll();
+});
+function keepVersion(){
+  const seq=[];
+  picks.forEach((c,li)=>{ if(c){ const cp=JSON.parse(JSON.stringify(c)); cp.sl=li; seq.push(cp); } });
+  if(!seq.length){ toast("NOTHING TO KEEP"); return; }
+  if(S.versions.length>=CEIL.VERSIONS){ toast("VERSION CEILING REACHED ("+CEIL.VERSIONS+")"); return; }
+  pushUndo();
+  S.versions.unshift(mkVersion(seq,0,[]));
+  toast("KEPT V"+String(versionSerial).padStart(2,"0")+" \u2192 CASCADE", true);
+}
+
+/* ════════ GENETICS — the population of montages ════════
+   genome = ordered cuts; each cut carries sl (source stratum).
+   fitness = your score. CROSS recombines two parents; MUTATE
+   perturbs one; EVOLVE breeds a generation from the fittest.  */
+function mkVersion(seq,gen,parents){
+  versionSerial++;
+  return { n:versionSerial, gen:gen||0, parents:parents||[], score:0,
+    seq:seq.slice(0,CEIL.GENOME), total:seq.slice(0,CEIL.GENOME).reduce((a,c)=>a+c.dur,0) };
+}
+function randomCut(rand, preferLane){
+  let li=(preferLane!=null && S.lanes[preferLane] && S.lanes[preferLane].clips.length)
+    ? preferLane : -1;
+  if(li<0){ const cand=S.lanes.map((l,i)=>i).filter(i=>!S.lanes[i].disabled&&S.lanes[i].clips.length);
+    if(!cand.length) return null; li=cand[Math.floor(rand()*cand.length)]; }
+  const lane=S.lanes[li];
+  const cp=JSON.parse(JSON.stringify(lane.clips[Math.floor(rand()*lane.clips.length)]));
+  cp.sl=li; return cp;
+}
+function crossover(A,B,rand){
+  /* uniform crossover positionwise; child length drawn from a parent */
+  const len=Math.min(CEIL.GENOME, (rand()<.5? A.length:B.length));
+  const child=[];
+  for(let i=0;i<len;i++){
+    const g=(rand()<.5? A[i]:B[i]) || A[i] || B[i];
+    if(g) child.push(JSON.parse(JSON.stringify(g)));
+  }
+  return child.length? child : JSON.parse(JSON.stringify(A.slice(0,1)));
+}
+function mutate(seq,rand,ops){
+  const g=seq.map(c=>JSON.parse(JSON.stringify(c)));
+  const n=Math.min(CEIL.MUT_OPS, Math.max(1,ops));
+  let applied=0;
+  for(let k=0;k<n;k++){
+    if(!g.length){ const c=randomCut(rand); if(c) g.push(c); applied++; continue; }
+    const op=Math.floor(rand()*5); const i=Math.floor(rand()*g.length);
+    if(op===0){ /* POINT: resample cut from its own stratum */
+      const c=randomCut(rand, g[i].sl); if(c){ g[i]=c; applied++; } }
+    else if(op===1 && g.length>1){ /* SWAP */
+      const j=Math.floor(rand()*g.length);
+      if(i!==j){ [g[i],g[j]]=[g[j],g[i]]; applied++; } }
+    else if(op===2 && g.length<CEIL.GENOME){ /* INSERT */
+      const c=randomCut(rand); if(c){ g.splice(i,0,c); applied++; } }
+    else if(op===3 && g.length>1){ /* DELETE */
+      g.splice(i,1); applied++; }
+    else if(op===4 && g.length>2){ /* REVERSE segment */
+      const j=Math.min(g.length, i+2+Math.floor(rand()*3));
+      const seg=g.slice(i,j).reverse(); g.splice(i,seg.length,...seg); applied++; }
+  }
+  return { seq:g, ops:applied };
+}
+function parentPool(){
+  const rated=S.versions.filter(v=>v.score>0).sort((a,b)=>b.score-a.score);
+  if(rated.length>=2) return rated.slice(0,CEIL.PARENT_POOL);
+  return S.versions.slice(0,CEIL.PARENT_POOL);
+}
+function crossSelected(){
+  const ids=Array.from(parentSel);
+  if(ids.length!==2){ toast("PICK EXACTLY 2 PARENTS (P)"); return; }
+  const A=S.versions.find(v=>v.n===ids[0]), B=S.versions.find(v=>v.n===ids[1]);
+  if(!A||!B){ parentSel.clear(); renderCascade(); return; }
+  if(S.versions.length>=CEIL.VERSIONS){ toast("VERSION CEILING REACHED"); return; }
+  pushUndo();
+  const rand=mulberry32(Date.now()>>>0);
+  const child=mkVersion(crossover(A.seq,B.seq,rand), Math.max(A.gen,B.gen)+1, [A.n,B.n]);
+  S.versions.unshift(child); parentSel.clear(); renderCascade();
+  toast("CROSSED V"+p2(A.n)+" \u00D7 V"+p2(B.n)+" \u2192 V"+p2(child.n), true);
+}
+function mutateVersion(vi){
+  const v=S.versions[vi]; if(!v) return;
+  if(S.versions.length>=CEIL.VERSIONS){ toast("VERSION CEILING REACHED"); return; }
+  pushUndo();
+  const rand=mulberry32((Date.now()^v.n*2654435761)>>>0);
+  const m=mutate(v.seq,rand,MUT_RATES[mutRateIdx][1]);
+  const child=mkVersion(m.seq, v.gen+1, [v.n]);
+  S.versions.unshift(child); renderCascade();
+  toast("MUTATED V"+p2(v.n)+" \u2192 V"+p2(child.n)+" \u00B7 "+m.ops+" OPS", true);
+}
+function evolveGeneration(){
+  if(S.versions.length<2){ toast("NEED 2+ VERSIONS \u00B7 SPIN FIRST"); return; }
+  pushUndo();
+  const pool=parentPool();
+  const rand=mulberry32(Date.now()>>>0);
+  const gen=Math.max(...S.versions.map(v=>v.gen||0))+1;
+  const kids=[];
+  for(let k=0;k<CEIL.CHILDREN;k++){
+    if(S.versions.length+kids.length>=CEIL.VERSIONS) break;
+    const A=pool[Math.floor(rand()*pool.length)];
+    let B=pool[Math.floor(rand()*pool.length)];
+    if(pool.length>1){ let guard=0;
+      while(B.n===A.n && guard++<8) B=pool[Math.floor(rand()*pool.length)]; }
+    const m=mutate(crossover(A.seq,B.seq,rand), rand, MUT_RATES[mutRateIdx][1]);
+    kids.push(mkVersion(m.seq, gen, A.n===B.n? [A.n]:[A.n,B.n]));
+  }
+  if(!kids.length){ toast("VERSION CEILING REACHED \u00B7 CULL (X) TO BREED"); return; }
+  S.versions.unshift(...kids); parentSel.clear(); renderCascade();
+  toast("GEN "+gen+" \u00B7 "+kids.length+" OFFSPRING FROM "+pool.length+" PARENTS", true);
+}
+function p2(n){ return String(n).padStart(2,"0"); }
+
+/* ════════ SHEETS ════════ */
+function openSheet(el){ $("#scrim").classList.add("on"); el.classList.add("on"); }
+function closeSheets(){ $("#scrim").classList.remove("on");
+  $$(".sheet").forEach(s=>s.classList.remove("on"));
+  $$(".menu").forEach(m=>m.classList.remove("on"));
+  stopDetailAnim(); }
+$("#scrim").addEventListener("click", closeSheets);
+
+function openClipMenu(uid){
+  const f=findClip(uid); if(!f) return;
+  const sh=$("#sheet");
+  sh.innerHTML=`<div class="shead"><div class="t">${f.c.label} ${f.c.name.toUpperCase()}
+      <span class="sub">${S.lanes[f.l].id} ${S.lanes[f.l].name} &middot; ${fmt(f.c.dur)} &middot; 1920&times;1080</span></div>
+    <button data-s="close" class="ghost">X</button></div>
+    <button class="srow" data-s="open"><span class="ic"></span>OPEN DETAILS</button>
+    <button class="srow" data-s="dup"><span class="ic"></span>DUPLICATE</button>
+    <button class="srow" data-s="mark"><span class="ic"></span>${f.c.marked?"UNMARK":"MARK"}</button>
+    <button class="srow" data-s="off"><span class="ic"></span>${f.c.disabled?"ENABLE":"DISABLE"} CLIP</button>
+    <div class="shead" style="border-top:1px solid var(--g3)"><div class="t"
+      style="font-size:10px;color:var(--g5)">MOVE TO LANE</div></div>
+    <div class="lanepickrow">${S.lanes.map((l,li)=>
+      `<button data-mv="${li}" ${li===f.l?"disabled style='opacity:.3'":""}
+        style="border-color:${l.color};color:${l.color}">${l.id}</button>`).join("")}</div>
+    <button class="srow danger" data-s="remove"><span class="ic"></span>REMOVE FROM ${S.lanes[f.l].id}</button>`;
+  sh.onclick=e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    if(b.dataset.mv!==undefined){ closeSheets();
+      moveClip(f.l,f.i,+b.dataset.mv,S.lanes[+b.dataset.mv].clips.length); return; }
+    const s=b.dataset.s;
+    if(s==="close"){ closeSheets(); }
+    else if(s==="open"){ closeSheets(); openDetails(f.l,f.i); }
+    else if(s==="dup"){ closeSheets(); dupClip(f.l,f.i); }
+    else if(s==="remove"){ closeSheets(); removeClip(uid); }
+    else if(s==="mark"||s==="off"){ pushUndo();
+      if(s==="mark") f.c.marked=!f.c.marked; else f.c.disabled=!f.c.disabled;
+      closeSheets(); refreshPicks(); renderAll();
+      toast(f.c.label+" UPDATED", true); }
+  };
+  openSheet(sh);
+}
+
+let detailAnim=null;
+function stopDetailAnim(){ if(detailAnim) cancelAnimationFrame(detailAnim); detailAnim=null; }
+function openDetails(l,i){
+  const lane=S.lanes[l]; const c=lane.clips[i]; if(!c) return;
+  const sh=$("#details");
+  sh.innerHTML=`<div class="shead"><div class="t">${c.label} ${c.name.toUpperCase()}
+      <span class="sub">${lane.id} ${lane.name} &middot; ${fmt(c.dur)} &middot; 1920&times;1080 &middot; ${c.kind.toUpperCase()}</span></div>
+    <button data-d="close" class="ghost">X</button></div>
+    ${c.media? `<video class="pv" src="${c.media}" poster="${c.poster||""}"
+        autoplay muted loop playsinline style="width:100%;aspect-ratio:16/9;object-fit:cover"></video>`
+      : `<canvas class="pv" width="640" height="360"></canvas>`}
+    <div class="desc">${c.media
+      ? "Archive clip. Tap PLAY in a theatre for sound; the junction, not the clip, carries the meaning."
+      : "A seeded BEFLIX dot-field standing in for archive footage. Stratum: "
+        +lane.name.toLowerCase()+". The junction, not the clip, carries the meaning."}</div>
+    <div class="meta">
+      SOURCE <b>SENSORAMA CUT ${1+(c.seed%4)}</b> &middot; REEL <b>R</b><br>
+      IN <b>00:00:${String(10+c.seed%40).padStart(2,"0")}:12</b> &nbsp;
+      OUT <b>00:00:${String(10+c.seed%40+c.dur).padStart(2,"0")}:12</b> &nbsp;
+      DUR <b>${fmt(c.dur)}</b><br>
+      FPS <b>24.00</b> &middot; FILE <b>${c.label.slice(1)}_${c.name.toLowerCase().replace(/ /g,"_")}.mov</b>
+    </div>
+    <div class="drow">
+      <button data-d="prev">&lt; PREV</button>
+      <button data-d="mark">${c.marked?"UNMARK":"MARK"}</button>
+      <button data-d="off">${c.disabled?"ENABLE":"DISABLE"}</button>
+      <button data-d="next">NEXT &gt;</button>
+    </div>
+    <div class="shead" style="border-top:1px solid var(--g3)"><div class="t"
+      style="font-size:10px;color:var(--g5)">ADD COPY TO LANE</div></div>
+    <div class="lanepickrow">${S.lanes.map((L,li)=>
+      `<button data-cp="${li}" style="border-color:${L.color};color:${L.color}">${L.id}</button>`).join("")}</div>
+    <div class="drow"><button data-d="remove" class="warn" style="flex:1">REMOVE CLIP</button></div>`;
+  stopDetailAnim();
+  if(!c.media){
+    const cv=$(".pv",sh), ctx=cv.getContext("2d"); let t0=performance.now();
+    (function loop(now){ drawThumb(ctx,640,360,c.seed,c.kind,(now-t0)/1000);
+      detailAnim=requestAnimationFrame(loop); })(t0);
+  } else {
+    const pv=$(".pv",sh);
+    pv.onerror=()=>{ const cv=document.createElement("canvas");
+      cv.className="pv"; cv.width=640; cv.height=360; pv.replaceWith(cv);
+      const ctx=cv.getContext("2d"); let t0=performance.now();
+      (function loop(now){ drawThumb(ctx,640,360,c.seed,c.kind,(now-t0)/1000);
+        detailAnim=requestAnimationFrame(loop); })(t0); };
+  }
+  sh.onclick=e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    if(b.dataset.cp!==undefined){ pushUndo();
+      const cp=JSON.parse(JSON.stringify(c)); cp.uid="c"+(uidSerial++);
+      cp.label=c.label+"a"; S.lanes[+b.dataset.cp].clips.push(cp);
+      closeSheets(); refreshPicks(); renderAll();
+      toast("COPIED "+c.label+" \u2192 "+S.lanes[+b.dataset.cp].id, true); return; }
+    const d=b.dataset.d;
+    if(d==="close"){ closeSheets(); }
+    else if(d==="prev"){ openDetails(l,(i-1+lane.clips.length)%lane.clips.length); }
+    else if(d==="next"){ openDetails(l,(i+1)%lane.clips.length); }
+    else if(d==="remove"){ closeSheets(); removeClip(c.uid); }
+    else if(d==="mark"||d==="off"){ pushUndo();
+      if(d==="mark") c.marked=!c.marked; else c.disabled=!c.disabled;
+      refreshPicks(); renderAll(); openDetails(l,i); }
+  };
+  openSheet(sh);
+}
+
+/* ════════ THEATRE (playback engine — real + synthetic) ════════ */
+const T={ seq:[], idx:0, playing:false, t:0, speed:1, raf:null, last:0, song:null };
+const SPEEDS=[0.5,1,2,4];
+const tv=$("#tvideo"), tsong=$("#tsong");
+function fullSequence(){
+  /* row-major interleave across active lanes */
+  const lanes=activeLanes(); const seq=[];
+  const rows=Math.min(CEIL.ROWS, Math.max(...lanes.map(l=>l.clips.length),0));
+  for(let r=0;r<rows;r++) for(const l of lanes){
+    const c=l.clips[r];
+    if(c && !c.disabled && seq.length<CEIL.SEQ) seq.push(c);
+  }
+  return seq;
+}
+function openTheatre(seq,title,song){
+  if(!seq.length){ toast("NOTHING TO PLAY"); return; }
+  T.seq=seq.slice(0,CEIL.SEQ); T.idx=0; T.t=0; T.playing=true; T.last=performance.now();
+  T.song=song||null;
+  $("#ttitle").textContent=(title||"THEATRE")+" \u00B7 "+T.seq.length+" CUTS \u00B7 "
+    +fmt(T.seq.reduce((a,c)=>a+c.dur,0))
+    +(T.song&&T.song.title? " \u00B7 SONG "+String(T.song.title).toUpperCase().slice(0,24):"");
+  $("#theatre").classList.add("on");
+  const strip=$("#tstrip"); strip.innerHTML="";
+  T.seq.forEach((c,i)=>{ const d=document.createElement("div");
+    d.className="tclip"; d.dataset.i=i; d.appendChild(thumbEl(c,64));
+    strip.appendChild(d); });
+  sizeTheatre(); $("#tplay").textContent="PAUSE";
+  if(T.song&&T.song.url){ tsong.src=T.song.url; tsong.loop=true;
+    tsong.currentTime=0; tsong.volume=1; tsong.play().catch(()=>{}); }
+  else { tsong.pause(); tsong.removeAttribute("src"); }
+  showCut();
+  cancelAnimationFrame(T.raf); T.raf=requestAnimationFrame(theatreLoop);
+}
+function curSegs(c){ return (c&&c.tid&&SEGS[c.tid])? SEGS[c.tid]:null; }
+function showCut(){
+  const c=T.seq[T.idx]; if(!c) return;
+  T.t=0; $("#tsub").textContent="";
+  if(c.media&&!c._mediaDead){
+    tv.style.display="block"; $("#tcanvas").style.display="none";
+    tv.muted=!SND; tv.playbackRate=T.speed;
+    tv.onerror=()=>{ /* missing asset: this cut falls back to its dot-field */
+      c._mediaDead=true; tv.pause(); tv.style.display="none";
+      $("#tcanvas").style.display="block"; };
+    tv.src=c.media; if(T.playing) tv.play().catch(()=>{});
+  } else {
+    tv.pause(); tv.style.display="none"; $("#tcanvas").style.display="block";
+  }
+  flashCutFrame();
+}
+function flashCutFrame(){
+  if(T.idx===0) return;
+  const f=$("#tcut"); f.style.opacity=.9;
+  requestAnimationFrame(()=>{ f.style.transition="opacity .12s"; f.style.opacity=0;
+    setTimeout(()=>f.style.transition="",140); });
+}
+function advanceCut(){
+  T.idx++;
+  if(T.idx>=T.seq.length){ T.idx=0; T.playing=false;
+    tv.pause(); tsong.pause();
+    $("#tplay").textContent="REPLAY"; showCut(); return; }
+  showCut();
+}
+tv.addEventListener("ended", ()=>{ if(T.playing) advanceCut(); });
+function theatreLoop(now){
+  const dt=(now-T.last)/1000; T.last=now;
+  if(!$("#theatre").classList.contains("on")){ T.raf=null; return; }
+  const cur=T.seq[T.idx]; if(!cur){ closeTheatre(); return; }
+  const real=!!(cur.media&&!cur._mediaDead);
+  let frac=0, local=0;
+  if(real){
+    local=tv.currentTime||0;
+    frac=tv.duration? local/tv.duration : 0;
+  } else {
+    const clipLen=Math.max(.4, cur.dur*TIMESCALE)/T.speed;
+    if(T.playing){ T.t+=dt; if(T.t>=clipLen){ advanceCut();
+      T.raf=requestAnimationFrame(theatreLoop); return; } }
+    frac=T.t/clipLen; local=frac*cur.dur;
+    const cv=$("#tcanvas");
+    drawThumb(cv.getContext("2d"),cv.width,cv.height,cur.seed,cur.kind,
+      (T.playing? now/1000:0)+cur.seed%10);
+  }
+  /* subtitles + song ducking from transcripts */
+  const segs=curSegs(cur);
+  let speaking=false;
+  if(segs){ const sg=segs.find(s=>local>=s.start-0.1&&local<=s.end+0.3);
+    $("#tsub").textContent=sg? sg.text:""; speaking=!!sg; }
+  else $("#tsub").textContent="";
+  if(T.song&&tsong.src&&!tsong.paused){
+    const target=speaking? DUCK:1;
+    tsong.volume+=(target-tsong.volume)*0.3;
+  }
+  $("#tlabel").innerHTML=`${cur.label} <span class="nm">${cur.name.toUpperCase()}
+    &middot; CUT ${T.idx+1}/${T.seq.length} &middot; ${T.speed}\u00D7${real?"":" \u00B7 FIELD"}</span>`;
+  $("#tbar i").style.width=((T.idx+Math.min(1,frac))/T.seq.length*100)+"%";
+  $$("#tstrip .tclip").forEach(el=>el.classList.toggle("now",+el.dataset.i===T.idx));
+  const nowEl=$("#tstrip .tclip.now");
+  if(nowEl) nowEl.scrollIntoView({inline:"center",block:"nearest",behavior:"auto"});
+  T.raf=requestAnimationFrame(theatreLoop);
+}
+function sizeTheatre(){ const cv=$("#tcanvas"), st=$("#tstage");
+  cv.width=Math.min(960, st.clientWidth); cv.height=Math.round(cv.width*9/16);
+  if(cv.height>st.clientHeight){ cv.height=st.clientHeight; cv.width=Math.round(cv.height*16/9); } }
+addEventListener("resize", ()=>{ if($("#theatre").classList.contains("on")) sizeTheatre(); });
+function closeTheatre(){ cancelAnimationFrame(T.raf); T.raf=null;
+  tv.pause(); tsong.pause();
+  $("#theatre").classList.remove("on"); }
+$("#tclose").addEventListener("click", closeTheatre);
+$("#tplay").addEventListener("click", ()=>{ T.playing=!T.playing;
+  T.last=performance.now();
+  const cur=T.seq[T.idx];
+  if(cur&&cur.media&&!cur._mediaDead){ T.playing? tv.play().catch(()=>{}) : tv.pause(); }
+  if(T.song&&tsong.src){ T.playing? tsong.play().catch(()=>{}) : tsong.pause(); }
+  $("#tplay").textContent=T.playing?"PAUSE":"PLAY"; });
+$("#tprev").addEventListener("click", ()=>{ T.idx=Math.max(0,T.idx-1); showCut(); });
+$("#tnext").addEventListener("click", ()=>{
+  T.idx=Math.min(T.seq.length-1,T.idx+1); showCut(); });
+$("#tspeed").addEventListener("click", ()=>{
+  T.speed=SPEEDS[(SPEEDS.indexOf(T.speed)+1)%SPEEDS.length];
+  tv.playbackRate=T.speed;
+  $("#tspeed").textContent=T.speed.toFixed(1)+"\u00D7"; });
+$("#tsnd").addEventListener("click", ()=>{ SND=!SND; tv.muted=!SND;
+  $("#tsnd").classList.toggle("pri",SND); });
+$("#tstrip").addEventListener("click", e=>{ const el=e.target.closest(".tclip");
+  if(el){ T.idx=+el.dataset.i; T.playing=true;
+    $("#tplay").textContent="PAUSE"; showCut(); } });
+function songForSeq(seq){
+  /* a single-stratum sequence earns its era's song; mixed cuts play dry */
+  const sls=new Set(seq.map(c=>c.sl).filter(v=>v!=null));
+  if(sls.size===1){ const l=S.lanes[[...sls][0]]; return l&&l.song? l.song:null; }
+  return null;
+}
+
+/* ════════ CASCADE ════════ */
+$("#cascade").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.id==="gen1"||b.id==="gen5"){
+    const n=b.id==="gen5"?5:1; pushUndo();
+    const rand=mulberry32(Date.now()>>>0);
+    let made=0;
+    for(let k=0;k<n;k++){
+      if(S.versions.length>=CEIL.VERSIONS) break;
+      const seq=[];
+      S.lanes.forEach((l,li)=>{ if(l.disabled||!l.clips.length) return;
+        const cp=JSON.parse(JSON.stringify(l.clips[Math.floor(rand()*l.clips.length)]));
+        cp.sl=li; seq.push(cp); });
+      /* shuffle cut order — the montage is the sample */
+      for(let i=seq.length-1;i>0;i--){ const j=Math.floor(rand()*(i+1));
+        [seq[i],seq[j]]=[seq[j],seq[i]]; }
+      if(!seq.length) break;
+      S.versions.unshift(mkVersion(seq,0,[])); made++;
+    }
+    renderCascade(); toast("SPUN "+made+" SEED"+(made!==1?"S":""), true); return;
+  }
+  if(b.id==="mutrate"){ mutRateIdx=(mutRateIdx+1)%MUT_RATES.length; renderCascade(); return; }
+  if(b.id==="crossbtn"){ crossSelected(); return; }
+  if(b.id==="evolvebtn"){ evolveGeneration(); return; }
+  if(b.dataset.pp!==undefined){ const id=+b.dataset.pp;
+    if(parentSel.has(id)) parentSel.delete(id);
+    else{ if(parentSel.size>=2){ const first=parentSel.values().next().value;
+        parentSel.delete(first); } parentSel.add(id); }
+    renderCascade(); return; }
+  if(b.dataset.vplus!==undefined||b.dataset.vminus!==undefined){
+    const vi=+(b.dataset.vplus??b.dataset.vminus);
+    const v=S.versions[vi]; if(!v) return;
+    v.score=Math.max(0,Math.min(5,(v.score||0)+(b.dataset.vplus!==undefined?1:-1)));
+    renderCascade(); return; }
+  if(b.dataset.vm!==undefined){ mutateVersion(+b.dataset.vm); return; }
+  if(b.dataset.vp!==undefined){ const v=S.versions[+b.dataset.vp];
+    openTheatre(v.seq,"V"+p2(v.n)+" \u00B7 GEN "+(v.gen||0),songForSeq(v.seq)); return; }
+  if(b.dataset.vx!==undefined){ pushUndo();
+    const v=S.versions.splice(+b.dataset.vx,1)[0]; parentSel.delete(v.n);
+    renderCascade(); toast("CULLED V"+p2(v.n), true); }
+});
+
+/* ════════ HEADER ════════ */
+$("#undobtn").addEventListener("click", doUndo);
+$("#toastundo").addEventListener("click", doUndo);
+$("#toastx").addEventListener("click", hideToast);
+$("#playbtn").addEventListener("click", ()=>openTheatre(fullSequence(),"SPIN"));
+
+const VIEWS=["SPIN","THEATRE","CASCADE"];
+$("#viewbtn").addEventListener("click", e=>{
+  const m=$("#viewmenu");
+  m.innerHTML=VIEWS.map(v=>`<button data-v="${v}">${v}</button>`).join("");
+  m.style.left="10px"; m.style.top="50px"; m.classList.add("on");
+  $("#scrim").classList.add("on");
+  e.stopPropagation();
+});
+$("#viewmenu").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  const v=b.dataset.v; closeSheets();
+  if(v==="THEATRE"){ openTheatre(fullSequence(),"SPIN"); return; }
+  $("#viewname").textContent=v; renderAll();
+});
+$("#morebtn").addEventListener("click", e=>{
+  const m=$("#moremenu");
+  m.innerHTML=`<button data-m="load">LOAD ARCHIVE (.JSON)</button>
+    <button data-m="export">EXPORT JSON</button>
+    <button data-m="help">GESTURES</button>
+    <button data-m="reset">RESET DEMO</button>`;
+  m.style.right="8px"; m.style.left="auto"; m.style.top="50px";
+  m.classList.add("on"); $("#scrim").classList.add("on");
+  e.stopPropagation();
+});
+$("#moremenu").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  closeSheets();
+  if(b.dataset.m==="export"){
+    const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download="monte_spin_state.json"; a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+    toast("EXPORTED STATE"); }
+  else if(b.dataset.m==="load"){ $("#archfile").click(); }
+  else if(b.dataset.m==="reset"){ pushUndo(); ARCHIVE="synthetic"; initState(); renderAll(); toast("DEMO RESET", true); }
+  else if(b.dataset.m==="help"){ openHelp(); }
+});
+function openHelp(){
+  const sh=$("#sheet");
+  sh.innerHTML=`<div class="shead"><div class="t">GESTURES
+      <span class="sub">MONTE \u00B7 SPIN \u00B7 build 01</span></div>
+    <button class="ghost" onclick="this.closest('.sheet').classList.remove('on');
+      document.getElementById('scrim').classList.remove('on')">X</button></div>
+    <div class="meta" style="padding:14px">
+      TAP CLIP <b>select / open (per mode)</b><br>
+      HOLD CLIP ~&frac14;s <b>lift &rarr; drag within or across lanes</b><br>
+      DRAG LANE HANDLE <b>reorder lanes</b><br>
+      TAP LANE HEADER <b>lane tools \u00B7 F focuses \u00B7 X removes</b><br><br>
+      ASSEMBLE <b>move, duplicate, remove</b><br>
+      SELECT <b>multi-select \u00B7 batch actions</b><br>
+      VIEW <b>tap opens clip details</b><br>
+      PLAY <b>row play instrument \u00B7 SPIN samples \u00B7 KEEP saves a version</b><br><br>
+      CASCADE <b>the population \u00B7 every version playable</b><br><br>
+      VIEW MODE <b>read line at 32% \u00B7 scroll = scrub \u00B7 RAIN autoplays</b><br>
+      ARCHIVE <b>auto-loads MONTE/monte_manifest.json next to this file;
+      or \u00B7\u00B7\u00B7 &rarr; LOAD ARCHIVE for a manifest / exported channels JSON.
+      Without one, the deck is synthetic dot-fields.</b><br>
+      THEATRE <b>real clips play with sound (SND) \u00B7 single-stratum cuts get
+      their era's song, ducked under speech, with subtitles</b><br><br>
+      SPIN <b>random seed genomes (one cut per lane, shuffled)</b><br>
+      FITNESS &minus;/+ <b>score a version 0&ndash;5 \u00B7 selection pressure</b><br>
+      P &times; P &rarr; CROSS <b>uniform crossover of two parents</b><br>
+      MUTATE <b>point / swap / insert / delete / reverse ops</b><br>
+      MUT LOW&ndash;HIGH <b>mutation pressure per breeding</b><br>
+      EVOLVE <b>breeds ${CEIL.CHILDREN} offspring from the fittest ${CEIL.PARENT_POOL}</b><br>
+      CULL <b>removes a version from the gene pool</b><br><br>
+      EVERY ACTION <b>undoable</b>
+    </div>`;
+  openSheet(sh);
+}
+
+$("#archfile").addEventListener("change", e=>{
+  const f=e.target.files[0]; e.target.value=""; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{ try{
+      const j=JSON.parse(rd.result);
+      pushUndo();
+      const ok=(j.eras)? loadManifest(j) : loadChannels(j);
+      renderAll();
+      toast(ok? "ARCHIVE LOADED \u00B7 "+S.lanes.length+" LANES ("+ARCHIVE.toUpperCase()+")"
+              : "UNRECOGNIZED JSON \u00B7 EXPECTED MANIFEST OR CHANNELS", ok);
+    }catch(err){ toast("ARCHIVE PARSE FAILED"); } };
+  rd.readAsText(f);
+});
+
+/* ════════ READ LINE SCRUB (VIEW mode) ════════
+   The line sits at 32% of the board. Scroll = scrub: each lane's
+   monitor shows the clip under the line at its local time.
+   RAIN auto-scrolls the board — every lane falls and plays.   */
+let mons=[], rainOn=false, rainRaf=null;
+function scrubActive(){ return document.body.dataset.mode==="view"
+  && $("#viewname").textContent==="SPIN"; }
+function renderScrubBar(){
+  const b=$("#scrubbar"); const on=scrubActive();
+  b.classList.toggle("on",on);
+  if(!on) return;
+  $("#scrubrow").innerHTML=`<span class="btitle">READ LINE \u00B7 SCROLL = SCRUB</span>
+    <button data-st="rain" class="${rainOn?"rainon":""}">${rainOn?"STOP RAIN":"RAIN"}</button>
+    <button data-st="top">TO TOP</button>`;
+}
+$("#scrubbar").addEventListener("click", e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.st==="rain"){ rainOn=!rainOn; renderScrubBar();
+    if(rainOn){ cancelAnimationFrame(rainRaf); rainStep(); } }
+  if(b.dataset.st==="top"){ board.scrollTop=0; updateScrub(); }
+});
+function rainStep(){
+  if(!rainOn||!scrubActive()){ rainOn=false; renderScrubBar(); return; }
+  const max=board.scrollHeight-board.clientHeight;
+  board.scrollTop = board.scrollTop>=max-2 ? 0 : board.scrollTop+1.6;
+  rainRaf=requestAnimationFrame(rainStep);
+}
+function teardownScrub(){
+  mons.forEach(m=>m.el.remove()); mons=[];
+  $("#readline").style.display="none";
+  rainOn=false; cancelAnimationFrame(rainRaf);
+}
+function setupScrub(){
+  teardownScrub();
+  if(!scrubActive()){ renderScrubBar(); return; }
+  S.lanes.forEach((lane,li)=>{
+    const el=document.createElement("div"); el.className="lmon";
+    el.innerHTML=`<video muted playsinline preload="metadata"></video>
+      <canvas width="240" height="135" style="display:none"></canvas>
+      <div class="mlbl"></div>`;
+    document.body.appendChild(el);
+    mons.push({el, li, vid:$("video",el), cv:$("canvas",el),
+      lbl:$(".mlbl",el), cur:null, lastSeek:0, dead:false});
+  });
+  $("#readline").style.display="block";
+  renderScrubBar(); updateScrub();
+}
+function updateScrub(){
+  if(!scrubActive()||!mons.length) return;
+  const br=board.getBoundingClientRect();
+  const lineY=br.top+br.height*0.32;
+  const rl=$("#readline"); rl.style.top=lineY+"px";
+  const laneEls2=$$(".lane");
+  mons.forEach(m=>{
+    const laneEl=laneEls2[m.li];
+    if(!laneEl||S.lanes[m.li]&&S.lanes[m.li].disabled){ m.el.style.display="none"; return; }
+    const lr=laneEl.getBoundingClientRect();
+    if(lr.right<br.left||lr.left>br.right){ m.el.style.display="none"; return; }
+    const w=Math.max(60,lr.width-8), h=Math.round(w*9/16);
+    m.el.style.left=(lr.left+4)+"px"; m.el.style.width=w+"px"; m.el.style.height=h+"px";
+    m.el.style.top=(lineY-h/2)+"px";
+    /* which clip sits under the line? */
+    let hit=null, frac=0;
+    for(const ce of $$(".clip",laneEl)){
+      const cr=ce.getBoundingClientRect();
+      if(lineY>=cr.top&&lineY<cr.bottom){
+        hit=S.lanes[+ce.dataset.l]&&S.lanes[+ce.dataset.l].clips[+ce.dataset.i];
+        frac=(lineY-cr.top)/cr.height; break; }
+    }
+    if(!hit||hit.disabled){ m.el.style.display="none"; return; }
+    m.el.style.display="block";
+    const local=frac*hit.dur;
+    m.lbl.textContent=hit.label+" @"+local.toFixed(1)+"s";
+    const real=!!(hit.media&&!m.dead);
+    if(m.cur!==hit.uid){
+      m.cur=hit.uid; m.dead=false;
+      if(hit.media){
+        m.vid.style.display="block"; m.cv.style.display="none";
+        m.vid.onerror=()=>{ m.dead=true; m.vid.style.display="none";
+          m.cv.style.display="block"; drawThumb(m.cv.getContext("2d"),240,135,hit.seed,hit.kind,local); };
+        m.vid.src=hit.media;
+        m.vid.onloadedmetadata=()=>{ try{ m.vid.currentTime=
+          Math.min(local,(m.vid.duration||hit.dur)-.05); }catch(e){} };
+      } else {
+        m.vid.pause(); m.vid.style.display="none"; m.cv.style.display="block";
+      }
+    }
+    if(real&&m.vid.readyState>=1){
+      const now=performance.now();
+      if(now-m.lastSeek>SEEK_MS){ m.lastSeek=now;
+        try{ m.vid.currentTime=Math.min(local,(m.vid.duration||hit.dur)-.05); }catch(e){} }
+    } else if(!hit.media||m.dead){
+      drawThumb(m.cv.getContext("2d"),240,135,hit.seed,hit.kind,local);
+    }
+  });
+}
+board.addEventListener("scroll", ()=>{ if(scrubActive()) updateScrub(); }, {passive:true});
+addEventListener("resize", ()=>{ if(scrubActive()){ updateScrub(); } });
+
+/* hook scrub lifecycle into renders and mode changes */
+const _renderAll=renderAll;
+renderAll=function(){ _renderAll(); setupScrub(); };
+
+/* boot */
+initState(); renderAll(); updateUndoBtn(); bootArchive();
+</script>
+</body>
+</html>
