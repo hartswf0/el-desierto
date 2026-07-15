@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RIPPLES · CALL — cast the sessions</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIxMCIgZmlsbD0iI2U4ODYzYiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNlODg2M2IiIHN0cm9rZS13aWR0aD0iMyIgb3BhY2l0eT0iLjYiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTg4NjNiIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii4zIi8+PC9zdmc+">
+<!--
+  RIPPLES · CALL — the MONTE table + a diegetic Zoom stage, on the Scene Zero pattern.
+  LANES are participants; each lane holds ripple SESSIONS (takes) you drag in from the
+  LIBRARY (all 109, searchable). GO LIVE flips the table into the call: each lane becomes
+  a tile playing its live take — idle on the PREVIEW, swapping to the FINAL when it speaks.
+  Media note: only POSTERS/ + PREVIEWS/ are on Pages; FINALs come from the finals-v1
+  release. LOOPS_V3/ and the raw screen_captures are NOT published — never source them.
+-->
+<style>
+  :root{--bg:#0a0a0c;--ink:#f2f2ee;--dim:rgba(242,242,238,.5);--line:rgba(242,242,238,.2);
+    --hot:#e8863b;--green:#43c463;--red:#e8402f;--gold:#f1c40f;--accent:#2d8cff;--tile:#141417}
+  *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+  html,body{height:100%;background:var(--bg);color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden}
+  button,input,select{font-family:inherit}
+  #app{position:fixed;inset:0;display:flex;flex-direction:column}
+
+  #bar{display:flex;gap:6px;align-items:center;padding:7px 10px;border-bottom:1px solid var(--line);font-size:11px;flex-wrap:wrap;flex:0 0 auto}
+  #bar b{font-size:12px;letter-spacing:.12em;margin-right:2px;color:var(--hot)}
+  #bar button{border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);font-size:10px;font-weight:700;padding:7px 11px;cursor:pointer;letter-spacing:.04em}
+  #bar button.on{border-color:var(--hot);color:var(--hot)}
+  #bar button:hover{border-color:var(--hot)}
+  #golive{background:var(--red);border-color:var(--red);color:#fff}
+  #libBtn{background:var(--hot);border-color:var(--hot);color:#000}
+  #bar .stat{flex:1;text-align:right;color:var(--dim);font-size:10px;white-space:nowrap;overflow:hidden}
+  #scenes{display:flex;gap:6px;padding:8px 10px;border-bottom:1px solid var(--line);overflow-x:auto;flex:0 0 auto}
+  #scenes:empty{display:none}
+  #scenes button{flex:0 0 auto;border:1px solid var(--line);border-radius:9px;background:#101014;color:#dcdce0;font-size:11px;font-weight:700;padding:9px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-width:100px;text-align:left}
+  #scenes button small{font-size:8.5px;color:var(--dim);font-weight:400}
+  #scenes button.on{background:var(--hot);border-color:var(--hot);color:#000}
+
+  #body{flex:1 1 auto;min-height:0;display:flex}
+  #table{flex:1 1 auto;min-height:0;min-width:0;display:flex;gap:8px;padding:8px;overflow-x:auto}
+  .chan{flex:0 0 220px;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--felt,#000)}
+  .chan.active{border-color:var(--hot)}
+  .chan.live{box-shadow:0 0 0 1px var(--hot)}
+  .chan.dragover{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+  .chd{display:flex;align-items:center;gap:7px;padding:8px 9px;border-bottom:1px solid var(--line);background:rgba(10,10,12,.9);cursor:pointer}
+  .chd .dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;flex:0 0 auto}
+  .chd .nm{font-size:12px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .chd .liveflag{font-size:8px;padding:2px 5px;border-radius:4px;background:var(--hot);color:#000;font-weight:800;display:none}
+  .chan.live .liveflag{display:block}
+  .chd .hbtn{border:1px solid var(--line);border-radius:5px;background:transparent;color:var(--dim);font-size:9px;padding:3px 6px;cursor:pointer}
+  .chd .hbtn:hover{border-color:var(--hot);color:var(--hot)}
+  .aud{display:flex;align-items:center;gap:6px;padding:7px 9px;border-bottom:1px solid var(--line);background:#0c0c0e;font-size:9px;color:var(--dim)}
+  .aud button{border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--ink);font-size:9px;font-weight:700;padding:4px 7px;cursor:pointer}
+  .aud button.on{border-color:var(--green);color:var(--green)}
+  .aud button.solo.on{border-color:var(--gold);color:var(--gold)}
+  .aud input[type=range]{flex:1;height:16px;min-width:30px}
+  .clips{flex:1;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:5px;scrollbar-width:thin}
+  .clip{position:relative;border:1px solid var(--line);border-radius:7px;overflow:hidden;cursor:grab;background:#111;height:74px;flex:0 0 auto;touch-action:none}
+  .clip video,.clip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.92;pointer-events:none}
+  .clip .lb{position:absolute;left:5px;bottom:3px;right:5px;font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 3px #000;z-index:2;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .clip .num{position:absolute;left:4px;top:3px;font-size:8px;color:#000;background:var(--hot);padding:0 4px;border-radius:3px;font-weight:800;z-index:2;pointer-events:none}
+  .clip .x{position:absolute;top:2px;right:2px;z-index:3;border:none;border-radius:4px;background:rgba(180,0,0,.85);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;cursor:pointer;display:none}
+  .clip:hover .x{display:block}
+  .clip .csnd{position:absolute;top:2px;right:24px;z-index:3;width:20px;height:20px;border-radius:5px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+  .clip .csnd svg{width:12px;height:12px;fill:#fff}
+  .clip .csnd.on{background:var(--hot);border-color:var(--hot)}.clip .csnd.on svg{fill:#000}
+  .clip.hearing{border-color:var(--hot);box-shadow:0 0 10px rgba(232,134,59,.5)}
+  .clip.playing{border-color:var(--green);box-shadow:0 0 10px rgba(67,196,99,.4)}
+  .clip.playing .lb::after{content:' ● LIVE';color:var(--green)}
+  .clip.lifting{opacity:.35;outline:2px dashed var(--hot)}
+  .clip .scrub{position:absolute;left:0;bottom:0;height:2px;background:var(--hot);width:0;z-index:2;pointer-events:none}
+  .addclip{border:1px dashed var(--line);border-radius:7px;height:38px;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--dim);font-size:10px;font-weight:700;cursor:pointer;flex:0 0 auto}
+  .addclip:hover{border-color:var(--hot);color:var(--hot)}
+  .cfoot{display:flex;gap:4px;padding:6px;border-top:1px solid var(--line)}
+  .cfoot button{flex:1;border:1px solid var(--line);border-radius:6px;background:transparent;color:#aaa;font-size:9px;font-weight:700;padding:6px 3px;cursor:pointer}
+  .cfoot button.play{border-color:var(--gold);color:var(--gold)}
+  #newLane{flex:0 0 130px;border:1px dashed var(--line);border-radius:11px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:11px;font-weight:700;cursor:pointer;text-align:center;padding:8px}
+  #newLane:hover{border-color:var(--hot);color:var(--hot)}
+
+  /* ============ LIBRARY — add items easily ============ */
+  /* min-width:0 + overflow:hidden — without them a flex item's auto min-width
+     inflates to the stone row's min-content and the library eats the table */
+  #lib{flex:0 0 300px;min-width:0;overflow:hidden;border-left:1px solid var(--line);display:none;flex-direction:column;background:#0c0c0f;min-height:0}
+  #lib.on{display:flex}
+  .lh{padding:8px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px;flex:0 0 auto}
+  .lh b{font-size:11px;color:var(--hot);flex:1}
+  .lh .x{cursor:pointer;color:var(--dim);font-size:14px;padding:0 4px}
+  .ltarget{display:flex;align-items:center;gap:6px;padding:7px 10px;border-bottom:1px solid var(--line);font-size:9px;color:var(--dim);flex:0 0 auto}
+  .ltarget select{flex:1;background:#141418;color:var(--ink);border:1px solid var(--line);border-radius:6px;font-size:10px;padding:5px 6px;cursor:pointer}
+  #lsearch{margin:8px 10px;padding:7px 9px;background:#141418;border:1px solid var(--line);border-radius:7px;color:var(--ink);font-size:11px;outline:none;flex:0 0 auto;-webkit-user-select:text;user-select:text}
+  #lsearch:focus{border-color:var(--hot)}
+  #lstones{display:flex;gap:4px;padding:0 10px 8px;overflow-x:auto;flex:0 0 auto}
+  #lstones button{flex:0 0 auto;border:1px solid var(--line);border-radius:20px;background:transparent;color:var(--dim);font-size:9px;padding:4px 9px;cursor:pointer;white-space:nowrap}
+  #lstones button.on{background:var(--hot);border-color:var(--hot);color:#000;font-weight:700}
+  #llist{flex:1 1 auto;overflow-y:auto;padding:0 8px 8px;display:flex;flex-direction:column;gap:4px;min-height:0}
+  .lrow{display:flex;align-items:center;gap:7px;padding:5px;border:1px solid var(--line);border-radius:7px;cursor:grab;background:#111114;flex:0 0 auto;touch-action:none}
+  .lrow:hover{border-color:var(--hot)}
+  .lrow img{width:52px;height:32px;object-fit:cover;border-radius:4px;background:#000;flex:0 0 auto;pointer-events:none}
+  .lrow .t{flex:1;min-width:0;font-size:10px;font-weight:700;pointer-events:none}
+  .lrow .t small{display:block;font-size:8.5px;color:var(--dim);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lrow .plus{border:1px solid var(--line);border-radius:5px;background:transparent;color:var(--hot);font-size:12px;font-weight:800;width:24px;height:24px;cursor:pointer;flex:0 0 auto;line-height:1}
+  .lrow .plus:hover{background:var(--hot);color:#000}
+  .lrow.used{opacity:.4}
+  .lcount{padding:6px 10px;font-size:9px;color:var(--dim);border-top:1px solid var(--line);flex:0 0 auto}
+
+  #ghost{position:fixed;z-index:70;width:88px;height:56px;border:1px solid var(--hot);border-radius:6px;overflow:hidden;pointer-events:none;display:none;box-shadow:0 6px 20px rgba(0,0,0,.8);background:#000}
+  #ghost img{width:100%;height:100%;object-fit:cover}
+  #dropline{position:fixed;z-index:65;height:3px;background:var(--hot);display:none;pointer-events:none;border-radius:2px;box-shadow:0 0 8px var(--hot)}
+  #loupe{position:fixed;z-index:80;width:360px;background:#0d0d10;border:1px solid var(--hot);border-radius:10px;overflow:hidden;display:none;box-shadow:0 16px 50px rgba(0,0,0,.85);max-height:86vh;display:none;flex-direction:column}
+  #loupe.on{display:flex}
+  #loupe video{width:100%;aspect-ratio:16/9;object-fit:contain;background:#000;display:block;cursor:pointer;flex:0 0 auto}
+  #loupe .lp{padding:8px 10px;font-size:11px;flex:0 0 auto}#loupe .lp b{color:var(--hot)}
+  #loupe .lx{padding:0 10px 8px;font-size:9.5px;color:var(--dim);line-height:1.5;overflow-y:auto;white-space:pre-wrap;-webkit-user-select:text;user-select:text;flex:1 1 auto;min-height:0}
+  #loupe .lb2{display:flex;gap:5px;padding:8px;flex-wrap:wrap;border-top:1px solid var(--line);flex:0 0 auto}
+  #loupe .lb2 button{flex:1 0 auto;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--ink);font-size:9px;font-weight:700;padding:6px;cursor:pointer}
+  #loupe .lb2 button:hover{border-color:var(--hot);color:var(--hot)}
+  @media(pointer:coarse){#loupe{left:0!important;right:0!important;bottom:0!important;top:auto!important;width:100%!important;border-radius:14px 14px 0 0}}
+
+  #theatre{position:fixed;inset:0;z-index:200;background:#000;display:none}
+  #theatre.on{display:block}
+  #theatre>video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  #thHud{position:absolute;top:12px;left:14px;font-size:11px;color:rgba(255,255,255,.7);text-shadow:0 1px 2px #000;z-index:3}
+  #thX{position:absolute;top:10px;right:12px;z-index:4;border:1px solid rgba(255,255,255,.4);border-radius:7px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700;padding:7px 13px;cursor:pointer}
+  #thRail{position:absolute;left:10px;right:10px;bottom:56px;z-index:3;display:flex;gap:3px;height:30px}
+  .thSeg{flex:1;border:1px solid rgba(255,255,255,.16);border-radius:5px;background:rgba(255,255,255,.04);position:relative;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .thSeg .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(232,134,59,.3)}
+  .thSeg .lb{font-size:8px;color:rgba(255,255,255,.7);z-index:2;padding:0 4px;white-space:nowrap;overflow:hidden}
+  .thSeg.cur{border-color:var(--hot)}.thSeg.done .fill{width:100%}
+  #thCtl{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:7px;z-index:3}
+  #thCtl button{border:1px solid rgba(255,255,255,.35);border-radius:8px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;font-weight:700;padding:8px 14px;cursor:pointer}
+
+  #stage{position:fixed;inset:0;z-index:150;background:#0b0b0d;display:none;flex-direction:column}
+  #stage.on{display:flex}
+  .stop{height:36px;background:#161619;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:12px;color:var(--dim);flex:0 0 auto;border-bottom:1px solid #000}
+  .srec{display:flex;gap:6px;align-items:center;color:#e5e5e8}
+  .srec .dot{width:9px;height:9px;border-radius:50%;background:var(--red);animation:blink 1.5s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  #sgrid{flex:1 1 auto;display:grid;gap:4px;padding:5px;grid-auto-rows:1fr;background:#0b0b0d;min-height:0}
+  .stile{position:relative;background:var(--tile);overflow:hidden;border-radius:4px;cursor:pointer;outline:0 solid var(--accent);outline-offset:-3px}
+  .stile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#0e0e11}
+  .stile.mir video.cam{transform:scaleX(-1)}
+  .stile .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 42%,#22222c,#0e0e12);z-index:1}
+  .stile.has .ph{display:none}
+  .stile .av{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:29px;font-weight:600;color:#fff}
+  .stile .nm{position:absolute;left:9px;bottom:8px;z-index:4;background:rgba(0,0,0,.55);border-radius:5px;padding:2px 8px;font-size:12px;font-weight:500;color:#fff;display:flex;gap:6px;align-items:center;max-width:calc(100% - 18px)}
+  .stile .nm small{font-weight:400;color:#c9c9d2;font-size:10.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px}
+  .stile .nm .stp{font-size:9px;font-weight:700;color:#000;background:var(--hot);border-radius:3px;padding:0 4px;flex:0 0 auto}
+  .stile.spk{outline-width:3px;z-index:3}
+  .stile .mic{position:absolute;right:9px;top:9px;z-index:4;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center}
+  .stile .mic svg{width:12px;height:12px;fill:#fff}
+  .stile.muted .mic{background:rgba(0,0,0,.7)}.stile.muted .mic svg{fill:#ff6a5d}
+  .stile.spk .mic{background:var(--hot)}.stile.spk .mic svg{fill:#000}
+  .tctl{position:absolute;bottom:8px;right:8px;z-index:6;display:flex;gap:6px;opacity:0;transition:opacity .18s}
+  .stile:hover .tctl{opacity:1}
+  #stage.idle .tctl{opacity:0!important;pointer-events:none}
+  .tctl button{width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.24);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .tctl button svg{width:14px;height:14px;fill:#fff}
+  .tctl button:hover{background:rgba(0,0,0,.9)}
+  #empty{position:absolute;inset:36px 0 52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--dim);font-size:12px;z-index:5;text-align:center;padding:20px}
+  #empty h2{font-size:14px;color:var(--ink)}
+  #empty button{border:1px solid var(--hot);border-radius:8px;background:var(--hot);color:#000;font-size:11px;font-weight:700;padding:9px 14px;cursor:pointer}
+  .sbot{height:52px;background:#1b1b1f;display:flex;align-items:center;justify-content:center;gap:16px;flex:0 0 auto;border-top:1px solid #000;position:relative;transition:opacity .3s}
+  #stage.idle .sbot{opacity:0;pointer-events:none}
+  .sc{display:flex;flex-direction:column;align-items:center;gap:2px;color:#f3f3f5;font-size:9px;cursor:pointer}
+  .sc svg{width:20px;height:20px;fill:currentColor}.sc span{color:#9a9aa2}
+  .sc.on svg{fill:var(--hot)}.sc.on span{color:var(--hot)}
+  .sc.leave .lp{background:var(--red);color:#fff;padding:6px 13px;border-radius:6px;font-size:12px;font-weight:600}
+  /* ---- view switcher (diegetic: Zoom's own Gallery/Speaker control) ---- */
+  .sview{display:flex;gap:5px;align-items:center}
+  .sview button{border:1px solid rgba(255,255,255,.2);border-radius:6px;background:transparent;color:#c9c9d2;font-size:9px;font-weight:700;padding:4px 8px;cursor:pointer;letter-spacing:.04em}
+  .sview button.on{background:var(--hot);border-color:var(--hot);color:#000}
+  #smid{flex:1 1 auto;display:flex;min-height:0}
+  #sgrid{flex:1 1 auto;min-width:0}
+  /* PANELS: every clip is 648x1112 (0.583) portrait — give each panel that exact aspect at
+     full height, side by side, and let the strip scroll when they outrun the width. At native
+     aspect there is no crop, so FILL and FIT look identical here. */
+  #sgrid.panels{display:flex!important;gap:4px;overflow-x:auto;overflow-y:hidden;
+    justify-content:center;justify-content:safe center}
+  #sgrid.panels .stile{flex:0 0 auto;height:100%;aspect-ratio:var(--ar,648/1112);min-width:48px}
+  #sgrid.panels .stile video{object-fit:cover}
+  #stage.fitc .stile video{object-fit:contain;background:#000}
+  .stile.drag{opacity:.4;outline:2px dashed var(--hot)}
+  .stile.dropt{outline:3px solid var(--gold);outline-offset:-3px}
+  /* ---- diegetic chat: each ripple is prompted live as it plays ---- */
+  #schat{flex:0 0 296px;min-width:0;background:#1b1b1f;border-left:1px solid #000;display:none;flex-direction:column}
+  #schat.on{display:flex}
+  #schat .ch{padding:9px 12px;border-bottom:1px solid #2b2b31;font-size:12px;color:#e8e8ec;display:flex;align-items:center;gap:8px;flex:0 0 auto}
+  #schat .ch b{flex:1;font-weight:600}
+  #schat .ch .x{cursor:pointer;color:#9a9aa2;font-size:15px}
+  #schat .cmode{display:flex;gap:4px;padding:6px 10px;border-bottom:1px solid #2b2b31;flex:0 0 auto}
+  #schat .cmode button{flex:1;border:1px solid #33333a;border-radius:5px;background:transparent;color:#9a9aa2;font-size:8.5px;font-weight:700;padding:4px;cursor:pointer}
+  #schat .cmode button.on{background:var(--hot);border-color:var(--hot);color:#000}
+  #clog{flex:1 1 auto;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:9px;min-height:0}
+  .cmsg{font-size:11.5px;line-height:1.45;animation:cin .18s ease-out}
+  @keyframes cin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .cmsg .cfrom{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+  .cmsg .cav{width:17px;height:17px;border-radius:50%;font-size:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex:0 0 auto}
+  .cmsg .cnm{font-size:10.5px;font-weight:600;color:#dcdce2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cmsg .ct{font-size:8.5px;color:#75757e;margin-left:auto;flex:0 0 auto}
+  .cmsg .cbody{color:#c9c9d2;padding-left:23px;white-space:pre-wrap;-webkit-user-select:text;user-select:text}
+  .cmsg.sys .cbody{color:#7b8794;font-style:italic;font-size:10.5px;letter-spacing:.02em}
+  .cmsg.ai .cbody{color:#e8e8ec}
+  .cmsg.user .cbody{color:var(--hot)}
+  .cmsg.spawn .cbody{color:#8fd6a8}   /* [SPAWN @ [3,7]] — the world writing itself in */
+  #ctype{padding:5px 12px;font-size:9.5px;color:#75757e;border-top:1px solid #2b2b31;flex:0 0 auto;height:24px;overflow:hidden;white-space:nowrap}
+  /* ================= WALL: every ripple playing at once ================= */
+  #wall{position:fixed;inset:0;z-index:190;background:#08080a;display:none;flex-direction:column}
+  #wall.on{display:flex}
+  .wtop{display:flex;gap:7px;align-items:center;padding:8px 11px;border-bottom:1px solid var(--line);flex:0 0 auto;flex-wrap:wrap}
+  .wtop b{font-size:11px;letter-spacing:.12em;color:var(--hot)}
+  .wtop .wc{font-size:9px;color:var(--dim)}
+  .wtop input,.wtop select{background:#141418;border:1px solid var(--line);border-radius:7px;color:var(--ink);font:inherit;font-size:10px;padding:5px 8px;outline:none;-webkit-user-select:text;user-select:text}
+  .wtop input{width:170px}.wtop input:focus{border-color:var(--hot)}
+  .wtop button{border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--ink);font:inherit;font-size:9px;font-weight:700;padding:6px 10px;cursor:pointer;letter-spacing:.04em}
+  .wtop button.on{background:var(--hot);border-color:var(--hot);color:#000}
+  .wtop button:hover{border-color:var(--hot)}
+  .wtop .sp{flex:1}
+  #wgrid{flex:1 1 auto;overflow-y:auto;padding:6px;display:grid;gap:5px;align-content:start;
+    grid-template-columns:repeat(auto-fill,minmax(var(--wsz,146px),1fr))}
+  /* Row height is computed in JS from the real column width (see wallRows). Chrome won't
+     feed aspect-ratio into intrinsic row sizing here — every child is absolute, so auto
+     rows collapse to ~20px and the tiles overflow. Explicit grid-auto-rows is immune. */
+  .wt{position:relative;background:#111;border:1px solid #24242a;border-radius:6px;overflow:hidden;cursor:pointer}
+  .wt img,.wt video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .wt video{opacity:0;transition:opacity .25s}.wt video.on{opacity:1}
+  .wt .wl{position:absolute;left:0;right:0;bottom:0;padding:14px 5px 4px;font-size:8.5px;font-weight:700;color:#fff;
+    background:linear-gradient(transparent,rgba(0,0,0,.85));z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .wt .wl small{display:block;font-weight:400;color:#b9b9c2;font-size:7.5px;overflow:hidden;text-overflow:ellipsis}
+  .wt:hover{border-color:var(--hot)}
+  .wt.sel{border-color:var(--hot);box-shadow:0 0 0 2px var(--hot)}
+  .wt .wp{position:absolute;left:0;bottom:0;height:2px;background:var(--hot);width:0;z-index:3}
+  /* FOCUS: the one you clicked — big, audible, with the text that made it */
+  #wfocus{flex:0 0 46%;display:none;border-top:1px solid var(--line);background:#0b0b0e;min-height:0}
+  #wfocus.on{display:flex}
+  #wfv{flex:0 0 auto;height:100%;aspect-ratio:648/1112;background:#000;object-fit:contain}
+  .wfx{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+  .wfh{padding:8px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;flex:0 0 auto}
+  .wfh b{font-size:12px;color:var(--hot)}.wfh small{font-size:9px;color:var(--dim)}.wfh .sp{flex:1}
+  .wfh button{border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--ink);font:inherit;font-size:9px;font-weight:700;padding:5px 9px;cursor:pointer}
+  /* the full prompt, ALL of it, dimmed — each line lights as the video reaches it */
+  #wfp{flex:1 1 auto;overflow-y:auto;padding:10px 14px;font-size:11.5px;line-height:1.6;min-height:0;-webkit-user-select:text;user-select:text}
+  .pl{color:#4a4a55;transition:color .3s,background .3s;padding:2px 6px;border-left:2px solid transparent;margin-bottom:2px;border-radius:0 4px 4px 0}
+  .pl.hit{color:#e8e8ec;border-left-color:var(--hot);background:rgba(232,134,59,.07)}
+  .pl.hit.sys{color:#93a1b0}.pl.hit.spawn{color:#8fd6a8}.pl.hit.user{color:var(--hot)}
+  .pl .tg{font-size:8px;color:#5a5a66;margin-right:6px;text-transform:uppercase}
+  /* TEXT overview: every prompt that made every video */
+  #wtext{position:absolute;inset:0;z-index:5;background:#08080a;display:none;overflow-y:auto;padding:12px}
+  #wtext.on{display:block}
+  .tx{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #1c1c22;max-width:1100px;margin:0 auto}
+  .tx img{width:74px;aspect-ratio:648/1112;object-fit:cover;border-radius:5px;flex:0 0 auto;background:#000;cursor:pointer}
+  .tx .txb{flex:1;min-width:0}
+  .tx h4{font-size:11px;color:var(--hot);margin:0 0 2px}
+  .tx .meta{font-size:8.5px;color:var(--dim);margin-bottom:6px}
+  .tx pre{font:inherit;font-size:10.5px;line-height:1.55;color:#b9b9c2;white-space:pre-wrap;margin:0;-webkit-user-select:text;user-select:text}
+  #toast{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:210;background:#141418;border:1px solid var(--hot);border-radius:8px;padding:8px 14px;font-size:11px;color:var(--hot);display:none}
+  #toast.on{display:block}
+  input[type=file]{display:none}
+  @media(max-width:760px){#lib{position:fixed;inset:0;z-index:90;flex:1}#table{padding:6px}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="bar">
+    <b>RIPPLES · CALL</b>
+    <button id="worldsBtn" title="one lane per stone, its sessions in world order">⌗ WORLDS</button>
+    <button id="seqBtn" title="every lane walks its steps in order — watch the worlds unfold">⏭ SEQUENCE</button>
+    <button id="wallBtn" title="play every ripple at once">▶ ALL RIPPLES</button>
+    <button id="libBtn">+ ADD RIPPLES</button>
+    <button id="golive">● GO LIVE</button>
+    <button id="camBtn">CAMERA</button>
+    <button id="theatreAll">THEATRE</button>
+    <button id="masterAud" class="on">AUDIO ON</button>
+    <button id="addLane">+ LANE</button>
+    <button id="saveScene">SAVE SCENE</button>
+    <button id="recBtn">REC</button>
+    <button id="exportBtn">EXPORT</button>
+    <button id="importBtn">IMPORT</button>
+    <input type="file" id="importFile" accept=".json">
+    <button id="backBtn">← DECK</button>
+    <span class="stat" id="stat">…</span>
+  </div>
+  <div id="scenes"></div>
+  <div id="body">
+    <div id="table"></div>
+    <!-- LIBRARY: every session, searchable, one click (or drag) into any lane -->
+    <div id="lib">
+      <div class="lh"><b>LIBRARY</b><span class="x" id="libX">×</span></div>
+      <div class="ltarget">add to<select id="ltarget"></select></div>
+      <input id="lsearch" placeholder="search stone, subtitle, domain, theme…" autocomplete="off">
+      <div id="lstones"></div>
+      <div id="llist"></div>
+      <div class="lcount" id="lcount"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WALL: play every ripple at once; click one to see + hear it and read the text that made it -->
+<div id="wall">
+  <div class="wtop">
+    <b>ALL RIPPLES</b><span class="wc" id="wcount"></span>
+    <input id="wsearch" placeholder="search stone, subtitle, theme…" autocomplete="off">
+    <select id="wstone"></select>
+    <button id="wsize" title="tile size">SIZE</button>
+    <button id="wtextBtn" title="every prompt that made every video">TEXT</button>
+    <button id="wcast" title="cast what's on screen into the call">→ CALL</button>
+    <span class="sp"></span>
+    <button id="wX">EXIT</button>
+  </div>
+  <div id="wgrid"></div>
+  <div id="wfocus">
+    <video id="wfv" playsinline></video>
+    <div class="wfx">
+      <div class="wfh"><b id="wfstone"></b><small id="wfmeta"></small><span class="sp"></span>
+        <button id="wfcast">+ CALL</button><button id="wfx">CLOSE</button></div>
+      <div id="wfp"></div>
+    </div>
+  </div>
+  <div id="wtext"></div>
+</div>
+
+<div id="ghost"><img></div>
+<div id="dropline"></div>
+<div id="loupe"></div>
+<div id="toast"></div>
+
+<div id="theatre">
+  <video id="thv" playsinline></video>
+  <div id="thHud"></div><button id="thX">EXIT</button>
+  <div id="thRail"></div>
+  <div id="thCtl"><button data-c="prev">&#9664;&#9664;</button><button data-c="pp">&#9646;&#9646;</button><button data-c="next">&#9654;&#9654;</button></div>
+</div>
+
+<div id="stage">
+  <div class="stop"><span class="srec"><span class="dot"></span>Recording…</span>
+    <span class="sview" id="sview">
+      <button data-v="gallery" class="on">Gallery</button>
+      <button data-v="panels" title="side-by-side full-height panels — native for the portrait clips">Panels</button>
+      <button data-v="spotlight" title="one large, the rest in a rail">Spotlight</button>
+      <button id="fitBtn" title="FIT shows the whole portrait frame · FILL crops to the tile">FILL</button>
+    </span></div>
+  <div id="smid">
+    <div id="sgrid"></div>
+    <div id="schat">
+      <div class="ch"><b>Chat</b><span class="x" id="chatX">×</span></div>
+      <div class="cmode"><button id="cmAll">everyone</button><button id="cmSpk" class="on">speaker only</button><button id="cmClr">clear</button></div>
+      <div id="clog"></div>
+      <div id="ctype"></div>
+    </div>
+  </div>
+  <div id="empty" style="display:none"><h2>No ripples in the call yet</h2>
+    <div>Add sessions from the LIBRARY, then GO LIVE.</div><button id="emptyAdd">+ Add ripples</button></div>
+  <div class="sbot">
+    <div class="sc" id="sMute"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H8v2h8v-2h-3v-2.08A7 7 0 0 0 19 12z"/></svg><span>Mute</span></div>
+    <div class="sc" id="sVideo"><svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11z"/></svg><span>Start Video</span></div>
+    <div class="sc" id="sParts"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13z"/></svg><span>Participants</span></div>
+    <div class="sc" id="sChat"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span>Chat</span></div>
+    <div class="sc" id="sPresent"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>Present</span></div>
+    <div class="sc leave" id="sLeave"><span class="lp">Leave</span></div>
+  </div>
+</div>
+
+<script src="ripples-deck.js"></script>
+<script>
+"use strict";
+const DECK=window.RIPPLES_DECK||{columns:[]};
+const $=s=>document.querySelector(s);
+const el=(t,c,txt)=>{const n=document.createElement(t);if(c)n.className=c;if(txt!=null)n.textContent=txt;return n;};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),1500);}
+const NAMES=JSON.parse(localStorage.getItem('ripplesMonteNames')||'{}');
+const colId=s=>'s_'+s.replace(/[^a-z0-9]+/gi,'_').toLowerCase();
+const stoneName=st=>NAMES[colId(st)]||st;
+function hue(str){let h=0;for(const c of str)h=(h*31+c.charCodeAt(0))%360;return h;}
+const hsl=(h,s,l)=>`hsl(${h} ${s}% ${l}%)`;
+
+/* ---------- sessions ----------
+   MEDIA: POSTERS/ + PREVIEWS/ are published; FINALs live in the finals-v1 release.
+   LOOPS_V3/ and the raw screen_captures are NOT published — never source them. */
+const ALL=[],STONES=[];
+DECK.columns.forEach(c=>{const nm=stoneName(c.stone);const ss=c.sessions.map(s=>({...s,stone:nm}));
+  STONES.push({stone:nm,sessions:ss});ALL.push(...ss);});
+const byId=Object.fromEntries(ALL.map(s=>[s.clip_id,s]));
+const idleSrc=s=>s.preview||s.final||'';      // idle tiles loop the small published preview
+const talkSrc=s=>s.final||s.preview||'';      // speaking swaps to the release-hosted final
+const themesOf=s=>Array.isArray(s.themes)?s.themes.join(' '):(s.themes||'');
+
+/* ---------- STEPS: a stone is one world WALKING a grid; its sessions are the steps ----------
+   The worldtext log carries `AUTO STEP n`, a world clock, a cell `@ [x,y]` and sometimes a
+   `VECTOR [a,b] -> [c,d]`. Filed order scrambles them (clip 366 is step 2, 371 is step 1),
+   so the world clock is what reconstructs the unfolding. Sequence a lane by it and the lane
+   stops being a loop and becomes a world advancing, step by step. */
+const STEPI={};
+function stepOf(sid){
+  if(STEPI[sid])return STEPI[sid];
+  const s=byId[sid]||{},f=s.full||'';
+  const ts=[...f.matchAll(/\[(\d+):(\d+(?:\.\d+)?)\]/g)].map(m=>(+m[1])*60+parseFloat(m[2]));
+  const st=[...f.matchAll(/AUTO STEP\s+(\d+)/ig)].map(m=>+m[1]);
+  const at=(f.match(/@\s*\[(\d+),\s*(\d+)\]/)||[]).slice(1,3);
+  const vec=(f.match(/VECTOR\s*\[(\d+),\s*(\d+)\]\s*->\s*\[(\d+),\s*(\d+)\]/i)||[]).slice(1,5);
+  const num=parseInt((sid.match(/^(\d+)/)||[])[1]||'0',10);
+  return STEPI[sid]={t0:ts.length?Math.min(...ts):null,step:st.length?st[0]:null,at,vec,num};
+}
+// world clock first, then AUTO STEP, then capture number — the most reliable ordering we have
+function orderKey(sid){const i=stepOf(sid);
+  return [i.t0==null?1:0, i.t0==null?(i.step==null?i.num:i.step):i.t0, i.num];}
+function cmpKey(a,b){const x=orderKey(a),y=orderKey(b);
+  for(let i=0;i<3;i++){if(x[i]!==y[i])return x[i]-y[i];}return 0;}
+function stepLabel(sid){const i=stepOf(sid);
+  const cell=i.at.length?' @['+i.at.join(',')+']':'';
+  if(i.step!=null)return 'STEP '+i.step+cell;
+  if(i.t0!=null)return 'T+'+Math.round(i.t0)+'s'+cell;
+  return (byId[sid]&&byId[sid].subtitle||sid.split('_')[0]).slice(0,20);
+}
+
+/* ---------- model: lanes (participants) hold clips (takes) ---------- */
+let PEOPLE=[],LANES={},CLIP={},cCounter=0,laneHue=28;
+const P=()=>Object.fromEntries(PEOPLE.map(p=>[p.id,p]));
+let PMAP={};
+const HOST={id:'__host',name:'You',host:true,hue:8,initials:'Y'};
+const SAVEKEY='ripplesCallTable',CASTKEY='ripplesZoomCast';
+function regClip(sid){const s=byId[sid];if(!s)return null;const id='c'+(cCounter++);
+  CLIP[id]={id,sid,label:stepLabel(sid),poster:s.poster,idle:idleSrc(s),talk:talkSrc(s),stone:s.stone};return id;}
+function addLane(name,hueV){const id='p'+Date.now().toString(36)+Math.floor(Math.random()*1e3);
+  laneHue=(hueV!=null?hueV:(laneHue+53)%360);
+  const p={id,name,hue:laneHue,initials:(name||'?').trim().slice(0,1).toUpperCase()};
+  PEOPLE.push(p);LANES[id]=[];ST.aud[id]={on:false,vol:1,solo:false};PMAP=P();return id;}
+
+const ST={live:{},aud:{},master:true,inStage:false,onstage:new Set(),speaker:null,active:null,scene:null};
+
+/* ---------- seed: MONTE cast (grouped by stone) -> lanes; else saved; else first stone ---------- */
+function seedFromCast(){
+  const q=new URLSearchParams(location.search).get('cast');
+  let ids=[];
+  if(q)ids=q.split(',').filter(Boolean);
+  else{try{const raw=JSON.parse(localStorage.getItem(CASTKEY)||'null');if(raw&&raw.length)ids=raw.map(r=>r.clip_id||r);}catch(e){}}
+  const sess=ids.map(i=>byId[i]).filter(Boolean);
+  if(!sess.length)return false;
+  const groups={};sess.forEach(s=>{(groups[s.stone]=groups[s.stone]||[]).push(s);});
+  Object.entries(groups).forEach(([stone,ss])=>{const lid=addLane(stone,hue(stone));
+    ss.forEach(s=>{const cid=regClip(s.clip_id);if(cid)LANES[lid].push(cid);});
+    if(LANES[lid][0])ST.live[lid]=LANES[lid][0];});
+  return true;
+}
+function saveTable(){try{localStorage.setItem(SAVEKEY,JSON.stringify({
+  people:PEOPLE.map(p=>({id:p.id,name:p.name,hue:p.hue,initials:p.initials})),
+  lanes:Object.fromEntries(PEOPLE.map(p=>[p.id,(LANES[p.id]||[]).map(cid=>CLIP[cid]&&CLIP[cid].sid).filter(Boolean)])),
+  live:Object.fromEntries(Object.entries(ST.live).map(([k,v])=>[k,CLIP[v]&&CLIP[v].sid]).filter(([,v])=>v))}));}catch(e){}}
+function loadTable(){try{const s=JSON.parse(localStorage.getItem(SAVEKEY)||'null');if(!s||!s.people||!s.people.length)return false;
+  PEOPLE=[];LANES={};CLIP={};cCounter=0;
+  s.people.forEach(p=>{PEOPLE.push({id:p.id,name:p.name,hue:p.hue,initials:p.initials});LANES[p.id]=[];ST.aud[p.id]={on:false,vol:1,solo:false};});
+  Object.entries(s.lanes||{}).forEach(([lid,sids])=>{if(!LANES[lid])return;
+    sids.forEach(sid=>{const cid=regClip(sid);if(cid)LANES[lid].push(cid);});});
+  Object.entries(s.live||{}).forEach(([lid,sid])=>{const cid=(LANES[lid]||[]).find(c=>CLIP[c].sid===sid);if(cid)ST.live[lid]=cid;});
+  PMAP=P();return PEOPLE.length>0;}catch(e){return false;}}
+function seedDefault(){const first=STONES[0];if(!first)return;
+  const lid=addLane(first.stone,hue(first.stone));
+  first.sessions.slice(0,4).forEach(s=>{const cid=regClip(s.clip_id);if(cid)LANES[lid].push(cid);});
+  if(LANES[lid][0])ST.live[lid]=LANES[lid][0];}
+if(!seedFromCast()&&!loadTable())seedDefault();
+PMAP=P();
+
+/* ============ TABLE ============ */
+const table=$('#table');
+function buildTable(){
+  table.innerHTML='';PMAP=P();
+  PEOPLE.forEach(p=>{
+    const a=ST.aud[p.id]||(ST.aud[p.id]={on:false,vol:1,solo:false});
+    const ch=el('div','chan');ch.id='ch-'+p.id;ch.dataset.pid=p.id;
+    ch.style.setProperty('--felt',hsl(p.hue,40,6));ch.style.borderColor=hsl(p.hue,35,22);
+    ch.classList.toggle('active',ST.active===p.id);
+    ch.classList.toggle('live',!!ST.live[p.id]);
+    ch.innerHTML=`<div class="chd"><div class="dot" style="background:${hsl(p.hue,55,45)}">${p.initials}</div>
+        <div class="nm" style="color:${hsl(p.hue,70,68)}">${p.name}</div><span class="liveflag">LIVE</span>
+        <button class="hbtn" data-a="ren" title="rename">✎</button><button class="hbtn" data-a="del" title="close lane">✕</button></div>
+      <div class="aud"><button class="amute ${a.on?'on':''}">${a.on?'AUD':'mute'}</button>
+        <button class="solo ${a.solo?'on':''}">solo</button>
+        <input type="range" class="avol" min="0" max="100" value="${Math.round(a.vol*100)}"></div>
+      <div class="clips" id="clips-${p.id}"></div>
+      <div class="cfoot"><button class="fplay play">▶ LANE</button><button class="fseq">⏭ ORDER</button><button class="fadd">+ ADD</button></div>`;
+    ch.querySelector('.fseq').onclick=()=>{sequenceLane(p.id);if(ST.inStage)syncTile(p.id);};
+    ch.querySelector('.chd').onclick=e=>{if(e.target.closest('.hbtn'))return;setActive(p.id);};
+    ch.querySelector('[data-a=ren]').onclick=e=>{e.stopPropagation();const n=prompt('Rename lane',p.name);if(n){p.name=n.trim();p.initials=p.name.slice(0,1).toUpperCase();buildTable();buildStage();saveTable();}};
+    ch.querySelector('[data-a=del]').onclick=e=>{e.stopPropagation();removeLane(p.id);};
+    ch.querySelector('.amute').onclick=()=>{a.on=!a.on;applyAudio();buildTable();};
+    ch.querySelector('.solo').onclick=()=>{a.solo=!a.solo;applyAudio();buildTable();};
+    ch.querySelector('.avol').oninput=e=>{a.vol=+e.target.value/100;applyAudio();};
+    ch.querySelector('.fplay').onclick=()=>theatreLane(p.id);
+    ch.querySelector('.fadd').onclick=()=>{setActive(p.id);openLib();};
+    table.appendChild(ch);renderLane(p.id);
+  });
+  const nl=el('div',null,'');nl.id='newLane';nl.innerHTML='<div>+ LANE<br><span style="font-size:9px;font-weight:400">add a participant</span></div>';
+  nl.onclick=()=>newLane();table.appendChild(nl);
+  refreshStat();
+  refreshTarget();
+}
+function refreshStat(){
+  const takes=Object.values(LANES).reduce((a,b)=>a+b.length,0);
+  const live=Object.keys(ST.live).length;
+  $('#stat').textContent=`${PEOPLE.length} lane${PEOPLE.length===1?'':'s'} · ${takes} take${takes===1?'':'s'} · ${live} live · ${ALL.length} sessions in library`;
+}
+function setActive(pid){ST.active=pid;document.querySelectorAll('.chan').forEach(c=>c.classList.toggle('active',c.dataset.pid===pid));refreshTarget();}
+function renderLane(pid){
+  const list=$('#clips-'+pid);if(!list)return;list.innerHTML='';
+  (LANES[pid]||[]).forEach((cid,i)=>{const c=CLIP[cid];if(!c)return;
+    const d=el('div','clip'+(ST.live[pid]===cid?' playing':''));d.id='clip-'+cid;d.dataset.cid=cid;d.dataset.pid=pid;
+    d.innerHTML=`<img loading="lazy" src="${c.poster||''}" alt=""><button class="csnd" title="hear this take"><svg viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z"/></svg></button><div class="num">${i+1}</div><div class="lb">${c.label}</div><div class="scrub"></div><button class="x">✕</button>`;
+    list.appendChild(d);});
+  const add=el('div','addclip');add.innerHTML='<span style="font-size:14px">+</span> add ripples';
+  add.onclick=()=>{setActive(pid);openLib();};list.appendChild(add);
+  wireClips(pid);
+}
+function newLane(){const n=(prompt('Name this participant','Guest '+(PEOPLE.length+1))||'').trim();if(!n)return;
+  const id=addLane(n);buildTable();buildStage();setActive(id);saveTable();toast('lane added: '+n);}
+function removeLane(pid){if(!confirm('Close '+(PMAP[pid]?.name||'this')+' lane?'))return;
+  PEOPLE=PEOPLE.filter(p=>p.id!==pid);(LANES[pid]||[]).forEach(c=>delete CLIP[c]);
+  delete LANES[pid];delete ST.aud[pid];delete ST.live[pid];ST.onstage.delete(pid);
+  PMAP=P();buildTable();buildStage();if(ST.inStage)refreshStageLayout();applyAudio();saveTable();toast('lane closed');}
+$('#addLane').onclick=()=>newLane();
+
+/* ---------- clip interactions ---------- */
+let hearingEl=null;
+function previewSound(d,c){
+  if(hearingEl&&hearingEl!==d){const ov=hearingEl.querySelector('video');if(ov)ov.remove();
+    hearingEl.classList.remove('hearing');hearingEl.querySelector('.csnd')?.classList.remove('on');}
+  if(d.classList.contains('hearing')){const v=d.querySelector('video');if(v)v.remove();
+    d.classList.remove('hearing');d.querySelector('.csnd').classList.remove('on');hearingEl=null;return;}
+  const v=el('video');v.src=c.talk;v.loop=true;v.playsInline=true;v.muted=false;v.autoplay=true;
+  d.insertBefore(v,d.firstChild);v.play().catch(()=>{});
+  d.classList.add('hearing');d.querySelector('.csnd').classList.add('on');hearingEl=d;
+}
+function wireClips(pid){
+  document.querySelectorAll('#clips-'+pid+' .clip').forEach(d=>{
+    const cid=d.dataset.cid,c=CLIP[cid];if(!c)return;
+    d.querySelector('.x').onclick=e=>{e.stopPropagation();removeClip(pid,cid);};
+    d.querySelector('.csnd').onclick=e=>{e.stopPropagation();previewSound(d,c);};
+    d.addEventListener('click',()=>{if(d._moved){d._moved=false;return;}
+      if(ST.live[pid]===cid)unLive(pid);else goLive(pid,cid);});
+    d.addEventListener('dblclick',()=>openLoupe(pid,cid));
+    d.addEventListener('pointerdown',e=>{if(e.target.closest('.x')||e.target.closest('.csnd'))return;
+      drag={kind:'clip',pid,cid,el:d,x:e.clientX,y:e.clientY,active:false,poster:c.poster};});
+  });
+}
+function removeClip(pid,cid){LANES[pid]=LANES[pid].filter(x=>x!==cid);
+  if(ST.live[pid]===cid){delete ST.live[pid];if(ST.inStage)syncTile(pid);}
+  renderLane(pid);saveTable();buildLib();refreshStat();toast("removed");}
+
+/* ============ LIBRARY ============ */
+let libFilter={q:'',stone:null};
+function openLib(){$('#lib').classList.add('on');$('#libBtn').classList.add('on');buildLib();}
+function closeLib(){$('#lib').classList.remove('on');$('#libBtn').classList.remove('on');}
+$('#libBtn').onclick=()=>$('#lib').classList.contains('on')?closeLib():openLib();
+$('#libX').onclick=closeLib;
+$('#emptyAdd').onclick=()=>{exitStage();openLib();};
+function refreshTarget(){
+  const sel=$('#ltarget');if(!sel)return;const cur=ST.active||(PEOPLE[0]&&PEOPLE[0].id);
+  sel.innerHTML='';PEOPLE.forEach(p=>{const o=el('option',null,p.name);o.value=p.id;sel.appendChild(o);});
+  const o=el('option',null,'＋ new lane…');o.value='__new';sel.appendChild(o);
+  if(cur)sel.value=cur;
+  sel.onchange=()=>{if(sel.value==='__new'){newLane();}else setActive(sel.value);};
+}
+function targetLane(){
+  const sel=$('#ltarget');let lid=sel&&sel.value!=='__new'?sel.value:ST.active;
+  if(!lid||!LANES[lid]){lid=PEOPLE[0]&&PEOPLE[0].id;}
+  if(!lid){lid=addLane('Guest 1');buildTable();}
+  return lid;
+}
+function buildStones(){
+  const box=$('#lstones');box.innerHTML='';
+  const mk=(label,val)=>{const b=el('button',libFilter.stone===val?'on':'',label);b.onclick=()=>{libFilter.stone=val;buildStones();buildLib();};return b;};
+  box.appendChild(mk('all '+ALL.length,null));
+  STONES.forEach(s=>box.appendChild(mk(s.stone.length>16?s.stone.slice(0,15)+'…':s.stone,s.stone)));
+}
+function buildLib(){
+  const list=$('#llist');list.innerHTML='';
+  const used=new Set(Object.values(LANES).flat().map(cid=>CLIP[cid]&&CLIP[cid].sid));
+  const q=libFilter.q.toLowerCase();
+  const rows=ALL.filter(s=>{
+    if(libFilter.stone&&s.stone!==libFilter.stone)return false;
+    if(!q)return true;
+    return (s.stone+' '+(s.subtitle||'')+' '+(s.domain||'')+' '+themesOf(s)+' '+s.clip_id+' '+(s.excerpt||'')).toLowerCase().includes(q);
+  });
+  rows.slice(0,400).forEach(s=>{
+    const r=el('div','lrow'+(used.has(s.clip_id)?' used':''));r.dataset.sid=s.clip_id;
+    const im=el('img');im.loading='lazy';im.src=s.poster||'';r.appendChild(im);
+    const t=el('div','t');t.appendChild(document.createTextNode(s.stone));
+    t.appendChild(el('small',null,(s.subtitle||'')+' · '+s.clip_id.split('_')[0]+' · '+(s.domain||'')));r.appendChild(t);
+    const b=el('button','plus','+');b.title='add to lane';
+    b.onclick=e=>{e.stopPropagation();addToLane(targetLane(),s.clip_id);};r.appendChild(b);
+    r.addEventListener('pointerdown',e=>{if(e.target.closest('.plus'))return;
+      drag={kind:'lib',sid:s.clip_id,el:r,x:e.clientX,y:e.clientY,active:false,poster:s.poster};});
+    r.addEventListener('dblclick',()=>openLoupeSession(s));
+    list.appendChild(r);
+  });
+  $('#lcount').textContent=rows.length+' of '+ALL.length+' sessions'+(rows.length>400?' (showing 400)':'')+' · drag into a lane, or +';
+}
+function addToLane(lid,sid,idx){
+  const cid=regClip(sid);if(!cid)return;
+  const lane=LANES[lid];lane.splice(idx==null?lane.length:idx,0,cid);
+  if(!ST.live[lid]){ST.live[lid]=cid;if(ST.inStage)syncTile(lid);}
+  renderLane(lid);buildLib();refreshStat();saveTable();
+  const ch=$('#ch-'+lid);if(ch)ch.classList.toggle('live',!!ST.live[lid]);
+  toast(byId[sid].stone+' → '+PMAP[lid].name);
+}
+$('#lsearch').addEventListener('input',e=>{libFilter.q=e.target.value;buildLib();});
+
+/* ============ DRAG (clips between lanes + library into lanes) ============ */
+let drag=null;
+const ghost=$('#ghost'),dropline=$('#dropline');
+document.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  if(!drag.active){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;
+    drag.active=true;if(drag.el){drag.el.classList.add('lifting');drag.el._moved=true;}
+    ghost.querySelector('img').src=drag.poster||'';ghost.style.display='block';}
+  ghost.style.left=(e.clientX+10)+'px';ghost.style.top=(e.clientY+10)+'px';
+  const chEl=document.elementsFromPoint(e.clientX,e.clientY).find(x=>x.classList&&x.classList.contains('chan'));
+  document.querySelectorAll('.chan.dragover').forEach(c=>c.classList.remove('dragover'));dropline.style.display='none';
+  if(!chEl){drag.tgt=null;return;}
+  chEl.classList.add('dragover');
+  const tpid=chEl.dataset.pid,els=[...chEl.querySelectorAll('.clip')];let idx=els.length;
+  for(let i=0;i<els.length;i++){const r=els[i].getBoundingClientRect();if(e.clientY<r.top+r.height/2){idx=i;break;}}
+  drag.tgt={pid:tpid,idx};
+  const listEl=chEl.querySelector('.clips');let y;
+  if(idx<els.length)y=els[idx].getBoundingClientRect().top;
+  else if(els.length)y=els[els.length-1].getBoundingClientRect().bottom;
+  else y=listEl.getBoundingClientRect().top+6;
+  const lr=listEl.getBoundingClientRect();
+  dropline.style.display='block';dropline.style.left=(lr.left+6)+'px';dropline.style.width=(lr.width-12)+'px';dropline.style.top=y+'px';
+});
+document.addEventListener('pointerup',()=>{
+  if(!drag)return;const d=drag;drag=null;
+  ghost.style.display='none';dropline.style.display='none';
+  document.querySelectorAll('.chan.dragover').forEach(c=>c.classList.remove('dragover'));
+  if(d.el)d.el.classList.remove('lifting');
+  if(!d.active||!d.tgt)return;
+  if(d.kind==='lib'){addToLane(d.tgt.pid,d.sid,d.tgt.idx);return;}
+  const from=LANES[d.pid],fi=from.indexOf(d.cid);if(fi>=0)from.splice(fi,1);
+  if(ST.live[d.pid]===d.cid){delete ST.live[d.pid];}
+  let idx=d.tgt.idx;const to=LANES[d.tgt.pid];if(d.pid===d.tgt.pid&&fi<idx)idx--;
+  to.splice(Math.min(idx,to.length),0,d.cid);
+  if(!ST.live[d.tgt.pid])ST.live[d.tgt.pid]=d.cid;
+  renderLane(d.pid);if(d.tgt.pid!==d.pid)renderLane(d.tgt.pid);
+  buildTable();saveTable();if(ST.inStage){syncTile(d.pid);syncTile(d.tgt.pid);}
+  toast(d.pid===d.tgt.pid?'reordered':('moved to '+PMAP[d.tgt.pid].name));
+});
+
+/* ============ LOUPE ============ */
+const loupe=$('#loupe');
+function openLoupe(pid,cid){const c=CLIP[cid];openLoupeSession(byId[c.sid],pid,cid);}
+function openLoupeSession(s,pid,cid){
+  loupe.innerHTML=`<video src="${talkSrc(s)}" autoplay loop playsinline poster="${s.poster||''}"></video>
+    <div class="lp"><b>${s.stone}</b> · ${s.subtitle||''} <span style="color:var(--dim)">· ${s.clip_id} · ${s.domain||''} · ${(s.duration||0).toFixed?s.duration.toFixed(1):s.duration}s</span></div>
+    <div class="lx">${(s.full||s.excerpt||'no prompt on file').replace(/</g,'&lt;')}</div>
+    <div class="lb2">${pid?'<button data-a="live">SET LIVE</button>':''}<button data-a="add">+ ADD TO LANE</button><button data-a="close">CLOSE</button></div>`;
+  loupe.classList.add('on');
+  if(!matchMedia('(pointer:coarse)').matches){loupe.style.left='calc(50% - 180px)';loupe.style.top='60px';}
+  const v=loupe.querySelector('video');v.muted=false;v.onclick=()=>{v.paused?v.play():v.pause();};
+  loupe.querySelector('[data-a=add]').onclick=()=>{addToLane(targetLane(),s.clip_id);closeLoupe();};
+  const lv=loupe.querySelector('[data-a=live]');if(lv)lv.onclick=()=>{goLive(pid,cid);closeLoupe();};
+  loupe.querySelector('[data-a=close]').onclick=closeLoupe;
+}
+function closeLoupe(){const v=loupe.querySelector('video');if(v)v.pause();loupe.classList.remove('on');}
+document.addEventListener('pointerdown',e=>{if(loupe.classList.contains('on')&&!e.target.closest('#loupe')&&!e.target.closest('.clip')&&!e.target.closest('.lrow'))closeLoupe();},true);
+
+/* ============ CAST LIVE ============ */
+function goLive(pid,cid){ST.live[pid]=cid;ST.onstage.add(pid);
+  document.querySelectorAll('#clips-'+pid+' .clip').forEach(d=>d.classList.toggle('playing',d.dataset.cid===cid));
+  $('#ch-'+pid)?.classList.add('live');
+  if(ST.inStage){syncTile(pid);refreshStageLayout();}
+  refreshStat();saveTable();if(!ST.inStage)toast(PMAP[pid].name+" → "+CLIP[cid].label);}
+function unLive(pid){delete ST.live[pid];
+  document.querySelectorAll('#clips-'+pid+' .clip').forEach(d=>d.classList.remove('playing'));
+  $('#ch-'+pid)?.classList.remove('live');ST.onstage.delete(pid);
+  if(ST.speaker===pid)ST.speaker=null;
+  if(ST.inStage){syncTile(pid);refreshStageLayout();}
+  saveTable();if(!ST.inStage)toast(PMAP[pid].name+' off');}
+
+/* ============ AUDIO ============ */
+const vids={};
+function applyAudio(){
+  if(ST.inStage){
+    const anySolo=PEOPLE.some(p=>ST.aud[p.id]&&ST.aud[p.id].solo);
+    PEOPLE.forEach(p=>{const v=vids[p.id];if(!v)return;
+      const a=ST.aud[p.id]||{on:false,vol:1,solo:false};
+      const isSpk=ST.speaker===p.id;
+      const audible=ST.master&&(isSpk||(a.on&&(!anySolo||a.solo)));
+      setMode(p.id,isSpk);v.muted=!audible;v.volume=a.vol;
+      const t=$('#stile-'+p.id);if(t){t.classList.toggle('spk',isSpk);t.classList.toggle('muted',!audible);}
+      if(v.paused)v.play().catch(()=>{});});
+    return;
+  }
+  Object.values(vids).forEach(v=>{v.muted=true;});
+}
+function setMode(pid,speaking){
+  const v=vids[pid],cid=ST.live[pid];if(!v||!cid)return;
+  const c=CLIP[cid],want=speaking?'talk':'idle',src=speaking?c.talk:c.idle;
+  if(v.dataset.mode!==want||v.dataset.cid!==cid){
+    v.dataset.mode=want;v.dataset.cid=cid;v.src=src;v.currentTime=0;
+    v.loop=!ST.seq;    // sequencing: let it END so the lane can hand off to the next step
+    v.play().catch(()=>{});}
+}
+$('#masterAud').onclick=()=>{ST.master=!ST.master;const b=$('#masterAud');
+  b.classList.toggle('on',ST.master);b.textContent=ST.master?'AUDIO ON':'AUDIO OFF';applyAudio();reflectMute();};
+
+/* ============ STAGE ============ */
+function buildStage(){
+  const g=$('#sgrid');g.innerHTML='';Object.keys(vids).forEach(k=>delete vids[k]);
+  g.appendChild(hostTile());
+  PEOPLE.forEach(p=>g.appendChild(stileFor(p)));
+}
+function hostTile(){const t=el('div','stile');t.id='stile-__host';
+  const ph=el('div','ph');const av=el('div','av','Y');av.style.background='#c8453a';ph.appendChild(av);t.appendChild(ph);
+  const nm=el('div','nm');nm.appendChild(el('span',null,'You'));nm.appendChild(el('small',null,'director'));t.appendChild(nm);return t;}
+function stileFor(p){
+  const t=el('div','stile muted');t.id='stile-'+p.id;t.dataset.pid=p.id;t.style.display='none';
+  const v=el('video');v.loop=true;v.muted=true;v.playsInline=true;v.preload='metadata';vids[p.id]=v;t.appendChild(v);
+  v.addEventListener('timeupdate',()=>chatTick(p.id,v));   // stream this ripple's prompt as it plays
+  v.addEventListener('ended',()=>{if(ST.seq&&!present)laneAdvance(p.id);});  // hand off to the next step
+  const ph=el('div','ph');const av=el('div','av',p.initials);av.style.background=hsl(p.hue,55,45);ph.appendChild(av);t.appendChild(ph);
+  const mic=el('div','mic');mic.innerHTML=micSvg();t.appendChild(mic);
+  const nm=el('div','nm');nm.appendChild(el('span',null,p.name));nm.appendChild(el('small','sub',''));
+  nm.appendChild(el('span','stp',''));t.appendChild(nm);   // step counter: which step of this world we're on
+  const ctl=el('div','tctl');
+  const bS=el('button');bS.innerHTML=micSvg();bS.title='let this ripple speak';bS.onclick=e=>{e.stopPropagation();toggleSpeak(p.id);};
+  const bN=el('button');bN.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>';bN.title='next take';bN.onclick=e=>{e.stopPropagation();nextTake(p.id);};
+  const bX=el('button');bX.innerHTML='<svg viewBox="0 0 24 24"><path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg>';bX.title='remove from call';bX.onclick=e=>{e.stopPropagation();unLive(p.id);};
+  ctl.append(bS,bN,bX);t.appendChild(ctl);
+  t.onclick=()=>{if(t._moved){t._moved=false;return;}toggleSpeak(p.id);};   // drag repositions, click speaks
+  t.addEventListener('dblclick',()=>{if(ST.layout==='spotlight'){ST.spot=p.id;refreshStageLayout();}});
+  wireTileDrag(t,p.id);
+  return t;
+}
+function micSvg(){return '<svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H8v2h8v-2h-3v-2.08A7 7 0 0 0 19 12z"/></svg>';}
+function syncTile(pid){
+  const t=$('#stile-'+pid),v=vids[pid],cid=ST.live[pid];if(!t)return;
+  if(!cid){t.classList.remove('has');if(v){v.pause();v.removeAttribute('src');v.dataset.cid='';}t.style.display='none';return;}
+  const c=CLIP[cid];t.classList.add('has');t.style.display='';
+  const sub=t.querySelector('.nm .sub');if(sub)sub.textContent=c.label;
+  const stp=t.querySelector('.nm .stp');if(stp){const s=laneStep(pid);stp.textContent=s.n>1?s.i+'/'+s.n:'';}
+  setMode(pid,ST.speaker===pid);
+}
+/* ---------- LAYOUT: gallery / panels (portrait-native) / spotlight ---------- */
+ST.layout='gallery';ST.fit='cover';ST.spot=null;ST.order=[];
+function stageTiles(){ // host first, then lanes in ST.order, only those actually cast
+  const live=PEOPLE.filter(p=>ST.onstage.has(p.id)&&ST.live[p.id]);
+  const ord=ST.order.filter(id=>live.some(p=>p.id===id));
+  live.forEach(p=>{if(!ord.includes(p.id))ord.push(p.id);});
+  ST.order=ord;
+  return ['__host',...ord];
+}
+function refreshStageLayout(){
+  const ids=stageTiles(),g=$('#sgrid'),n=Math.max(1,ids.length);
+  PEOPLE.forEach(p=>{const t=$('#stile-'+p.id);if(t)t.style.display=(ST.onstage.has(p.id)&&ST.live[p.id])?'':'none';});
+  ids.forEach((id,i)=>{const t=$('#stile-'+id);if(t){t.style.order=i;t.style.gridArea='';t.style.gridColumn='';t.style.gridRow='';}});
+  g.classList.toggle('panels',ST.layout==='panels');
+  g.style.gridAutoRows='1fr';
+  if(ST.layout==='panels'){                       // native-aspect columns; CSS flex does the work
+    g.style.gridTemplateColumns='';g.style.gridTemplateRows='';
+  }else if(ST.layout==='spotlight'&&n>1){         // one big + a rail
+    const spot=(ST.spot&&ids.includes(ST.spot))?ST.spot:(ids[1]||ids[0]);
+    ST.spot=spot;
+    g.style.gridTemplateColumns='3fr minmax(0,1fr)';
+    g.style.gridTemplateRows=`repeat(${n-1},minmax(0,1fr))`;
+    const st=$('#stile-'+spot);if(st){st.style.gridColumn='1';st.style.gridRow=`1 / ${n}`;}
+    let r=1;ids.forEach(id=>{if(id===spot)return;const t=$('#stile-'+id);
+      if(t){t.style.gridColumn='2';t.style.gridRow=String(r++);}});
+  }else{                                          // gallery
+    g.style.gridTemplateColumns=`repeat(${Math.ceil(Math.sqrt(n))},minmax(0,1fr))`;
+    g.style.gridTemplateRows='';
+  }
+  $('#empty').style.display=(ids.length>1)?'none':'flex';
+}
+function setLayout(v){ST.layout=v;if(v!=='spotlight')ST.spot=null;
+  document.querySelectorAll('#sview button[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  refreshStageLayout();toast('view: '+v);}
+document.querySelectorAll('#sview button[data-v]').forEach(b=>b.onclick=()=>setLayout(b.dataset.v));
+$('#fitBtn').onclick=()=>{ST.fit=ST.fit==='cover'?'contain':'cover';
+  $('#stage').classList.toggle('fitc',ST.fit==='contain');
+  $('#fitBtn').textContent=ST.fit==='contain'?'FIT':'FILL';
+  $('#fitBtn').classList.toggle('on',ST.fit==='contain');toast(ST.fit==='contain'?'whole frame':'fill tile');};
+
+/* ---------- drag a tile to reposition it in the mosaic ---------- */
+let tdrag=null;
+function wireTileDrag(t,pid){
+  t.addEventListener('pointerdown',e=>{if(e.target.closest('.tctl'))return;tdrag={pid,t,x:e.clientX,y:e.clientY,active:false};});
+}
+document.addEventListener('pointermove',e=>{
+  if(!tdrag)return;
+  if(!tdrag.active){if(Math.hypot(e.clientX-tdrag.x,e.clientY-tdrag.y)<8)return;tdrag.active=true;tdrag.t.classList.add('drag');}
+  const over=document.elementsFromPoint(e.clientX,e.clientY).find(x=>x.classList&&x.classList.contains('stile')&&x!==tdrag.t);
+  document.querySelectorAll('.stile.dropt').forEach(x=>x.classList.remove('dropt'));
+  if(over&&over.dataset.pid)over.classList.add('dropt');
+  tdrag.over=over&&over.dataset.pid?over.dataset.pid:null;
+});
+document.addEventListener('pointerup',()=>{
+  if(!tdrag)return;const d=tdrag;tdrag=null;
+  d.t.classList.remove('drag');document.querySelectorAll('.stile.dropt').forEach(x=>x.classList.remove('dropt'));
+  if(!d.active||!d.over||d.over===d.pid){if(d.active)d.t._moved=true;return;}
+  const a=ST.order.indexOf(d.pid),b=ST.order.indexOf(d.over);
+  if(a>=0&&b>=0){ST.order.splice(a,1);ST.order.splice(b,0,d.pid);refreshStageLayout();toast('repositioned');}
+  d.t._moved=true;
+});
+
+/* ---------- PROMPTS -> the diegetic chat, streamed as each clip plays ----------
+   The worldtext lines carry the ORIGINAL session clock ([02:11.185] …), but a clip is
+   ~15s. Normalize each line's stamp from [min,max] onto the clip's duration so the
+   room reads as if every ripple is being prompted live, right now. */
+const PROMPT={};
+const TSLINE=/^-?\s*\[(\d+):(\d+(?:\.\d+)?)\]\s*\[([a-z]+)\]\s*(.*)$/i;
+function normTag(t){t=(t||'').toLowerCase();
+  if(t==='ai')return 'ai';if(t==='user')return 'user';
+  if(t.startsWith('spawn'))return 'spawn';return 'sys';}
+function promptOf(sid){
+  if(PROMPT[sid])return PROMPT[sid];
+  const s=byId[sid];if(!s)return PROMPT[sid]=[];
+  const dur=s.duration||15,out=[];
+  // (a) worldtext runs: real engine log with its own clock -> normalize onto the clip
+  (s.full||'').split('\n').forEach(l=>{const m=l.trim().match(TSLINE);
+    if(m&&m[4].trim())out.push({t:(+m[1])*60+parseFloat(m[2]),tag:normTag(m[3]),text:m[4].trim()});});
+  if(out.length){
+    const t0=Math.min(...out.map(x=>x.t)),t1=Math.max(...out.map(x=>x.t)),span=(t1-t0)||1;
+    out.forEach(x=>{x.ct=((x.t-t0)/span)*dur*0.9;});   // land the last line just before the loop
+    return PROMPT[sid]=out;
+  }
+  // (b) spec prompts (title/scaffold/header): a YAML world-spec, no clock — pace it evenly
+  //     so the room reads as the engine ingesting the spec while the clip renders.
+  const raw=(s.full||'').split('\n').filter(l=>l.trim());
+  const spec=raw.slice(0,18).map(l=>{
+    const t=l.trim().replace(/^-\s*/,'');
+    let tag='ai';
+    if(/^(title|description|location|rule|world|premise)\s*:/i.test(t))tag='sys';
+    else if(/^(entities|scenes|beats|props|cast)\s*:/i.test(t)||/^\s+/.test(l)||/^(id|type|name)\s*:/i.test(t))tag='spawn';
+    return {tag,text:t};
+  }).filter(x=>x.text);
+  spec.forEach((x,i)=>{x.ct=(i/Math.max(1,spec.length))*dur*0.9;});
+  return PROMPT[sid]=spec;
+}
+const emitted={},lastT={};
+function chatPush(pid,L){
+  const log=$('#clog'),p=PMAP[pid];if(!log||!p)return;
+  const m=el('div','cmsg '+L.tag);
+  const from=el('div','cfrom');
+  const av=el('div','cav',p.initials);av.style.background=hsl(p.hue,55,45);from.appendChild(av);
+  from.appendChild(el('span','cnm',p.name));
+  from.appendChild(el('span','ct',L.tag==='ai'?'':L.tag));
+  m.appendChild(from);m.appendChild(el('div','cbody',L.text));
+  const stick=log.scrollTop+log.clientHeight>=log.scrollHeight-40;
+  log.appendChild(m);
+  while(log.children.length>140)log.removeChild(log.firstChild);
+  if(stick)log.scrollTop=log.scrollHeight;
+  const ty=$('#ctype');if(ty){ty.textContent=p.name+' is typing…';clearTimeout(ty._t);
+    ty._t=setTimeout(()=>{ty.textContent='';},1100);}
+}
+function chatTick(pid,v){
+  if(!ST.chat||!ST.inStage)return;
+  if(ST.chatMode==='spk'&&ST.speaker!==pid)return;
+  const cid=ST.live[pid];if(!cid)return;
+  const sid=CLIP[cid].sid,lines=promptOf(sid);if(!lines.length)return;
+  const key=pid+':'+sid;
+  if(!emitted[key])emitted[key]=new Set();
+  if(v.currentTime<(lastT[key]||0)-0.3)emitted[key].clear();   // looped -> prompt again
+  lastT[key]=v.currentTime;
+  lines.forEach((L,i)=>{if(!emitted[key].has(i)&&v.currentTime>=L.ct){emitted[key].add(i);chatPush(pid,L);}});
+}
+/* default to the speaker only — with every tile firing at once the log outruns reading */
+ST.chat=false;ST.chatMode='spk';
+function toggleChat(on){
+  ST.chat=(on==null?!ST.chat:on);
+  $('#schat').classList.toggle('on',ST.chat);
+  $('#sChat').classList.toggle('on',ST.chat);
+  if(ST.chat){Object.keys(emitted).forEach(k=>delete emitted[k]);}
+}
+$('#sChat').onclick=()=>toggleChat();
+$('#chatX').onclick=()=>toggleChat(false);
+$('#cmAll').onclick=()=>{ST.chatMode='all';$('#cmAll').classList.add('on');$('#cmSpk').classList.remove('on');};
+$('#cmSpk').onclick=()=>{ST.chatMode='spk';$('#cmSpk').classList.add('on');$('#cmAll').classList.remove('on');};
+$('#cmClr').onclick=()=>{$('#clog').innerHTML='';Object.keys(emitted).forEach(k=>delete emitted[k]);};
+function toggleSpeak(pid){ST.speaker=ST.speaker===pid?null:pid;
+  if(ST.speaker){ST.master=true;reflectMute();}applyAudio();}
+function nextTake(pid){const lane=LANES[pid]||[];if(lane.length<2){toast('only one take in this lane');return;}
+  const i=lane.indexOf(ST.live[pid]);goLive(pid,lane[(i+1)%lane.length]);applyAudio();}
+
+/* ================= SEQUENCE — every lane walks its own steps, in parallel =================
+   A lane isn't a loop of one clip: it's a world with an order. Sort by the world clock, then
+   let each clip END and hand off to the next. Every lane advances independently, so the call
+   becomes N worlds unfolding side by side instead of one video cycling. */
+function sequenceLane(pid,quiet){
+  const lane=LANES[pid]||[];if(!lane.length)return;
+  lane.sort((a,b)=>cmpKey(CLIP[a].sid,CLIP[b].sid));
+  if(!ST.live[pid]||!lane.includes(ST.live[pid]))ST.live[pid]=lane[0];
+  renderLane(pid);if(!quiet)toast(PMAP[pid].name+' → '+lane.length+' steps in order');
+}
+function laneStep(pid){const lane=LANES[pid]||[];return {i:lane.indexOf(ST.live[pid])+1,n:lane.length};}
+function laneAdvance(pid){
+  const lane=LANES[pid]||[];if(lane.length<2){const v=vids[pid];if(v){v.currentTime=0;v.play().catch(()=>{});}return;}
+  const i=lane.indexOf(ST.live[pid]);
+  const next=lane[(i+1)%lane.length];
+  goLive(pid,next);applyAudio();
+  const t=$('#stile-'+pid);if(t){const st=t.querySelector('.nm .stp');if(st){const s=laneStep(pid);st.textContent=s.i+'/'+s.n;}}
+}
+function setSeq(on){
+  ST.seq=on;$('#seqBtn').classList.toggle('on',on);
+  document.querySelectorAll('#sview button[data-v]');
+  PEOPLE.forEach(p=>{const v=vids[p.id];if(v)v.loop=!on;});
+  if(on){PEOPLE.forEach(p=>sequenceLane(p.id,true));buildTable();
+    if(ST.inStage){PEOPLE.forEach(p=>syncTile(p.id));applyAudio();}
+    toast('sequencing — every lane walks its steps');}
+  else toast('sequence off — lanes hold on one step');
+}
+/* one lane per stone, its sessions in world order — the whole corpus as parallel worlds */
+function buildWorlds(dedupe){
+  const keep=WALL.filter.stone?STONES.filter(s=>s.stone===WALL.filter.stone):STONES;
+  PEOPLE=[];LANES={};CLIP={};cCounter=0;ST.live={};ST.onstage=new Set();
+  keep.forEach(col=>{
+    let ss=col.sessions.slice().sort((a,b)=>cmpKey(a.clip_id,b.clip_id));
+    if(dedupe){const seen=new Set();ss=ss.filter(s=>{const i=stepOf(s.clip_id);
+      const k=(i.t0!=null?'t'+i.t0:'n'+i.num);if(seen.has(k))return false;seen.add(k);return true;});}
+    if(!ss.length)return;
+    const lid=addLane(col.stone,hue(col.stone));
+    ss.forEach(s=>{const c=regClip(s.clip_id);if(c)LANES[lid].push(c);});
+    ST.live[lid]=LANES[lid][0];
+  });
+  PMAP=P();if(PEOPLE[0])ST.active=PEOPLE[0].id;
+  buildTable();buildStage();saveTable();
+  toast(PEOPLE.length+' worlds · '+Object.values(LANES).reduce((a,b)=>a+b.length,0)+' steps');
+}
+function enterStage(){
+  ST.inStage=true;$('#stage').classList.add('on');
+  PEOPLE.forEach(p=>{if(!ST.live[p.id]&&(LANES[p.id]||[])[0])ST.live[p.id]=LANES[p.id][0];});
+  ST.onstage=new Set(PEOPLE.filter(p=>ST.live[p.id]).map(p=>p.id));
+  PEOPLE.forEach(p=>syncTile(p.id));
+  refreshStageLayout();applyAudio();armIdle();
+  const s=$('#stage');if(s.requestFullscreen)s.requestFullscreen().catch(()=>{});
+}
+function exitStage(){ST.inStage=false;stopPresent();$('#stage').classList.remove('on');
+  Object.values(vids).forEach(v=>v.pause());
+  if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});
+  buildTable();}
+$('#golive').onclick=enterStage;
+$('#sLeave').onclick=exitStage;
+$('#sParts').onclick=()=>{exitStage();openLib();};
+$('#backBtn').onclick=()=>{if(document.referrer&&/ripples-monte/.test(document.referrer))history.back();else location.href='ripples-monte.html';};
+let idleT;function armIdle(){clearTimeout(idleT);$('#stage').classList.remove('idle');
+  idleT=setTimeout(()=>{if(ST.inStage)$('#stage').classList.add('idle');},3200);}
+['mousemove','click','keydown','touchstart'].forEach(e=>document.addEventListener(e,()=>{if(ST.inStage)armIdle();}));
+
+/* ---------- present: auto-cycle the speaker ---------- */
+let present=null;
+function startPresent(){const on=PEOPLE.filter(p=>ST.onstage.has(p.id)&&ST.live[p.id]);
+  if(!on.length){toast('cast some ripples first');return;}
+  present={i:0,list:on.map(p=>p.id)};$('#sPresent').classList.add('on');presentStep();}
+function presentStep(){
+  if(!present)return;const pid=present.list[present.i%present.list.length];
+  ST.speaker=pid;ST.master=true;reflectMute();applyAudio();
+  const v=vids[pid];if(!v)return;v.loop=false;
+  const advance=()=>{if(!present)return;v.onended=null;v.loop=true;present.i++;
+    if(present.i>=present.list.length){stopPresent();toast('presentation complete');return;}presentStep();};
+  v.onended=advance;
+  const arm2=()=>{clearTimeout(present.t);const d=(isFinite(v.duration)&&v.duration>0?v.duration:15);
+    present.t=setTimeout(advance,d*1000+600);};
+  if(isFinite(v.duration)&&v.duration>0)arm2();else v.addEventListener('loadedmetadata',arm2,{once:true});
+}
+function stopPresent(){if(present)clearTimeout(present.t);present=null;$('#sPresent').classList.remove('on');
+  Object.values(vids).forEach(v=>{v.onended=null;v.loop=true;});applyAudio();}
+$('#sPresent').onclick=()=>present?stopPresent():startPresent();
+$('#sMute').onclick=()=>{ST.master=!ST.master;reflectMute();applyAudio();
+  const b=$('#masterAud');b.classList.toggle('on',ST.master);b.textContent=ST.master?'AUDIO ON':'AUDIO OFF';};
+function reflectMute(){const b=$('#sMute');b.querySelector('span').textContent=ST.master?'Mute':'Unmute';b.classList.toggle('on',!ST.master);}
+
+/* ---------- camera ---------- */
+let camOn=false,camStream=null;
+async function toggleCam(){
+  const t=$('#stile-__host');if(!t)return;
+  if(camOn){camStream&&camStream.getTracks().forEach(x=>x.stop());camStream=null;camOn=false;
+    const v=t.querySelector('video.cam');if(v){v.srcObject=null;v.remove();}t.classList.remove('has','mir');reflectCam();toast('camera off');return;}
+  try{camStream=await navigator.mediaDevices.getUserMedia({video:{width:1280,height:720,facingMode:'user'},audio:false});
+    let v=t.querySelector('video.cam');if(!v){v=el('video','cam');v.autoplay=true;v.muted=true;v.playsInline=true;t.insertBefore(v,t.querySelector('.ph'));}
+    v.srcObject=camStream;t.classList.add('has','mir');camOn=true;reflectCam();toast('camera on');
+  }catch(e){toast('no camera access');}
+}
+function reflectCam(){const b=$('#sVideo');b.querySelector('span').textContent=camOn?'Stop Video':'Start Video';b.classList.toggle('on',camOn);
+  const c=$('#camBtn');c.classList.toggle('on',camOn);}
+$('#camBtn').onclick=toggleCam;$('#sVideo').onclick=toggleCam;
+
+/* ============ THEATRE ============ */
+const TH={on:false,queue:[],i:0};const thv=$('#thv');
+function theatreLane(pid){theatreRun((LANES[pid]||[]).map(cid=>({pid,cid})),PMAP[pid].name);}
+function theatreAll(){const q=[];PEOPLE.forEach(p=>(LANES[p.id]||[]).forEach(cid=>q.push({pid:p.id,cid})));theatreRun(q,'WHOLE TABLE');}
+function theatreRun(queue,label){if(!queue.length){toast('nothing to play');return;}
+  TH.on=true;TH.queue=queue;TH.i=0;TH.label=label;$('#theatre').classList.add('on');buildRail();
+  const e=$('#theatre');if(e.requestFullscreen)e.requestFullscreen().catch(()=>{});thShow();}
+function buildRail(){const rail=$('#thRail');rail.innerHTML='';
+  TH.queue.forEach((q,i)=>{const c=CLIP[q.cid];const seg=el('div','thSeg');
+    seg.innerHTML=`<span class="fill"></span><span class="lb">${PMAP[q.pid]?PMAP[q.pid].initials:'?'}·${c?c.label:''}</span>`;
+    seg.onclick=()=>{TH.i=i;thShow();};rail.appendChild(seg);});}
+function railUpdate(){[...$('#thRail').children].forEach((s,i)=>{s.classList.toggle('cur',i===TH.i);s.classList.toggle('done',i<TH.i);
+  s.querySelector('.fill').style.width=i<TH.i?'100%':i===TH.i?((thv.duration?thv.currentTime/thv.duration:0)*100)+'%':'0';});}
+function thShow(){const q=TH.queue[TH.i];if(!q){thExit();return;}const c=CLIP[q.cid];if(!c){thExit();return;}
+  thv.src=c.talk;thv.currentTime=0;thv.muted=false;thv.loop=false;thv.play().catch(()=>{});
+  $('#thHud').textContent=TH.label+' · '+(TH.i+1)+'/'+TH.queue.length+' · '+(PMAP[q.pid]?PMAP[q.pid].name:'')+' · '+c.label;railUpdate();}
+thv.addEventListener('ended',()=>{if(!TH.on)return;TH.i++;if(TH.i>=TH.queue.length){thExit();return;}thShow();});
+thv.addEventListener('timeupdate',railUpdate);
+function thExit(){TH.on=false;$('#theatre').classList.remove('on');thv.pause();
+  if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});}
+$('#thX').onclick=thExit;$('#theatreAll').onclick=theatreAll;
+document.querySelectorAll('#thCtl button').forEach(b=>b.onclick=()=>{const c=b.dataset.c;
+  if(c==='prev'){TH.i=Math.max(0,TH.i-1);thShow();}
+  else if(c==='next'){TH.i=Math.min(TH.queue.length-1,TH.i+1);thShow();}
+  else{thv.paused?thv.play():thv.pause();}});
+
+/* ============ SCENES / EXPORT / IMPORT / REC ============ */
+const SCENES={},SORDER=[];
+function buildScenes(){const sc=$('#scenes');sc.innerHTML='';
+  SORDER.forEach((k,i)=>{const s=SCENES[k];const b=el('button');b.dataset.k=k;
+    b.innerHTML=`${i+1}. ${s.name}<small>${s.lanes.length} lanes</small>`;b.onclick=()=>applyScene(k);sc.appendChild(b);});}
+$('#saveScene').onclick=()=>{const name=(prompt('Name this scene')||'').trim();if(!name)return;
+  const k='s'+Date.now().toString(36);
+  SCENES[k]={name,lanes:PEOPLE.map(p=>p.id),live:{...ST.live},onstage:[...ST.onstage],speaker:ST.speaker};
+  SORDER.push(k);buildScenes();toast('scene saved: '+name);};
+function applyScene(k){const s=SCENES[k];if(!s)return;ST.scene=k;
+  document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+  ST.live={...s.live};ST.onstage=new Set(s.onstage);ST.speaker=s.speaker;
+  buildTable();if(ST.inStage){PEOPLE.forEach(p=>syncTile(p.id));refreshStageLayout();applyAudio();}
+  toast('scene: '+s.name);}
+$('#exportBtn').onclick=()=>{const data={format:'ripples-call',exported:new Date().toISOString(),
+  people:PEOPLE.map(p=>({id:p.id,name:p.name,hue:p.hue,initials:p.initials})),
+  lanes:Object.fromEntries(PEOPLE.map(p=>[p.id,(LANES[p.id]||[]).map(c=>CLIP[c].sid)])),
+  live:Object.fromEntries(Object.entries(ST.live).map(([k,v])=>[k,CLIP[v]&&CLIP[v].sid]))};
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:'application/json'}));
+  a.download='ripples_call.json';a.click();toast('exported');};
+$('#importBtn').onclick=()=>$('#importFile').click();
+$('#importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;
+  try{const s=JSON.parse(await f.text());PEOPLE=[];LANES={};CLIP={};cCounter=0;ST.live={};
+    s.people.forEach(p=>{PEOPLE.push({...p});LANES[p.id]=[];ST.aud[p.id]={on:false,vol:1,solo:false};});
+    Object.entries(s.lanes||{}).forEach(([lid,sids])=>sids.forEach(sid=>{const cid=regClip(sid);if(cid&&LANES[lid])LANES[lid].push(cid);}));
+    Object.entries(s.live||{}).forEach(([lid,sid])=>{const cid=(LANES[lid]||[]).find(c=>CLIP[c].sid===sid);if(cid)ST.live[lid]=cid;});
+    PMAP=P();buildTable();buildStage();saveTable();toast('imported');}catch(err){toast('bad file');}e.target.value='';};
+let mediaRec=null,recChunks=[];
+$('#recBtn').onclick=async()=>{const btn=$('#recBtn');
+  if(mediaRec&&mediaRec.state==='recording'){mediaRec.stop();return;}
+  try{const disp=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:true});
+    const out=new MediaStream([...disp.getVideoTracks(),...disp.getAudioTracks()]);
+    const mime=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(m=>MediaRecorder.isTypeSupported(m))||'';
+    recChunks=[];mediaRec=new MediaRecorder(out,mime?{mimeType:mime,videoBitsPerSecond:10e6}:undefined);
+    mediaRec.ondataavailable=e=>{if(e.data.size)recChunks.push(e.data);};
+    mediaRec.onstop=()=>{disp.getTracks().forEach(t=>t.stop());
+      const blob=new Blob(recChunks,{type:mediaRec.mimeType||'video/webm'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+      a.download='ripples_call_'+new Date().toISOString().replace(/[:.]/g,'-')+'.webm';a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),5000);btn.textContent='REC';btn.classList.remove('on');toast('take saved');};
+    disp.getVideoTracks()[0].onended=()=>{if(mediaRec&&mediaRec.state==='recording')mediaRec.stop();};
+    mediaRec.start(1000);btn.textContent='● STOP';btn.classList.add('on');toast('recording — now GO LIVE');
+  }catch(e){toast('recording cancelled');}};
+
+/* ================= WALL — play every ripple at once =================
+   The call is for composing; the wall is for WATCHING THE WHOLE CORPUS. Every tile
+   plays its real clip (the preview is the full 15s at 360x618, not a stub), muted and
+   staggered so the grid reads as many worlds running in parallel. Click one: it swaps
+   to the hi-res final, unmutes, and its ENTIRE prompt is laid out — dimmed — with each
+   line lighting as the video reaches it. The text that made the video, being made. */
+const WALL={filter:{q:'',stone:''},sel:null,size:146,io:null,tiles:new Map()};
+function wallList(){
+  const q=WALL.filter.q.toLowerCase();
+  return ALL.filter(s=>{
+    if(WALL.filter.stone&&s.stone!==WALL.filter.stone)return false;
+    if(!q)return true;
+    return (s.stone+' '+(s.subtitle||'')+' '+(s.domain||'')+' '+themesOf(s)+' '+s.clip_id).toLowerCase().includes(q);
+  });
+}
+function buildWall(){
+  const g=$('#wgrid');g.innerHTML='';WALL.tiles.clear();
+  if(WALL.io)WALL.io.disconnect();
+  const list=wallList();
+  list.forEach((s,i)=>{
+    const t=el('div','wt');t.dataset.sid=s.clip_id;
+    const im=el('img');im.loading='lazy';im.src=s.poster||'';t.appendChild(im);
+    const lb=el('div','wl');lb.appendChild(document.createTextNode(s.stone));
+    lb.appendChild(el('small',null,(s.subtitle||'')+' · '+s.clip_id.split('_')[0]));t.appendChild(lb);
+    t.appendChild(el('div','wp'));
+    t.onclick=()=>wallFocus(s.clip_id);
+    g.appendChild(t);WALL.tiles.set(s.clip_id,{el:t,s,i,v:null});
+  });
+  $('#wcount').textContent=list.length+' of '+ALL.length+' playing';
+  wallRows();
+  // only what's on screen actually plays — 109 <video>s at once would melt the tab
+  WALL.io=new IntersectionObserver(ents=>{
+    ents.forEach(e=>{const sid=e.target.dataset.sid,rec=WALL.tiles.get(sid);if(!rec)return;
+      if(e.isIntersecting)wallPlay(rec);else wallStop(rec);});
+  },{root:g,rootMargin:'160px'});
+  WALL.tiles.forEach(r=>WALL.io.observe(r.el));
+  // the observer is the optimizer, not the only trigger: a backgrounded or occluded tab
+  // never fires it, and then the wall sits dead. Prime the first screenful outright.
+  let primed=0;WALL.tiles.forEach(r=>{if(primed<24){wallPlay(r);primed++;}});
+}
+// coming back to the tab: restart anything the browser parked
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState!=='visible')return;
+  WALL.tiles.forEach(r=>{if(r.v&&r.v.paused)r.v.play().catch(()=>{});});
+  if(ST.inStage)Object.values(vids).forEach(v=>{if(v.paused)v.play().catch(()=>{});});
+});
+/* the clips are 648x1112 — size the rows off the real column width so every tile is
+   exactly one portrait frame, at any tile size or viewport */
+let wallRO=null;
+function wallRows(){
+  const g=$('#wgrid'),t=g.querySelector('.wt');if(!t)return;
+  const set=()=>{const w=t.getBoundingClientRect().width;if(w<=2)return;
+    const h=Math.round(w*1112/648)+'px';if(g.style.gridAutoRows!==h)g.style.gridAutoRows=h;};
+  set();
+  // The first pass runs before the scrollbar claims its width, so a one-shot measure locks
+  // in a wrong (cropping) row height. Watch the tile — and also re-measure on timers, since
+  // a backgrounded tab never renders and ResizeObserver stays silent there.
+  if(wallRO)wallRO.disconnect();
+  wallRO=new ResizeObserver(set);wallRO.observe(t);
+  setTimeout(set,60);setTimeout(set,400);
+}
+window.addEventListener('resize',()=>{if($('#wall').classList.contains('on'))wallRows();});
+function wallPlay(rec){
+  if(rec.v)return;
+  const v=el('video');v.loop=true;v.muted=true;v.playsInline=true;v.preload='auto';v.src=idleSrc(rec.s);
+  rec.el.insertBefore(v,rec.el.querySelector('.wl'));rec.v=v;
+  v.addEventListener('loadeddata',()=>{
+    try{v.currentTime=(rec.i*2.3)%Math.max(1,(v.duration||15));}catch(_){}   // stagger: not one lockstep pulse
+    v.classList.add('on');},{once:true});
+  v.addEventListener('timeupdate',()=>{const p=rec.el.querySelector('.wp');
+    if(p&&v.duration)p.style.width=((v.currentTime/v.duration)*100)+'%';});
+  v.play().catch(()=>{});
+}
+function wallStop(rec){if(!rec.v)return;rec.v.pause();rec.v.remove();rec.v=null;}
+function openWall(){
+  $('#wall').classList.add('on');
+  if(!$('#wstone').options.length){
+    const sel=$('#wstone');sel.appendChild(el('option',null,'all stones')).value='';
+    STONES.forEach(s=>{const o=el('option',null,s.stone);o.value=s.stone;sel.appendChild(o);});
+    sel.onchange=()=>{WALL.filter.stone=sel.value;buildWall();};
+  }
+  buildWall();
+}
+function closeWall(){$('#wall').classList.remove('on');WALL.tiles.forEach(wallStop);
+  if(WALL.io)WALL.io.disconnect();wallUnfocus();$('#wtext').classList.remove('on');}
+$('#wallBtn').onclick=openWall;$('#wX').onclick=closeWall;
+$('#wsearch').addEventListener('input',e=>{WALL.filter.q=e.target.value;buildWall();});
+$('#wsize').onclick=()=>{WALL.size=WALL.size===146?104:WALL.size===104?210:146;
+  $('#wgrid').style.setProperty('--wsz',WALL.size+'px');wallRows();toast('tiles: '+WALL.size+'px');};
+
+/* ---- focus: see it, hear it, read the whole prompt as it lands ---- */
+const wfv=$('#wfv');let wfLines=[],wfSid=null;
+function wallFocus(sid){
+  const s=byId[sid];if(!s)return;
+  WALL.tiles.forEach(r=>r.el.classList.toggle('sel',r.s.clip_id===sid));
+  WALL.tiles.forEach(r=>{if(r.v)r.v.muted=true;});           // the wall stays silent; focus speaks
+  wfSid=sid;$('#wfocus').classList.add('on');
+  $('#wfstone').textContent=s.stone;
+  $('#wfmeta').textContent=(s.subtitle||'')+' · '+s.clip_id+' · '+(s.domain||'')+' · '+(s.rule||'')+' · '+(s.duration||0).toFixed(1)+'s';
+  wfv.src=talkSrc(s);wfv.poster=s.poster||'';wfv.loop=true;wfv.muted=false;wfv.play().catch(()=>{});
+  // lay out the ENTIRE prompt, dimmed; lines light up as the clip reaches them
+  const box=$('#wfp');box.innerHTML='';wfLines=promptOf(sid).map(L=>{
+    const d=el('div','pl '+L.tag);d.innerHTML='<span class="tg">'+L.tag+'</span>'+esc(L.text);
+    box.appendChild(d);return {L,d};});
+  if(!wfLines.length)box.innerHTML='<div class="pl">no prompt on file</div>';
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+wfv.addEventListener('timeupdate',()=>{
+  if(!wfLines.length)return;
+  wfLines.forEach(({L,d})=>d.classList.toggle('hit',wfv.currentTime>=L.ct));
+  const cur=wfLines.filter(x=>wfv.currentTime>=x.L.ct).pop();
+  if(cur&&cur.d!==wfLines._last){wfLines._last=cur.d;
+    const b=$('#wfp'),r=cur.d.offsetTop-b.offsetTop;
+    if(r<b.scrollTop||r>b.scrollTop+b.clientHeight-40)b.scrollTop=r-b.clientHeight/2;}
+});
+function wallUnfocus(){$('#wfocus').classList.remove('on');wfv.pause();wfv.removeAttribute('src');
+  wfSid=null;WALL.tiles.forEach(r=>r.el.classList.remove('sel'));}
+$('#wfx').onclick=wallUnfocus;
+$('#wfcast').onclick=()=>{if(wfSid)addToLane(targetLane(),wfSid);};
+$('#wcast').onclick=()=>{const list=wallList().slice(0,12);
+  if(!list.length)return;const lid=addLane(WALL.filter.stone||('Wall '+(PEOPLE.length+1)));
+  list.forEach(s=>{const c=regClip(s.clip_id);if(c)LANES[lid].push(c);});
+  if(LANES[lid][0])ST.live[lid]=LANES[lid][0];
+  buildTable();buildStage();saveTable();toast(list.length+' cast into the call');};
+
+/* ---- TEXT: every prompt that made every video (the MONTE / GEL affordance) ---- */
+$('#wtextBtn').onclick=()=>{
+  const box=$('#wtext'),on=box.classList.toggle('on');
+  $('#wtextBtn').classList.toggle('on',on);
+  if(!on)return;
+  box.innerHTML='';
+  const h=el('div','tx');h.style.borderBottom='none';
+  h.innerHTML='<div class="txb"><h4>THE TEXT THAT MADE THE VIDEOS</h4><div class="meta">'
+    +wallList().length+' sessions · every prompt, in full · click a poster to watch it</div></div>';
+  box.appendChild(h);
+  wallList().forEach(s=>{
+    const r=el('div','tx');
+    const im=el('img');im.loading='lazy';im.src=s.poster||'';im.onclick=()=>{box.classList.remove('on');
+      $('#wtextBtn').classList.remove('on');wallFocus(s.clip_id);};
+    r.appendChild(im);
+    const b=el('div','txb');
+    b.innerHTML='<h4>'+esc(s.stone)+'</h4><div class="meta">'+esc(s.subtitle||'')+' · '+s.clip_id
+      +' · '+esc(s.domain||'')+' · '+esc(s.rule||'')+' · '+(s.duration||0).toFixed(1)+'s · '+esc(themesOf(s))+'</div>';
+    const pre=el('pre',null,(s.full||s.excerpt||'no prompt on file'));b.appendChild(pre);
+    r.appendChild(b);box.appendChild(r);
+  });
+};
+
+/* ============ keys / init ============ */
+document.addEventListener('keydown',e=>{
+  if(document.activeElement&&/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName))return;
+  if(e.key==='Escape'){if(TH.on)thExit();
+    else if($('#wtext').classList.contains('on')){$('#wtext').classList.remove('on');$('#wtextBtn').classList.remove('on');}
+    else if($('#wfocus').classList.contains('on'))wallUnfocus();
+    else if($('#wall').classList.contains('on'))closeWall();
+    else if(ST.inStage)exitStage();else if(loupe.classList.contains('on'))closeLoupe();else closeLib();}
+  if(e.key===' '&&ST.inStage){e.preventDefault();present?stopPresent():startPresent();}
+  if(TH.on){if(e.key==='ArrowRight'){TH.i=Math.min(TH.queue.length-1,TH.i+1);thShow();}
+    if(e.key==='ArrowLeft'){TH.i=Math.max(0,TH.i-1);thShow();}
+    if(e.key===' '){e.preventDefault();thv.paused?thv.play():thv.pause();}}
+});
+ST.seq=false;
+$('#seqBtn').onclick=()=>setSeq(!ST.seq);
+$('#worldsBtn').onclick=()=>{if(!confirm('Rebuild the table as one lane per stone, sessions in world order? (replaces the current lanes)'))return;
+  buildWorlds(true);setSeq(true);};
+if(PEOPLE[0])ST.active=PEOPLE[0].id;
+buildScenes();buildStones();buildTable();buildStage();buildLib();reflectMute();reflectCam();
+if(!ALL.length)$('#stat').textContent='ripples-deck.js failed to load — the library is empty';
+</script>
+</body>
+</html>
