@@ -1220,6 +1220,215 @@ $('#worldsBtn').onclick=()=>{if(!confirm('Rebuild the table as one lane per ston
 if(PEOPLE[0])ST.active=PEOPLE[0].id;
 buildScenes();buildStones();buildTable();buildStage();buildLib();reflectMute();reflectCam();
 if(!ALL.length)$('#stat').textContent='ripples-deck.js failed to load — the library is empty';
+
+/* ================================================================
+   MONTE SCORE + TRANSPORT (plugin block).
+   The lanes ARE the score: row r = each world's r-th step (short
+   lanes hold their last step). One world SPEAKS per row — its final
+   plays unmuted — the rest react on muted previews. A wall clock
+   advances rows; every world hard-cuts together at the boundary
+   (12 rows × 10s = a 120s call). Works standalone; ?director=1
+   opens this same file as a cue console over BroadcastChannel.
+   ================================================================ */
+(function(){
+const CHAN='ripples-call';
+const IS_DIR=new URLSearchParams(location.search).has('director');
+const SCORE={rowDur:10,loop:true,spk:{}};
+const TRS={on:false,t0:0,row:-1,hold:null,timer:null};
+const SCOREKEY='ripplesScore';
+
+/* ---- injected UI ---- */
+const css=document.createElement('style');css.textContent=`
+  #scorestrip{display:flex;gap:4px;padding:7px 10px;border-bottom:1px solid var(--line);overflow-x:auto;flex:0 0 auto;align-items:center}
+  #scorestrip:empty{display:none}
+  #scorestrip .lbl{font-size:9px;color:var(--dim);letter-spacing:.1em;flex:0 0 auto;margin-right:2px}
+  .rowchip{flex:0 0 auto;display:flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:7px;background:#101014;padding:5px 8px;cursor:pointer;font-size:10px}
+  .rowchip b{color:var(--dim);font-size:9px}
+  .rowchip .sb{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:8px;font-weight:800;color:#fff}
+  .rowchip.cur{border-color:var(--hot);box-shadow:0 0 8px rgba(232,134,59,.4)}
+  .rowchip.cur b{color:var(--hot)}
+  .rowchip:hover{border-color:var(--hot)}
+  #scoreGo{background:var(--green)!important;border-color:var(--green)!important;color:#000!important}
+  #scoreGo.on{background:var(--gold)!important;border-color:var(--gold)!important}
+  #rowDur{width:44px;background:#101014;border:1px solid var(--line);border-radius:6px;color:var(--ink);font:inherit;font-size:10px;padding:5px 4px;text-align:center}
+  #srow{color:var(--hot);font-size:10px;font-weight:700;letter-spacing:.06em;margin-left:6px;flex:0 0 auto}
+  #stageRow{color:#9a9aa2;font-size:11px;margin-right:10px}
+  body.director #golive,body.director #camBtn,body.director #recBtn,body.director #wallBtn{display:none}
+  body.director #bar{border-bottom:2px solid var(--gold)}
+  #dirhud{display:none;padding:10px;border-bottom:1px solid var(--line);gap:16px;align-items:center;flex:0 0 auto}
+  body.director #dirhud{display:flex}
+  #dirhud .big{font-size:26px;font-weight:800;color:var(--hot);letter-spacing:.04em;min-width:150px}
+  #dirhud .nx{font-size:12px;color:var(--dim)} #dirhud .nx b{color:var(--ink)}
+  #dirhud .cd{font-size:26px;font-weight:800;color:var(--gold);min-width:70px;text-align:right}
+  #dirhud .lk{font-size:9px;color:var(--dim);margin-left:auto;text-align:right}
+  #dirhud .lk.ok{color:var(--green)}`;
+document.head.appendChild(css);
+const bar=$('#bar');
+const mk=(tag,attrs,html)=>{const n=document.createElement(tag);Object.entries(attrs||{}).forEach(([k,v])=>n.setAttribute(k,v));if(html!=null)n.innerHTML=html;return n;};
+const goB=mk('button',{id:'scoreGo',title:'play the score — one world speaks per row, the rest react'},'▶ SCORE');
+const durI=mk('input',{id:'rowDur',type:'number',min:'2',max:'60',step:'1',value:'10',title:'seconds per row'});
+const dirB=mk('button',{id:'dirBtn',title:'open the director window (optional — everything works without it)'},'DIRECTOR');
+const srow=mk('span',{id:'srow'},'');
+bar.insertBefore(dirB,bar.children[1]);bar.insertBefore(durI,dirB);bar.insertBefore(goB,durI);
+bar.insertBefore(srow,bar.querySelector('.stat'));
+const scenesEl=$('#scenes');
+const dirhud=mk('div',{id:'dirhud'},'<span class="big" id="dNow">—</span><span class="cd" id="dCd"></span><span class="nx" id="dNext"></span><span class="lk" id="dLink">stage: not detected — open ripples-zoom.html (no ?director) in another window</span>');
+scenesEl.parentNode.insertBefore(dirhud,scenesEl);
+const strip=mk('div',{id:'scorestrip'},'');
+scenesEl.parentNode.insertBefore(strip,scenesEl.nextSibling);
+const stopEl=document.querySelector('#stage .stop');
+const stageRow=mk('span',{id:'stageRow'},'');
+if(stopEl)stopEl.insertBefore(stageRow,stopEl.lastElementChild);
+
+/* ---- score model over the world-lanes ---- */
+function loadScore(){try{const s=JSON.parse(localStorage.getItem(SCOREKEY)||'null');
+  if(s){SCORE.rowDur=s.rowDur||10;SCORE.loop=s.loop!==false;SCORE.spk=s.spk||{};}}catch(e){}durI.value=SCORE.rowDur;}
+function saveScore(){try{localStorage.setItem(SCOREKEY,JSON.stringify(SCORE));}catch(e){}}
+function scoreRows(){let m=0;PEOPLE.forEach(p=>{m=Math.max(m,(LANES[p.id]||[]).length);});return Math.min(m,24);}
+function rowCell(pid,r){const l=LANES[pid]||[];return l.length?l[Math.min(r,l.length-1)]:null;}
+function rowFresh(pid,r){return r<((LANES[pid]||[]).length);}
+function rowSpeaker(r){
+  const ids=PEOPLE.filter(p=>rowCell(p.id,r)).map(p=>p.id);if(!ids.length)return null;
+  const o=SCORE.spk[r];if(o&&ids.includes(o))return o;
+  const fresh=PEOPLE.filter(p=>rowFresh(p.id,r)).map(p=>p.id);
+  const pool=fresh.length?fresh:ids;return pool[r%pool.length];
+}
+function enterRow(r){
+  const n=scoreRows();if(!n){trStop();toast('no steps in any lane');return;}
+  if(r>=n){if(SCORE.loop){TRS.t0=performance.now();r=0;}else{trStop();toast('score complete');return;}}
+  TRS.row=r;
+  if(ST.seq)setSeq(false);            // the clock owns advancement now, not 'ended'
+  PEOPLE.forEach(p=>{const cid=rowCell(p.id,r);if(cid)goLive(p.id,cid);});
+  const spk=rowSpeaker(r);
+  ST.speaker=spk||null;ST.master=true;applyAudio();
+  if(spk&&vids[spk]){try{vids[spk].currentTime=0;}catch(_){ }vids[spk].play().catch(()=>{});}
+  PEOPLE.forEach(p=>{const v=vids[p.id];if(v)v.loop=true;});   // rows are cut by the clock, never by 'ended'
+  scoreHUD();
+  sendCue({t:'state',row:TRS.row,n,spk:spk?PMAP[spk].name:null,next:nextName(r,n),dur:SCORE.rowDur,on:TRS.on});
+}
+function nextName(r,n){const s=rowSpeaker((r+1)%n);return s?PMAP[s].name:null;}
+function trTick(){
+  if(!TRS.on)return;
+  const t=(performance.now()-TRS.t0)/1000;
+  const r=Math.floor(t/SCORE.rowDur);
+  if(r!==TRS.row)enterRow(r);
+  const left=SCORE.rowDur-(t%SCORE.rowDur);hudTime(left);
+  if(!trTick._h||performance.now()-trTick._h>500){trTick._h=performance.now();
+    sendCue({t:'state',row:TRS.row,n:scoreRows(),left:+left.toFixed(1),
+      spk:(TRS.row>=0&&rowSpeaker(TRS.row))?PMAP[rowSpeaker(TRS.row)].name:null,
+      next:nextName(Math.max(0,TRS.row),scoreRows()),dur:SCORE.rowDur,on:true});}
+}
+function trGo(){
+  if(IS_DIR){sendCue({t:'go'});return;}
+  if(TRS.on)return;
+  if(!scoreRows()){toast('no steps in any lane');return;}
+  if(typeof stopPresent==='function')stopPresent();
+  if(!ST.inStage)enterStage();
+  TRS.on=true;
+  const base=TRS.hold!=null?TRS.hold:(TRS.row>=0?TRS.row*SCORE.rowDur:0);
+  TRS.t0=performance.now()-base*1000;TRS.hold=null;
+  if(TRS.row<0)enterRow(0);
+  else PEOPLE.forEach(p=>{const v=vids[p.id];if(v)v.play().catch(()=>{});});
+  clearInterval(TRS.timer);TRS.timer=setInterval(trTick,100);scoreHUD();
+}
+function trHold(){
+  if(IS_DIR){sendCue({t:'hold'});return;}
+  if(!TRS.on)return;
+  TRS.hold=(performance.now()-TRS.t0)/1000;TRS.on=false;clearInterval(TRS.timer);
+  PEOPLE.forEach(p=>{const v=vids[p.id];if(v)v.pause();});
+  scoreHUD();sendCue({t:'state',row:TRS.row,n:scoreRows(),on:false,held:true});
+}
+function trJump(r){
+  if(IS_DIR){sendCue({t:'jump',row:r});return;}
+  if(!ST.inStage)enterStage();
+  TRS.hold=null;TRS.t0=performance.now()-r*SCORE.rowDur*1000;
+  if(!TRS.on){TRS.on=true;clearInterval(TRS.timer);TRS.timer=setInterval(trTick,100);}
+  enterRow(r);
+}
+function trStop(){TRS.on=false;clearInterval(TRS.timer);TRS.row=-1;TRS.hold=null;scoreHUD();}
+function cycleSpk(r){
+  const ids=PEOPLE.filter(p=>rowCell(p.id,r)).map(p=>p.id);if(!ids.length)return;
+  const cur=rowSpeaker(r);const i=ids.indexOf(cur);
+  SCORE.spk[r]=ids[(i+1)%ids.length];saveScore();scoreHUD();
+  if(IS_DIR)sendCue({t:'score',score:SCORE});
+  else if(TRS.row===r){ST.speaker=SCORE.spk[r];applyAudio();}
+  toast('row '+(r+1)+' speaker: '+PMAP[SCORE.spk[r]].name);
+}
+function scoreHUD(){
+  const n=scoreRows();strip.innerHTML='';
+  if(n)strip.appendChild(mk('span',{class:'lbl'},'SCORE'));
+  for(let r=0;r<n;r++){
+    const spk=rowSpeaker(r);
+    const chip=mk('div',{class:'rowchip'+(r===TRS.row?' cur':''),title:(spk?PMAP[spk].name+' speaks':'empty')+' — click: cue row · right-click: change speaker'},
+      `<b>${r+1}</b><span class="sb" style="background:${spk?hsl(PMAP[spk].hue,55,45):'#333'}">${spk?PMAP[spk].initials:'·'}</span>`);
+    chip.onclick=e=>{if(e.shiftKey)cycleSpk(r);else trJump(r);};
+    chip.oncontextmenu=e=>{e.preventDefault();cycleSpk(r);};
+    strip.appendChild(chip);
+  }
+  goB.textContent=TRS.on?'❚❚ HOLD':'▶ SCORE';goB.classList.toggle('on',TRS.on);
+  const spk=TRS.row>=0?rowSpeaker(TRS.row):null;
+  const txt=TRS.row>=0?`ROW ${TRS.row+1}/${n} · ${spk?PMAP[spk].name:'—'}`:(TRS.hold!=null?'HELD':'');
+  srow.textContent=txt;stageRow.textContent=txt;
+}
+function hudTime(left){
+  const n=scoreRows(),spk=TRS.row>=0?rowSpeaker(TRS.row):null;
+  const base=TRS.row>=0?`ROW ${TRS.row+1}/${n} · ${spk?PMAP[spk].name:'—'}`:'';
+  const t=base+(TRS.on?' · -'+left.toFixed(1)+'s':'');
+  srow.textContent=t;stageRow.textContent=t;
+}
+goB.onclick=()=>TRS.on?trHold():trGo();
+durI.onchange=e=>{SCORE.rowDur=Math.max(2,Math.min(60,+e.target.value||10));e.target.value=SCORE.rowDur;saveScore();
+  if(TRS.on)TRS.t0=performance.now()-TRS.row*SCORE.rowDur*1000;
+  scoreHUD();if(IS_DIR)sendCue({t:'score',score:SCORE});};
+dirB.onclick=()=>{if(IS_DIR){toast('this IS the director');return;}
+  window.open(location.pathname+'?director=1','ripplesDirector','width=1200,height=760');
+  toast('director opened — it cues this window');};
+
+/* ---- cue channel ---- */
+let bcS=null;try{bcS=new BroadcastChannel(CHAN);}catch(e){}
+function sendCue(m){if(bcS)try{bcS.postMessage(m);}catch(e){}
+  try{localStorage.setItem(CHAN+'-cue',JSON.stringify({...m,_n:Math.random()}));}catch(e){}}
+let DIRSTATE=null,dirSeen=0;
+function dirHUD(){
+  const s=DIRSTATE;if(!s)return;dirSeen=performance.now();
+  document.getElementById('dNow').textContent=s.row!=null&&s.row>=0?('ROW '+(s.row+1)+'/'+s.n+(s.spk?' · '+s.spk:'')):'—';
+  document.getElementById('dCd').textContent=s.left!=null?('-'+s.left+'s'):(s.held?'HELD':'');
+  document.getElementById('dNext').innerHTML=s.next?('next: <b>'+s.next+'</b>'):'';
+  const lk=document.getElementById('dLink');lk.textContent='stage: connected';lk.classList.add('ok');
+  if(typeof s.row==='number'&&s.row!==TRS.row){TRS.row=s.row;scoreHUD();}
+}
+setInterval(()=>{if(IS_DIR&&performance.now()-dirSeen>4000){const lk=document.getElementById('dLink');
+  lk.textContent='stage: not detected — open ripples-zoom.html (no ?director) in another window';lk.classList.remove('ok');}},2000);
+function handleCue(m){
+  if(!m||typeof m!=='object')return;
+  if(IS_DIR){if(m.t==='state')DIRSTATE=m,dirHUD();return;}
+  switch(m.t){
+    case 'go':trGo();break;
+    case 'hold':trHold();break;
+    case 'jump':trJump(m.row|0);break;
+    case 'score':Object.assign(SCORE,m.score);saveScore();durI.value=SCORE.rowDur;
+      if(TRS.on)TRS.t0=performance.now()-TRS.row*SCORE.rowDur*1000;scoreHUD();break;
+    case 'hear':ST.speaker=m.pid;ST.master=true;applyAudio();break;
+    case 'table':if(loadTable()){buildTable();buildStage();if(TRS.on)enterRow(TRS.row);scoreHUD();}break;
+  }
+}
+if(bcS)bcS.onmessage=e=>handleCue(e.data);
+window.addEventListener('storage',e=>{if(e.key===CHAN+'-cue'&&e.newValue){try{handleCue(JSON.parse(e.newValue));}catch(_){}}});
+
+/* keyboard: space go/hold · , . rows (ripples already uses [ ] elsewhere) */
+window.addEventListener('keydown',e=>{
+  if(document.activeElement&&/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName))return;
+  if(TH&&TH.on)return;
+  if(e.key===' '&&(IS_DIR||TRS.on||TRS.hold!=null)){e.preventDefault();TRS.on?trHold():trGo();}
+  if(e.key==='.')trJump(Math.min(scoreRows()-1,(TRS.row<0?0:TRS.row+1)));
+  if(e.key===',')trJump(Math.max(0,TRS.row-1));
+});
+
+if(IS_DIR){document.body.classList.add('director');
+  $('#stat').textContent='DIRECTOR — cues the stage window; open ripples-zoom.html beside it';}
+loadScore();scoreHUD();
+window.SCOREAPI={SCORE,TR:TRS,trGo,trHold,trJump,scoreRows,rowSpeaker,enterRow};
+})();
 </script>
 </body>
 </html>
