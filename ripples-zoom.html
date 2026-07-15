@@ -418,7 +418,10 @@ const HOST={id:'__host',name:'You',host:true,hue:8,initials:'Y'};
 const SAVEKEY='ripplesCallTable',CASTKEY='ripplesZoomCast';
 function regClip(sid){const s=byId[sid];if(!s)return null;const id='c'+(cCounter++);
   CLIP[id]={id,sid,label:stepLabel(sid),poster:s.poster,idle:idleSrc(s),talk:talkSrc(s),stone:s.stone};return id;}
-function addLane(name,hueV){const id='p'+Date.now().toString(36)+Math.floor(Math.random()*1e3);
+let laneSeq=0;
+// monotonic id: Date.now()+random collided when WORLDS built 31 lanes inside one
+// millisecond, and a collision silently clobbered LANES[id] — losing a world's steps
+function addLane(name,hueV){const id='p'+(++laneSeq)+'_'+Date.now().toString(36);
   laneHue=(hueV!=null?hueV:(laneHue+53)%360);
   const p={id,name,hue:laneHue,initials:(name||'?').trim().slice(0,1).toUpperCase()};
   PEOPLE.push(p);LANES[id]=[];ST.aud[id]={on:false,vol:1,solo:false};PMAP=P();return id;}
