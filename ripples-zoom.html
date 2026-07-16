@@ -177,6 +177,19 @@
     justify-content:center;justify-content:safe center}
   #sgrid.panels .stile{flex:0 0 auto;height:100%;aspect-ratio:var(--ar,648/1112);min-width:48px}
   #sgrid.panels .stile video{object-fit:cover}
+  /* the panel strip is a real instrument: themed slider, smooth follow */
+  #sgrid.panels{scrollbar-width:thin;scrollbar-color:#3a3a44 #101014;scroll-behavior:smooth;padding-bottom:12px}
+  #sgrid.panels::-webkit-scrollbar{height:11px}
+  #sgrid.panels::-webkit-scrollbar-track{background:#101014;border-radius:6px;margin:0 6px}
+  #sgrid.panels::-webkit-scrollbar-thumb{background:#2c2c34;border-radius:6px;border:2px solid #101014}
+  #sgrid.panels::-webkit-scrollbar-thumb:hover{background:var(--hot)}
+  .chd .oncall{border:1px solid var(--line);border-radius:5px;background:transparent;color:var(--dim);
+    font:inherit;font-size:8px;font-weight:800;letter-spacing:.05em;padding:3px 7px;cursor:pointer;flex:0 0 auto}
+  .chd .oncall::after{content:'JOIN'}
+  .chan.live .chd .oncall{border-color:var(--green);color:var(--green)}
+  .chan.live .chd .oncall::after{content:'ON CALL'}
+  .chd .oncall:hover{border-color:var(--hot);color:var(--hot)}
+  .cfoot .ffoc{border-color:var(--accent)!important;color:var(--accent)!important}
   #stage.fitc .stile video{object-fit:contain;background:#000}
   .stile.drag{opacity:.4;outline:2px dashed var(--hot)}
   .stile.dropt{outline:3px solid var(--gold);outline-offset:-3px}
@@ -2771,14 +2784,22 @@ function buildTable(){
     ch.classList.toggle('active',ST.active===p.id);
     ch.classList.toggle('live',!!ST.live[p.id]);
     ch.innerHTML=`<div class="chd"><div class="dot" style="background:${hsl(p.hue,55,45)}">${p.initials}</div>
-        <div class="nm" style="color:${hsl(p.hue,70,68)}">${p.name}</div><span class="liveflag">LIVE</span>
+        <div class="nm" style="color:${hsl(p.hue,70,68)}">${p.name}</div><button class="oncall" title="a lane is IN the call when one of its takes is live — click to join or leave"></button>
         <button class="hbtn" data-a="ren" title="rename">✎</button><button class="hbtn" data-a="del" title="close lane">✕</button></div>
       <div class="aud"><button class="amute ${a.on?'on':''}">${a.on?'AUD':'mute'}</button>
         <button class="solo ${a.solo?'on':''}">solo</button>
         <input type="range" class="avol" min="0" max="100" value="${Math.round(a.vol*100)}"></div>
       <div class="clips" id="clips-${p.id}"></div>
-      <div class="cfoot"><button class="fplay play">▶ LANE</button><button class="fseq">⏭ ORDER</button><button class="fadd">+ ADD</button></div>`;
+      <div class="cfoot"><button class="fplay play">▶ LANE</button><button class="ffoc">FOCUS</button><button class="fseq">⏭ ORDER</button><button class="fadd">+ ADD</button></div>`;
     ch.querySelector('.fseq').onclick=()=>{sequenceLane(p.id);if(ST.inStage)syncTile(p.id);};
+    ch.querySelector('.oncall').onclick=e=>{e.stopPropagation();
+      const A=window.SCOREAPI||{};
+      if(ST.live[p.id]){if(A.IS_DIR&&A.sendCue)A.sendCue({t:'uncast',pid:p.id});unLive(p.id);}
+      else if((LANES[p.id]||[])[0])goLive(p.id,LANES[p.id][0]);
+      else toast('no takes in this lane — + ADD from the library');};
+    ch.querySelector('.ffoc').onclick=()=>{const A=window.SCOREAPI||{};
+      if(A.IS_DIR&&A.sendCue){A.sendCue({t:'focus',pid:p.id});toast('focused '+p.name+' on the stage');}
+      else focusLane(p.id);};
     ch.querySelector('.chd').onclick=e=>{if(e.target.closest('.hbtn'))return;setActive(p.id);};
     ch.querySelector('[data-a=ren]').onclick=e=>{e.stopPropagation();const n=prompt('Rename lane',p.name);if(n){p.name=n.trim();p.initials=p.name.slice(0,1).toUpperCase();buildTable();buildStage();saveTable();}};
     ch.querySelector('[data-a=del]').onclick=e=>{e.stopPropagation();removeLane(p.id);};
@@ -2968,6 +2989,22 @@ function goLive(pid,cid){ST.live[pid]=cid;ST.onstage.add(pid);
   $('#ch-'+pid)?.classList.add('live');
   if(ST.inStage){syncTile(pid);refreshStageLayout();}
   refreshStat();saveTable();if(!ST.inStage)toast(PMAP[pid].name+" → "+CLIP[cid].label);}
+/* in Panels, the strip follows whoever holds the voice */
+function panelsFollow(){
+  if(ST.layout!=='panels'||!ST.inStage||!ST.speaker)return;
+  if(panelsFollow._last===ST.speaker)return;
+  panelsFollow._last=ST.speaker;
+  const t=$('#stile-'+ST.speaker);
+  if(t)try{t.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}catch(e){}
+}
+/* force the whole call to one lane: speak + spotlight; again = back to gallery */
+function focusLane(pid){
+  if(ST.layout==='spotlight'&&ST.spot===pid){setLayout('gallery');return;}
+  if(!ST.live[pid]&&(LANES[pid]||[])[0])goLive(pid,LANES[pid][0]);
+  if(!ST.inStage)enterStage();
+  ST.speaker=pid;ST.master=true;
+  setLayout('spotlight');ST.spot=pid;refreshStageLayout();applyAudio();
+}
 function unLive(pid){delete ST.live[pid];
   document.querySelectorAll('#clips-'+pid+' .clip').forEach(d=>d.classList.remove('playing'));
   $('#ch-'+pid)?.classList.remove('live');ST.onstage.delete(pid);
@@ -2987,6 +3024,7 @@ function applyAudio(){
       setMode(p.id,isSpk);v.muted=!audible;v.volume=a.vol;
       const t=$('#stile-'+p.id);if(t){t.classList.toggle('spk',isSpk);t.classList.toggle('muted',!audible);}
       if(v.paused)v.play().catch(()=>{});});
+    panelsFollow();
     return;
   }
   Object.values(vids).forEach(v=>{v.muted=true;});
@@ -3758,6 +3796,8 @@ function handleCue(m){
       if(TRS.on)TRS.t0=performance.now()-rowStart(TRS.row)*1000;
       if(TRS.row>=0)enterRow(TRS.row);scoreHUD();break;
     case 'hear':ST.speaker=m.pid;ST.master=true;applyAudio();break;
+    case 'focus':focusLane(m.pid);break;
+    case 'uncast':unLive(m.pid);break;
     case 'aud':{const a=ST.aud[m.pid];if(a){a.on=!!m.on;if(m.on)ST.master=true;applyAudio();}break;}
     case 'nexttake':{const l=LANES[m.pid]||[];if(l.length>1){const i=l.indexOf(ST.live[m.pid]);goLive(m.pid,l[(i+1)%l.length]);applyAudio();}break;}
     case 'clip':{const cid=(LANES[m.pid]||[]).find(x=>CLIP[x]&&CLIP[x].sid===m.sid);if(cid)goLive(m.pid,cid);break;}
@@ -4339,7 +4379,7 @@ setInterval(applySurface,600);applySurface();
 })();
 
 
-window.SCOREAPI={SCORE,TR:TRS,trGo,trHold,trJump,scoreRows,rowSpeaker,enterRow};
+window.SCOREAPI={SCORE,TR:TRS,trGo,trHold,trJump,scoreRows,rowSpeaker,enterRow,sendCue,IS_DIR};
 })();
 </script>
 </body>
